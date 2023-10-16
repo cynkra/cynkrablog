@@ -1,6 +1,8 @@
 on:
   push:
     branches: main
+  pull_request:
+    branches: main
 
 name: Render and Publish
 
@@ -13,17 +15,70 @@ jobs:
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
-        with:
-          # To install LaTeX to build PDF book
-          tinytex: true
-          # uncomment below and fill to pin a version
-          # version: SPECIFIC-QUARTO-VERSION-HERE
 
-      # add software dependencies here
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
 
-      - name: Publish to GitHub Pages (and render)
-        uses: quarto-dev/quarto-actions/publish@v2
+      - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          target: gh-pages
+          pak-version: devel
+
+      - name: Render Quarto Project
+        uses: quarto-dev/quarto-actions/render@v2
+
+      - name: Restore lychee cache
+        uses: actions/cache@v3
+        with:
+          path: .lycheecache
+          key: cache-lychee-${{ github.sha }}
+          restore-keys: cache-lychee-
+
+      - name: Link Checker
+        id: lychee
+        uses: lycheeverse/lychee-action@v1
+        with:
+          fail: true
+          args: "docs --exclude-loopback --insecure --exclude-mail --exclude-path docs/site_libs --cache --max-cache-age 1d"
+
+      - name: Read lychee's out.md
+        if: failure()
+        id: lychee-output
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./lychee/out.md
+
+      - uses: mshick/add-pr-comment@v2
+        if: failure()
+        with:
+          message: ${{ steps.lychee-output.outputs.content }}
+
+      - name: Save lychee cache
+        uses: actions/cache/save@v3
+        if: always()
+        with:
+          path: .lycheecache
+          key: ${{ steps.restore-cache.outputs.cache-primary-key }}
+
+      - uses: actions/setup-node@v3
+        timeout-minutes: 2
+        with:
+          node-version: 16
+
+      - name: html5 validate
+        timeout-minutes: 5
+        run: npx html-validate docs
+
+      - name: Update cynkra org S3 bucket
+        if: contains(env.isExtPR, 'false')
+        timeout-minutes: 7
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # this secret is always available for github actions
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_CYNKRA_ORG }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_CYNKRA_ORG }}
+          AWS_DEFAULT_REGION: eu-central-1
+        run: |
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
+          aws configure list
+          # S3
+          aws s3 sync docs s3://cynkraweb-site
