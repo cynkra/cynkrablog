@@ -56,9 +56,15 @@ jobs:
         with:
           path: .lycheecache
           key: ${{ steps.restore-cache.outputs.cache-primary-key }}
-
+          
+      - name: Deploy gh-pages Preview
+        if: ${{ github.event_name == 'pull_request' && !contains(github.event.pull_request.title, 'chore(deps):') }}
+        uses: quarto-dev/quarto-actions/publish@v2
+        with:
+          target: gh-pages
+        
       - name: Update cynkra org S3 bucket
-        if: contains(env.isExtPR, 'false')
+        if: github.event_name == 'push'
         timeout-minutes: 7
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_CYNKRA_ORG }}
@@ -70,4 +76,4 @@ jobs:
           sudo ./aws/install
           aws configure list
           # S3
-          aws s3 sync docs s3://cynkraweb-site
+          aws s3 sync docs s3://cynkraweb-blog
