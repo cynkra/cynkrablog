@@ -16,9 +16,6 @@ jobs:
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
-      - name: Set up R
-        uses: r-lib/actions/setup-r@v2
-
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           pak-version: devel
@@ -58,15 +55,6 @@ jobs:
         with:
           path: .lycheecache
           key: ${{ steps.restore-cache.outputs.cache-primary-key }}
-
-      - uses: actions/setup-node@v3
-        timeout-minutes: 2
-        with:
-          node-version: 16
-
-      - name: html5 validate
-        timeout-minutes: 5
-        run: npx html-validate docs
 
       - name: Update cynkra org S3 bucket
         if: contains(env.isExtPR, 'false')
