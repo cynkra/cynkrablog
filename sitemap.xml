@@ -1,87 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://cynkra.github.io/cynkrablog/blog/posts/2021-09-18-tsbox-03/index.html</loc>
-    <lastmod>2023-11-06T09:27:55.120Z</lastmod>
-  </url>
-  <url>
-    <loc>https://cynkra.github.io/cynkrablog/blog/posts/2021-10-07-old-texlive/index.html</loc>
-    <lastmod>2023-11-06T09:27:53.896Z</lastmod>
-  </url>
-  <url>
-    <loc>https://cynkra.github.io/cynkrablog/blog/posts/2021-04-09-deprecating-pkgdown/index.html</loc>
-    <lastmod>2023-11-06T09:27:53.040Z</lastmod>
+    <loc>https://cynkra.github.io/cynkrablog/index.html</loc>
+    <lastmod>2023-12-01T10:22:56.920Z</lastmod>
   </url>
   <url>
     <loc>https://cynkra.github.io/cynkrablog/blog/posts/2020-04-02-dm/index.html</loc>
-    <lastmod>2023-11-06T09:27:52.084Z</lastmod>
-  </url>
-  <url>
-    <loc>https://cynkra.github.io/cynkrablog/blog/posts/2020-11-02-jitsi-load-balanced/index.html</loc>
-    <lastmod>2023-11-06T09:27:51.164Z</lastmod>
-  </url>
-  <url>
-    <loc>https://cynkra.github.io/cynkrablog/blog/posts/2022-05-14-accessing-google-api-via-oauth2/index.html</loc>
-    <lastmod>2023-11-06T09:27:50.096Z</lastmod>
-  </url>
-  <url>
-    <loc>https://cynkra.github.io/cynkrablog/blog/posts/2019-04-10-tsbox-01/index.html</loc>
-    <lastmod>2023-11-06T09:27:48.860Z</lastmod>
-  </url>
-  <url>
-    <loc>https://cynkra.github.io/cynkrablog/blog/posts/2021-03-09-seasonal-1.8/index.html</loc>
-    <lastmod>2023-11-06T09:27:47.868Z</lastmod>
-  </url>
-  <url>
-    <loc>https://cynkra.github.io/cynkrablog/blog/posts/2020-12-23-dynamic-gha/index.html</loc>
-    <lastmod>2023-11-06T09:27:45.800Z</lastmod>
-  </url>
-  <url>
-    <loc>https://cynkra.github.io/cynkrablog/blog/posts/2019-07-17-dm/index.html</loc>
-    <lastmod>2023-11-06T09:27:45.028Z</lastmod>
-  </url>
-  <url>
-    <loc>https://cynkra.github.io/cynkrablog/blog/posts/2018-05-15-tsbox/index.html</loc>
-    <lastmod>2023-11-06T09:27:43.236Z</lastmod>
-  </url>
-  <url>
-    <loc>https://cynkra.github.io/cynkrablog/index.html</loc>
-    <lastmod>2023-11-06T09:27:41.024Z</lastmod>
-  </url>
-  <url>
-    <loc>https://cynkra.github.io/cynkrablog/blog/index.html</loc>
-    <lastmod>2023-11-06T09:27:42.700Z</lastmod>
-  </url>
-  <url>
-    <loc>https://cynkra.github.io/cynkrablog/blog/posts/2020-02-09-tempdisagg/index.html</loc>
-    <lastmod>2023-11-06T09:27:43.764Z</lastmod>
-  </url>
-  <url>
-    <loc>https://cynkra.github.io/cynkrablog/blog/posts/2022-01-05-gsod-user-infoboard/index.html</loc>
-    <lastmod>2023-11-06T09:27:44.520Z</lastmod>
-  </url>
-  <url>
-    <loc>https://cynkra.github.io/cynkrablog/blog/posts/2021-03-16-gfortran-macos/index.html</loc>
-    <lastmod>2023-11-06T09:27:46.408Z</lastmod>
-  </url>
-  <url>
-    <loc>https://cynkra.github.io/cynkrablog/blog/posts/2019-08-12-tsbox-02/index.html</loc>
-    <lastmod>2023-11-06T09:27:48.352Z</lastmod>
+    <lastmod>2023-12-01T10:22:54.964Z</lastmod>
   </url>
   <url>
     <loc>https://cynkra.github.io/cynkrablog/blog/posts/2018-05-01-dbi-2/index.html</loc>
-    <lastmod>2023-11-06T09:27:49.400Z</lastmod>
+    <lastmod>2023-12-01T10:22:53.056Z</lastmod>
   </url>
   <url>
-    <loc>https://cynkra.github.io/cynkrablog/blog/posts/2021-07-09-certified-partner-anniversary/index.html</loc>
-    <lastmod>2023-11-06T09:27:50.560Z</lastmod>
+    <loc>https://cynkra.github.io/cynkrablog/blog/posts/2019-04-10-tsbox-01/index.html</loc>
+    <lastmod>2023-12-01T10:22:52.240Z</lastmod>
   </url>
   <url>
-    <loc>https://cynkra.github.io/cynkrablog/blog/posts/2020-08-25-git-multiple-identities/index.html</loc>
-    <lastmod>2023-11-06T09:27:51.468Z</lastmod>
+    <loc>https://cynkra.github.io/cynkrablog/blog/posts/2021-09-18-tsbox-03/index.html</loc>
+    <lastmod>2023-12-01T10:22:51.188Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cynkra.github.io/cynkrablog/blog/posts/2019-08-12-tsbox-02/index.html</loc>
+    <lastmod>2023-12-01T10:22:49.948Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cynkra.github.io/cynkrablog/blog/posts/2021-04-09-deprecating-pkgdown/index.html</loc>
+    <lastmod>2023-12-01T10:22:48.984Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cynkra.github.io/cynkrablog/blog/posts/2019-07-17-dm/index.html</loc>
+    <lastmod>2023-12-01T10:22:47.828Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cynkra.github.io/cynkrablog/blog/posts/2020-12-23-dynamic-gha/index.html</loc>
+    <lastmod>2023-12-01T10:22:46.804Z</lastmod>
   </url>
   <url>
     <loc>https://cynkra.github.io/cynkrablog/blog/posts/2022-04-19-seasonal-1.9/index.html</loc>
-    <lastmod>2023-11-06T09:27:54.588Z</lastmod>
+    <lastmod>2023-12-01T10:22:46.032Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cynkra.github.io/cynkrablog/blog/index.html</loc>
+    <lastmod>2023-12-01T10:22:43.936Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cynkra.github.io/cynkrablog/blog/posts/2022-05-14-accessing-google-api-via-oauth2/index.html</loc>
+    <lastmod>2023-12-01T10:22:44.652Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cynkra.github.io/cynkrablog/blog/posts/2018-05-15-tsbox/index.html</loc>
+    <lastmod>2023-12-01T10:22:47.316Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cynkra.github.io/cynkrablog/blog/posts/2021-10-07-old-texlive/index.html</loc>
+    <lastmod>2023-12-01T10:22:48.396Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cynkra.github.io/cynkrablog/blog/posts/2021-07-09-certified-partner-anniversary/index.html</loc>
+    <lastmod>2023-12-01T10:22:49.448Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cynkra.github.io/cynkrablog/blog/posts/2021-03-09-seasonal-1.8/index.html</loc>
+    <lastmod>2023-12-01T10:22:50.684Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cynkra.github.io/cynkrablog/blog/posts/2020-02-09-tempdisagg/index.html</loc>
+    <lastmod>2023-12-01T10:22:51.732Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cynkra.github.io/cynkrablog/blog/posts/2020-08-25-git-multiple-identities/index.html</loc>
+    <lastmod>2023-12-01T10:22:52.540Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cynkra.github.io/cynkrablog/blog/posts/2020-11-02-jitsi-load-balanced/index.html</loc>
+    <lastmod>2023-12-01T10:22:53.608Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cynkra.github.io/cynkrablog/blog/posts/2022-01-05-gsod-user-infoboard/index.html</loc>
+    <lastmod>2023-12-01T10:22:54.344Z</lastmod>
+  </url>
+  <url>
+    <loc>https://cynkra.github.io/cynkrablog/blog/posts/2021-03-16-gfortran-macos/index.html</loc>
+    <lastmod>2023-12-01T10:22:55.516Z</lastmod>
   </url>
 </urlset>

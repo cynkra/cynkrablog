@@ -1679,7 +1679,7 @@ Photo by Adi Goldstein
 <p>The following GIF might give you an idea of speed improvement (we did the test using a relatively new MacBook Pro 2020). When we deployed the cloud-based RStudio Workbench on the MacBook, the machine performed much faster. The difference in speed will be even more noticeable in an older machine.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://cynkra.github.io/cynkrablog/blog/2021-07-09-certified-partner-anniversary/rstudio-desktop-vs-rsw.gif" class="img-fluid figure-img"></p>
+<p><img src="https://cynkra.github.io/cynkrablog/blog/posts/2021-07-09-certified-partner-anniversary/rstudio-desktop-vs-rsw.gif" class="img-fluid figure-img"></p>
 <figcaption class="figure-caption">RStudio Desktop vs.&nbsp;RStudio Workbench speed comparison</figcaption>
 </figure>
 </div>
@@ -3615,15 +3615,13 @@ font-style: inherit;"> ${{fromJson(needs.matrix.outputs.matrix)}}</span></span>
 background-color: null;
 font-style: inherit;">    # rest unchanged</span></span></code></pre></div>
 <p>{% endraw %}</p>
-<p>This gives a workflow as shown in the image below. Click on the image to view the workflow on GitHub.</p>
-<a href="https://github.com/r-dbi/DBItest/actions/runs/440316185" target="_blank">
+<p>This gives a workflow as shown in the image below.</p>
 <figure class="figure">
 <img alt="GitHub Actions workflow with dependencies" src="https://cynkra.github.io/cynkrablog/blog/posts/2020-12-23-dynamic-gha/workflow.png" style=" width: 100%; height: auto" class="figure-img">
 <figcaption class="figure-caption">
 Final workflow with dynamic build matrix
 </figcaption>
 </figure>
-</a><p><a href="https://github.com/r-dbi/DBItest/actions/runs/440316185" target="_blank"></a></p>
 </section>
 <section id="next-steps" class="level2">
 <h2 class="anchored" data-anchor-id="next-steps">Next steps</h2>
