@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.3.450">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
 <meta name="author" content="Christoph Sax">
 <meta name="dcterms.date" content="2021-03-09">
-
 <title>cynkra blog - Seasonal Adjustment of Multiple Series</title>
 <style>
 code{white-space: pre-wrap;}
@@ -58,7 +55,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
-
 <script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../../../site_libs/clipboard/clipboard.min.js"></script>
@@ -76,8 +72,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<script id="quarto-search-options" type="application/json">{
+<link href="../../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -97,20 +92,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-
-
 </head>
-
 <body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
-      <div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a href="../../../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="https://cynkra.com/assets/img/logo_small.svg" alt="" class="navbar-logo">
-    </a>
+    <img src="https://cynkra.com/assets/img/logo_small.svg" alt="" class="navbar-logo"></a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -118,12 +107,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item dropdown ">
+<li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-consulting" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
  <span class="menu-text">Consulting</span>
     </a>
-    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-consulting">    
-        <li>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-consulting">
+<li>
     <a class="dropdown-item" href="https://cynkra.com/consulting/" rel="" target="">
  <span class="dropdown-text">R Consulting</span></a>
   </li>  
@@ -136,13 +125,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="dropdown-text">R Markdown templates</span></a>
   </li>  
     </ul>
-  </li>
+</li>
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-posit" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
  <span class="menu-text">Posit</span>
     </a>
-    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-posit">    
-        <li>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-posit">
+<li>
     <a class="dropdown-item" href="https://cynkra.com/posit/managed/" rel="" target="">
  <span class="dropdown-text">Managed Server Solutions</span></a>
   </li>  
@@ -151,7 +140,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="dropdown-text">Posit licenses</span></a>
   </li>  
     </ul>
-  </li>
+</li>
   <li class="nav-item">
     <a class="nav-link" href="https://cynkra.com/opensource" rel="" target="">
  <span class="menu-text">open source</span></a>
@@ -170,7 +159,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"></span></a>
   </li>  
 </ul>
-            <div class="quarto-navbar-tools">
+<div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
   <div class="quarto-reader-toggle-btn">
@@ -180,18 +169,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
-    </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+    </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title">Seasonal Adjustment of Multiple Series</h1>
 </div>
 
@@ -217,29 +200,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-</header>
-
-<p>seasonal is an easy-to-use and full-featured R-interface to X-13ARIMA-SEATS, the seasonal adjustment software developed by the United States Census Bureau. The latest CRAN version of seasonal makes it much easier to adjust multiple time series.</p>
-<figure class="figure">
-<img alt="Illustration" src="banner.jpg" style=" width: 100%; height: auto" class="figure-img">
-<figcaption class="figure-caption">
+</header><p>seasonal is an easy-to-use and full-featured R-interface to X-13ARIMA-SEATS, the seasonal adjustment software developed by the United States Census Bureau. The latest CRAN version of seasonal makes it much easier to adjust multiple time series.</p>
+<figure class="figure"><img alt="Illustration" src="banner.jpg" style=" width: 100%; height: auto" class="figure-img"><figcaption class="figure-caption">
 Photo by Meriç Dağlı
-</figcaption>
-</figure>
-<p><br></p>
+</figcaption></figure><p><br></p>
 <p><a href="http://www.seasonal.website">seasonal</a> depends on the <a href="https://CRAN.R-project.org/package=x13binary">x13binary</a> package to access pre-built binaries of X-13ARIMA-SEATS on all platforms and does not require any manual installation. To install both packages:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"seasonal"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"seasonal"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><code>seas</code> is the core function of the <a href="https://cran.r-project.org/package=seasonal">seasonal</a> package. By default, <code>seas</code> calls the automatic procedures of X-13ARIMA-SEATS to perform a seasonal adjustment that works well in most circumstances:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seas</span>(AirPassengers)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">seas</span><span class="op">(</span><span class="va">AirPassengers</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>For a more detailed introduction, read our <a href="https://doi.org/10.18637/jss.v087.i11">article in the <em>Journal of Statistical Software</em></a>.</p>
-<section id="multiple-series-adjusmtent" class="level3">
-<h3 class="anchored" data-anchor-id="multiple-series-adjusmtent">Multiple Series Adjusmtent</h3>
-<p>In the latest <a href="https://cran.r-project.org/package=seasonal">CRAN version 1.8</a>, it is now possible to seasonally adjust multiple series in a single call to <code>seas()</code>. This is done by using the built-in batch mode of X-13. It removes the need for loops or <code>lapply()</code> in such cases and finally brings one missing feature of X-13 to seasonal – the <em>composite</em> spec.</p>
+<section id="multiple-series-adjusmtent" class="level3"><h3 class="anchored" data-anchor-id="multiple-series-adjusmtent">Multiple Series Adjusmtent</h3>
+<p>In the latest <a href="https://cran.r-project.org/package=seasonal">CRAN version 1.8</a>, it is now possible to seasonally adjust multiple series in a single call to <code>seas()</code>. This is done by using the built-in batch mode of X-13. It removes the need for loops or <code><a href="https://rdrr.io/r/base/lapply.html">lapply()</a></code> in such cases and finally brings one missing feature of X-13 to seasonal – the <em>composite</em> spec.</p>
 <p>Multiple adjustments can be performed by supplying multiple time series as an <code>"mts"</code> object:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(seasonal)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">seas</span>(<span class="fu">cbind</span>(fdeaths, mdeaths), <span class="at">x11 =</span> <span class="st">""</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">final</span>(m)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.seasonal.website">seasonal</a></span><span class="op">)</span></span>
+<span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu">seas</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">fdeaths</span>, <span class="va">mdeaths</span><span class="op">)</span>, x11 <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
+<span><span class="fu">final</span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          fdeaths  mdeaths
 Jan 1974 614.1235 1598.740
@@ -317,12 +293,10 @@ Dec 1979 475.5049 1038.506</code></pre>
 </div>
 </div>
 <p>This will perform two seasonal adjustments, one for <code>fdeaths</code> and one for <code>mdeaths</code>. X-13 spec-argument combinations can be applied in the usual way, such as <code>x11 = ""</code>. Note that if entered that way, they will apply to both series. The <a href="https://cran.r-project.org/web/packages/seasonal/vignettes/multiple.html">vignette on multiple adjustments</a> describes how to specify options for individual series.</p>
-</section>
-<section id="backend" class="level3">
-<h3 class="anchored" data-anchor-id="backend">Backend</h3>
+</section><section id="backend" class="level3"><h3 class="anchored" data-anchor-id="backend">Backend</h3>
 <p>X-13 ships with a batch mode that allows multiple adjustments in a single call to X-13. This is now the default in seasonal (<code>multimode = "x13"</code>). Alternatively, X-13 can be called for each series (<code>multimode = "R"</code>). The results should be usually the same, but switching to <code>multimode = "R"</code> may be useful for debugging:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seas</span>(<span class="fu">cbind</span>(fdeaths, mdeaths), <span class="at">multimode =</span> <span class="st">"x13"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">seas</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">fdeaths</span>, <span class="va">mdeaths</span><span class="op">)</span>, multimode <span class="op">=</span> <span class="st">"x13"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$fdeaths
 
@@ -352,7 +326,7 @@ seas(x = cbind(fdeaths, mdeaths), multimode = "x13")
 attr(,"class")
 [1] "seas_multi" "list"      </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seas</span>(<span class="fu">cbind</span>(fdeaths, mdeaths), <span class="at">multimode =</span> <span class="st">"R"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">seas</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">fdeaths</span>, <span class="va">mdeaths</span><span class="op">)</span>, multimode <span class="op">=</span> <span class="st">"R"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$fdeaths
 
@@ -384,24 +358,22 @@ attr(,"class")
 </div>
 </div>
 <p>In general, <code>multimode = "x13"</code> is faster. The following comparison on a MacBook Pro shows a modest speed gain, but bigger differences have been observed on other systems:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>many <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="fu">list</span>(fdeaths), <span class="dv">100</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">seas</span>(many, <span class="at">multimode =</span> <span class="st">"x13"</span>))</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   user  system elapsed</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#  9.415   0.653  10.079</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>(<span class="fu">seas</span>(many, <span class="at">multimode =</span> <span class="st">"R"</span>))</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   user  system elapsed</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 11.130   1.039  12.324</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="composite-spec" class="level3">
-<h3 class="anchored" data-anchor-id="composite-spec">composite spec</h3>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">many</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">fdeaths</span><span class="op">)</span>, <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="fu">seas</span><span class="op">(</span><span class="va">many</span>, multimode <span class="op">=</span> <span class="st">"x13"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#   user  system elapsed</span></span>
+<span><span class="co">#  9.415   0.653  10.079</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="fu">seas</span><span class="op">(</span><span class="va">many</span>, multimode <span class="op">=</span> <span class="st">"R"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#   user  system elapsed</span></span>
+<span><span class="co"># 11.130   1.039  12.324</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section><section id="composite-spec" class="level3"><h3 class="anchored" data-anchor-id="composite-spec">composite spec</h3>
 <p>Support for the X-13 batch mode makes it finally possible to use the <em>composite</em> spec – the one feature of X-13 that was missing in seasonal. Sometimes, one has to decide whether seasonal adjustment should be performed on a granular level or on an aggregated level. The <em>composite</em> spec helps you to analyze the problem and to compare the direct and the indirect adjustments.</p>
 <p>The <code>composite</code> argument is a list with an X-13 specification that is applied on the aggregated series. Specification works identically for other series in <code>seas()</code>, including the application of the defaults. If you provide an empty list, the usual defaults of <code>seas()</code> are used. A minimal composite call looks like this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seas</span>(</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(mdeaths, fdeaths),</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">composite =</span> <span class="fu">list</span>(),</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">series.comptype =</span> <span class="st">"add"</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">seas</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">mdeaths</span>, <span class="va">fdeaths</span><span class="op">)</span>,</span>
+<span>  composite <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  series.comptype <span class="op">=</span> <span class="st">"add"</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$mdeaths
 
@@ -444,7 +416,7 @@ attr(,"class")
 </div>
 <p>You can verify that the composite refers to the total of <code>mdeaths</code> and <code>fdeaths</code> by running:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seas</span>(ldeaths)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">seas</span><span class="op">(</span><span class="va">ldeaths</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -456,16 +428,11 @@ Coefficients:
 </div>
 </div>
 <p>where <code>ldeaths</code> is the sum of <code>mdeaths</code> and <code>fdeaths</code>.</p>
-</section>
-<section id="acknowledgement" class="level3">
-<h3 class="anchored" data-anchor-id="acknowledgement">Acknowledgement</h3>
+</section><section id="acknowledgement" class="level3"><h3 class="anchored" data-anchor-id="acknowledgement">Acknowledgement</h3>
 <p>Many thanks to <a href="https://mtec.ethz.ch/people/person-detail.MTU3MzEx.TGlzdC8yODk2LC0yMDgyMjgwMDQ4.html">Severin Thöni</a> and <a href="https://kof.ethz.ch/das-institut/personen/person-detail.MTYxMjA1.TGlzdC81NzgsODQ4OTAwOTg=.html">Matthias Bannert</a>, for demonstrating the benefits of the X-13 batch mode. Also to the <a href="https://kof.ethz.ch">ETH KOF</a>, for partially funding this development.</p>
 
 
-</section>
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -814,8 +781,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
+<footer class="footer"><div class="nav-footer">
     <div class="nav-footer-left">© All rights reserved. Copyright cynkra GmbH.</div>   
     <div class="nav-footer-center">
       &nbsp;
@@ -823,7 +789,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-right">Blog created with <a href="https://quarto.org/">Quarto</a>.</div>
   </div>
 </footer>
-
 
 
 </body></html>
