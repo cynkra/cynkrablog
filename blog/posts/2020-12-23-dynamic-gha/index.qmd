@@ -218,16 +218,13 @@ jobs:
 {% endraw %}
 
 This gives a workflow as shown in the image below.
-Click on the image to view the workflow on GitHub.
 
-<a href="https://github.com/r-dbi/DBItest/actions/runs/440316185" target="_blank">
 <figure>
 <img alt="GitHub Actions workflow with dependencies" src="workflow.png" style=" width: 100%; height: auto">
 <figcaption>
   Final workflow with dynamic build matrix
 </figcaption>
 </figure>
-</a>
 
 ## Next steps
 
