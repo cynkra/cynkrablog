@@ -6,10 +6,9 @@ $link-color: #184fa9;
 $input-focus-border-color: #005f7e;
 $input-btn-focus-box-shadow: #005f7e;
 $font-family-base: "frutiger-light,sans-serif";
-$font-family-code: 'Space Mono', monospace;
+$font-family-code: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 $dropdown-link-hover-bg: #e0e0fc;
 $dropdown-link-active-bg: #e0e0fc;
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono&display=swap');
 
 /*-- scss:rules --*/
 .nav-item {
