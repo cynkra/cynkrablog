@@ -11,7 +11,7 @@ listing:
     contents: blog/posts
     type: grid
     fields: [image, date, title, author, description, categories, reading-time]
-    image-placeholder: pexels-photo-205001.jpeg
+    image-placeholder: mountain.jpg
     sort: 
       - "date desc"
       - "title asc"

@@ -15,8 +15,10 @@ $primary:                     #6366f1 !default;
 $border-color: rgba($white, .14) !default;
 $border-light-color: rgba($white, .14) !default;
 $font-family-base: "frutiger-light,sans-serif";
-$font-family-code: 'Space Mono', monospace;
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono&display=swap');
+
+$font-family-code: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+$dropdown-link-hover-bg: #e0e0fc;
+$dropdown-link-active-bg: #e0e0fc;
 
 /*-- scss:rules --*/
 .nav-item {

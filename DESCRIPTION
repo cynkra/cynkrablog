@@ -7,3 +7,8 @@ Authors@R: c(
   )
 Description: Source of the cynkrablog
 Encoding: UTF-8
+Imports:
+  knitr,
+  downlit,
+  xml2,
+  rmarkdown
