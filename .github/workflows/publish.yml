@@ -68,8 +68,8 @@ jobs:
         if: github.event_name == 'push'
         timeout-minutes: 7
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_CYNKRA_ORG }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_CYNKRA_ORG }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_CYNKRABLOG }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_CYNKRABLOG }}
           AWS_REGION: eu-central-2
         run: |
           aws configure list
