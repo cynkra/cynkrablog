@@ -28,7 +28,7 @@ The program makes it possible for technical writers to work closely with an open
 </figure>
 
 In the end, an awareness of open source, of documentation and technical writing is raised, while participating open source organizations benefit from an improvement in their documentation.
-The R Project participated in GSoD as an open-source organization for the first time this year after several years of participating in [Google Summer of Code (GSoC)](https://r-community.org/gsoc/), another
+The R Project participated in GSoD as an open-source organization for the first time this year after several years of participating in Google Summer of Code (GSoC), another
 open-source program focused on coding.
 
 ## The useR! conference
