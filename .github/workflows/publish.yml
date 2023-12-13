@@ -72,9 +72,6 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_CYNKRA_ORG }}
           AWS_REGION: eu-central-2
         run: |
-          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-          unzip awscliv2.zip
-          sudo ./aws/install
           aws configure list
           # S3
           aws s3 sync docs s3://cynkraweb-blog
