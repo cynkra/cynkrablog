@@ -64,7 +64,7 @@ jobs:
         with:
           target: gh-pages
 
-      - name: Update cynkra org S3 bucket
+      - name: Update cynkrablog S3 bucket
         if: github.event_name == 'push'
         timeout-minutes: 7
         env:
@@ -74,4 +74,5 @@ jobs:
         run: |
           aws configure list
           # S3
-          aws s3 sync docs s3://cynkraweb-blog
+          aws s3 sync docs s3://cynkraweb-blog --no-progress
+          aws cloudfront create-invalidation --distribution-id EN84WRZ43AIZQ --paths "/*"
