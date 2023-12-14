@@ -7,6 +7,7 @@ format:
 listing:
   - id: blog
     categories: true
+    filter-ui: true
     feed: true
     contents: blog/posts
     type: grid
