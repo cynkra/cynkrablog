@@ -6,6 +6,7 @@ execute:
   freeze: auto
 
 website:
+  favicon: favicon-32x32.png
   site-url: https://blog.cynkra.com/
   reader-mode: true
   title: "cynkra blog"
