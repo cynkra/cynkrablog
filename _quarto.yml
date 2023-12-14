@@ -25,12 +25,14 @@ website:
             url:  https://cynkra.com/workshops/
           - text: R Markdown templates
             url:  https://cynkra.com/rmarkdown/
-      - text: Posit
+      - text: Solutions
         menu:
-          - text: Managed Server Solutions
-            url:  https://cynkra.com/posit/managed/
-          - text: Posit licenses
-            url:  https://cynkra.com/posit/
+          - text: Enterprise Data Science Environments
+            url:  https://cynkra.com/posit-based-enterprise-data-science-environments/
+          - text: Container Images
+            url:  https://cynkra.com/cicd-images/
+          - text: Posit Licences
+            url: https://cynkra.com/posit/
       - text: open source
         href: https://cynkra.com/opensource
       - text: about
