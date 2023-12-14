@@ -6,7 +6,7 @@ execute:
   freeze: auto
 
 website:
-  site-url: https://cynkra.github.io/cynkrablog
+  site-url: https://blog.cynkra.com/
   reader-mode: true
   title: "cynkra blog"
   description: "By the cynkra team"
