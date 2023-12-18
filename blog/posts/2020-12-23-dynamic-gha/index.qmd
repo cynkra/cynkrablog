@@ -125,8 +125,6 @@ This avoids time-consuming installation procedures in this first job that needs 
 
 ## Define job
 
-{% raw %}
-
 Once we have derived the JSON, we're ready to define a job that creates the matrix.
 This must be done in the same workflow file where the matrix is defined, ideally before the main job.
 The job runs on `ubuntu-latest`, and also must clone the repository.
@@ -190,11 +188,9 @@ jobs:
     # Original workflow
     # ...
 ```
-{% endraw %}
 
 ## Use output
 
-{% raw %}
 Finally, we're ready to use the generated JSON as a build matrix.
 The workflow now uses `matrix: ${{fromJson(needs.matrix.outputs.matrix)}}` instead of the hard-coded matrix:
 
@@ -215,7 +211,6 @@ jobs:
 
     # rest unchanged
 ```
-{% endraw %}
 
 This gives a workflow as shown in the image below.
 
