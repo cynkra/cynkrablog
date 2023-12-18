@@ -83,9 +83,9 @@ This assumes
 - name: "Google Workspace: Create JWT for Google OAuth2"
   command: >
     env ruby <path/to/>/jwt.rb --iss "google-workspace@<some service account name>.iam.gserviceaccount.com"
-    --sub "<issuer email>" --scope "{% raw %}{{ google_workspace_oauth2_api_scopes | join(' ') }}{% endraw %}"
-    --kid "{% raw %}{{ google_workspace_oauth2_key_id.value }}{% endraw %}"
-    --pkey "{% raw %}{{ google_workspace_oauth2_private_key.value }}{% endraw %}"
+    --sub "<issuer email>" --scope "{{ google_workspace_oauth2_api_scopes | join(' ') }}"
+    --kid "{{ google_workspace_oauth2_key_id.value }}"
+    --pkey "{{ google_workspace_oauth2_private_key.value }}"
   args: { chdir: "/usr/bin/" }
   register: jwt
 ```
@@ -163,7 +163,7 @@ Next, this JWT needs to be passed to the `https://oauth2.googleapis.com/token` e
   uri:
     url: "https://oauth2.googleapis.com/token"
     method: POST
-    body: "grant_type={% raw %}{{ google_workspace_oauth2_grant_type }}&assertion={{ jwt.stdout }}{% endraw %}"
+    body: "grant_type={{ google_workspace_oauth2_grant_type }}&assertion={{ jwt.stdout }}"
     return_content: true
   register: token
 ```
@@ -179,16 +179,16 @@ Finally, this (short-lived) *Bearer* token can be used to issue the desired API 
     method: POST
     url: https://admin.googleapis.com/admin/directory/v1/users
     headers:
-      authorization: "Bearer {% raw %}{{ token.json.access_token }}{% endraw %}"
+      authorization: "Bearer {{ token.json.access_token }}"
     body_format: json
     body: '{
-           "primaryEmail": "{% raw %}{{ username }}{% endraw %}@email.com",
-           "password": "{% raw %}{{ user_password }}{% endraw %}",
+           "primaryEmail": "{{ username }}@email.com",
+           "password": "{{ user_password }}",
            "name": {
-             "givenName": "{% raw %}{{ first_name }}{% endraw %}",
-             "familyName": "{% raw %}{{ last_name }}{% endraw %}"
+             "givenName": "{{ first_name }}",
+             "familyName": "{{ last_name }}"
            },
-           "isAdmin": "{% raw %}{{ admin }}{% endraw %}"
+           "isAdmin": "{{ admin }}"
          }'
 ```
 
@@ -210,9 +210,9 @@ It should be noted that the approach is quite generic: for some providers you mi
 - name: "Google Workspace: Create JWT for Google OAuth2"
   command: >
     env ruby <path/to/>/jwt.rb --iss "google-workspace@<some service account name>.iam.gserviceaccount.com"
-    --sub "<issuer email>" --scope "{% raw %}{{ google_workspace_oauth2_api_scopes | join(' ') }}{% endraw %}"
-    --kid "{% raw %}{{ google_workspace_oauth2_key_id.value }}{% endraw %}"
-    --pkey "{% raw %}{{ google_workspace_oauth2_private_key.value }}{% endraw %}"
+    --sub "<issuer email>" --scope "{{ google_workspace_oauth2_api_scopes | join(' ') }}"
+    --kid "{{ google_workspace_oauth2_key_id.value }}"
+    --pkey "{{ google_workspace_oauth2_private_key.value }}"
   args: { chdir: "/usr/bin/" }
   register: jwt
 
@@ -220,7 +220,7 @@ It should be noted that the approach is quite generic: for some providers you mi
   uri:
     url: "https://oauth2.googleapis.com/token"
     method: POST
-    body: "grant_type={% raw %}{{ google_workspace_oauth2_grant_type }}{% endraw %}&assertion={% raw %}{{ jwt.stdout }}{% endraw %}"
+    body: "grant_type={{ google_workspace_oauth2_grant_type }}&assertion={{ jwt.stdout }}"
     return_content: true
   register: token
 
@@ -229,15 +229,15 @@ It should be noted that the approach is quite generic: for some providers you mi
     method: POST
     url: https://admin.googleapis.com/admin/directory/v1/users
     headers:
-      authorization: "Bearer {% raw %}{{ token.json.access_token }}{% endraw %}"
+      authorization: "Bearer {{ token.json.access_token }}"
     body_format: json
     body: '{
-           "primaryEmail": "{% raw %}{{ username }}{% endraw %}@email.com",
-           "password": "{% raw %}{{ user_password }}{% endraw %}",
+           "primaryEmail": "{{ username }}@email.com",
+           "password": "{{ user_password }}",
            "name": {
-             "givenName": "{% raw %}{{ first_name }}{% endraw %}",
-             "familyName": "{% raw %}{{ last_name }}{% endraw %}"
+             "givenName": "{{ first_name }}",
+             "familyName": "{{ last_name }}"
            },
-           "isAdmin": "{% raw %}{{ admin }}{% endraw %}"
+           "isAdmin": "{{ admin }}"
          }'
 ```
