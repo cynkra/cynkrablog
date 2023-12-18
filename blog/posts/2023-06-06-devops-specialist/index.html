@@ -6,10 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Balthasar Sager">
-<meta name="dcterms.date" content="2019-07-17">
+<meta name="author" content="cynkra team">
+<meta name="dcterms.date" content="2023-06-06">
 
-<title>cynkra blog - Introducing dm: easy juggling of tables and relations</title>
+<title>cynkra blog - DevOps Engineer (80-100%)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,40 +21,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -197,7 +163,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Introducing dm: easy juggling of tables and relations</h1>
+<h1 class="title">DevOps Engineer (80-100%)</h1>
 </div>
 
 
@@ -207,14 +173,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Balthasar Sager </p>
+             <p>cynkra team </p>
           </div>
   </div>
     
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 17, 2019</p>
+      <p class="date">June 6, 2023</p>
     </div>
   </div>
   
@@ -224,108 +190,61 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<p>The <a href="https://krlmlr.github.io/dm/">dm</a> package reduces your mental strain when working with many tables. It connects your data, while still keeping them in their original tables. You can easily perform operations on all tables, visualize how they’re connected, and integrate databases.</p>
+<p>We are looking for a DevOps Engineer to support our rapidly growing team. We are looking for a motivated, team oriented engineer with experience on the job to help us strengthen and grow our infrastructure department. In your job, you will work with our DevOps team to further develop our containerized enterprise data science environment. You will work with our clients to set up and maintain our products in their environment – on premise and in the cloud!</p>
 <figure class="figure">
-<img alt="Illustration" src="banner.jpg" style=" width: 100%; height: auto" class="figure-img">
+<img alt="Illustration" src="devops-port.jpeg" style=" width: 100%; height: auto" class="figure-img">
 <figcaption class="figure-caption">
-Photo by Tobias Fischer
+Photo by CHUTTERSNAP
 </figcaption>
 </figure>
-<p><br></p>
-<p>Rather than writing out the relational structure in code while connecting the sources, <a href="https://krlmlr.github.io/dm/">dm</a> packages them in data. This workflow prevents you from inconsistently updating tables, making copies due to redundancies and, more generally, losing track of decisions made in a data pipeline.</p>
-<section id="a-case-study" class="level3">
-<h3 class="anchored" data-anchor-id="a-case-study">A case study</h3>
-<p>To demonstrate <a href="https://krlmlr.github.io/dm/">dm</a>’s benefits, let’s compare some workflows using data from the <a href="https://github.com/hadley/nycflights13">nycflights13</a> package.</p>
-<p>We want to get the data to analyze arrival delays of flights of planes built more than 30 years ago. For these flights, we also want to check if they departed for destinations in the south. We use methods from the <a href="https://dplyr.tidyverse.org/">dplyr</a> package, the grammar for data manipulation from the <a href="https://www.tidyverse.org/">tidyverse</a>.</p>
-<p>This requires columns <code>lon</code> (longitude) from table <code>airports</code>, <code>year</code> from table <code>planes</code> and <code>arr_delay</code> (arrival delay) from <code>flights</code>. We can do this by performing multiple joins, one after another, as you might be used to:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(nycflights13)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>planes_join <span class="ot">&lt;-</span> planes <span class="sc">%&gt;%</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">production_year_plane =</span> year) <span class="sc">%&gt;%</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(flights, <span class="at">by =</span> <span class="st">"tailnum"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(airports, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"dest"</span> <span class="ot">=</span> <span class="st">"faa"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(lon, year, production_year_plane, dest)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>planes_join <span class="sc">%&gt;%</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(production_year_plane <span class="sc">&lt;</span> <span class="dv">1983</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre><code>## # A tibble: 1,432 x 4
-##      lon  year production_year_plane dest
-##    &lt;dbl&gt; &lt;int&gt;                 &lt;int&gt; &lt;chr&gt;
-##  1 -95.3  2013                  1965 IAH
-##  2 -95.3  2013                  1965 IAH
-##  3 -95.3  2013                  1965 IAH
-##  4 -95.3  2013                  1965 IAH
-##  5 -87.9  2013                  1959 ORD
-##  6 -97.0  2013                  1959 DFW
-##  7 -97.0  2013                  1959 DFW
-##  8 -97.0  2013                  1959 DFW
-##  9 -90.4  2013                  1959 STL
-## 10 -97.0  2013                  1959 DFW
-## # … with 1,422 more rows</code></pre>
-<p>Fair enough, you might say — to keep an overview, we can reduce the 34 columns using <code>select()</code>, then <code>filter()</code>. But what do you do once there are 30 tables, possibly from databases you’re working with? Is this still a workable solution? And how sure are we that we truly only need these three columns?</p>
+<!-- https://unsplash.com/photos/Q4bmoSPJM18 -->
+<!--
+convert scott-webb-208072-unsplash.jpg -resize 600x -gravity center -extent 300x300 -quality 80 senior-data-scientist.jpg
+ -->
+<!-- <figure>
+<img alt="Illustration" src="../user/img/about/zurich.jpg" style=" width: 100%; height: auto">
+<figcaption>
+  Photo by Samuel Zeller
+</figcaption>
+</figure>
+
+ -->
+<section id="we-are-looking-for-the-following-skill-set-in-our-next-candidate" class="level4">
+<h4 class="anchored" data-anchor-id="we-are-looking-for-the-following-skill-set-in-our-next-candidate">We are looking for the following skill set in our next candidate:</h4>
+<p>cynkra is looking for a skilled DevOps Engineer who cherishes a young, dynamic team and a flexible, open source minded working environment. We are looking for a new team member:</p>
+<ul>
+<li><p>With experience in IT automation and infrastructure-as-code (Ansible, Terraform, Helm)</p></li>
+<li><p>Who has a thorough understanding and hands-on experience in containerization (Docker, Kubernetes)</p></li>
+<li><p>Who is at home in Linux environments (RedHat, Debian, OpenSuse)</p></li>
+<li><p>Who has experience with either R or Python and has work experience in a data science or analytics environment, e.g., academia, statistical office, analytics department</p></li>
+<li><p>Who is fluent in English and speaks German</p></li>
+<li><p>Who is a Swiss resident (i.e., Swiss citizen or working permit B, C, or willing to relocate) to comply with domestic access security policies</p></li>
+<li><p>Excellent communication skills</p></li>
+<li><p>Time management and organizational skills</p></li>
+<li><p>A strong work ethic and ownership of tasks</p></li>
+</ul>
 </section>
-<section id="dm" class="level3">
-<h3 class="anchored" data-anchor-id="dm">dm</h3>
-<p>On your <a href="https://krlmlr.github.io/dm/">dm</a> object, you can directly apply operations like <code>filter()</code> to <em>all</em> your tables! How so? Because relations between the objects are already registered in the <a href="https://krlmlr.github.io/dm/">dm</a> object, you don’t need to indicate them.</p>
-<p>Not having to state how tables are connected each time you perform a join may make exploratory work a lot easier:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dm)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cdm_nycflights13</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cdm_filter</span>(planes, year <span class="sc">&lt;</span> <span class="dv">1983</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre><code>## ── Table source ───────────────────────────────────────────────────────────
-## src:  &lt;package: nycflights13&gt;
-## ── Data model ─────────────────────────────────────────────────────────────
-## Data model object:
-##   5 tables:  airlines, airports, flights, planes ...
-##   53 columns
-##   3 primary keys
-##   3 references
-## ── Rows ───────────────────────────────────────────────────────────────────
-## Total: 27583
-## airlines: 4, airports: 3, flights: 1432, planes: 29, weather: 26115</code></pre>
-<p>This produces an overview of your data sources — all tables still separated. Also note: there was no need to <code>rename()</code> the column <code>year</code>, and all tables stay separate.</p>
-<p>What if you still wanted to produce a join and check where those flights departed to? Voilà:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cdm_nycflights13</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cdm_filter</span>(planes, year <span class="sc">&lt;</span> <span class="dv">1983</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cdm_join_tbl</span>(flights, airports)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<pre><code>## # A tibble: 1,432 x 19
-##     year month   day dep_time sched_dep_time dep_delay arr_time
-##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
-##  1  2013     1     1      839            850       -11     1027
-##  2  2013     1     1      858            900        -2     1102
-##  3  2013     1     1     1219           1220        -1     1415
-##  4  2013     1     1     1317           1325        -8     1454
-##  5  2013     1     1     1422           1410        12     1613
-##  6  2013     1     1     1806           1810        -4     2002
-##  7  2013     1     1     1911           1910         1     2050
-##  8  2013     1     1     2030           2045       -15     2150
-##  9  2013     1     2      535            540        -5      831
-## 10  2013     1     2      945            945         0     1113
-## # … with 1,422 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,
-## #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,
-## #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,
-## #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
+<section id="what-we-offer" class="level4">
+<h4 class="anchored" data-anchor-id="what-we-offer">What we offer</h4>
+<ul>
+<li><p>fair compensation</p></li>
+<li><p>work from anywhere (at our Zurich office, at one of our partner co-working locations, at home, …)</p></li>
+<li><p>flexible working hours</p></li>
+<li><p>open source driven culture:</p>
+<ul>
+<li>time to work on your own open source projects</li>
+<li>chance to contribute to existing, impactful open source packages</li>
+</ul></li>
+<li><p>fringe benefits (public transport 1/2 fare, hardware compensation, phone compensation)</p></li>
+</ul>
 </section>
-<section id="visualization" class="level3">
-<h3 class="anchored" data-anchor-id="visualization">Visualization</h3>
-<p>You can easily gain a visual overview using <code>cdm_draw()</code>. This results in pretty, customizable (using <code>cdm_set_colors()</code>) visualizations of how your data connect.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cdm_nycflights13</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cdm_set_colors</span>(</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">flights =</span> <span class="st">"blue_nb"</span>,</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">airlines =</span> <span class="st">"orange_nb"</span>,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">weather =</span> <span class="st">"green_nb"</span>,</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">airports =</span> <span class="st">"yellow_nb"</span>,</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">planes =</span> <span class="st">"light_grey_nb"</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cdm_draw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><img alt="Data model" src="datamodelr.png" style="height: auto; width: 50%;"></p>
+<section id="why-join-our-team" class="level4">
+<h4 class="anchored" data-anchor-id="why-join-our-team">Why join our team?</h4>
+<p>Working with us comes with a number of growing benefits. You get the chance to work with some of the brightest minds, learn new skills and connect with passionate individuals. We provide constant internal employee growth opportunities and training to support further skills development. At cynkra, you have the opportunity to work with us remotely and be able to freely manage your workload, within our time zone. We are an equal opportunity employer, all applicants will be considered for employment without attention to race, color, religion, sex, sexual orientation, gender identity, national origin, veteran or disability status.</p>
 </section>
-<section id="databases" class="level3">
-<h3 class="anchored" data-anchor-id="databases">Databases</h3>
-<p><a href="https://krlmlr.github.io/dm/">dm</a> works for both in-memory data and databases. You can easily integrate it into your <a href="https://dbplyr.tidyverse.org/">dbplyr</a> workflow, making for new, powerful ways of analysis.</p>
-</section>
-<section id="feedback" class="level3">
-<h3 class="anchored" data-anchor-id="feedback">Feedback</h3>
-<p>This was just a short glimpse of what <a href="https://krlmlr.github.io/dm/">dm</a> can do — more posts will follow. Feel free to contribute to this package on <a href="https://github.com/krlmlr/dm">Github</a>. Funding for <a href="https://krlmlr.github.io/dm/">dm</a> is generously provided by <a href="https://www.energie360.ch/de/private/">Energie360</a> and <a href="https://www.cynkra.com">cynkra</a>. This package is authored by <a href="https://github.com/TSchiefer">Tobias Schieferdecker</a> and <a href="https://github.com/krlmlr">Kirill Müller</a>.</p>
+<section id="how-to-apply" class="level4">
+<h4 class="anchored" data-anchor-id="how-to-apply">How to apply</h4>
+<p>Please submit your application (including CV and cover letter) via hr@cynkra.com. Please make sure to get in touch with us if you have further questions.</p>
 
 
 </section>

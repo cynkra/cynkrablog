@@ -6,15 +6,782 @@
       version="2.0">
 <channel>
 <title>cynkra blog</title>
-<link>https://cynkra.github.io/cynkrablog/blog/index.html</link>
-<atom:link href="https://cynkra.github.io/cynkrablog/blog/index.xml" rel="self" type="application/rss+xml"/>
+<link>https://blog.cynkra.com/blog/index.html</link>
+<atom:link href="https://blog.cynkra.com/blog/index.xml" rel="self" type="application/rss+xml"/>
 <description>By the cynkra team</description>
 <generator>quarto-1.3.450</generator>
-<lastBuildDate>Sat, 14 May 2022 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 14 Sep 2022 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>EFS vs. NFS for RStudio on Kubernetes (AWS): Configuration and considerations</title>
+  <dc:creator>Patrick Schratz</dc:creator>
+  <link>https://blog.cynkra.com/blog/posts/2022-09-14-rstudio-efs-nfs/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<p><img src="https://blog.cynkra.com/blog/posts/2022-09-14-rstudio-efs-nfs/intro.png" class="img-fluid"></p>
+<p>As a consulting company with a strong focus on R and Posit (formerly RStudio) products, we have gathered quite a bit of experience in configuration and deployment of Workbench and Connect products in the cloud. We would like to share some of these insights in the following blog post and shine some light on the file system debate around these applications. While the “how to” is very well outlined by various RStudio/Posit resources (<a href="https://github.com/rstudio/helm/tree/main/charts/rstudio-workbench">1</a>, <a href="https://github.com/rstudio/helm/tree/main/charts/rstudio-connect">2</a>, <a href="https://docs.rstudio.com/helm/rstudio-connect/kubernetes-howto/">3</a>, <a href="https://support.rstudio.com/hc/en-us/articles/4414817033623-Mounting-your-RStudio-Workbench-Connect-Server-to-an-EFS-share">4</a>), there’s one important part of the setup which is actively debated among system engineers: the choice and handling of the file system.</p>
+<p>But let’s start at the beginning: in the cloud, one has essentially two choices for self-hosting RStudio applications: a single-instance installation on a virtual machine or going with Kubernetes (k8s) for a container-based, high-availability (HA) setup. The latter comes with many benefits, both for users and administrators: HA ensures stability of the service and allows for controlled upgrades, in the best case without any interruption or downtime for users. Users profit from the possible option of requesting CPU and memory resources as needed for their analysis - assuming the k8s cluster runs with an autoscaler which allows provisioning new worker nodes as needed. Potential downsides could be an increased administration complexity, decreased file system performance and eventually higher costs. Though these points cannot be generalized and always depend on the cluster at hand, its purpose and the team managing it.</p>
+<section id="file-systems---general" class="level2">
+<h2 class="anchored" data-anchor-id="file-systems---general">File systems - general</h2>
+<p>Users are in continuous contact with the file system even though most are not actively thinking about it. Each time a file is read or written, e.g., during the installation of an R package, the choice of the file system matters. It determines</p>
+<ul>
+<li>How fast the request is processed (latency)</li>
+<li>How many bytes are transferred per seconds (throughput; might differ between read and write operations)</li>
+<li>How many files can be processed at the same time (concurrency)</li>
+</ul>
+<p>To understand the following discussion about <a href="https://aws.amazon.com/efs/">Elastic File System (EFS)</a> and <a href="https://en.wikipedia.org/wiki/Network_File_System">Network File System (NFS)</a> (including explanations about both), a bit of background is needed how read/write operations can generally be categorized.</p>
+<section id="read-write-once-rwo-read-only-many-rox-and-read-write-many-rwx-file-systems" class="level3">
+<h3 class="anchored" data-anchor-id="read-write-once-rwo-read-only-many-rox-and-read-write-many-rwx-file-systems">Read-write-once (RWO), read-only-many (ROX) and read-write-many (RWX) file systems</h3>
+<p>Applications running on on-premise machines or single cloud instances usually read and write to a read-write-once (RWO) file system. The “once” here means that this specific file system can only be attached to one instance. Read-only-many (ROX) allows multiple instances to attach a volume but only for reading - only one instance is allowed to mount it in read-write mode. Given their restriction on a single mount point, RWO file systems are usually faster than ROX or RWX. However, RWO comes with the following limitations for HA usage:</p>
+<ul>
+<li>they can only operate in a single AZ (i.e., an RWO volume can only be mounted by a node in the same zone) and this one must match the instance’s AZ</li>
+<li>they cannot be used in (real) high-availability setups as this usually requires pods to run on different nodes - and RWO file systems can only be mounted by a single node</li>
+</ul>
+<p>File systems which support read-write-many (RWX) operations allow the attachment by multiple instances, usually across availability zones. They usually have a central (remote) address which can be used to mount them into an instance. This allows for a central deployment of RWX providers on standalone machines.</p>
+<p>NOTE1: Availability zones in the cloud are discrete data centers with redundant power, networking, and connectivity in a certain region. Issues appearing in one particular zone do not affect others. Their main purpose of different AZs is to increase reliability.</p>
+<p>NOTE2: There’s also read-write-once-pod (RWOP) which means that only one pod on a certain node can read/write to a volume. This is only supported for CSI volumes and k8s &gt; 1.22 <a href="https://stackoverflow.com/a/71046870/4185785">[source]</a>.</p>
+<p><img src="https://blog.cynkra.com/blog/posts/2022-09-14-rstudio-efs-nfs/k8s-meme.jpeg" class="img-fluid"></p>
+<p><em><a href="https://duckduckgo.com/?q=kubernetes+efs+memes&amp;iar=images&amp;iax=images&amp;ia=images&amp;iai=https%3A%2F%2Fwww.unlockyourbrain.bzh%2Fwp-content%2Fuploads%2F2020%2F09%2F1zm5Yf4QPuoV1KtnECUhsRQ.jpeg">Image source</a></em></p>
+</section>
+</section>
+<section id="kubernetes-high-availability-and-nfs-server" class="level2">
+<h2 class="anchored" data-anchor-id="kubernetes-high-availability-and-nfs-server">Kubernetes high-availability and NFS server</h2>
+<p>To allow for high-availability (HA) in k8s installations, an individual HA-pod needs to communicate with the respective others and access the same files. As the load is usually balanced across replicas, this requires a file system which allows for multiple r/w mounts, i.e., a RWX one.</p>
+<p>This is also the case for RStudio applications in HA configuration. There are multiple options for RWX file systems. The most common one, which is also used in many custom multi-server on-premise environments, is <a href="https://en.wikipedia.org/wiki/Network_File_System">NFS</a>.</p>
+<p>While NFS is great, well known and fast, it is not so easy to make use of it in the cloud, especially in isolated environments like k8s clusters. On AWS, there is no default k8s support for NFS and hence one needs to deploy their own NFS server which serves as the central access point for mount requests. (An NFS server could in theory live anywhere, as long as it’s reachable by the cluster nodes.)</p>
+<p>There’s an official <a href="https://github.com/nfs-ganesha/nfs-ganesha">NFS Ganesha</a> provider within the <code>kubernetes-sigs</code> (SIG = special-interest-group) <a href="https://github.com/kubernetes-sigs/nfs-ganesha-server-and-external-provisioner">organization on GitHub</a>. However, it does not support HA and we are not aware of any other one which does. Hence, the NFS server within a k8s cluster is usually provided by a single pod. This comes with some severe implications: all pods which rely on some NFS mounts are dependent on this single NFS pod. If the NFS pod gets recreated for some reason (e.g., because its being moved to a different node or the deployment is updated), all pods which a NFS mount will be unable to read and write data until the new node has attached the NFS volume again (which is usually still bound to the old node for ~ 5 min).</p>
+<p>This is a pivotal and tricky issue: the pod health of a pod making use of an NFS mount does not necessarily depend on the NFS mount <em>once its running</em>. This means if the NFS server pod is down (for whatever reason), dependent deployments appear as “healthy” to the cluster (admins) but the users will fail to read and write data.</p>
+<p>The number of times a pod gets recreated/restarted/moved on a cluster depends on multiple factors:</p>
+<ul>
+<li>How often are the individual nodes recreated?</li>
+<li>Who is responsible for scheduling pods to individual nodes?</li>
+<li>Are nodes running on permanent/reserved instances or on SPOT instances (an AWS-only term for cheaper nodes which can be reclaimed any time) which are more often reclaimed/recreated by the cloud provider?</li>
+</ul>
+<section id="our-experiences-with-nfs-on-kubernetes" class="level3">
+<h3 class="anchored" data-anchor-id="our-experiences-with-nfs-on-kubernetes">Our experiences with NFS on Kubernetes</h3>
+<p>We at cynkra started out with an NFS server for hosting RStudio applications on a k8s cluster, mainly because existing guides suggested doing so and warn using EFS. Judging from our experiences on a 3-5 node cluster on AWS with a self-managed autoscaler and node refresh enabled (which means that nodes get replaced frequently, e.g., whenever a new machine image is available), we have seen the NFS pod getting relocated every few days/weeks. Often this caused the mentioned problems above, i.e., RSC and/or RSW not being able to use due to stale file handles or other r/w issues. If the NFS server ran in an HA setup, this task would be completely trouble-free as the other pods would take over the incoming requests. However, in a non-HA deployment, this causes potentially unwanted downtime for multiple dependent applications.</p>
+<p>While there are ways in k8s to reduce/avoid the automatic recreation of non-HA pods, serving content on a k8s cluster usually comes with the philosophy of being able to move/recreate every pod in the cluster without immediate consequences. Yet the fact that this seems impossible (as of right now) for an NFS server deployment represents a constant stability risk. It makes the HA deployments of all RStudio services essentially meaningless as they would all fail once the NFS pod would be down.</p>
+<p>One could also host the NFS server outside of the cluster on a normal VM which does not reboot that frequently and does not recreate the NFS server service. However, this would mean opening up the k8s network to include this machine and eventually hosting a dedicated machine only for the NFS server. This approach would also not solve the potential bottleneck issues - whenever this machine needs a reboot, all dependent services would face some downtime. In addition, this approach would not be multi-AZ capable because the private subnets, which are used for a fast and secure connection between the nodes, do not support this - private subnets can only operate within a single AZ. A k8s cluster is essentially about two things: high-availability and scalability. Adding a static, non-scalable component (= remote NFS server) which acts as a dependency for many services, into the cluster contradicts with this principle.</p>
+<p>The main happenings which made us overthink our current setup was seeing spurious behavior after NFS pod recreations: with both the NFS pods and the RStudio pods in a healthy state, sometimes ‘stale file handle’ issues occurred for users when trying to write data. RSC was not able to serve content as it could not read data anymore. All of these were issues detected by users and reported to the responsible engineers (i.e., us) - which is exactly what engineers try to avoid at all cost. The issue could often be solved by simply recreating the RSC pod, which then triggered a fresh reconnection to the NFS server. We assume this behavior to most likely be a regression caused by a previous NFS pod relocation.</p>
+<p>It was time to look into alternatives. Since some years, most cloud providers offer their own, cloud-based RWX file systems. These claim to be very flexible in the way that they are available for mounts in all AZs. Cluster admins only need to configure a driver (which allows to define certain mount options) but the file system itself is hosted by the cloud provider in an HA setting. AWS calls it EFS (elastic file system), on Azure it’s called “azure files.” Google does not provide a native RWX solution (only ROX) and one is <a href="https://medium.com/@Sushil_Kumar/readwritemany-persistent-volumes-in-google-kubernetes-engine-a0b93e203180">required to use a self-managed NFS server for RWX</a>.</p>
+<p>Since we are on AWS, we thought about giving EFS, the native AWS multi-AZ RWX offering, a try. We were aware of the warnings given out by RStudio about <a href="https://docs.rstudio.com/rstudio-team/integration/efs/">possible performance issues</a>. Luckily, we were not the first ones to try EFS with RStudio products. The RStudio engineers already wrote an article about RStudio applications with EFS, especially targeting the performance topic (see linked article).</p>
+<p>Besides the higher price (around 3x) of EFS compared to EBS (elastic block storage = default RWO file system), which is used behind the scenes by an NFS server deployment, EFS is somewhat lacking in performance compared to NFS. The following figures show some file system benchmark results which we have carried out on different instance types. Network-optimized instance types (<code>r5n</code> on AWS) <a href="https://docs.rstudio.com/rstudio-team/integration/efs/">were said to improve EFS performance</a> which is backed up by our results.</p>
+<p><img src="https://blog.cynkra.com/blog/posts/2022-09-14-rstudio-efs-nfs/efs-nfs-sequential.png" class="img-fluid"> <em>Fig. 1: Sequential benchmarking results of EFS (executed on <code>r5n.xlarge</code> and <code>t3.xlarge</code> instances) and NFS (executed on a <code>t3.xlarge</code> instance). Benchmark source: <a href="https://github.com/rstudio/fsbench">rstudio/fsbench</a>.</em></p>
+<p>Apparently, one of the main reasons (according to discussions on the web) is that EFS is used by many people around the world and needs to split its available resources dynamically across all clients. There are ways to increase performance (e.g., by selecting a different mode, increasing the size of the file system or tweaking certain mount options). However, in the end EFS will always stay slower than NFS.</p>
+<p><img src="https://blog.cynkra.com/blog/posts/2022-09-14-rstudio-efs-nfs/efs-nfs-parallel.png" class="img-fluid"> <em>Fig. 2: Parallel benchmarking results of EFS (executed on <code>r5n.xlarge</code> and <code>t3.xlarge</code> instances) and NFS (executed on an <code>t3.xlarge</code> instance). Benchmark source: <a href="https://github.com/rstudio/fsbench">rstudio/fsbench</a>.</em></p>
+<p>We’ve also compared Azure’s <a href="https://docs.microsoft.com/en-us/azure/storage/files/files-nfs-protocol">Azure Files NFS</a> offering to AWS EFS using the <a href="https://github.com/rstudio/fsbench">fsbench</a> tool from RStudio. At first we were optimistic giving the higher maximum values reported for the Azure NFS service. However, the benchmark results show a different picture and do not encourage moving existing RStudio k8s deployments from AWS to Azure.</p>
+<p><img src="https://blog.cynkra.com/blog/posts/2022-09-14-rstudio-efs-nfs/aws-azure-sequential.png" class="img-fluid"></p>
+<p><em>Fig. 3: Sequential benchmarking results of AWS EFS (<strong>aws-mem</strong> = <code>r5n.large</code>) and Azure Files NFS (<strong>azure-gp</strong> = <code>D2s_v3</code>; <strong>azure-mem</strong> = <code>E2bds_v5</code>). Benchmark source: <a href="https://github.com/rstudio/fsbench">rstudio/fsbench</a>.</em></p>
+<p>Having compared NFS and EFS performance-wise now and given that file system decisions are usually deliberate ones, the question for us was: how much slower is it compared to NFS and do the upsides of EFS outweigh it? After trying it out for ourselves, we concluded yes, the advantages of EFS outweigh its decreased performance and we should use it as the file system for our RStudio k8s clusters. With EFS, we</p>
+<ul>
+<li>don’t need to worry about a single NFS server deployment as a potential bottleneck</li>
+<li>can more easily make use of multiple availability zones</li>
+<li>have a file system which dynamically adjusts to storage use (expansion and shrinking)</li>
+<li>eventually improves (in speed) over time</li>
+</ul>
+<p>We are aware that users coming from a k8s-NFS or on-premise installation will experience a reduced speed due to some increases in latency and especially when working with many small files. However, these will only be apparent for people coming from existing RSW installations and not for ones starting out on a new cluster. Especially users coming from an RSW on-premise installation will feel a substantial decrease in speed as in such an environment usually a single-instance RSW runs on an RWO file system (usually <code>ext4</code>) which is a completely different ballpark. FWIW, AWS has also improved EFS latency in <a href="https://aws.amazon.com/blogs/aws/amazon-elastic-file-system-update-sub-millisecond-read-latency/">February 2022</a>, making it more performant for existing and new customers at no additional cost.</p>
+<p>Another (important) point worth mentioning is that on AWS, bottlerocket node images (more on that in a separate blog post) do not have native support for NFS but work with EFS. This becomes of interest when considering running a cluster on bottlerocket images or if the cluster is already doing so.</p>
+</section>
+</section>
+<section id="rstudio-k8s-clusters-on-efs---deployment" class="level2">
+<h2 class="anchored" data-anchor-id="rstudio-k8s-clusters-on-efs---deployment">RStudio k8s clusters on EFS - Deployment</h2>
+<p>During our EFS evaluation period, we came across potential pitfalls and other RStudio peculiarities which system admins need to be aware of when aiming for a k8s RStudio cluster. These are described in the following.</p>
+<p>Note: This section makes a few assumptions:</p>
+<ul>
+<li>A k8s cluster on AWS</li>
+<li>Full cluster admin permissions</li>
+<li>RStudio Workbench and RStudio Connect “Enterprise” licenses</li>
+<li>The use of <code>terraform</code> and the RStudio helm charts</li>
+</ul>
+<p>First, we would like to refer to the official implementation instructions for setting up RStudio applications on Kubernetes. While these do not necessarily target EFS, they contain a lot of information about NFS and other important points to be aware of.</p>
+<section id="deploying-the-efs-driver-and-storage-classes" class="level3">
+<h3 class="anchored" data-anchor-id="deploying-the-efs-driver-and-storage-classes">Deploying the EFS driver and storage class(es)</h3>
+<p>Before EFS can be used, an EFS driver and corresponding storage class must be deployed in the cluster. The latter is then referenced within the RStudio deployments. There is an official kubernetes-sigs helm chart available at <a href="https://github.com/kubernetes-sigs/aws-efs-csi-driver">https://github.com/kubernetes-sigs/aws-efs-csi-driver</a> which one can use.</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">resource</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"helm_release"</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"aws-efs-csi-driver"</span> {</span>
+<span id="cb1-2">  <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">name</span>             = <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"aws-efs-csi-driver"</span></span>
+<span id="cb1-3">  <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">chart</span>            = <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"aws-efs-csi-driver"</span></span>
+<span id="cb1-4">  <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">repository</span>       = <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"https://kubernetes-sigs.github.io/aws-efs-csi-driver"</span></span>
+<span id="cb1-5">  <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">version</span>          = <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2.2.7"</span></span>
+<span id="cb1-6">  <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">create_namespace</span> = true</span>
+<span id="cb1-7">  <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">namespace</span>        = <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"aws-efs-csi-driver"</span></span>
+<span id="cb1-8">  <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">count</span>            = 1</span>
+<span id="cb1-9"></span>
+<span id="cb1-10">  <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">values</span> = [</span>
+<span id="cb1-11">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">${file</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">("${path.module</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/values/aws_efs_csi_values.yml"</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">)}</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span>
+<span id="cb1-12"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  ]</span></span>
+<span id="cb1-13"></span>
+<span id="cb1-14"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  # rsc</span></span>
+<span id="cb1-15"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  set {</span></span>
+<span id="cb1-16"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    name  = "</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">storageClasses[0].parameters.fileSystemId</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span>
+<span id="cb1-17"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    value = aws_efs_file_system.eks_efs.id</span></span>
+<span id="cb1-18"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  }</span></span>
+<span id="cb1-19"></span>
+<span id="cb1-20"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  # rspm</span></span>
+<span id="cb1-21"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  set {</span></span>
+<span id="cb1-22"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    name  = "</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">storageClasses[2].parameters.fileSystemId</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span>
+<span id="cb1-23"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    value = aws_efs_file_system.eks_efs.id</span></span>
+<span id="cb1-24"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  }</span></span>
+<span id="cb1-25"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">}</span></span></code></pre></div>
+<p>The important part is the configuration of the chart values, which defines the storage classes. And yes, it is required to define multiple ones here, one for each RStudio service. The reason is that each service works different with respect to mount permissions of the respective application user (<code>rstudio-server</code>, <code>rstudio-connect</code>, <code>rstudio-pm</code>) and the way EFS is implemented (i.e., access points). There are two ways EFS can be used:</p>
+<ul>
+<li>dynamic provisioning</li>
+<li>static provisioning</li>
+</ul>
+<p>The former is usually preferred. It means that persistent volumes can be created in a dynamic way, i.e.&nbsp;if a deployment asks for one, a new one gets (dynamically) created during the application deployment.</p>
+<p>Static provisioning, on the other hand, means that one needs to create a persistent volume manually, referring to specific EFS mount points and in addition also configure its claim (PVC) (semi-)manually (“semi” because the PVC will find the PV it the names match and the chart offers to create it).</p>
+<p>Now EFS behaves like so that if dynamic provisioning is used, a single <code>uid</code> and <code>gid</code> must be set which then owns the mounted directories recursively. This way does not respect individual user permissions for the respective directory tree. This is something that is OK (and even needed) for RSC and RSPM but unacceptable for RSW. With this state in an RSW deployment, each user would have full permissions on the files of all other users. Hence, for RSW, static provisioning is required as this allows for a more fine-grained control. In the <code>efs-sc-rsw</code> <code>storageClass</code> definition below, this is reflected by</p>
+<ul>
+<li>not setting a <code>uid</code> and <code>gid</code> value</li>
+<li>setting the base path to <code>/</code> instead of a dynamically provisioned subpath</li>
+</ul>
+<p>Note that the <code>basePath</code> name for RSC and RSPM storage classes could be any name and <code>"/dynamic_provisioning"</code> is a subjective choice on our side.</p>
+<p>For RSC and RSPM one also needs to supply the <code>fileSystemId</code> of the EFS file system to use. As this is done dynamically in our case, it is specified via the <code>set{}</code> notation.</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># only needed for dynamic provisioning - static provisioning must use a custom PV</span></span>
+<span id="cb2-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">storageClasses</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb2-3"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">name</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> efs-sc-rsc</span></span>
+<span id="cb2-4"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">reclaimPolicy</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> Retain</span></span>
+<span id="cb2-5"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">volumeBindingMode</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> Immediate</span></span>
+<span id="cb2-6"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">allowVolumeExpansion</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">true</span></span>
+<span id="cb2-7"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mountOptions</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb2-8"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> tls</span></span>
+<span id="cb2-9"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">parameters</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb2-10"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">provisioningMode</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> efs-ap</span></span>
+<span id="cb2-11"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">directoryPerms</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"700"</span></span>
+<span id="cb2-12"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">uid</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"999"</span></span>
+<span id="cb2-13"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">gid</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"999"</span></span>
+<span id="cb2-14"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">basePath</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"/dynamic_provisioning"</span></span>
+<span id="cb2-15"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">name</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> efs-sc-rsw</span></span>
+<span id="cb2-16"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">reclaimPolicy</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> Retain</span></span>
+<span id="cb2-17"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">volumeBindingMode</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> Immediate</span></span>
+<span id="cb2-18"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">allowVolumeExpansion</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">true</span></span>
+<span id="cb2-19"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mountOptions</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb2-20"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> tls</span></span>
+<span id="cb2-21"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">parameters</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb2-22"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">basePath</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"/"</span></span>
+<span id="cb2-23"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">name</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> efs-sc-rspm</span></span>
+<span id="cb2-24"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">reclaimPolicy</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> Retain</span></span>
+<span id="cb2-25"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">volumeBindingMode</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> Immediate</span></span>
+<span id="cb2-26"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">allowVolumeExpansion</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">true</span></span>
+<span id="cb2-27"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mountOptions</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb2-28"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> tls</span></span>
+<span id="cb2-29"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">parameters</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb2-30"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">provisioningMode</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> efs-ap</span></span>
+<span id="cb2-31"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">directoryPerms</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"700"</span></span>
+<span id="cb2-32"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">uid</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"99"</span></span>
+<span id="cb2-33"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">gid</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"99"</span></span>
+<span id="cb2-34"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">basePath</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"/dynamic_provisioning"</span></span></code></pre></div>
+</section>
+<section id="configuring-rstudio-helm-charts" class="level3">
+<h3 class="anchored" data-anchor-id="configuring-rstudio-helm-charts">Configuring RStudio helm charts</h3>
+<p>Next, these storage classes need to be referenced in the respective RStudio deployments. As we are using dynamic provisioning for RSC and RSPM, we can let the helm chart create the PV and PVC. In the definition below, the <code>create:</code> and <code>mount:</code> fields only refer to the PVC. The PV will be provisioned dynamically in the background.</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">sharedStorage:</span></span>
+<span id="cb3-2">  <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">create:</span> true</span>
+<span id="cb3-3">  <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">mount:</span> true</span>
+<span id="cb3-4">  <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">name:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"pv-rsc-shared"</span></span>
+<span id="cb3-5">  <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">storageClassName:</span> efs-sc-rsc</span>
+<span id="cb3-6">  <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">requests:</span></span>
+<span id="cb3-7">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">storage:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"20Gi"</span></span></code></pre></div>
+<p>For RSW, more work is required. Here, the PV does not get provisioned dynamically and needs to be created manually via <code>terraform</code>. It helps to use the same name as the PVC, which is created by the helm chart, would search for. This also avoids having to create the PVC within <code>terraform</code>.</p>
+<p>Note that here <code>data.aws_efs_file_system.efs.id</code> is the same value which was being referenced in the <code>aws-efs-csi-driver</code> helm chart above. To retrieve it, one needs to filter it from all existing file system IDs listed which are present in your account. In our case we use a tag for filtering but the <code>terraform</code> module also lists alternative ways to filter the correct ID. To protect the PV, we also set <code>prevent_destroy = true</code> so that potential <code>terraform</code> applies would not allow this PV to get deleted.</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">resource</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"kubernetes_persistent_volume"</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"pv-rsw-home-efs"</span> {</span>
+<span id="cb4-2">  <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">metadata</span> {</span>
+<span id="cb4-3">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">name</span> = <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"pv-rsw-home-efs"</span></span>
+<span id="cb4-4">  <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb4-5">  <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">spec</span> {</span>
+<span id="cb4-6">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">capacity</span> = {</span>
+<span id="cb4-7">      <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">storage</span> = <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"50Gi"</span></span>
+<span id="cb4-8">    <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb4-9">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">access_modes</span>       = <span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">[</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ReadWriteMany"</span><span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">]</span></span>
+<span id="cb4-10">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">storage_class_name</span> = <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"efs-sc-rsw"</span></span>
+<span id="cb4-11">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">persistent_volume_source</span> {</span>
+<span id="cb4-12">      <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">csi</span> {</span>
+<span id="cb4-13">        <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">driver</span>        = <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"efs.csi.aws.com"</span></span>
+<span id="cb4-14">        <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">volume_handle</span> = data.aws_efs_file_system.efs.id <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># filesystem ID</span></span>
+<span id="cb4-15">      <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb4-16">    <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb4-17">  <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb4-18"></span>
+<span id="cb4-19">  <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">lifecycle</span> {</span>
+<span id="cb4-20">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">prevent_destroy</span> = true</span>
+<span id="cb4-21">  <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb4-22"><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb4-23"></span>
+<span id="cb4-24"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">data</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"aws_efs_file_system"</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"efs"</span> {</span>
+<span id="cb4-25">  <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">tags</span> = {</span>
+<span id="cb4-26">    <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Env</span> = <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"prod"</span></span>
+<span id="cb4-27">  <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb4-28"><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">}</span></span></code></pre></div>
+<p>In the RSW helm chart, one would then define the following</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">homeStorage</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb5-2"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">create</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">true</span></span>
+<span id="cb5-3"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mount</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">true</span></span>
+<span id="cb5-4"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">name</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"pvc-rsw-home-efs"</span></span>
+<span id="cb5-5"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">storageClassName</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"efs-sc-rsw"</span></span>
+<span id="cb5-6"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">requests</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb5-7"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">storage</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"50Gi"</span></span></code></pre></div>
+<p>In contrast to RSC and RSPM, RSW comes with two persistent volumes: home storage and shared storage. Due to the nature of EFS, the RSW deployment will complain about missing permissions for the default location under <code>/var/lib/</code> - see also <a href="https://github.com/rstudio/helm/issues/148">this GitHub issue</a>. To bypass this issue, one can change the default mount location of the shared storage and set it to the EFS home mount under <code>/home</code> to make it persistent.</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">config</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb6-2"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">server</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb6-3"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rserver.conf</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb6-4"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">server-shared-storage-path</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> /home/rstudio-shared-storage</span></span></code></pre></div>
+<p>This should be it! With this setup, individual user permissions are honored within <code>/home</code> and RSW should be running on EFS. When inspecting <code>/home</code> in more detail, you will notice that all the other <code>base_path</code> mounts from the dynamic EFS provisioning are also there. But don’t worry, RSW users won’t have permission to look into them. You can just safely ignore it. If you still don’t like it, you need to create a dedicated EFS file system ID which is only used for RSW and does not contain additional access points used by the dynamic storage class provisioner.</p>
+</section>
+</section>
+<section id="improving-rsw-performance-on-efs-bottlerocket-images-and-instance-type-choice" class="level2">
+<h2 class="anchored" data-anchor-id="improving-rsw-performance-on-efs-bottlerocket-images-and-instance-type-choice">Improving RSW performance on EFS: bottlerocket images and instance type choice</h2>
+<p>After having a running deployment of RSW on EFS, one can optionally make use of bottlerocket images to substantially decrease the session startup times on freshly provisioned nodes (i.e., after an autoscaler scale-up). We will cover this topic in more detail in another post.</p>
+
+
+</section>
+
+ ]]></description>
+  <guid>https://blog.cynkra.com/blog/posts/2022-09-14-rstudio-efs-nfs/index.html</guid>
+  <pubDate>Wed, 14 Sep 2022 00:00:00 GMT</pubDate>
+  <media:content url="https://blog.cynkra.com/blog/posts/2022-09-14-rstudio-efs-nfs/banner.png" medium="image" type="image/png" height="120" width="144"/>
+</item>
 <item>
   <title>Accessing Google’s API via OAuth2</title>
   <dc:creator>Patrick Schratz</dc:creator>
-  <link>https://cynkra.github.io/cynkrablog/blog/posts/2022-05-14-accessing-google-api-via-oauth2/index.html</link>
+  <link>https://blog.cynkra.com/blog/posts/2022-05-14-accessing-google-api-via-oauth2/index.html</link>
   <description><![CDATA[ 
 
 
@@ -889,16 +1656,16 @@ font-style: inherit;">         }'</span></span></code></pre></div>
 </section>
 
  ]]></description>
-  <guid>https://cynkra.github.io/cynkrablog/blog/posts/2022-05-14-accessing-google-api-via-oauth2/index.html</guid>
+  <guid>https://blog.cynkra.com/blog/posts/2022-05-14-accessing-google-api-via-oauth2/index.html</guid>
   <pubDate>Sat, 14 May 2022 00:00:00 GMT</pubDate>
-  <media:content url="https://cynkra.github.io/cynkrablog/blog/posts/2022-05-14-accessing-google-api-via-oauth2/banner.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://blog.cynkra.com/blog/posts/2022-05-14-accessing-google-api-via-oauth2/banner.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>seasonal 1.9: Accessing composite output</title>
   <dc:creator>Christoph Sax</dc:creator>
-  <link>https://cynkra.github.io/cynkrablog/blog/posts/2022-04-19-seasonal-1.9/index.html</link>
+  <link>https://blog.cynkra.com/blog/posts/2022-04-19-seasonal-1.9/index.html</link>
   <description><![CDATA[ <p>seasonal is an easy-to-use and full-featured R interface to X-13ARIMA-SEATS, the seasonal adjustment software developed by the United States Census Bureau. The latest CRAN version of seasonal fixes several bugs and makes it easier to access output from multiple objects. See <a href="https://github.com/christophsax/seasonal/blob/main/NEWS.md#190">here</a> for a complete list of changes.</p>
-<figure class="figure"><img alt="Illustration" src="https://cynkra.github.io/cynkrablog/blog/posts/2022-04-19-seasonal-1.9/banner.jpg" style=" width: 100%; height: auto" class="figure-img"><figcaption class="figure-caption">
+<figure class="figure"><img alt="Illustration" src="https://blog.cynkra.com/blog/posts/2022-04-19-seasonal-1.9/banner.jpg" style=" width: 100%; height: auto" class="figure-img"><figcaption class="figure-caption">
 Photo by Aaron Burden
 </figcaption></figure><p><br></p>
 <p><code>seas()</code> is the core function of the <a href="https://cran.r-project.org/package=seasonal">seasonal</a> package. By default, <code>seas()</code> calls the automatic procedures of X-13ARIMA-SEATS to perform a seasonal adjustment that works well in most circumstances:</p>
@@ -1130,14 +1897,14 @@ font-style: inherit;">)</span></span></code></pre></div>
 
 
 </section> ]]></description>
-  <guid>https://cynkra.github.io/cynkrablog/blog/posts/2022-04-19-seasonal-1.9/index.html</guid>
+  <guid>https://blog.cynkra.com/blog/posts/2022-04-19-seasonal-1.9/index.html</guid>
   <pubDate>Tue, 19 Apr 2022 00:00:00 GMT</pubDate>
-  <media:content url="https://cynkra.github.io/cynkrablog/blog/posts/2022-04-19-seasonal-1.9/banner.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://blog.cynkra.com/blog/posts/2022-04-19-seasonal-1.9/banner.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Google Season of Docs with R: useR! Information Board</title>
   <dc:creator>Ben Ubah</dc:creator>
-  <link>https://cynkra.github.io/cynkrablog/blog/posts/2022-01-05-gsod-user-infoboard/index.html</link>
+  <link>https://blog.cynkra.com/blog/posts/2022-01-05-gsod-user-infoboard/index.html</link>
   <description><![CDATA[ 
 
 
@@ -1145,9 +1912,9 @@ font-style: inherit;">)</span></span></code></pre></div>
 <p>“Google Season of Docs (GSoD) provides support for open source projects to improve their documentation and gives professional technical writers an opportunity to gain experience in open source.” (Source: <a href="https://developers.google.com/season-of-docs">Program website</a>)</p>
 <p>The program makes it possible for technical writers to work closely with an open-source community they may or may not have been engaged with, to solve real problems with high-quality documentation.</p>
 <figure class="figure">
-<img alt="dashboard for exploring useR! conference" src="https://cynkra.github.io/cynkrablog/blog/posts/2022-01-05-gsod-user-infoboard/banner.png" style=" width: 100%; height: auto" class="figure-img">
+<img alt="dashboard for exploring useR! conference" src="https://blog.cynkra.com/blog/posts/2022-01-05-gsod-user-infoboard/banner.png" style=" width: 100%; height: auto" class="figure-img">
 </figure>
-<p>In the end, an awareness of open source, of documentation and technical writing is raised, while participating open source organizations benefit from an improvement in their documentation. The R Project participated in GSoD as an open-source organization for the first time this year after several years of participating in <a href="https://r-community.org/gsoc/">Google Summer of Code (GSoC)</a>, another open-source program focused on coding.</p>
+<p>In the end, an awareness of open source, of documentation and technical writing is raised, while participating open source organizations benefit from an improvement in their documentation. The R Project participated in GSoD as an open-source organization for the first time this year after several years of participating in Google Summer of Code (GSoC), another open-source program focused on coding.</p>
 <section id="the-user-conference" class="level2">
 <h2 class="anchored" data-anchor-id="the-user-conference">The useR! conference</h2>
 <p>useR! is the main annual conference for the R user and developer community that is organized by a community of volunteers and supported by the R Foundation. It is organized by a different team of community organizers each year and has been held since 2004. The useR! conference program consists of both invited and user-contributed presentations in addition to tutorials and other social events.</p>
@@ -1197,21 +1964,21 @@ font-style: inherit;">)</span></span></code></pre></div>
 </section>
 
  ]]></description>
-  <guid>https://cynkra.github.io/cynkrablog/blog/posts/2022-01-05-gsod-user-infoboard/index.html</guid>
+  <guid>https://blog.cynkra.com/blog/posts/2022-01-05-gsod-user-infoboard/index.html</guid>
   <pubDate>Wed, 05 Jan 2022 00:00:00 GMT</pubDate>
-  <media:content url="https://cynkra.github.io/cynkrablog/blog/posts/2022-01-05-gsod-user-infoboard/banner.png" medium="image" type="image/png" height="76" width="144"/>
+  <media:content url="https://blog.cynkra.com/blog/posts/2022-01-05-gsod-user-infoboard/banner.png" medium="image" type="image/png" height="76" width="144"/>
 </item>
 <item>
   <title>Running old versions of TeXlive with tinytex</title>
   <dc:creator>Kirill Müller</dc:creator>
-  <link>https://cynkra.github.io/cynkrablog/blog/posts/2021-10-07-old-texlive/index.html</link>
+  <link>https://blog.cynkra.com/blog/posts/2021-10-07-old-texlive/index.html</link>
   <description><![CDATA[ 
 
 
 
 <p>Rendering PDFs with <a href="https://pkgs.rstudio.com/rmarkdown/">rmarkdown</a> requires a working LaTeX installation, such as <a href="https://yihui.org/tinytex/">tinytex</a>. Occasionally, existing workflows break with the newest version of LaTeX. This post describes how to run an older LaTeX version for just a little while.</p>
 <figure class="figure">
-<img alt="Old typewriter has typed the word 'Update' on paper" src="https://cynkra.github.io/cynkrablog/blog/posts/2021-10-07-old-texlive/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
+<img alt="Old typewriter has typed the word 'Update' on paper" src="https://blog.cynkra.com/blog/posts/2021-10-07-old-texlive/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
 <figcaption class="figure-caption">
 Photo by Markus Winkler
 </figcaption>
@@ -1371,21 +2138,21 @@ font-style: inherit;">TRUE</span>)</span></code></pre></div>
 </section>
 
  ]]></description>
-  <guid>https://cynkra.github.io/cynkrablog/blog/posts/2021-10-07-old-texlive/index.html</guid>
+  <guid>https://blog.cynkra.com/blog/posts/2021-10-07-old-texlive/index.html</guid>
   <pubDate>Thu, 07 Oct 2021 00:00:00 GMT</pubDate>
-  <media:content url="https://cynkra.github.io/cynkrablog/blog/posts/2021-10-07-old-texlive/banner.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://blog.cynkra.com/blog/posts/2021-10-07-old-texlive/banner.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>tsbox 0.3.1: extended functionality</title>
   <dc:creator>Christoph Sax</dc:creator>
-  <link>https://cynkra.github.io/cynkrablog/blog/posts/2021-09-18-tsbox-03/index.html</link>
+  <link>https://blog.cynkra.com/blog/posts/2021-09-18-tsbox-03/index.html</link>
   <description><![CDATA[ 
 
 
 
 <p><a href="https://www.tsbox.help/">The tsbox package</a> provides a set of tools that are agnostic towards existing time series classes. The tools also allow you to handle time series as plain data frames, thus making it easy to deal with time series in a dplyr or data.table workflow.</p>
 <figure class="figure">
-<img alt="Illustration" src="https://cynkra.github.io/cynkrablog/blog/posts/2021-09-18-tsbox-03/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
+<img alt="Illustration" src="https://blog.cynkra.com/blog/posts/2021-09-18-tsbox-03/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
 <figcaption class="figure-caption">
 Photo by James Sutton
 </figcaption>
@@ -1678,7 +2445,7 @@ font-style: inherit;">"Monthly passengers, annual trappings, monthly deaths"</sp
 <span id="cb5-7">)</span></code></pre></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://cynkra.github.io/cynkrablog/blog/posts/2021-09-18-tsbox-03/plot.png" title="Illustration" class="img-fluid figure-img"></p>
+<p><img src="https://blog.cynkra.com/blog/posts/2021-09-18-tsbox-03/plot.png" title="Illustration" class="img-fluid figure-img"></p>
 <figcaption class="figure-caption">time series plot</figcaption>
 </figure>
 </div>
@@ -1687,21 +2454,21 @@ font-style: inherit;">"Monthly passengers, annual trappings, monthly deaths"</sp
 </section>
 
  ]]></description>
-  <guid>https://cynkra.github.io/cynkrablog/blog/posts/2021-09-18-tsbox-03/index.html</guid>
+  <guid>https://blog.cynkra.com/blog/posts/2021-09-18-tsbox-03/index.html</guid>
   <pubDate>Sat, 18 Sep 2021 00:00:00 GMT</pubDate>
-  <media:content url="https://cynkra.github.io/cynkrablog/blog/posts/2021-09-18-tsbox-03/banner.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://blog.cynkra.com/blog/posts/2021-09-18-tsbox-03/banner.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Celebrating one-year anniversary as RStudio Full Service Certified Partner</title>
   <dc:creator>Cosima Meyer, Patrick Schratz</dc:creator>
-  <link>https://cynkra.github.io/cynkrablog/blog/posts/2021-07-09-certified-partner-anniversary/index.html</link>
+  <link>https://blog.cynkra.com/blog/posts/2021-07-09-certified-partner-anniversary/index.html</link>
   <description><![CDATA[ 
 
 
 
 <p>cynkra celebrates its first anniversary as an <a href="https://rstudio.com/certified-partners/">RStudio Full Service Certified Partner</a>! Every day, we help our clients set up professional IT infrastructures using RStudio products and license compositions suited to their individual needs. In the context of our anniversary, we would like to discuss the RStudio suite of products and our approach of combining RStudio’s products with our Managed Workbench Solution to make RStudio Professional products even more powerful.</p>
 <figure class="figure">
-<img alt="Illustration" src="https://cynkra.github.io/cynkrablog/blog/posts/2021-07-09-certified-partner-anniversary/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
+<img alt="Illustration" src="https://blog.cynkra.com/blog/posts/2021-07-09-certified-partner-anniversary/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
 <figcaption class="figure-caption">
 Photo by Adi Goldstein
 </figcaption>
@@ -1734,7 +2501,7 @@ Photo by Adi Goldstein
 <p>The following GIF might give you an idea of speed improvement (we did the test using a relatively new MacBook Pro 2020). When we deployed the cloud-based RStudio Workbench on the MacBook, the machine performed much faster. The difference in speed will be even more noticeable in an older machine.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://cynkra.github.io/cynkrablog/blog/posts/2021-07-09-certified-partner-anniversary/rstudio-desktop-vs-rsw.gif" class="img-fluid figure-img"></p>
+<p><img src="https://blog.cynkra.com/blog/posts/2021-07-09-certified-partner-anniversary/rstudio-desktop-vs-rsw.gif" class="img-fluid figure-img"></p>
 <figcaption class="figure-caption">RStudio Desktop vs.&nbsp;RStudio Workbench speed comparison</figcaption>
 </figure>
 </div>
@@ -1911,21 +2678,21 @@ IBM DB2
 </section>
 
  ]]></description>
-  <guid>https://cynkra.github.io/cynkrablog/blog/posts/2021-07-09-certified-partner-anniversary/index.html</guid>
+  <guid>https://blog.cynkra.com/blog/posts/2021-07-09-certified-partner-anniversary/index.html</guid>
   <pubDate>Fri, 09 Jul 2021 00:00:00 GMT</pubDate>
-  <media:content url="https://cynkra.github.io/cynkrablog/blog/posts/2021-07-09-certified-partner-anniversary/banner.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://blog.cynkra.com/blog/posts/2021-07-09-certified-partner-anniversary/banner.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Deprecating a pkgdown site served via GitHub Pages</title>
   <dc:creator>Patrick Schratz, Kirill Müller</dc:creator>
-  <link>https://cynkra.github.io/cynkrablog/blog/posts/2021-04-09-deprecating-pkgdown/index.html</link>
+  <link>https://blog.cynkra.com/blog/posts/2021-04-09-deprecating-pkgdown/index.html</link>
   <description><![CDATA[ 
 
 
 
 <p>Websites for R packages built with <a href="https://pkgdown.r-lib.org/">{pkgdown}</a> have become a de-facto standard over the last few years. Many R packages build their site during Continuous Integration (CI) runs, pushing the assets to the special <code>gh-pages</code> branch (even though now <a href="https://github.blog/changelog/2020-09-03-build-and-deploy-github-pages-from-any-branch/">any branch can be used to deploy a website</a>).</p>
 <figure class="figure">
-<img alt="Illustration" src="https://cynkra.github.io/cynkrablog/blog/posts/2021-04-09-deprecating-pkgdown/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
+<img alt="Illustration" src="https://blog.cynkra.com/blog/posts/2021-04-09-deprecating-pkgdown/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
 <figcaption class="figure-caption">
 Photo by Paweł Czerwiński
 </figcaption>
@@ -2019,7 +2786,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb2-6">}</span></code></pre></div>
 <figure class="figure">
-<img alt="Screenshot: Deprecation via CSS" src="https://cynkra.github.io/cynkrablog/blog/posts/2021-04-09-deprecating-pkgdown/css.png" style=" width: 100%; height: auto" class="figure-img">
+<img alt="Screenshot: Deprecation via CSS" src="https://blog.cynkra.com/blog/posts/2021-04-09-deprecating-pkgdown/css.png" style=" width: 100%; height: auto" class="figure-img">
 <figcaption class="figure-caption">
 Deprecation information in the header via CSS
 </figcaption>
@@ -2057,7 +2824,7 @@ background-color: null;
 font-style: inherit;">'s#(^.*[&lt;]/header[&gt;])#&lt;div class="alert alert-warning" role="alert"&gt;&lt;strong&gt;Warning!&lt;/strong&gt; This content has moved to &lt;a href="https://cynkra.github.io/munch"&gt;https://cynkra.github.io/munch&lt;/a&gt;.&lt;/div&gt;\n\1#'</span></span></code></pre></div>
 <p>This assumes GNU <code>sed</code>. MacOS users will need to use <code>gsed</code>, or <code>-i.bak</code> instead of <code>-i</code> and deal with the leftover <code>*.bak</code> files.</p>
 <figure class="figure">
-<img alt="Screenshot: Deprecation via editing HTML" src="https://cynkra.github.io/cynkrablog/blog/posts/2021-04-09-deprecating-pkgdown/bootstrap.png" style=" width: 100%; height: auto" class="figure-img">
+<img alt="Screenshot: Deprecation via editing HTML" src="https://blog.cynkra.com/blog/posts/2021-04-09-deprecating-pkgdown/bootstrap.png" style=" width: 100%; height: auto" class="figure-img">
 <figcaption class="figure-caption">
 Deprecation information in the header via editing HTML
 </figcaption>
@@ -2075,14 +2842,14 @@ Deprecation information in the header via editing HTML
 </section>
 
  ]]></description>
-  <guid>https://cynkra.github.io/cynkrablog/blog/posts/2021-04-09-deprecating-pkgdown/index.html</guid>
+  <guid>https://blog.cynkra.com/blog/posts/2021-04-09-deprecating-pkgdown/index.html</guid>
   <pubDate>Fri, 09 Apr 2021 00:00:00 GMT</pubDate>
-  <media:content url="https://cynkra.github.io/cynkrablog/blog/posts/2021-04-09-deprecating-pkgdown/banner.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://blog.cynkra.com/blog/posts/2021-04-09-deprecating-pkgdown/banner.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>gfortran support for R on macOS</title>
   <dc:creator>Patrick Schratz</dc:creator>
-  <link>https://cynkra.github.io/cynkrablog/blog/posts/2021-03-16-gfortran-macos/index.html</link>
+  <link>https://blog.cynkra.com/blog/posts/2021-03-16-gfortran-macos/index.html</link>
   <description><![CDATA[ 
 
 
@@ -2716,15 +3483,15 @@ font-style: inherit;">DONE</span> (cluster)</span></code></pre></div>
 </section>
 
  ]]></description>
-  <guid>https://cynkra.github.io/cynkrablog/blog/posts/2021-03-16-gfortran-macos/index.html</guid>
+  <guid>https://blog.cynkra.com/blog/posts/2021-03-16-gfortran-macos/index.html</guid>
   <pubDate>Tue, 16 Mar 2021 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Seasonal Adjustment of Multiple Series</title>
   <dc:creator>Christoph Sax</dc:creator>
-  <link>https://cynkra.github.io/cynkrablog/blog/posts/2021-03-09-seasonal-1.8/index.html</link>
+  <link>https://blog.cynkra.com/blog/posts/2021-03-09-seasonal-1.8/index.html</link>
   <description><![CDATA[ <p>seasonal is an easy-to-use and full-featured R-interface to X-13ARIMA-SEATS, the seasonal adjustment software developed by the United States Census Bureau. The latest CRAN version of seasonal makes it much easier to adjust multiple time series.</p>
-<figure class="figure"><img alt="Illustration" src="https://cynkra.github.io/cynkrablog/blog/posts/2021-03-09-seasonal-1.8/banner.jpg" style=" width: 100%; height: auto" class="figure-img"><figcaption class="figure-caption">
+<figure class="figure"><img alt="Illustration" src="https://blog.cynkra.com/blog/posts/2021-03-09-seasonal-1.8/banner.jpg" style=" width: 100%; height: auto" class="figure-img"><figcaption class="figure-caption">
 Photo by Meriç Dağlı
 </figcaption></figure><p><br></p>
 <p><a href="http://www.seasonal.website">seasonal</a> depends on the <a href="https://CRAN.R-project.org/package=x13binary">x13binary</a> package to access pre-built binaries of X-13ARIMA-SEATS on all platforms and does not require any manual installation. To install both packages:</p>
@@ -3152,14 +3919,14 @@ Coefficients:
 
 
 </section> ]]></description>
-  <guid>https://cynkra.github.io/cynkrablog/blog/posts/2021-03-09-seasonal-1.8/index.html</guid>
+  <guid>https://blog.cynkra.com/blog/posts/2021-03-09-seasonal-1.8/index.html</guid>
   <pubDate>Tue, 09 Mar 2021 00:00:00 GMT</pubDate>
-  <media:content url="https://cynkra.github.io/cynkrablog/blog/posts/2021-03-09-seasonal-1.8/banner.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://blog.cynkra.com/blog/posts/2021-03-09-seasonal-1.8/banner.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Dynamic build matrix in GitHub Actions</title>
   <dc:creator>Kirill Müller</dc:creator>
-  <link>https://cynkra.github.io/cynkrablog/blog/posts/2020-12-23-dynamic-gha/index.html</link>
+  <link>https://blog.cynkra.com/blog/posts/2020-12-23-dynamic-gha/index.html</link>
   <description><![CDATA[ 
 
 
@@ -3167,7 +3934,7 @@ Coefficients:
 <p>I wanted to try out the new <code>fromJSON()</code> that allows dynamic build matrices in GitHub Actions for quite some time now. Today was the day.</p>
 <p><a href="https://github.com/features/actions">GitHub Actions</a> allows automating build and deployment processes (CI/CD), tightly integrated with GitHub. A <a href="https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategymatrix">build matrix</a> is a way to define very similar workflows that differ only by configuration parameters. Usually, a build matrix is defined directly in the <code>.yaml</code> files together with the workflows. This blog post shows how to define these build matrices dynamically so that the “source of truth” for the matrix definition is outside the <code>.yaml</code> file.</p>
 <figure class="figure">
-<img alt="Illustration" src="https://cynkra.github.io/cynkrablog/blog/posts/2020-12-23-dynamic-gha/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
+<img alt="Illustration" src="https://blog.cynkra.com/blog/posts/2020-12-23-dynamic-gha/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
 <figcaption class="figure-caption">
 Photo by <a href="https://unsplash.com/photos/iar-afB0QQw" target="_blank"> Markus Spiske</a>
 </figcaption>
@@ -3472,7 +4239,6 @@ font-style: inherit;">"duckdb"</span></span></code></pre></div>
 </section>
 <section id="define-job" class="level2">
 <h2 class="anchored" data-anchor-id="define-job">Define job</h2>
-<p>{% raw %}</p>
 <p>Once we have derived the JSON, we’re ready to define a job that creates the matrix. This must be done in the same workflow file where the matrix is defined, ideally before the main job. The job runs on <code>ubuntu-latest</code>, and also must clone the repository. In the <code>bash</code> snippet, the <code>$matrix</code> variable contains the JSON. It is shown and pretty-printed before it is provided as output via <code>echo ::set-output ...</code>.</p>
 <div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -3686,11 +4452,10 @@ font-style: inherit;">    # Original workflow</span></span>
 <span id="cb7-22"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">    # ...</span></span></code></pre></div>
-<p>{% endraw %}</p>
 </section>
 <section id="use-output" class="level2">
 <h2 class="anchored" data-anchor-id="use-output">Use output</h2>
-<p>{% raw %} Finally, we’re ready to use the generated JSON as a build matrix. The workflow now uses <code>matrix: ${{fromJson(needs.matrix.outputs.matrix)}}</code> instead of the hard-coded matrix:</p>
+<p>Finally, we’re ready to use the generated JSON as a build matrix. The workflow now uses <code>matrix: ${{fromJson(needs.matrix.outputs.matrix)}}</code> instead of the hard-coded matrix:</p>
 <div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb8-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">jobs</span><span class="kw" style="color: #003B4F;
@@ -3766,10 +4531,9 @@ font-style: inherit;"> ${{fromJson(needs.matrix.outputs.matrix)}}</span></span>
 <span id="cb8-15"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">    # rest unchanged</span></span></code></pre></div>
-<p>{% endraw %}</p>
 <p>This gives a workflow as shown in the image below.</p>
 <figure class="figure">
-<img alt="GitHub Actions workflow with dependencies" src="https://cynkra.github.io/cynkrablog/blog/posts/2020-12-23-dynamic-gha/workflow.png" style=" width: 100%; height: auto" class="figure-img">
+<img alt="GitHub Actions workflow with dependencies" src="https://blog.cynkra.com/blog/posts/2020-12-23-dynamic-gha/workflow.png" style=" width: 100%; height: auto" class="figure-img">
 <figcaption class="figure-caption">
 Final workflow with dynamic build matrix
 </figcaption>
@@ -3802,21 +4566,21 @@ Final workflow with dynamic build matrix
 <li id="fn1"><p>You can use any tool or ecosystem you are familiar with to come up with the JSON definition. To avoid long installation times, use a specific image for your step via <a href="https://www.petefreitag.com/item/903.cfm"><code>uses: docker://...</code></a> or implement a <a href="https://docs.github.com/en/free-pro-team@latest/actions/creating-actions/creating-a-docker-container-action">container action</a>, also possible <a href="https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstepsuses">in the same repository</a>.↩︎</p></li>
 </ol>
 </section></div> ]]></description>
-  <guid>https://cynkra.github.io/cynkrablog/blog/posts/2020-12-23-dynamic-gha/index.html</guid>
+  <guid>https://blog.cynkra.com/blog/posts/2020-12-23-dynamic-gha/index.html</guid>
   <pubDate>Wed, 23 Dec 2020 00:00:00 GMT</pubDate>
-  <media:content url="https://cynkra.github.io/cynkrablog/blog/posts/2020-12-23-dynamic-gha/banner.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://blog.cynkra.com/blog/posts/2020-12-23-dynamic-gha/banner.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Setting up a load-balanced Jitsi Meet instance</title>
   <dc:creator>Patrick Schratz</dc:creator>
-  <link>https://cynkra.github.io/cynkrablog/blog/posts/2020-11-02-jitsi-load-balanced/index.html</link>
+  <link>https://blog.cynkra.com/blog/posts/2020-11-02-jitsi-load-balanced/index.html</link>
   <description><![CDATA[ 
 
 
 
 <p>Jitsi Meet is a self-hosted Free and Open-Source Software (FOSS) video conferencing solution. During the recent COVID-19 pandemic, the project became quite popular, and many companies decided to host their own Jitsi instance.</p>
 <figure class="figure">
-<img alt="Illustration" src="https://cynkra.github.io/cynkrablog/blog/posts/2020-11-02-jitsi-load-balanced/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
+<img alt="Illustration" src="https://blog.cynkra.com/blog/posts/2020-11-02-jitsi-load-balanced/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
 <figcaption class="figure-caption">
 Photo by Chuttersnap
 </figcaption>
@@ -3913,20 +4677,20 @@ font-style: inherit;">"&lt;PASSWORD&gt;"</span></span></code></pre></div></li>
 </section>
 
  ]]></description>
-  <guid>https://cynkra.github.io/cynkrablog/blog/posts/2020-11-02-jitsi-load-balanced/index.html</guid>
+  <guid>https://blog.cynkra.com/blog/posts/2020-11-02-jitsi-load-balanced/index.html</guid>
   <pubDate>Mon, 02 Nov 2020 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Maintaining multiple identities with Git</title>
   <dc:creator>Kirill Müller</dc:creator>
-  <link>https://cynkra.github.io/cynkrablog/blog/posts/2020-08-25-git-multiple-identities/index.html</link>
+  <link>https://blog.cynkra.com/blog/posts/2020-08-25-git-multiple-identities/index.html</link>
   <description><![CDATA[ 
 
 
 
 <p>When committing to a Git repository related to my consulting work, I must use my company e-mail address, kirill@cynkra.com. Not so much for my open-source work – for this, I prefer to use other e-mail addresses, like krlmlr+r@mailbox.org . (For example, Travis CI sends notification e-mails to the committer’s e-mail address, and I have set up filtering for that other address.)</p>
 <figure class="figure">
-<img alt="Illustration" src="https://cynkra.github.io/cynkrablog/blog/posts/2020-08-25-git-multiple-identities/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
+<img alt="Illustration" src="https://blog.cynkra.com/blog/posts/2020-08-25-git-multiple-identities/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
 <figcaption class="figure-caption">
 Photo by Carson Arias
 </figcaption>
@@ -3950,21 +4714,21 @@ Photo by Carson Arias
 
 
  ]]></description>
-  <guid>https://cynkra.github.io/cynkrablog/blog/posts/2020-08-25-git-multiple-identities/index.html</guid>
+  <guid>https://blog.cynkra.com/blog/posts/2020-08-25-git-multiple-identities/index.html</guid>
   <pubDate>Tue, 25 Aug 2020 00:00:00 GMT</pubDate>
-  <media:content url="https://cynkra.github.io/cynkrablog/blog/posts/2020-08-25-git-multiple-identities/banner.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://blog.cynkra.com/blog/posts/2020-08-25-git-multiple-identities/banner.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Relational data models in R</title>
   <dc:creator>Angel D&#39;az, Kirill Müller</dc:creator>
-  <link>https://cynkra.github.io/cynkrablog/blog/posts/2020-04-02-dm/index.html</link>
+  <link>https://blog.cynkra.com/blog/posts/2020-04-02-dm/index.html</link>
   <description><![CDATA[ 
 
 
 
 <p>Relational databases are powerful tools for analyzing and manipulating data. However, many modeling workflows require a great deal of time and effort to wrangle data from databases to place it into a flat data frame or table format. Only then the actual data analysis can start.</p>
 <figure class="figure">
-<img alt="Illustration" src="https://cynkra.github.io/cynkrablog/blog/posts/2020-04-02-dm/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
+<img alt="Illustration" src="https://blog.cynkra.com/blog/posts/2020-04-02-dm/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
 <figcaption class="figure-caption">
 Photo by Jordan McDonald
 </figcaption>
@@ -4356,7 +5120,7 @@ font-style: inherit;">%&gt;%</span></span>
 <span id="cb9-23">  <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">dm_draw</span>()</span></code></pre></div>
-<p><img alt="Data model" src="https://cynkra.github.io/cynkrablog/blog/posts/2020-04-02-dm/dm_draw.png" style="height: auto; width: 60%;"></p>
+<p><img alt="Data model" src="https://blog.cynkra.com/blog/posts/2020-04-02-dm/dm_draw.png" style="height: auto; width: 60%;"></p>
 <p>The discrepancies highlight the importance of being able to define primary and foreign keys. Most of the challenges in manipulating data are not syntax knowledge gaps. The syntax can always be looked up with search engines. Knowledge gaps regarding how data is organized are much more common as stumbling blocks for R users when working with distributed data.</p>
 <p>Insight into the structure of a database using the built-in <code>dm_draw()</code> function provides an instant efficiency boost. Combined with defining unique identifiers (primary keys) and how they are found by other tables (foreign keys), an R user can quickly clarify the structures with which they are working.</p>
 <p>To assist with this process of defining the structure, dm comes with a built-in helper to check the referential integrity of the dataset:</p>
@@ -4517,21 +5281,21 @@ font-style: italic;">## #   A15 &lt;int&gt;, A16 &lt;int&gt;</span></span></code
 </section>
 
  ]]></description>
-  <guid>https://cynkra.github.io/cynkrablog/blog/posts/2020-04-02-dm/index.html</guid>
+  <guid>https://blog.cynkra.com/blog/posts/2020-04-02-dm/index.html</guid>
   <pubDate>Thu, 02 Apr 2020 00:00:00 GMT</pubDate>
-  <media:content url="https://cynkra.github.io/cynkrablog/blog/posts/2020-04-02-dm/banner.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://blog.cynkra.com/blog/posts/2020-04-02-dm/banner.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>tempdisagg: converting quarterly time series to daily</title>
   <dc:creator>Christoph Sax</dc:creator>
-  <link>https://cynkra.github.io/cynkrablog/blog/posts/2020-02-09-tempdisagg/index.html</link>
+  <link>https://blog.cynkra.com/blog/posts/2020-02-09-tempdisagg/index.html</link>
   <description><![CDATA[ 
 
 
 
 <p>Not having a time series at the desired frequency is a common problem for researchers and analysts. For example, instead of quarterly sales, they only have annual sales. Instead of a daily stock market index, they only have a weekly index. While there is no way to fully make up for the missing data, there are useful workarounds: with the help of one or more high-frequency indicator series, the low-frequency series may be disaggregated into a high-frequency series.</p>
 <figure class="figure">
-<img alt="Illustration" src="https://cynkra.github.io/cynkrablog/blog/posts/2020-02-09-tempdisagg/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
+<img alt="Illustration" src="https://blog.cynkra.com/blog/posts/2020-02-09-tempdisagg/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
 <figcaption class="figure-caption">
 Photo by Jordan McDonald
 </figcaption>
@@ -4593,7 +5357,7 @@ font-style: inherit;">subtitle =</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"real, not seasonally adjusted"</span>)</span></code></pre></div>
 <figure class="figure">
-<img alt="Graph: Swiss GDP, not seasonally adjusted" src="https://cynkra.github.io/cynkrablog/blog/posts/2020-02-09-tempdisagg/quarterly-1.png" style=" width: 100%; height: auto" class="figure-img">
+<img alt="Graph: Swiss GDP, not seasonally adjusted" src="https://blog.cynkra.com/blog/posts/2020-02-09-tempdisagg/quarterly-1.png" style=" width: 100%; height: auto" class="figure-img">
 <figcaption class="figure-caption">
 Series to disaggregate: quarterly gross domestic product of Switzerland
 </figcaption>
@@ -4615,7 +5379,7 @@ font-style: inherit;">subtitle =</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"daily values, interpolated"</span>)</span></code></pre></div>
 <figure class="figure">
-<img alt="Graph: Swiss Performance Index, daily" src="https://cynkra.github.io/cynkrablog/blog/posts/2020-02-09-tempdisagg/indicator-1.png" style=" width: 100%; height: auto" class="figure-img">
+<img alt="Graph: Swiss Performance Index, daily" src="https://blog.cynkra.com/blog/posts/2020-02-09-tempdisagg/indicator-1.png" style=" width: 100%; height: auto" class="figure-img">
 <figcaption class="figure-caption">
 Daily indicator series: Swiss Performance Index
 </figcaption>
@@ -4722,7 +5486,7 @@ background-color: null;
 font-style: inherit;">"one indicator"</span></span>
 <span id="cb5-8">)</span></code></pre></div>
 <figure class="figure">
-<img alt="Graph: Daily disaggregated Swiss GDP" src="https://cynkra.github.io/cynkrablog/blog/posts/2020-02-09-tempdisagg/daily-1.png" style=" width: 100%; height: auto" class="figure-img">
+<img alt="Graph: Daily disaggregated Swiss GDP" src="https://blog.cynkra.com/blog/posts/2020-02-09-tempdisagg/daily-1.png" style=" width: 100%; height: auto" class="figure-img">
 <figcaption class="figure-caption">
 Swiss GDP, disaggregated to daily
 </figcaption>
@@ -4760,14 +5524,14 @@ font-style: italic;">## [1] TRUE</span></span></code></pre></div>
 </section>
 
  ]]></description>
-  <guid>https://cynkra.github.io/cynkrablog/blog/posts/2020-02-09-tempdisagg/index.html</guid>
+  <guid>https://blog.cynkra.com/blog/posts/2020-02-09-tempdisagg/index.html</guid>
   <pubDate>Sun, 09 Feb 2020 00:00:00 GMT</pubDate>
-  <media:content url="https://cynkra.github.io/cynkrablog/blog/posts/2020-02-09-tempdisagg/banner.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://blog.cynkra.com/blog/posts/2020-02-09-tempdisagg/banner.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>tsbox 0.2: supporting additional time series classes</title>
   <dc:creator>Christoph Sax</dc:creator>
-  <link>https://cynkra.github.io/cynkrablog/blog/posts/2019-08-12-tsbox-02/index.html</link>
+  <link>https://blog.cynkra.com/blog/posts/2019-08-12-tsbox-02/index.html</link>
   <description><![CDATA[ 
 
 
@@ -4920,7 +5684,7 @@ font-style: inherit;">"Monthly passengers, annual trappings, monthly deaths"</sp
 <span id="cb9-7">)</span></code></pre></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://cynkra.github.io/cynkrablog/blog/posts/2019-08-12-tsbox-02/unnamed-chunk-2-1.png" title="Illustration" class="img-fluid figure-img"></p>
+<p><img src="https://blog.cynkra.com/blog/posts/2019-08-12-tsbox-02/unnamed-chunk-2-1.png" title="Illustration" class="img-fluid figure-img"></p>
 <figcaption class="figure-caption">time series plot</figcaption>
 </figure>
 </div>
@@ -4929,20 +5693,20 @@ font-style: inherit;">"Monthly passengers, annual trappings, monthly deaths"</sp
 </section>
 
  ]]></description>
-  <guid>https://cynkra.github.io/cynkrablog/blog/posts/2019-08-12-tsbox-02/index.html</guid>
+  <guid>https://blog.cynkra.com/blog/posts/2019-08-12-tsbox-02/index.html</guid>
   <pubDate>Mon, 12 Aug 2019 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Introducing dm: easy juggling of tables and relations</title>
   <dc:creator>Balthasar Sager</dc:creator>
-  <link>https://cynkra.github.io/cynkrablog/blog/posts/2019-07-17-dm/index.html</link>
+  <link>https://blog.cynkra.com/blog/posts/2019-07-17-dm/index.html</link>
   <description><![CDATA[ 
 
 
 
 <p>The <a href="https://krlmlr.github.io/dm/">dm</a> package reduces your mental strain when working with many tables. It connects your data, while still keeping them in their original tables. You can easily perform operations on all tables, visualize how they’re connected, and integrate databases.</p>
 <figure class="figure">
-<img alt="Illustration" src="https://cynkra.github.io/cynkrablog/blog/posts/2019-07-17-dm/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
+<img alt="Illustration" src="https://blog.cynkra.com/blog/posts/2019-07-17-dm/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
 <figcaption class="figure-caption">
 Photo by Tobias Fischer
 </figcaption>
@@ -5135,7 +5899,7 @@ font-style: inherit;">%&gt;%</span></span>
 <span id="cb8-9">  <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">cdm_draw</span>()</span></code></pre></div>
-<p><img alt="Data model" src="https://cynkra.github.io/cynkrablog/blog/posts/2019-07-17-dm/datamodelr.png" style="height: auto; width: 50%;"></p>
+<p><img alt="Data model" src="https://blog.cynkra.com/blog/posts/2019-07-17-dm/datamodelr.png" style="height: auto; width: 50%;"></p>
 </section>
 <section id="databases" class="level3">
 <h3 class="anchored" data-anchor-id="databases">Databases</h3>
@@ -5149,14 +5913,14 @@ font-style: inherit;">cdm_draw</span>()</span></code></pre></div>
 </section>
 
  ]]></description>
-  <guid>https://cynkra.github.io/cynkrablog/blog/posts/2019-07-17-dm/index.html</guid>
+  <guid>https://blog.cynkra.com/blog/posts/2019-07-17-dm/index.html</guid>
   <pubDate>Wed, 17 Jul 2019 00:00:00 GMT</pubDate>
-  <media:content url="https://cynkra.github.io/cynkrablog/blog/posts/2019-07-17-dm/banner.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://blog.cynkra.com/blog/posts/2019-07-17-dm/banner.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>tsbox 0.1: class-agnostic time series</title>
   <dc:creator>Christoph Sax</dc:creator>
-  <link>https://cynkra.github.io/cynkrablog/blog/posts/2019-04-10-tsbox-01/index.html</link>
+  <link>https://blog.cynkra.com/blog/posts/2019-04-10-tsbox-01/index.html</link>
   <description><![CDATA[ 
 
 
@@ -5165,7 +5929,7 @@ font-style: inherit;">cdm_draw</span>()</span></code></pre></div>
 <br>
 <div style="padding-left: 15%; width: 80%">
 <figure class="figure">
-<img alt="xkcd comic: Standards" src="https://cynkra.github.io/cynkrablog/blog/posts/2019-04-10-tsbox-01/https:/imgs.xkcd.com/comics/standards.png" style="width: 100%; height: auto;" class="figure-img">
+<img alt="xkcd comic: Standards" src="https://blog.cynkra.com/blog/posts/2019-04-10-tsbox-01/https:/imgs.xkcd.com/comics/standards.png" style="width: 100%; height: auto;" class="figure-img">
 <figcaption class="figure-caption">
 comic by <a href="https://xkcd.com/927/">xkcd</a>
 </figcaption>
@@ -5290,20 +6054,20 @@ font-style: inherit;">#&gt; [1] "1971-04-01"</span></span></code></pre></div>
 <h3 class="anchored" data-anchor-id="and-a-cheat-sheet">And a cheat sheet!</h3>
 <p>Finally, we fabricated a tsbox cheat sheet that summarizes most functionality. Print and enjoy working with time series.</p>
 <div style="padding: 10%">
-<p><a href="tsbox-cheatsheet.pdf"> <img alt="tsbox cheat sheet" src="https://cynkra.github.io/cynkrablog/blog/posts/2019-04-10-tsbox-01/tsbox-cheatsheet-small.jpg" style="width: 100%; height: auto;"> </a></p>
+<p><a href="tsbox-cheatsheet.pdf"> <img alt="tsbox cheat sheet" src="https://blog.cynkra.com/blog/posts/2019-04-10-tsbox-01/tsbox-cheatsheet-small.jpg" style="width: 100%; height: auto;"> </a></p>
 </div>
 
 
 </section>
 
  ]]></description>
-  <guid>https://cynkra.github.io/cynkrablog/blog/posts/2019-04-10-tsbox-01/index.html</guid>
+  <guid>https://blog.cynkra.com/blog/posts/2019-04-10-tsbox-01/index.html</guid>
   <pubDate>Wed, 10 Apr 2019 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Time series of the world, unite!</title>
   <dc:creator>Christoph Sax</dc:creator>
-  <link>https://cynkra.github.io/cynkrablog/blog/posts/2018-05-15-tsbox/index.html</link>
+  <link>https://blog.cynkra.com/blog/posts/2018-05-15-tsbox/index.html</link>
   <description><![CDATA[ 
 
 
@@ -5462,7 +6226,7 @@ font-style: inherit;">"Monthly passengers, annual trappings, monthly deaths"</sp
 <span id="cb5-7">)</span></code></pre></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://cynkra.github.io/cynkrablog/blog/posts/2018-05-15-tsbox/unnamed-chunk-2-1.png" title="Illustration" class="img-fluid figure-img"></p>
+<p><img src="https://blog.cynkra.com/blog/posts/2018-05-15-tsbox/unnamed-chunk-2-1.png" title="Illustration" class="img-fluid figure-img"></p>
 <figcaption class="figure-caption">www.dataseries.org</figcaption>
 </figure>
 </div>
@@ -5494,13 +6258,13 @@ font-style: inherit;">ts_c</span>(mdeaths, fdeaths))</span></code></pre></div>
 </section>
 
  ]]></description>
-  <guid>https://cynkra.github.io/cynkrablog/blog/posts/2018-05-15-tsbox/index.html</guid>
+  <guid>https://blog.cynkra.com/blog/posts/2018-05-15-tsbox/index.html</guid>
   <pubDate>Tue, 15 May 2018 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Done “Establishing DBI”!?</title>
   <dc:creator>Kirill Müller</dc:creator>
-  <link>https://cynkra.github.io/cynkrablog/blog/posts/2018-05-01-dbi-2/index.html</link>
+  <link>https://blog.cynkra.com/blog/posts/2018-05-01-dbi-2/index.html</link>
   <description><![CDATA[ 
 
 
@@ -5800,7 +6564,7 @@ dbGetQuery(pg_conn, 'SELECT 1 AS a, 2 AS a, 3 AS "a..2"')
 </section>
 
  ]]></description>
-  <guid>https://cynkra.github.io/cynkrablog/blog/posts/2018-05-01-dbi-2/index.html</guid>
+  <guid>https://blog.cynkra.com/blog/posts/2018-05-01-dbi-2/index.html</guid>
   <pubDate>Tue, 01 May 2018 00:00:00 GMT</pubDate>
 </item>
 </channel>

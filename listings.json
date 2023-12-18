@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/blog/posts/2022-09-14-rstudio-efs-nfs/index.html",
       "/blog/posts/2022-05-14-accessing-google-api-via-oauth2/index.html",
       "/blog/posts/2022-04-19-seasonal-1.9/index.html",
       "/blog/posts/2022-01-05-gsod-user-infoboard/index.html",
@@ -26,6 +27,7 @@
   {
     "listing": "/blog/index.html",
     "items": [
+      "/blog/posts/2022-09-14-rstudio-efs-nfs/index.html",
       "/blog/posts/2022-05-14-accessing-google-api-via-oauth2/index.html",
       "/blog/posts/2022-04-19-seasonal-1.9/index.html",
       "/blog/posts/2022-01-05-gsod-user-infoboard/index.html",
