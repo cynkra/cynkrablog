@@ -15,6 +15,11 @@ $dropdown-link-active-bg: #e0e0fc;
   text-transform: uppercase;
 }
 
+// let nav-footer-left expand more
+.nav-footer-center {
+  display: none;
+}
+
 // header font
 h1, h2, h3, h4, h5, h6 {
   font-family: "frutiger-thin","Helvetica Neue",sans-serif;
