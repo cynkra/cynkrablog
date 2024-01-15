@@ -7,14 +7,15 @@ $body-color: rgba($white, .7) !default;
 $link-color: #184fa9;
 $input-focus-border-color: #005f7e;
 $input-btn-focus-box-shadow: #005f7e;
-$dropdown-link-hover-bg: #e0e0fc;
-$dropdown-link-active-bg: #e0e0fc;
+$dropdown-link-hover-bg: $black;
+$dropdown-link-active-bg: $black;
+$border-dark-color: rgba($black, .4) !default;
 $heading-link-color: rgba($white, .85) !default;
 $heading-link-hover-color: $primary !default;
 $nav-link-color: $white;
 $code-color: #f33185 !default;
 
-$card-border-color: $border-light-color !default;
+$card-border-color: $border-dark-color !default;
 $card-bg: $body-dark-mode-bg !default;
 $card-color: rgba($white, .7) !default;
 $pre-bg: rgba($white, .04) !default;
@@ -23,7 +24,7 @@ $pre-color: $white !default;
 /* navbar */
 .navbar {
   box-shadow: rgba(19, 16, 34, 0.06) 0px 4.4px 12px -1px, rgba(19, 16, 34, 0.03) 0px 2px 6.4px -1px;
-  background-color: black !important;
+  background-color: $black !important;
 }
 
 .navbar-light .navbar-nav .active > .nav-link {
