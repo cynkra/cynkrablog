@@ -1,0 +1,38 @@
+/*-- scss:defaults --*/
+$primary: #6366f1;
+$border-light-color: rgba($black, .14) !default;
+$body-dark-mode-bg: $gray-900 !default;
+$body-bg: $body-dark-mode-bg;
+$body-color: rgba($white, .7) !default;
+$link-color: #184fa9;
+$input-focus-border-color: #005f7e;
+$input-btn-focus-box-shadow: #005f7e;
+$dropdown-link-hover-bg: #e0e0fc;
+$dropdown-link-active-bg: #e0e0fc;
+$heading-link-color: rgba($white, .85) !default;
+$heading-link-hover-color: $primary !default;
+$nav-link-color: $white;
+$code-color: #f33185 !default;
+
+$card-border-color: $border-light-color !default;
+$card-bg: $body-dark-mode-bg !default;
+$card-color: rgba($white, .7) !default;
+$pre-bg: rgba($white, .04) !default;
+$pre-color: $white !default;
+
+/* navbar */
+.navbar {
+  box-shadow: rgba(19, 16, 34, 0.06) 0px 4.4px 12px -1px, rgba(19, 16, 34, 0.03) 0px 2px 6.4px -1px;
+  background-color: black !important;
+}
+
+.navbar-light .navbar-nav .active > .nav-link {
+  color: #3134ED;
+  background-color: #f2f2f2;
+}
+
+
+/* Navbar */
+li.active a.nav-link {
+  color: #005f7e !important;
+}

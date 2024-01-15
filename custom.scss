@@ -1,16 +1,23 @@
 /*-- scss:defaults --*/
-$bg: "white";
-$fg: "black";
-$primary: #6366f1;
-$link-color: #184fa9;
-$input-focus-border-color: #005f7e;
-$input-btn-focus-box-shadow: #005f7e;
+
+// Grayscale
+$white:                       #fff !default;
+$gray-100:                    #f3f6ff !default;
+$gray-200:                    #eff2fc !default;
+$gray-300:                    #e2e5f1 !default;
+$gray-400:                    #d4d7e5 !default;
+$gray-500:                    #b4b7c9 !default;
+$gray-600:                    #9397ad !default;
+$gray-700:                    #565973 !default;
+$gray-800:                    #33354d !default;
+$gray-900:                    #0b0f19 !default;
+$black:                       #000 !default;
 $font-family-base: "frutiger-light,sans-serif";
 $font-family-code: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-$dropdown-link-hover-bg: #e0e0fc;
-$dropdown-link-active-bg: #e0e0fc;
 
 /*-- scss:rules --*/
+
+// navbar items
 .nav-item {
   text-transform: uppercase;
 }
@@ -55,17 +62,6 @@ h1, h2, h3, h4, h5, h6 {
     font-style: normal
 }
 
-/* navbar */
-.navbar {
-  box-shadow: rgba(19, 16, 34, 0.06) 0px 4.4px 12px -1px, rgba(19, 16, 34, 0.03) 0px 2px 6.4px -1px;
-  background-color: white !important;
-}
-
-.navbar-light .navbar-nav .active > .nav-link {
-  color: #3134ED;
-  background-color: #f2f2f2;
-}
-
 /* copy-paste button ---------------------------------------------------------*/
 .btn.btn-primary.btn-copy-ex {
 	color: white;
@@ -83,9 +79,4 @@ h1, h2, h3, h4, h5, h6 {
   height: 25px;
   padding-right: 20px;
   padding-bottom: 2px;
-}
-
-/* Navbar */
-li.active a.nav-link {
-  color: #005f7e !important;
 }
