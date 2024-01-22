@@ -52,7 +52,7 @@ jobs:
           message: ${{ steps.lychee-output.outputs.content }}
 
       - name: Save lychee cache
-        uses: actions/cache/save@v3
+        uses: actions/cache/save@v4
         if: success()
         with:
           path: .lycheecache
