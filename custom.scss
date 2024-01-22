@@ -14,6 +14,9 @@ $dropdown-link-active-bg: #e0e0fc;
 .nav-item {
   text-transform: uppercase;
 }
+.dropdown-item {
+  text-transform: none;
+}
 
 // let nav-footer-left expand more
 .nav-footer-center {
