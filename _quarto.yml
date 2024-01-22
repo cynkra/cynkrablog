@@ -41,7 +41,7 @@ website:
       - text: blog
         href: https://cynkra.com/blog
       - icon: rss
-        href: blog/index.xml
+        href: index.xml
 format:
   html:
     code-link: true
