@@ -9,7 +9,7 @@ listing:
     categories: true
     filter-ui: true
     feed: true
-    contents: blog/posts
+    contents: posts
     type: grid
     fields: [image, date, title, author, description, categories, reading-time]
     image-placeholder: mountain.jpg
