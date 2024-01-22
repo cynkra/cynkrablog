@@ -8,7 +8,6 @@ execute:
 website:
   favicon: favicon-32x32.png
   site-url: https://blog.cynkra.com/
-  reader-mode: true
   title: "cynkra blog"
   description: "By the cynkra team"
   page-footer:
