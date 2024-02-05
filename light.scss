@@ -7,6 +7,7 @@ $input-focus-border-color: #005f7e;
 $input-btn-focus-box-shadow: #005f7e;
 $border-color: rgba($white, .14) !default;
 $nav-link-color: #33354d;
+$navbar-light-color: #33354d;
 $border-light-color: rgba($white, .14) !default;
 $dropdown-link-hover-bg: #e0e0fc;
 $dropdown-link-active-bg: #e0e0fc;
@@ -15,10 +16,6 @@ $dropdown-link-active-bg: #e0e0fc;
 .navbar {
   box-shadow: rgba(19, 16, 34, 0.06) 0px 4.4px 12px -1px, rgba(19, 16, 34, 0.03) 0px 2px 6.4px -1px;
   background-color: white !important;
-}
-
-.navbar-nav a, .navbar-nav i  {
-  color: #33354d !important;
 }
 
 .navbar-light .navbar-nav .active > .nav-link {
