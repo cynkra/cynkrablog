@@ -2,6 +2,9 @@ project:
   type: website
   output-dir: docs
 
+resources:
+  - "mountain.jpg"
+
 execute:
   freeze: auto
 
