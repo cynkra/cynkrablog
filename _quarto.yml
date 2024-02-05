@@ -16,6 +16,7 @@ website:
     right: Blog created with [Quarto](https://quarto.org/).
   navbar:
     logo: https://cynkra.com/assets/img/logo_small.svg
+    logo-href: https://cynkra.com/
     title: false
     right:
       - text: Consulting
