@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Christoph Sax">
+<meta name="dcterms.date" content="2018-05-15">
 
-<title>cynkra blog</title>
+<title>cynkra blog - Time series of the world, unite!</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,26 +22,60 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<link href="../favicon-32x32.png" rel="icon" type="image/png">
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon-32x32.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -140,7 +176,7 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">blog</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="../index.xml"> <i class="bi bi-rss" role="img">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -160,50 +196,100 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Time series of the world, unite!</h1>
+</div>
 
 
 
-<section id="summary" class="level2">
-<h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Status</th>
-<th>Count</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>🔍 Total</td>
-<td>887</td>
-</tr>
-<tr class="even">
-<td>✅ Successful</td>
-<td>841</td>
-</tr>
-<tr class="odd">
-<td>⏳ Timeouts</td>
-<td>0</td>
-</tr>
-<tr class="even">
-<td>🔀 Redirected</td>
-<td>0</td>
-</tr>
-<tr class="odd">
-<td>👻 Excluded</td>
-<td>46</td>
-</tr>
-<tr class="even">
-<td>❓ Unknown</td>
-<td>0</td>
-</tr>
-<tr class="odd">
-<td>🚫 Errors</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p><a href="https://github.com/cynkra/cynkrablog/actions/runs/7781600897?check_suite_focus=true">Full Github Actions output</a></p>
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Christoph Sax </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 15, 2018</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>The R ecosystem knows a ridiculous number of time series classes. So, I decided to create a new universal standard that finally covers everyone’s use case…</p>
+<p><a href="https://xkcd.com/927">Ok, just kidding!</a></p>
+<p><a href="https://www.tsbox.help/">tsbox</a>, just realeased on <a href="https://cran.r-project.org/package=tsbox">CRAN</a>, provides a set of tools that are agnostic towards existing time series classes. It is built around a set of converters, which convert time series stored as <a href="https://www.rdocumentation.org/packages/stats/versions/3.5.0/topics/ts">ts</a>, <a href="https://cran.r-project.org/package=xts">xts</a>, <a href="https://rdrr.io/r/base/data.frame.html">data.frame</a>, <a href="https://cran.r-project.org/package=data.table">data.table</a>, <a href="http://tibble.tidyverse.org/">tibble</a>, <a href="https://cran.r-project.org/package=zoo">zoo</a>, <a href="https://tsibble.tidyverts.org/">tsibble</a> or <a href="https://cran.r-project.org/package=timeSeries">timeSeries</a> to each other.</p>
+<p>To install the stable version from CRAN:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"tsbox"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To get an idea how easy it is to switch from one class to another, consider this:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tsbox)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>x.ts <span class="ot">&lt;-</span> <span class="fu">ts_c</span>(mdeaths, fdeaths)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>x.xts <span class="ot">&lt;-</span> <span class="fu">ts_xts</span>(x.ts)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>x.df <span class="ot">&lt;-</span> <span class="fu">ts_df</span>(x.xts)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>x.tbl <span class="ot">&lt;-</span> <span class="fu">ts_tbl</span>(x.df)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>x.dt <span class="ot">&lt;-</span> <span class="fu">ts_tbl</span>(x.tbl)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>x.zoo <span class="ot">&lt;-</span> <span class="fu">ts_zoo</span>(x.dt)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>x.tsibble <span class="ot">&lt;-</span> <span class="fu">ts_tsibble</span>(x.zoo)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>x.timeSeries <span class="ot">&lt;-</span> <span class="fu">ts_timeSeries</span>(x.tsibble)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We jump form good old <code>ts</code> objects to<code>xts</code>, store our time series in various data frames and convert them to some highly specialized time series formats.</p>
+<section id="tsbox-is-class-agnostic" class="level3">
+<h3 class="anchored" data-anchor-id="tsbox-is-class-agnostic">tsbox is class-agnostic</h3>
+<p>Because these converters work nicely, we can use them to make functions class-agnostic. If a class-agnostic function works for one class, it works for all:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ts_scale</span>(x.ts)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ts_scale</span>(x.xts)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ts_scale</span>(x.df)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ts_scale</span>(x.dt)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ts_scale</span>(x.tbl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>ts_scale</code> normalizes one or multiple series, by subtracting the mean and dividing by the standard deviation. It works like a ‘generic’ function: You can apply it on any time series object, and it will return an object of the same class as its input.</p>
+<p>So, whether we want to smooth, scale, differentiate, chain-link, forecast, regularize, or seasonally adjust a series, we can use the same commands to whatever time series at hand. tsbox offers a comprehensive toolkit for the basics of time series manipulation. Here are some additional operations:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ts_pc</span>(x.ts)                 <span class="co"># percentage change rates</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ts_forecast</span>(x.xts)          <span class="co"># forecast, by exponential smoothing</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ts_seas</span>(x.df)               <span class="co"># seasonal adjustment, by X-13</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ts_frequency</span>(x.dt, <span class="st">"year"</span>)  <span class="co"># convert to annual frequency</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ts_span</span>(x.tbl, <span class="st">"-1 year"</span>)   <span class="co"># limit time span to final year</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="tsbox-is-frequency-agnostic" class="level3">
+<h3 class="anchored" data-anchor-id="tsbox-is-frequency-agnostic">tsbox is frequency-agnostic</h3>
+<p>There are many more. Because they all start with <code>ts_</code>, you can use auto-complete to see what’s around. Most conveniently, there is a time series plot function that works for all classes and frequencies:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ts_plot</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">Airline Passengers</span><span class="st">`</span> <span class="ot">=</span> AirPassengers,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">Lynx trappings</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">ts_df</span>(lynx),</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">Deaths from Lung Diseases</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">ts_xts</span>(fdeaths),</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Airlines, trappings, and deaths"</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"Monthly passengers, annual trappings, monthly deaths"</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="unnamed-chunk-2-1.png" title="Illustration" class="img-fluid figure-img"></p>
+<figcaption>www.dataseries.org</figcaption>
+</figure>
+</div>
+<p>There is also a version that uses <a href="https://CRAN.R-project.org/package=ggplot2">ggplot2</a> and has the same syntax.</p>
+</section>
+<section id="time-series-in-data-frames" class="level3">
+<h3 class="anchored" data-anchor-id="time-series-in-data-frames">Time series in data frames</h3>
+<p>You may have wondered why we treated data frames as a time series class. The spread of <a href="https://CRAN.R-project.org/package=dplyr">dplyr</a> and <a href="https://CRAN.R-project.org/package=data.table">data.table</a> has given data frames a boost and made them one of the most popular data structures in R. So, storing time series in a data frame is an obvious consequence. And even if you don’t intend to keep time series in data frames, this is still the format in which you import and export your data. tsbox makes it easy to switch from data frames to time series and back.</p>
+</section>
+<section id="make-existing-functions-class-agnostic" class="level3">
+<h3 class="anchored" data-anchor-id="make-existing-functions-class-agnostic">Make existing functions class-agnostic</h3>
+<p>tsbox includes <a href="https://www.tsbox.help/articles/ts-functions.html">tools</a> to make existing functions class-agnostic. To do so, the <code>ts_</code> function can be used to wrap any function that works with time series. For a function that works on <code>"ts"</code> objects, this is as simple as that:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ts_rowsums <span class="ot">&lt;-</span> <span class="fu">ts_</span>(rowSums)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ts_rowsums</span>(<span class="fu">ts_c</span>(mdeaths, fdeaths))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note that <code>ts_</code> returns a function, which can be used with or without a name.</p>
+<p>In case you are wondering, tsbox uses <a href="https://CRAN.R-project.org/package=data.table">data.table</a> as a backend and makes use of its incredibly efficient reshaping facilities, its joins, and rolling joins. And thanks to <a href="https://cran.r-project.org/package=anytime">anytime</a>, tsbox will be able to recognize almost any date format without manual intervention.</p>
+<p>So, if you’ve been struggling with R’s time series class, we hope that you found this blog helpful.</p>
+<p>Website: <a href="https://www.tsbox.help">www.tsbox.help</a></p>
 
 
 </section>

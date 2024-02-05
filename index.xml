@@ -6,20 +6,21 @@
       version="2.0">
 <channel>
 <title>cynkra blog</title>
-<link>https://blog.cynkra.com/index.html</link>
+<link>https://blog.cynkra.com/</link>
 <atom:link href="https://blog.cynkra.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>By the cynkra team</description>
-<generator>quarto-1.3.450</generator>
+<generator>quarto-1.4.549</generator>
 <lastBuildDate>Wed, 14 Sep 2022 00:00:00 GMT</lastBuildDate>
 <item>
   <title>EFS vs. NFS for RStudio on Kubernetes (AWS): Configuration and considerations</title>
   <dc:creator>Patrick Schratz</dc:creator>
-  <link>https://blog.cynkra.com/blog/posts/2022-09-14-rstudio-efs-nfs/index.html</link>
+  <link>https://blog.cynkra.com/posts/2022-09-14-rstudio-efs-nfs/</link>
   <description><![CDATA[ 
 
 
 
-<p><img src="https://blog.cynkra.com/blog/posts/2022-09-14-rstudio-efs-nfs/intro.png" class="img-fluid"></p>
+
+<p><img src="https://blog.cynkra.com/posts/2022-09-14-rstudio-efs-nfs/intro.png" class="img-fluid"></p>
 <p>As a consulting company with a strong focus on R and Posit (formerly RStudio) products, we have gathered quite a bit of experience in configuration and deployment of Workbench and Connect products in the cloud. We would like to share some of these insights in the following blog post and shine some light on the file system debate around these applications. While the “how to” is very well outlined by various RStudio/Posit resources (<a href="https://github.com/rstudio/helm/tree/main/charts/rstudio-workbench">1</a>, <a href="https://github.com/rstudio/helm/tree/main/charts/rstudio-connect">2</a>, <a href="https://docs.rstudio.com/helm/rstudio-connect/kubernetes-howto/">3</a>, <a href="https://support.rstudio.com/hc/en-us/articles/4414817033623-Mounting-your-RStudio-Workbench-Connect-Server-to-an-EFS-share">4</a>), there’s one important part of the setup which is actively debated among system engineers: the choice and handling of the file system.</p>
 <p>But let’s start at the beginning: in the cloud, one has essentially two choices for self-hosting RStudio applications: a single-instance installation on a virtual machine or going with Kubernetes (k8s) for a container-based, high-availability (HA) setup. The latter comes with many benefits, both for users and administrators: HA ensures stability of the service and allows for controlled upgrades, in the best case without any interruption or downtime for users. Users profit from the possible option of requesting CPU and memory resources as needed for their analysis - assuming the k8s cluster runs with an autoscaler which allows provisioning new worker nodes as needed. Potential downsides could be an increased administration complexity, decreased file system performance and eventually higher costs. Though these points cannot be generalized and always depend on the cluster at hand, its purpose and the team managing it.</p>
 <section id="file-systems---general" class="level2">
@@ -41,7 +42,7 @@
 <p>File systems which support read-write-many (RWX) operations allow the attachment by multiple instances, usually across availability zones. They usually have a central (remote) address which can be used to mount them into an instance. This allows for a central deployment of RWX providers on standalone machines.</p>
 <p>NOTE1: Availability zones in the cloud are discrete data centers with redundant power, networking, and connectivity in a certain region. Issues appearing in one particular zone do not affect others. Their main purpose of different AZs is to increase reliability.</p>
 <p>NOTE2: There’s also read-write-once-pod (RWOP) which means that only one pod on a certain node can read/write to a volume. This is only supported for CSI volumes and k8s &gt; 1.22 <a href="https://stackoverflow.com/a/71046870/4185785">[source]</a>.</p>
-<p><img src="https://blog.cynkra.com/blog/posts/2022-09-14-rstudio-efs-nfs/k8s-meme.jpeg" class="img-fluid"></p>
+<p><img src="https://blog.cynkra.com/posts/2022-09-14-rstudio-efs-nfs/k8s-meme.jpeg" class="img-fluid"></p>
 <p><em><a href="https://duckduckgo.com/?q=kubernetes+efs+memes&amp;iar=images&amp;iax=images&amp;ia=images&amp;iai=https%3A%2F%2Fwww.unlockyourbrain.bzh%2Fwp-content%2Fuploads%2F2020%2F09%2F1zm5Yf4QPuoV1KtnECUhsRQ.jpeg">Image source</a></em></p>
 </section>
 </section>
@@ -67,11 +68,11 @@
 <p>It was time to look into alternatives. Since some years, most cloud providers offer their own, cloud-based RWX file systems. These claim to be very flexible in the way that they are available for mounts in all AZs. Cluster admins only need to configure a driver (which allows to define certain mount options) but the file system itself is hosted by the cloud provider in an HA setting. AWS calls it EFS (elastic file system), on Azure it’s called “azure files.” Google does not provide a native RWX solution (only ROX) and one is <a href="https://medium.com/@Sushil_Kumar/readwritemany-persistent-volumes-in-google-kubernetes-engine-a0b93e203180">required to use a self-managed NFS server for RWX</a>.</p>
 <p>Since we are on AWS, we thought about giving EFS, the native AWS multi-AZ RWX offering, a try. We were aware of the warnings given out by RStudio about <a href="https://docs.rstudio.com/rstudio-team/integration/efs/">possible performance issues</a>. Luckily, we were not the first ones to try EFS with RStudio products. The RStudio engineers already wrote an article about RStudio applications with EFS, especially targeting the performance topic (see linked article).</p>
 <p>Besides the higher price (around 3x) of EFS compared to EBS (elastic block storage = default RWO file system), which is used behind the scenes by an NFS server deployment, EFS is somewhat lacking in performance compared to NFS. The following figures show some file system benchmark results which we have carried out on different instance types. Network-optimized instance types (<code>r5n</code> on AWS) <a href="https://docs.rstudio.com/rstudio-team/integration/efs/">were said to improve EFS performance</a> which is backed up by our results.</p>
-<p><img src="https://blog.cynkra.com/blog/posts/2022-09-14-rstudio-efs-nfs/efs-nfs-sequential.png" class="img-fluid"> <em>Fig. 1: Sequential benchmarking results of EFS (executed on <code>r5n.xlarge</code> and <code>t3.xlarge</code> instances) and NFS (executed on a <code>t3.xlarge</code> instance). Benchmark source: <a href="https://github.com/rstudio/fsbench">rstudio/fsbench</a>.</em></p>
+<p><img src="https://blog.cynkra.com/posts/2022-09-14-rstudio-efs-nfs/efs-nfs-sequential.png" class="img-fluid"> <em>Fig. 1: Sequential benchmarking results of EFS (executed on <code>r5n.xlarge</code> and <code>t3.xlarge</code> instances) and NFS (executed on a <code>t3.xlarge</code> instance). Benchmark source: <a href="https://github.com/rstudio/fsbench">rstudio/fsbench</a>.</em></p>
 <p>Apparently, one of the main reasons (according to discussions on the web) is that EFS is used by many people around the world and needs to split its available resources dynamically across all clients. There are ways to increase performance (e.g., by selecting a different mode, increasing the size of the file system or tweaking certain mount options). However, in the end EFS will always stay slower than NFS.</p>
-<p><img src="https://blog.cynkra.com/blog/posts/2022-09-14-rstudio-efs-nfs/efs-nfs-parallel.png" class="img-fluid"> <em>Fig. 2: Parallel benchmarking results of EFS (executed on <code>r5n.xlarge</code> and <code>t3.xlarge</code> instances) and NFS (executed on an <code>t3.xlarge</code> instance). Benchmark source: <a href="https://github.com/rstudio/fsbench">rstudio/fsbench</a>.</em></p>
+<p><img src="https://blog.cynkra.com/posts/2022-09-14-rstudio-efs-nfs/efs-nfs-parallel.png" class="img-fluid"> <em>Fig. 2: Parallel benchmarking results of EFS (executed on <code>r5n.xlarge</code> and <code>t3.xlarge</code> instances) and NFS (executed on an <code>t3.xlarge</code> instance). Benchmark source: <a href="https://github.com/rstudio/fsbench">rstudio/fsbench</a>.</em></p>
 <p>We’ve also compared Azure’s <a href="https://docs.microsoft.com/en-us/azure/storage/files/files-nfs-protocol">Azure Files NFS</a> offering to AWS EFS using the <a href="https://github.com/rstudio/fsbench">fsbench</a> tool from RStudio. At first we were optimistic giving the higher maximum values reported for the Azure NFS service. However, the benchmark results show a different picture and do not encourage moving existing RStudio k8s deployments from AWS to Azure.</p>
-<p><img src="https://blog.cynkra.com/blog/posts/2022-09-14-rstudio-efs-nfs/aws-azure-sequential.png" class="img-fluid"></p>
+<p><img src="https://blog.cynkra.com/posts/2022-09-14-rstudio-efs-nfs/aws-azure-sequential.png" class="img-fluid"></p>
 <p><em>Fig. 3: Sequential benchmarking results of AWS EFS (<strong>aws-mem</strong> = <code>r5n.large</code>) and Azure Files NFS (<strong>azure-gp</strong> = <code>D2s_v3</code>; <strong>azure-mem</strong> = <code>E2bds_v5</code>). Benchmark source: <a href="https://github.com/rstudio/fsbench">rstudio/fsbench</a>.</em></p>
 <p>Having compared NFS and EFS performance-wise now and given that file system decisions are usually deliberate ones, the question for us was: how much slower is it compared to NFS and do the upsides of EFS outweigh it? After trying it out for ourselves, we concluded yes, the advantages of EFS outweigh its decreased performance and we should use it as the file system for our RStudio k8s clusters. With EFS, we</p>
 <ul>
@@ -774,15 +775,16 @@ font-style: inherit;"> /home/rstudio-shared-storage</span></span></code></pre></
 </section>
 
  ]]></description>
-  <guid>https://blog.cynkra.com/blog/posts/2022-09-14-rstudio-efs-nfs/index.html</guid>
+  <guid>https://blog.cynkra.com/posts/2022-09-14-rstudio-efs-nfs/</guid>
   <pubDate>Wed, 14 Sep 2022 00:00:00 GMT</pubDate>
-  <media:content url="https://blog.cynkra.com/blog/posts/2022-09-14-rstudio-efs-nfs/banner.png" medium="image" type="image/png" height="120" width="144"/>
+  <media:content url="https://blog.cynkra.com/posts/2022-09-14-rstudio-efs-nfs/banner.png" medium="image" type="image/png" height="120" width="144"/>
 </item>
 <item>
   <title>Accessing Google’s API via OAuth2</title>
   <dc:creator>Patrick Schratz</dc:creator>
-  <link>https://blog.cynkra.com/blog/posts/2022-05-14-accessing-google-api-via-oauth2/index.html</link>
+  <link>https://blog.cynkra.com/posts/2022-05-14-accessing-google-api-via-oauth2/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -1656,16 +1658,16 @@ font-style: inherit;">         }'</span></span></code></pre></div>
 </section>
 
  ]]></description>
-  <guid>https://blog.cynkra.com/blog/posts/2022-05-14-accessing-google-api-via-oauth2/index.html</guid>
+  <guid>https://blog.cynkra.com/posts/2022-05-14-accessing-google-api-via-oauth2/</guid>
   <pubDate>Sat, 14 May 2022 00:00:00 GMT</pubDate>
-  <media:content url="https://blog.cynkra.com/blog/posts/2022-05-14-accessing-google-api-via-oauth2/banner.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://blog.cynkra.com/posts/2022-05-14-accessing-google-api-via-oauth2/banner.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>seasonal 1.9: Accessing composite output</title>
   <dc:creator>Christoph Sax</dc:creator>
-  <link>https://blog.cynkra.com/blog/posts/2022-04-19-seasonal-1.9/index.html</link>
+  <link>https://blog.cynkra.com/posts/2022-04-19-seasonal-1.9/</link>
   <description><![CDATA[ <p>seasonal is an easy-to-use and full-featured R interface to X-13ARIMA-SEATS, the seasonal adjustment software developed by the United States Census Bureau. The latest CRAN version of seasonal fixes several bugs and makes it easier to access output from multiple objects. See <a href="https://github.com/christophsax/seasonal/blob/main/NEWS.md#190">here</a> for a complete list of changes.</p>
-<figure class="figure"><img alt="Illustration" src="https://blog.cynkra.com/blog/posts/2022-04-19-seasonal-1.9/banner.jpg" style=" width: 100%; height: auto" class="figure-img"><figcaption class="figure-caption">
+<figure class="figure"><img alt="Illustration" src="https://blog.cynkra.com/posts/2022-04-19-seasonal-1.9/banner.jpg" style=" width: 100%; height: auto" class="figure-img"><figcaption>
 Photo by Aaron Burden
 </figcaption></figure><p><br></p>
 <p><code>seas()</code> is the core function of the <a href="https://cran.r-project.org/package=seasonal">seasonal</a> package. By default, <code>seas()</code> calls the automatic procedures of X-13ARIMA-SEATS to perform a seasonal adjustment that works well in most circumstances:</p>
@@ -1897,22 +1899,23 @@ font-style: inherit;">)</span></span></code></pre></div>
 
 
 </section> ]]></description>
-  <guid>https://blog.cynkra.com/blog/posts/2022-04-19-seasonal-1.9/index.html</guid>
+  <guid>https://blog.cynkra.com/posts/2022-04-19-seasonal-1.9/</guid>
   <pubDate>Tue, 19 Apr 2022 00:00:00 GMT</pubDate>
-  <media:content url="https://blog.cynkra.com/blog/posts/2022-04-19-seasonal-1.9/banner.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://blog.cynkra.com/posts/2022-04-19-seasonal-1.9/banner.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Google Season of Docs with R: useR! Information Board</title>
   <dc:creator>Ben Ubah</dc:creator>
-  <link>https://blog.cynkra.com/blog/posts/2022-01-05-gsod-user-infoboard/index.html</link>
+  <link>https://blog.cynkra.com/posts/2022-01-05-gsod-user-infoboard/</link>
   <description><![CDATA[ 
+
 
 
 
 <p>“Google Season of Docs (GSoD) provides support for open source projects to improve their documentation and gives professional technical writers an opportunity to gain experience in open source.” (Source: <a href="https://developers.google.com/season-of-docs">Program website</a>)</p>
 <p>The program makes it possible for technical writers to work closely with an open-source community they may or may not have been engaged with, to solve real problems with high-quality documentation.</p>
 <figure class="figure">
-<img alt="dashboard for exploring useR! conference" src="https://blog.cynkra.com/blog/posts/2022-01-05-gsod-user-infoboard/banner.png" style=" width: 100%; height: auto" class="figure-img">
+<img alt="dashboard for exploring useR! conference" src="https://blog.cynkra.com/posts/2022-01-05-gsod-user-infoboard/banner.png" style=" width: 100%; height: auto" class="figure-img">
 </figure>
 <p>In the end, an awareness of open source, of documentation and technical writing is raised, while participating open source organizations benefit from an improvement in their documentation. The R Project participated in GSoD as an open-source organization for the first time this year after several years of participating in Google Summer of Code (GSoC), another open-source program focused on coding.</p>
 <section id="the-user-conference" class="level2">
@@ -1964,22 +1967,23 @@ font-style: inherit;">)</span></span></code></pre></div>
 </section>
 
  ]]></description>
-  <guid>https://blog.cynkra.com/blog/posts/2022-01-05-gsod-user-infoboard/index.html</guid>
+  <guid>https://blog.cynkra.com/posts/2022-01-05-gsod-user-infoboard/</guid>
   <pubDate>Wed, 05 Jan 2022 00:00:00 GMT</pubDate>
-  <media:content url="https://blog.cynkra.com/blog/posts/2022-01-05-gsod-user-infoboard/banner.png" medium="image" type="image/png" height="76" width="144"/>
+  <media:content url="https://blog.cynkra.com/posts/2022-01-05-gsod-user-infoboard/banner.png" medium="image" type="image/png" height="76" width="144"/>
 </item>
 <item>
   <title>Running old versions of TeXlive with tinytex</title>
   <dc:creator>Kirill Müller</dc:creator>
-  <link>https://blog.cynkra.com/blog/posts/2021-10-07-old-texlive/index.html</link>
+  <link>https://blog.cynkra.com/posts/2021-10-07-old-texlive/</link>
   <description><![CDATA[ 
+
 
 
 
 <p>Rendering PDFs with <a href="https://pkgs.rstudio.com/rmarkdown/">rmarkdown</a> requires a working LaTeX installation, such as <a href="https://yihui.org/tinytex/">tinytex</a>. Occasionally, existing workflows break with the newest version of LaTeX. This post describes how to run an older LaTeX version for just a little while.</p>
 <figure class="figure">
-<img alt="Old typewriter has typed the word 'Update' on paper" src="https://blog.cynkra.com/blog/posts/2021-10-07-old-texlive/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
-<figcaption class="figure-caption">
+<img alt="Old typewriter has typed the word 'Update' on paper" src="https://blog.cynkra.com/posts/2021-10-07-old-texlive/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
+<figcaption>
 Photo by Markus Winkler
 </figcaption>
 </figure>
@@ -2138,22 +2142,23 @@ font-style: inherit;">TRUE</span>)</span></code></pre></div>
 </section>
 
  ]]></description>
-  <guid>https://blog.cynkra.com/blog/posts/2021-10-07-old-texlive/index.html</guid>
+  <guid>https://blog.cynkra.com/posts/2021-10-07-old-texlive/</guid>
   <pubDate>Thu, 07 Oct 2021 00:00:00 GMT</pubDate>
-  <media:content url="https://blog.cynkra.com/blog/posts/2021-10-07-old-texlive/banner.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://blog.cynkra.com/posts/2021-10-07-old-texlive/banner.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>tsbox 0.3.1: extended functionality</title>
   <dc:creator>Christoph Sax</dc:creator>
-  <link>https://blog.cynkra.com/blog/posts/2021-09-18-tsbox-03/index.html</link>
+  <link>https://blog.cynkra.com/posts/2021-09-18-tsbox-03/</link>
   <description><![CDATA[ 
+
 
 
 
 <p><a href="https://www.tsbox.help/">The tsbox package</a> provides a set of tools that are agnostic towards existing time series classes. The tools also allow you to handle time series as plain data frames, thus making it easy to deal with time series in a dplyr or data.table workflow.</p>
 <figure class="figure">
-<img alt="Illustration" src="https://blog.cynkra.com/blog/posts/2021-09-18-tsbox-03/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
-<figcaption class="figure-caption">
+<img alt="Illustration" src="https://blog.cynkra.com/posts/2021-09-18-tsbox-03/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
+<figcaption>
 Photo by James Sutton
 </figcaption>
 </figure>
@@ -2445,8 +2450,8 @@ font-style: inherit;">"Monthly passengers, annual trappings, monthly deaths"</sp
 <span id="cb5-7">)</span></code></pre></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://blog.cynkra.com/blog/posts/2021-09-18-tsbox-03/plot.png" title="Illustration" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">time series plot</figcaption>
+<p><img src="https://blog.cynkra.com/posts/2021-09-18-tsbox-03/plot.png" title="Illustration" class="img-fluid figure-img"></p>
+<figcaption>time series plot</figcaption>
 </figure>
 </div>
 
@@ -2454,22 +2459,23 @@ font-style: inherit;">"Monthly passengers, annual trappings, monthly deaths"</sp
 </section>
 
  ]]></description>
-  <guid>https://blog.cynkra.com/blog/posts/2021-09-18-tsbox-03/index.html</guid>
+  <guid>https://blog.cynkra.com/posts/2021-09-18-tsbox-03/</guid>
   <pubDate>Sat, 18 Sep 2021 00:00:00 GMT</pubDate>
-  <media:content url="https://blog.cynkra.com/blog/posts/2021-09-18-tsbox-03/banner.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://blog.cynkra.com/posts/2021-09-18-tsbox-03/banner.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Celebrating one-year anniversary as RStudio Full Service Certified Partner</title>
   <dc:creator>Cosima Meyer, Patrick Schratz</dc:creator>
-  <link>https://blog.cynkra.com/blog/posts/2021-07-09-certified-partner-anniversary/index.html</link>
+  <link>https://blog.cynkra.com/posts/2021-07-09-certified-partner-anniversary/</link>
   <description><![CDATA[ 
+
 
 
 
 <p>cynkra celebrates its first anniversary as an <a href="https://rstudio.com/certified-partners/">RStudio Full Service Certified Partner</a>! Every day, we help our clients set up professional IT infrastructures using RStudio products and license compositions suited to their individual needs. In the context of our anniversary, we would like to discuss the RStudio suite of products and our approach of combining RStudio’s products with our Managed Workbench Solution to make RStudio Professional products even more powerful.</p>
 <figure class="figure">
-<img alt="Illustration" src="https://blog.cynkra.com/blog/posts/2021-07-09-certified-partner-anniversary/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
-<figcaption class="figure-caption">
+<img alt="Illustration" src="https://blog.cynkra.com/posts/2021-07-09-certified-partner-anniversary/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
+<figcaption>
 Photo by Adi Goldstein
 </figcaption>
 </figure>
@@ -2501,8 +2507,8 @@ Photo by Adi Goldstein
 <p>The following GIF might give you an idea of speed improvement (we did the test using a relatively new MacBook Pro 2020). When we deployed the cloud-based RStudio Workbench on the MacBook, the machine performed much faster. The difference in speed will be even more noticeable in an older machine.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://blog.cynkra.com/blog/posts/2021-07-09-certified-partner-anniversary/rstudio-desktop-vs-rsw.gif" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">RStudio Desktop vs.&nbsp;RStudio Workbench speed comparison</figcaption>
+<p><img src="https://blog.cynkra.com/posts/2021-07-09-certified-partner-anniversary/rstudio-desktop-vs-rsw.gif" class="img-fluid figure-img"></p>
+<figcaption>RStudio Desktop vs.&nbsp;RStudio Workbench speed comparison</figcaption>
 </figure>
 </div>
 <p>Battery usage becomes critical when working from home or on the go. Using RStudio Workbench instead of RStudio Desktop will save battery life because all computation is done on a remote machine. RStudio Desktop, in particular, is quite energy-hungry; we have experienced battery life improvements of 30% and more in our daily work when using the cloud-based RStudio Workbench instead of RStudio Desktop.</p>
@@ -2510,7 +2516,6 @@ Photo by Adi Goldstein
 <section id="custom-real-world-examples" class="level3">
 <h3 class="anchored" data-anchor-id="custom-real-world-examples">Custom real-world examples</h3>
 <p>One of the key strengths of our offering is individualization. To provide more details on this, we put together some configurations we implemented recently to give an idea of what individualized setups can look like in practice.</p>
-
 <table class="table">
 <thead>
 <tr>
@@ -2659,7 +2664,6 @@ IBM DB2
 </td>
 </tr>
 </tbody>
-
 </table>
 <p>Acronym dictionary for Table:</p>
 <ul>
@@ -2678,22 +2682,23 @@ IBM DB2
 </section>
 
  ]]></description>
-  <guid>https://blog.cynkra.com/blog/posts/2021-07-09-certified-partner-anniversary/index.html</guid>
+  <guid>https://blog.cynkra.com/posts/2021-07-09-certified-partner-anniversary/</guid>
   <pubDate>Fri, 09 Jul 2021 00:00:00 GMT</pubDate>
-  <media:content url="https://blog.cynkra.com/blog/posts/2021-07-09-certified-partner-anniversary/banner.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://blog.cynkra.com/posts/2021-07-09-certified-partner-anniversary/banner.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Deprecating a pkgdown site served via GitHub Pages</title>
   <dc:creator>Patrick Schratz, Kirill Müller</dc:creator>
-  <link>https://blog.cynkra.com/blog/posts/2021-04-09-deprecating-pkgdown/index.html</link>
+  <link>https://blog.cynkra.com/posts/2021-04-09-deprecating-pkgdown/</link>
   <description><![CDATA[ 
+
 
 
 
 <p>Websites for R packages built with <a href="https://pkgdown.r-lib.org/">{pkgdown}</a> have become a de-facto standard over the last few years. Many R packages build their site during Continuous Integration (CI) runs, pushing the assets to the special <code>gh-pages</code> branch (even though now <a href="https://github.blog/changelog/2020-09-03-build-and-deploy-github-pages-from-any-branch/">any branch can be used to deploy a website</a>).</p>
 <figure class="figure">
-<img alt="Illustration" src="https://blog.cynkra.com/blog/posts/2021-04-09-deprecating-pkgdown/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
-<figcaption class="figure-caption">
+<img alt="Illustration" src="https://blog.cynkra.com/posts/2021-04-09-deprecating-pkgdown/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
+<figcaption>
 Photo by Paweł Czerwiński
 </figcaption>
 </figure>
@@ -2722,17 +2727,19 @@ Photo by Paweł Czerwiński
 <h2 class="anchored" data-anchor-id="redirection">Redirection</h2>
 <p>Basic idea: set up an HTML redirect from <code>https://&lt;username-old&gt;.github.io/&lt;package&gt;</code> to <code>https://&lt;username-new&gt;.github.io/&lt;package&gt;</code>.</p>
 <p>To achieve this, create an <code>index.html</code> in <code>&lt;username&gt;/&lt;username&gt;.github.io/rpackage</code> with the following contents:</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb1-1"><span class="kw" style="color: #003B4F;
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb1-1"><span class="dt" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">&lt;meta</span> <span class="er" style="color: #AD0000;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
 background-color: null;
-font-style: inherit;">http-equiv</span><span class="ot" style="color: #003B4F;
+font-style: inherit;">meta</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> http-equiv</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"refresh"</span> <span class="er" style="color: #AD0000;
+font-style: inherit;">"refresh"</span><span class="ot" style="color: #003B4F;
 background-color: null;
-font-style: inherit;">content</span><span class="ot" style="color: #003B4F;
+font-style: inherit;"> content</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
@@ -2740,7 +2747,9 @@ font-style: inherit;">"0; url=</span><span class="er" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">&lt;</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">url to redirect to&gt;"</span> <span class="kw" style="color: #003B4F;
+font-style: inherit;">url to redirect to&gt;"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> </span><span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">/&gt;</span></span></code></pre></div>
 <p>However, some redirection practices like this one are considered bad practice (“Use of meta refresh is discouraged by the World Wide Web Consortium (W3C).”)[^1]. Also, users might find it sketchy to see some redirection happening shortly after they visited a site. Last, the redirection shown above only works for the top-level domain. Level 2 or level 3 links like <code>&lt;url&gt;/level1/level2</code> will not work and return a 404.</p>
@@ -2756,14 +2765,18 @@ background-color: null;
 font-style: inherit;">:after</span> {</span>
 <span id="cb2-2">  <span class="kw" style="color: #003B4F;
 background-color: null;
-font-style: inherit;">content</span>: <span class="st" style="color: #20794D;
+font-style: inherit;">content</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"You are viewing an outdated page which is not going to be updated anymore. Please go to &lt;https:/new-url.com&gt; for the latest version."</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb2-3">  <span class="kw" style="color: #003B4F;
 background-color: null;
-font-style: inherit;">font-size</span>: <span class="dv" style="color: #AD0000;
+font-style: inherit;">font-size</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">12</span><span class="dt" style="color: #AD0000;
 background-color: null;
@@ -2772,22 +2785,26 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb2-4">  <span class="kw" style="color: #003B4F;
 background-color: null;
-font-style: inherit;">font-style</span>: <span class="dv" style="color: #AD0000;
+font-style: inherit;">font-style</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">italic</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb2-5">  <span class="kw" style="color: #003B4F;
 background-color: null;
-font-style: inherit;">color</span>: <span class="cn" style="color: #8f5902;
+font-style: inherit;">color</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="cn" style="color: #8f5902;
 background-color: null;
 font-style: inherit;">#f03333</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb2-6">}</span></code></pre></div>
 <figure class="figure">
-<img alt="Screenshot: Deprecation via CSS" src="https://blog.cynkra.com/blog/posts/2021-04-09-deprecating-pkgdown/css.png" style=" width: 100%; height: auto" class="figure-img">
-<figcaption class="figure-caption">
+<img alt="Screenshot: Deprecation via CSS" src="https://blog.cynkra.com/posts/2021-04-09-deprecating-pkgdown/css.png" style=" width: 100%; height: auto" class="figure-img">
+<figcaption>
 Deprecation information in the header via CSS
 </figcaption>
 </figure>
@@ -2824,8 +2841,8 @@ background-color: null;
 font-style: inherit;">'s#(^.*[&lt;]/header[&gt;])#&lt;div class="alert alert-warning" role="alert"&gt;&lt;strong&gt;Warning!&lt;/strong&gt; This content has moved to &lt;a href="https://cynkra.github.io/munch"&gt;https://cynkra.github.io/munch&lt;/a&gt;.&lt;/div&gt;\n\1#'</span></span></code></pre></div>
 <p>This assumes GNU <code>sed</code>. MacOS users will need to use <code>gsed</code>, or <code>-i.bak</code> instead of <code>-i</code> and deal with the leftover <code>*.bak</code> files.</p>
 <figure class="figure">
-<img alt="Screenshot: Deprecation via editing HTML" src="https://blog.cynkra.com/blog/posts/2021-04-09-deprecating-pkgdown/bootstrap.png" style=" width: 100%; height: auto" class="figure-img">
-<figcaption class="figure-caption">
+<img alt="Screenshot: Deprecation via editing HTML" src="https://blog.cynkra.com/posts/2021-04-09-deprecating-pkgdown/bootstrap.png" style=" width: 100%; height: auto" class="figure-img">
+<figcaption>
 Deprecation information in the header via editing HTML
 </figcaption>
 </figure>
@@ -2842,15 +2859,16 @@ Deprecation information in the header via editing HTML
 </section>
 
  ]]></description>
-  <guid>https://blog.cynkra.com/blog/posts/2021-04-09-deprecating-pkgdown/index.html</guid>
+  <guid>https://blog.cynkra.com/posts/2021-04-09-deprecating-pkgdown/</guid>
   <pubDate>Fri, 09 Apr 2021 00:00:00 GMT</pubDate>
-  <media:content url="https://blog.cynkra.com/blog/posts/2021-04-09-deprecating-pkgdown/banner.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://blog.cynkra.com/posts/2021-04-09-deprecating-pkgdown/banner.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>gfortran support for R on macOS</title>
   <dc:creator>Patrick Schratz</dc:creator>
-  <link>https://blog.cynkra.com/blog/posts/2021-03-16-gfortran-macos/index.html</link>
+  <link>https://blog.cynkra.com/posts/2021-03-16-gfortran-macos/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -3403,11 +3421,15 @@ font-style: inherit;">4.0</span><span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">/</span>library<span class="sc" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">/</span>00LOCK<span class="sc" style="color: #5E5E5E;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">00</span>LOCK<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">-</span>cluster<span class="sc" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">/</span>00new<span class="sc" style="color: #5E5E5E;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">00</span>new<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">/</span>cluster<span class="sc" style="color: #5E5E5E;
 background-color: null;
@@ -3483,15 +3505,15 @@ font-style: inherit;">DONE</span> (cluster)</span></code></pre></div>
 </section>
 
  ]]></description>
-  <guid>https://blog.cynkra.com/blog/posts/2021-03-16-gfortran-macos/index.html</guid>
+  <guid>https://blog.cynkra.com/posts/2021-03-16-gfortran-macos/</guid>
   <pubDate>Tue, 16 Mar 2021 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Seasonal Adjustment of Multiple Series</title>
   <dc:creator>Christoph Sax</dc:creator>
-  <link>https://blog.cynkra.com/blog/posts/2021-03-09-seasonal-1.8/index.html</link>
+  <link>https://blog.cynkra.com/posts/2021-03-09-seasonal-1.8/</link>
   <description><![CDATA[ <p>seasonal is an easy-to-use and full-featured R-interface to X-13ARIMA-SEATS, the seasonal adjustment software developed by the United States Census Bureau. The latest CRAN version of seasonal makes it much easier to adjust multiple time series.</p>
-<figure class="figure"><img alt="Illustration" src="https://blog.cynkra.com/blog/posts/2021-03-09-seasonal-1.8/banner.jpg" style=" width: 100%; height: auto" class="figure-img"><figcaption class="figure-caption">
+<figure class="figure"><img alt="Illustration" src="https://blog.cynkra.com/posts/2021-03-09-seasonal-1.8/banner.jpg" style=" width: 100%; height: auto" class="figure-img"><figcaption>
 Photo by Meriç Dağlı
 </figcaption></figure><p><br></p>
 <p><a href="http://www.seasonal.website">seasonal</a> depends on the <a href="https://CRAN.R-project.org/package=x13binary">x13binary</a> package to access pre-built binaries of X-13ARIMA-SEATS on all platforms and does not require any manual installation. To install both packages:</p>
@@ -3919,23 +3941,24 @@ Coefficients:
 
 
 </section> ]]></description>
-  <guid>https://blog.cynkra.com/blog/posts/2021-03-09-seasonal-1.8/index.html</guid>
+  <guid>https://blog.cynkra.com/posts/2021-03-09-seasonal-1.8/</guid>
   <pubDate>Tue, 09 Mar 2021 00:00:00 GMT</pubDate>
-  <media:content url="https://blog.cynkra.com/blog/posts/2021-03-09-seasonal-1.8/banner.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://blog.cynkra.com/posts/2021-03-09-seasonal-1.8/banner.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Dynamic build matrix in GitHub Actions</title>
   <dc:creator>Kirill Müller</dc:creator>
-  <link>https://blog.cynkra.com/blog/posts/2020-12-23-dynamic-gha/index.html</link>
+  <link>https://blog.cynkra.com/posts/2020-12-23-dynamic-gha/</link>
   <description><![CDATA[ 
+
 
 
 
 <p>I wanted to try out the new <code>fromJSON()</code> that allows dynamic build matrices in GitHub Actions for quite some time now. Today was the day.</p>
 <p><a href="https://github.com/features/actions">GitHub Actions</a> allows automating build and deployment processes (CI/CD), tightly integrated with GitHub. A <a href="https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategymatrix">build matrix</a> is a way to define very similar workflows that differ only by configuration parameters. Usually, a build matrix is defined directly in the <code>.yaml</code> files together with the workflows. This blog post shows how to define these build matrices dynamically so that the “source of truth” for the matrix definition is outside the <code>.yaml</code> file.</p>
 <figure class="figure">
-<img alt="Illustration" src="https://blog.cynkra.com/blog/posts/2020-12-23-dynamic-gha/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
-<figcaption class="figure-caption">
+<img alt="Illustration" src="https://blog.cynkra.com/posts/2020-12-23-dynamic-gha/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
+<figcaption>
 Photo by <a href="https://unsplash.com/photos/iar-afB0QQw" target="_blank"> Markus Spiske</a>
 </figcaption>
 </figure>
@@ -4533,8 +4556,8 @@ background-color: null;
 font-style: inherit;">    # rest unchanged</span></span></code></pre></div>
 <p>This gives a workflow as shown in the image below.</p>
 <figure class="figure">
-<img alt="GitHub Actions workflow with dependencies" src="https://blog.cynkra.com/blog/posts/2020-12-23-dynamic-gha/workflow.png" style=" width: 100%; height: auto" class="figure-img">
-<figcaption class="figure-caption">
+<img alt="GitHub Actions workflow with dependencies" src="https://blog.cynkra.com/posts/2020-12-23-dynamic-gha/workflow.png" style=" width: 100%; height: auto" class="figure-img">
+<figcaption>
 Final workflow with dynamic build matrix
 </figcaption>
 </figure>
@@ -4566,22 +4589,23 @@ Final workflow with dynamic build matrix
 <li id="fn1"><p>You can use any tool or ecosystem you are familiar with to come up with the JSON definition. To avoid long installation times, use a specific image for your step via <a href="https://www.petefreitag.com/item/903.cfm"><code>uses: docker://...</code></a> or implement a <a href="https://docs.github.com/en/free-pro-team@latest/actions/creating-actions/creating-a-docker-container-action">container action</a>, also possible <a href="https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstepsuses">in the same repository</a>.↩︎</p></li>
 </ol>
 </section></div> ]]></description>
-  <guid>https://blog.cynkra.com/blog/posts/2020-12-23-dynamic-gha/index.html</guid>
+  <guid>https://blog.cynkra.com/posts/2020-12-23-dynamic-gha/</guid>
   <pubDate>Wed, 23 Dec 2020 00:00:00 GMT</pubDate>
-  <media:content url="https://blog.cynkra.com/blog/posts/2020-12-23-dynamic-gha/banner.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://blog.cynkra.com/posts/2020-12-23-dynamic-gha/banner.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Setting up a load-balanced Jitsi Meet instance</title>
   <dc:creator>Patrick Schratz</dc:creator>
-  <link>https://blog.cynkra.com/blog/posts/2020-11-02-jitsi-load-balanced/index.html</link>
+  <link>https://blog.cynkra.com/posts/2020-11-02-jitsi-load-balanced/</link>
   <description><![CDATA[ 
+
 
 
 
 <p>Jitsi Meet is a self-hosted Free and Open-Source Software (FOSS) video conferencing solution. During the recent COVID-19 pandemic, the project became quite popular, and many companies decided to host their own Jitsi instance.</p>
 <figure class="figure">
-<img alt="Illustration" src="https://blog.cynkra.com/blog/posts/2020-11-02-jitsi-load-balanced/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
-<figcaption class="figure-caption">
+<img alt="Illustration" src="https://blog.cynkra.com/posts/2020-11-02-jitsi-load-balanced/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
+<figcaption>
 Photo by Chuttersnap
 </figcaption>
 </figure>
@@ -4677,21 +4701,22 @@ font-style: inherit;">"&lt;PASSWORD&gt;"</span></span></code></pre></div></li>
 </section>
 
  ]]></description>
-  <guid>https://blog.cynkra.com/blog/posts/2020-11-02-jitsi-load-balanced/index.html</guid>
+  <guid>https://blog.cynkra.com/posts/2020-11-02-jitsi-load-balanced/</guid>
   <pubDate>Mon, 02 Nov 2020 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Maintaining multiple identities with Git</title>
   <dc:creator>Kirill Müller</dc:creator>
-  <link>https://blog.cynkra.com/blog/posts/2020-08-25-git-multiple-identities/index.html</link>
+  <link>https://blog.cynkra.com/posts/2020-08-25-git-multiple-identities/</link>
   <description><![CDATA[ 
+
 
 
 
 <p>When committing to a Git repository related to my consulting work, I must use my company e-mail address, kirill@cynkra.com. Not so much for my open-source work – for this, I prefer to use other e-mail addresses, like krlmlr+r@mailbox.org . (For example, Travis CI sends notification e-mails to the committer’s e-mail address, and I have set up filtering for that other address.)</p>
 <figure class="figure">
-<img alt="Illustration" src="https://blog.cynkra.com/blog/posts/2020-08-25-git-multiple-identities/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
-<figcaption class="figure-caption">
+<img alt="Illustration" src="https://blog.cynkra.com/posts/2020-08-25-git-multiple-identities/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
+<figcaption>
 Photo by Carson Arias
 </figcaption>
 </figure>
@@ -4714,22 +4739,23 @@ Photo by Carson Arias
 
 
  ]]></description>
-  <guid>https://blog.cynkra.com/blog/posts/2020-08-25-git-multiple-identities/index.html</guid>
+  <guid>https://blog.cynkra.com/posts/2020-08-25-git-multiple-identities/</guid>
   <pubDate>Tue, 25 Aug 2020 00:00:00 GMT</pubDate>
-  <media:content url="https://blog.cynkra.com/blog/posts/2020-08-25-git-multiple-identities/banner.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://blog.cynkra.com/posts/2020-08-25-git-multiple-identities/banner.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Relational data models in R</title>
   <dc:creator>Angel D&#39;az, Kirill Müller</dc:creator>
-  <link>https://blog.cynkra.com/blog/posts/2020-04-02-dm/index.html</link>
+  <link>https://blog.cynkra.com/posts/2020-04-02-dm/</link>
   <description><![CDATA[ 
+
 
 
 
 <p>Relational databases are powerful tools for analyzing and manipulating data. However, many modeling workflows require a great deal of time and effort to wrangle data from databases to place it into a flat data frame or table format. Only then the actual data analysis can start.</p>
 <figure class="figure">
-<img alt="Illustration" src="https://blog.cynkra.com/blog/posts/2020-04-02-dm/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
-<figcaption class="figure-caption">
+<img alt="Illustration" src="https://blog.cynkra.com/posts/2020-04-02-dm/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
+<figcaption>
 Photo by Jordan McDonald
 </figcaption>
 </figure>
@@ -5120,7 +5146,7 @@ font-style: inherit;">%&gt;%</span></span>
 <span id="cb9-23">  <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">dm_draw</span>()</span></code></pre></div>
-<p><img alt="Data model" src="https://blog.cynkra.com/blog/posts/2020-04-02-dm/dm_draw.png" style="height: auto; width: 60%;"></p>
+<p><img alt="Data model" src="https://blog.cynkra.com/posts/2020-04-02-dm/dm_draw.png" style="height: auto; width: 60%;"></p>
 <p>The discrepancies highlight the importance of being able to define primary and foreign keys. Most of the challenges in manipulating data are not syntax knowledge gaps. The syntax can always be looked up with search engines. Knowledge gaps regarding how data is organized are much more common as stumbling blocks for R users when working with distributed data.</p>
 <p>Insight into the structure of a database using the built-in <code>dm_draw()</code> function provides an instant efficiency boost. Combined with defining unique identifiers (primary keys) and how they are found by other tables (foreign keys), an R user can quickly clarify the structures with which they are working.</p>
 <p>To assist with this process of defining the structure, dm comes with a built-in helper to check the referential integrity of the dataset:</p>
@@ -5281,22 +5307,23 @@ font-style: italic;">## #   A15 &lt;int&gt;, A16 &lt;int&gt;</span></span></code
 </section>
 
  ]]></description>
-  <guid>https://blog.cynkra.com/blog/posts/2020-04-02-dm/index.html</guid>
+  <guid>https://blog.cynkra.com/posts/2020-04-02-dm/</guid>
   <pubDate>Thu, 02 Apr 2020 00:00:00 GMT</pubDate>
-  <media:content url="https://blog.cynkra.com/blog/posts/2020-04-02-dm/banner.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://blog.cynkra.com/posts/2020-04-02-dm/banner.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>tempdisagg: converting quarterly time series to daily</title>
   <dc:creator>Christoph Sax</dc:creator>
-  <link>https://blog.cynkra.com/blog/posts/2020-02-09-tempdisagg/index.html</link>
+  <link>https://blog.cynkra.com/posts/2020-02-09-tempdisagg/</link>
   <description><![CDATA[ 
+
 
 
 
 <p>Not having a time series at the desired frequency is a common problem for researchers and analysts. For example, instead of quarterly sales, they only have annual sales. Instead of a daily stock market index, they only have a weekly index. While there is no way to fully make up for the missing data, there are useful workarounds: with the help of one or more high-frequency indicator series, the low-frequency series may be disaggregated into a high-frequency series.</p>
 <figure class="figure">
-<img alt="Illustration" src="https://blog.cynkra.com/blog/posts/2020-02-09-tempdisagg/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
-<figcaption class="figure-caption">
+<img alt="Illustration" src="https://blog.cynkra.com/posts/2020-02-09-tempdisagg/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
+<figcaption>
 Photo by Jordan McDonald
 </figcaption>
 </figure>
@@ -5357,8 +5384,8 @@ font-style: inherit;">subtitle =</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"real, not seasonally adjusted"</span>)</span></code></pre></div>
 <figure class="figure">
-<img alt="Graph: Swiss GDP, not seasonally adjusted" src="https://blog.cynkra.com/blog/posts/2020-02-09-tempdisagg/quarterly-1.png" style=" width: 100%; height: auto" class="figure-img">
-<figcaption class="figure-caption">
+<img alt="Graph: Swiss GDP, not seasonally adjusted" src="https://blog.cynkra.com/posts/2020-02-09-tempdisagg/quarterly-1.png" style=" width: 100%; height: auto" class="figure-img">
+<figcaption>
 Series to disaggregate: quarterly gross domestic product of Switzerland
 </figcaption>
 </figure>
@@ -5379,8 +5406,8 @@ font-style: inherit;">subtitle =</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"daily values, interpolated"</span>)</span></code></pre></div>
 <figure class="figure">
-<img alt="Graph: Swiss Performance Index, daily" src="https://blog.cynkra.com/blog/posts/2020-02-09-tempdisagg/indicator-1.png" style=" width: 100%; height: auto" class="figure-img">
-<figcaption class="figure-caption">
+<img alt="Graph: Swiss Performance Index, daily" src="https://blog.cynkra.com/posts/2020-02-09-tempdisagg/indicator-1.png" style=" width: 100%; height: auto" class="figure-img">
+<figcaption>
 Daily indicator series: Swiss Performance Index
 </figcaption>
 </figure>
@@ -5486,8 +5513,8 @@ background-color: null;
 font-style: inherit;">"one indicator"</span></span>
 <span id="cb5-8">)</span></code></pre></div>
 <figure class="figure">
-<img alt="Graph: Daily disaggregated Swiss GDP" src="https://blog.cynkra.com/blog/posts/2020-02-09-tempdisagg/daily-1.png" style=" width: 100%; height: auto" class="figure-img">
-<figcaption class="figure-caption">
+<img alt="Graph: Daily disaggregated Swiss GDP" src="https://blog.cynkra.com/posts/2020-02-09-tempdisagg/daily-1.png" style=" width: 100%; height: auto" class="figure-img">
+<figcaption>
 Swiss GDP, disaggregated to daily
 </figcaption>
 </figure>
@@ -5524,15 +5551,16 @@ font-style: italic;">## [1] TRUE</span></span></code></pre></div>
 </section>
 
  ]]></description>
-  <guid>https://blog.cynkra.com/blog/posts/2020-02-09-tempdisagg/index.html</guid>
+  <guid>https://blog.cynkra.com/posts/2020-02-09-tempdisagg/</guid>
   <pubDate>Sun, 09 Feb 2020 00:00:00 GMT</pubDate>
-  <media:content url="https://blog.cynkra.com/blog/posts/2020-02-09-tempdisagg/banner.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://blog.cynkra.com/posts/2020-02-09-tempdisagg/banner.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>tsbox 0.2: supporting additional time series classes</title>
   <dc:creator>Christoph Sax</dc:creator>
-  <link>https://blog.cynkra.com/blog/posts/2019-08-12-tsbox-02/index.html</link>
+  <link>https://blog.cynkra.com/posts/2019-08-12-tsbox-02/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -5684,8 +5712,8 @@ font-style: inherit;">"Monthly passengers, annual trappings, monthly deaths"</sp
 <span id="cb9-7">)</span></code></pre></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://blog.cynkra.com/blog/posts/2019-08-12-tsbox-02/unnamed-chunk-2-1.png" title="Illustration" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">time series plot</figcaption>
+<p><img src="https://blog.cynkra.com/posts/2019-08-12-tsbox-02/unnamed-chunk-2-1.png" title="Illustration" class="img-fluid figure-img"></p>
+<figcaption>time series plot</figcaption>
 </figure>
 </div>
 
@@ -5693,21 +5721,22 @@ font-style: inherit;">"Monthly passengers, annual trappings, monthly deaths"</sp
 </section>
 
  ]]></description>
-  <guid>https://blog.cynkra.com/blog/posts/2019-08-12-tsbox-02/index.html</guid>
+  <guid>https://blog.cynkra.com/posts/2019-08-12-tsbox-02/</guid>
   <pubDate>Mon, 12 Aug 2019 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Introducing dm: easy juggling of tables and relations</title>
   <dc:creator>Balthasar Sager</dc:creator>
-  <link>https://blog.cynkra.com/blog/posts/2019-07-17-dm/index.html</link>
+  <link>https://blog.cynkra.com/posts/2019-07-17-dm/</link>
   <description><![CDATA[ 
+
 
 
 
 <p>The <a href="https://krlmlr.github.io/dm/">dm</a> package reduces your mental strain when working with many tables. It connects your data, while still keeping them in their original tables. You can easily perform operations on all tables, visualize how they’re connected, and integrate databases.</p>
 <figure class="figure">
-<img alt="Illustration" src="https://blog.cynkra.com/blog/posts/2019-07-17-dm/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
-<figcaption class="figure-caption">
+<img alt="Illustration" src="https://blog.cynkra.com/posts/2019-07-17-dm/banner.jpg" style=" width: 100%; height: auto" class="figure-img">
+<figcaption>
 Photo by Tobias Fischer
 </figcaption>
 </figure>
@@ -5899,7 +5928,7 @@ font-style: inherit;">%&gt;%</span></span>
 <span id="cb8-9">  <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">cdm_draw</span>()</span></code></pre></div>
-<p><img alt="Data model" src="https://blog.cynkra.com/blog/posts/2019-07-17-dm/datamodelr.png" style="height: auto; width: 50%;"></p>
+<p><img alt="Data model" src="https://blog.cynkra.com/posts/2019-07-17-dm/datamodelr.png" style="height: auto; width: 50%;"></p>
 </section>
 <section id="databases" class="level3">
 <h3 class="anchored" data-anchor-id="databases">Databases</h3>
@@ -5913,15 +5942,16 @@ font-style: inherit;">cdm_draw</span>()</span></code></pre></div>
 </section>
 
  ]]></description>
-  <guid>https://blog.cynkra.com/blog/posts/2019-07-17-dm/index.html</guid>
+  <guid>https://blog.cynkra.com/posts/2019-07-17-dm/</guid>
   <pubDate>Wed, 17 Jul 2019 00:00:00 GMT</pubDate>
-  <media:content url="https://blog.cynkra.com/blog/posts/2019-07-17-dm/banner.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://blog.cynkra.com/posts/2019-07-17-dm/banner.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>tsbox 0.1: class-agnostic time series</title>
   <dc:creator>Christoph Sax</dc:creator>
-  <link>https://blog.cynkra.com/blog/posts/2019-04-10-tsbox-01/index.html</link>
+  <link>https://blog.cynkra.com/posts/2019-04-10-tsbox-01/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -5929,8 +5959,8 @@ font-style: inherit;">cdm_draw</span>()</span></code></pre></div>
 <br>
 <div style="padding-left: 15%; width: 80%">
 <figure class="figure">
-<img alt="xkcd comic: Standards" src="https://blog.cynkra.com/blog/posts/2019-04-10-tsbox-01/https:/imgs.xkcd.com/comics/standards.png" style="width: 100%; height: auto;" class="figure-img">
-<figcaption class="figure-caption">
+<img alt="xkcd comic: Standards" src="https://imgs.xkcd.com/comics/standards.png" style="width: 100%; height: auto;" class="figure-img">
+<figcaption>
 comic by <a href="https://xkcd.com/927/">xkcd</a>
 </figcaption>
 </figure>
@@ -6054,21 +6084,22 @@ font-style: inherit;">#&gt; [1] "1971-04-01"</span></span></code></pre></div>
 <h3 class="anchored" data-anchor-id="and-a-cheat-sheet">And a cheat sheet!</h3>
 <p>Finally, we fabricated a tsbox cheat sheet that summarizes most functionality. Print and enjoy working with time series.</p>
 <div style="padding: 10%">
-<p><a href="tsbox-cheatsheet.pdf"> <img alt="tsbox cheat sheet" src="https://blog.cynkra.com/blog/posts/2019-04-10-tsbox-01/tsbox-cheatsheet-small.jpg" style="width: 100%; height: auto;"> </a></p>
+<p><a href="tsbox-cheatsheet.pdf"> <img alt="tsbox cheat sheet" src="https://blog.cynkra.com/posts/2019-04-10-tsbox-01/tsbox-cheatsheet-small.jpg" style="width: 100%; height: auto;"> </a></p>
 </div>
 
 
 </section>
 
  ]]></description>
-  <guid>https://blog.cynkra.com/blog/posts/2019-04-10-tsbox-01/index.html</guid>
+  <guid>https://blog.cynkra.com/posts/2019-04-10-tsbox-01/</guid>
   <pubDate>Wed, 10 Apr 2019 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Time series of the world, unite!</title>
   <dc:creator>Christoph Sax</dc:creator>
-  <link>https://blog.cynkra.com/blog/posts/2018-05-15-tsbox/index.html</link>
+  <link>https://blog.cynkra.com/posts/2018-05-15-tsbox/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -6226,8 +6257,8 @@ font-style: inherit;">"Monthly passengers, annual trappings, monthly deaths"</sp
 <span id="cb5-7">)</span></code></pre></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://blog.cynkra.com/blog/posts/2018-05-15-tsbox/unnamed-chunk-2-1.png" title="Illustration" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">www.dataseries.org</figcaption>
+<p><img src="https://blog.cynkra.com/posts/2018-05-15-tsbox/unnamed-chunk-2-1.png" title="Illustration" class="img-fluid figure-img"></p>
+<figcaption>www.dataseries.org</figcaption>
 </figure>
 </div>
 <p>There is also a version that uses <a href="https://CRAN.R-project.org/package=ggplot2">ggplot2</a> and has the same syntax.</p>
@@ -6258,14 +6289,15 @@ font-style: inherit;">ts_c</span>(mdeaths, fdeaths))</span></code></pre></div>
 </section>
 
  ]]></description>
-  <guid>https://blog.cynkra.com/blog/posts/2018-05-15-tsbox/index.html</guid>
+  <guid>https://blog.cynkra.com/posts/2018-05-15-tsbox/</guid>
   <pubDate>Tue, 15 May 2018 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Done “Establishing DBI”!?</title>
   <dc:creator>Kirill Müller</dc:creator>
-  <link>https://blog.cynkra.com/blog/posts/2018-05-01-dbi-2/index.html</link>
+  <link>https://blog.cynkra.com/posts/2018-05-01-dbi-2/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -6564,7 +6596,7 @@ dbGetQuery(pg_conn, 'SELECT 1 AS a, 2 AS a, 3 AS "a..2"')
 </section>
 
  ]]></description>
-  <guid>https://blog.cynkra.com/blog/posts/2018-05-01-dbi-2/index.html</guid>
+  <guid>https://blog.cynkra.com/posts/2018-05-01-dbi-2/</guid>
   <pubDate>Tue, 01 May 2018 00:00:00 GMT</pubDate>
 </item>
 </channel>

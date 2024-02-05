@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Patrick Schratz">
+<meta name="dcterms.date" content="2021-03-16">
 
-<title>cynkra blog</title>
+<title>cynkra blog - gfortran support for R on macOS</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,26 +22,60 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<link href="../favicon-32x32.png" rel="icon" type="image/png">
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon-32x32.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -140,7 +176,7 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">blog</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="../index.xml"> <i class="bi bi-rss" role="img">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -160,50 +196,105 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">gfortran support for R on macOS</h1>
+</div>
 
 
 
-<section id="summary" class="level2">
-<h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Status</th>
-<th>Count</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>🔍 Total</td>
-<td>887</td>
-</tr>
-<tr class="even">
-<td>✅ Successful</td>
-<td>841</td>
-</tr>
-<tr class="odd">
-<td>⏳ Timeouts</td>
-<td>0</td>
-</tr>
-<tr class="even">
-<td>🔀 Redirected</td>
-<td>0</td>
-</tr>
-<tr class="odd">
-<td>👻 Excluded</td>
-<td>46</td>
-</tr>
-<tr class="even">
-<td>❓ Unknown</td>
-<td>0</td>
-</tr>
-<tr class="odd">
-<td>🚫 Errors</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p><a href="https://github.com/cynkra/cynkrablog/actions/runs/7781600897?check_suite_focus=true">Full Github Actions output</a></p>
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Patrick Schratz </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">March 16, 2021</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>For a long time, <code>gfortran</code> support on macOS could be achieved by installing the homebrew cask <code>gfortran</code> via <code>brew cask install gfortran</code>.</p>
+<p>As of 2021, both the <code>brew cask</code> command and the cask <code>gfortran</code> are deprecated. Users who have installed this cask already, will not notice since things will continue to work as normal. Only new users who want to install <code>gfortran</code> this way, will get the message that the cask is “not available”. The cask <a href="https://github.com/Homebrew/homebrew-cask/pull/96504">was removed in December 2020</a> and merged into the <code>gcc</code> formula (which can be installed via <code>brew install gcc</code>). Now, one could go to <a href="https://github.com/fxcoudert/gfortran-for-macOS/releases" class="uri">https://github.com/fxcoudert/gfortran-for-macOS/releases</a> and manually install the respective <code>.dmg</code> file. However, this is not a long-term approach, and usually, one would like to do this via <code>brew</code>, the most popular package manager for macOS.</p>
+<p>Unfortunately, this change did not result in a smooth experience for R users who want to compile packages from source that require a functional <code>gfortran</code> compiler. This requirement does not occur very often, as most users install R package binaries on macOS. These do not require a working <code>gfortran</code> installation.</p>
+<p>However, in some cases, when calling <code>install.packages()</code>, a working <code>gfortran</code> installation is needed. And if <code>type = "source"</code> is used, it needs to be there.</p>
+<p>The issue after the integration of <code>gfortran</code> into the <code>gcc</code> formula is that the official R binary installer for macOS expects the <code>gfortran</code> installation at <code>/usr/local/gfortran</code>. This was fulfilled by the old <code>gfortran</code> cask but is not by the new <code>gcc</code> integration. Hence, trying to install the “cluster” package via <code>install.packages("cluster", type = "source")</code> will fail and <code>gfortran</code> will not be found:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="sc">*</span> installing <span class="sc">*</span>source<span class="sc">*</span> package ‘cluster’ ...</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="sc">**</span> package ‘cluster’ successfully unpacked and MD5 sums checked</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="sc">**</span> using staged installation</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="sc">**</span> libs</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>clang <span class="sc">-</span>I<span class="st">"/Library/Frameworks/R.framework/Resources/include"</span> <span class="sc">-</span>DNDEBUG   <span class="sc">-</span>I<span class="sc">/</span>usr<span class="sc">/</span>local<span class="sc">/</span>include   <span class="sc">-</span>fPIC  <span class="sc">-</span>Wall <span class="sc">-</span>g <span class="sc">-</span>O2  <span class="sc">-</span>c clara.c <span class="sc">-</span>o clara.o</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>gfortran <span class="sc">-</span>mmacosx<span class="sc">-</span>version<span class="sc">-</span>min<span class="ot">=</span><span class="fl">10.13</span> <span class="sc">-</span>fno<span class="sc">-</span>optimize<span class="sc">-</span>sibling<span class="sc">-</span>calls  <span class="sc">-</span>fPIC  <span class="sc">-</span>Wall <span class="sc">-</span>g <span class="sc">-</span>O2  <span class="sc">-</span>c daisy.f <span class="sc">-</span>o daisy.o</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>make<span class="sc">:</span> gfortran<span class="sc">:</span> No such file or directory</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>make<span class="sc">:</span> <span class="er">***</span> [<span class="sc">/</span>Library<span class="sc">/</span>Frameworks<span class="sc">/</span>R.framework<span class="sc">/</span>Resources<span class="sc">/</span>etc<span class="sc">/</span>Makeconf<span class="sc">:</span><span class="dv">196</span><span class="sc">:</span> daisy.o] Error <span class="dv">127</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>ERROR<span class="sc">:</span> compilation failed <span class="cf">for</span> package ‘cluster’</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>There was a <a href="https://github.com/Homebrew/homebrew-cask/issues/96135">discussion</a> about these changes in the homebrew PR, but the comments that highlighted potential issues seem to have gone unnoticed. Also, some workarounds posted in the thread do not work.</p>
+<section id="so-how-does-one-now-install-gfortran-on-macos-these-days" class="level2">
+<h2 class="anchored" data-anchor-id="so-how-does-one-now-install-gfortran-on-macos-these-days">So how does one now install <code>gfortran</code> on macOS these days?</h2>
+<p>It is likely that one will not need the workaround presented below in the future since it will probably be fixed in the R installer at some point (hopefully). In the meantime, the following helps:</p>
+<ol type="1">
+<li><p>Create a file <code>~/.R/Makevars</code> (if it does not exist yet)</p></li>
+<li><p>Add the following to <code>~/.R/Makevars</code></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">FC</span>      = usr/local/opt/gcc/bin/gfortran</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">F77</span>     = /usr/local/opt/gcc/bin/gfortran</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">FLIBS</span>   = <span class="at">-L</span>/usr/local/opt/gcc/lib</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Restart R</p></li>
+<li><p>Test the changes by calling <code>install.packages("cluster", type = "source")</code></p></li>
+</ol>
+<p>The output should look like this</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="sc">*</span> installing <span class="sc">*</span>source<span class="sc">*</span> package ‘cluster’ ...</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="sc">**</span> package ‘cluster’ successfully unpacked and MD5 sums checked</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="sc">**</span> using staged installation</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="sc">**</span> libs</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>clang <span class="sc">-</span>I<span class="st">"/Library/Frameworks/R.framework/Resources/include"</span> <span class="sc">-</span>DNDEBUG   <span class="sc">-</span>I<span class="sc">/</span>usr<span class="sc">/</span>local<span class="sc">/</span>include   <span class="sc">-</span>fPIC  <span class="sc">-</span>Wall <span class="sc">-</span>g <span class="sc">-</span>O2  <span class="sc">-</span>c clara.c <span class="sc">-</span>o clara.o</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="sc">/</span>usr<span class="sc">/</span>local<span class="sc">/</span>opt<span class="sc">/</span>gcc<span class="sc">/</span>bin<span class="sc">/</span>gfortran <span class="sc">-</span>fno<span class="sc">-</span>optimize<span class="sc">-</span>sibling<span class="sc">-</span>calls  <span class="sc">-</span>fPIC  <span class="sc">-</span>Wall <span class="sc">-</span>g <span class="sc">-</span>O2  <span class="sc">-</span>c daisy.f <span class="sc">-</span>o daisy.o</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="sc">/</span>usr<span class="sc">/</span>local<span class="sc">/</span>opt<span class="sc">/</span>gcc<span class="sc">/</span>bin<span class="sc">/</span>gfortran <span class="sc">-</span>fno<span class="sc">-</span>optimize<span class="sc">-</span>sibling<span class="sc">-</span>calls  <span class="sc">-</span>fPIC  <span class="sc">-</span>Wall <span class="sc">-</span>g <span class="sc">-</span>O2  <span class="sc">-</span>c dysta.f <span class="sc">-</span>o dysta.o</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>clang <span class="sc">-</span>I<span class="st">"/Library/Frameworks/R.framework/Resources/include"</span> <span class="sc">-</span>DNDEBUG   <span class="sc">-</span>I<span class="sc">/</span>usr<span class="sc">/</span>local<span class="sc">/</span>include   <span class="sc">-</span>fPIC  <span class="sc">-</span>Wall <span class="sc">-</span>g <span class="sc">-</span>O2  <span class="sc">-</span>c fanny.c <span class="sc">-</span>o fanny.o</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>clang <span class="sc">-</span>I<span class="st">"/Library/Frameworks/R.framework/Resources/include"</span> <span class="sc">-</span>DNDEBUG   <span class="sc">-</span>I<span class="sc">/</span>usr<span class="sc">/</span>local<span class="sc">/</span>include   <span class="sc">-</span>fPIC  <span class="sc">-</span>Wall <span class="sc">-</span>g <span class="sc">-</span>O2  <span class="sc">-</span>c init.c <span class="sc">-</span>o init.o</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>clang <span class="sc">-</span>I<span class="st">"/Library/Frameworks/R.framework/Resources/include"</span> <span class="sc">-</span>DNDEBUG   <span class="sc">-</span>I<span class="sc">/</span>usr<span class="sc">/</span>local<span class="sc">/</span>include   <span class="sc">-</span>fPIC  <span class="sc">-</span>Wall <span class="sc">-</span>g <span class="sc">-</span>O2  <span class="sc">-</span>c mona.c <span class="sc">-</span>o mona.o</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>clang <span class="sc">-</span>I<span class="st">"/Library/Frameworks/R.framework/Resources/include"</span> <span class="sc">-</span>DNDEBUG   <span class="sc">-</span>I<span class="sc">/</span>usr<span class="sc">/</span>local<span class="sc">/</span>include   <span class="sc">-</span>fPIC  <span class="sc">-</span>Wall <span class="sc">-</span>g <span class="sc">-</span>O2  <span class="sc">-</span>c pam.c <span class="sc">-</span>o pam.o</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>clang <span class="sc">-</span>I<span class="st">"/Library/Frameworks/R.framework/Resources/include"</span> <span class="sc">-</span>DNDEBUG   <span class="sc">-</span>I<span class="sc">/</span>usr<span class="sc">/</span>local<span class="sc">/</span>include   <span class="sc">-</span>fPIC  <span class="sc">-</span>Wall <span class="sc">-</span>g <span class="sc">-</span>O2  <span class="sc">-</span>c sildist.c <span class="sc">-</span>o sildist.o</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>clang <span class="sc">-</span>I<span class="st">"/Library/Frameworks/R.framework/Resources/include"</span> <span class="sc">-</span>DNDEBUG   <span class="sc">-</span>I<span class="sc">/</span>usr<span class="sc">/</span>local<span class="sc">/</span>include   <span class="sc">-</span>fPIC  <span class="sc">-</span>Wall <span class="sc">-</span>g <span class="sc">-</span>O2  <span class="sc">-</span>c spannel.c <span class="sc">-</span>o spannel.o</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>clang <span class="sc">-</span>I<span class="st">"/Library/Frameworks/R.framework/Resources/include"</span> <span class="sc">-</span>DNDEBUG   <span class="sc">-</span>I<span class="sc">/</span>usr<span class="sc">/</span>local<span class="sc">/</span>include   <span class="sc">-</span>fPIC  <span class="sc">-</span>Wall <span class="sc">-</span>g <span class="sc">-</span>O2  <span class="sc">-</span>c twins.c <span class="sc">-</span>o twins.o</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>clang <span class="sc">-</span>dynamiclib <span class="sc">-</span>Wl,<span class="sc">-</span>headerpad_max_install_names <span class="sc">-</span>undefined dynamic_lookup <span class="sc">-</span>single_module <span class="sc">-</span>multiply_defined suppress <span class="sc">-</span>L<span class="sc">/</span>Library<span class="sc">/</span>Frameworks<span class="sc">/</span>R.framework<span class="sc">/</span>Resources<span class="sc">/</span>lib <span class="sc">-</span>L<span class="sc">/</span>usr<span class="sc">/</span>local<span class="sc">/</span>lib <span class="sc">-</span>o cluster.so clara.o daisy.o dysta.o fanny.o init.o mona.o pam.o sildist.o spannel.o twins.o <span class="sc">-</span>L<span class="sc">/</span>usr<span class="sc">/</span>local<span class="sc">/</span>opt<span class="sc">/</span>gcc<span class="sc">/</span>lib <span class="sc">-</span>F<span class="sc">/</span>Library<span class="sc">/</span>Frameworks<span class="sc">/</span>R.framework<span class="sc">/</span>.. <span class="sc">-</span>framework R <span class="sc">-</span>Wl,<span class="sc">-</span>framework <span class="sc">-</span>Wl,CoreFoundation</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>ld<span class="sc">:</span> warning<span class="sc">:</span> object <span class="fu">file</span> (daisy.o) was built <span class="cf">for</span> newer macOS <span class="fu">version</span> (<span class="fl">11.2</span>) than being <span class="fu">linked</span> (<span class="fl">11.0</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>ld<span class="sc">:</span> warning<span class="sc">:</span> object <span class="fu">file</span> (dysta.o) was built <span class="cf">for</span> newer macOS <span class="fu">version</span> (<span class="fl">11.2</span>) than being <span class="fu">linked</span> (<span class="fl">11.0</span>)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>installing to <span class="sc">/</span>Users<span class="sc">/</span>pjs<span class="sc">/</span>Library<span class="sc">/</span>R<span class="sc">/</span><span class="fl">4.0</span><span class="sc">/</span>library<span class="sc">/</span><span class="dv">00</span>LOCK<span class="sc">-</span>cluster<span class="sc">/</span><span class="dv">00</span>new<span class="sc">/</span>cluster<span class="sc">/</span>libs</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="sc">**</span> R</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="sc">**</span> data</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="sc">**</span><span class="er">*</span> moving datasets to lazyload DB</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="sc">**</span> inst</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="sc">**</span> byte<span class="sc">-</span>compile and prepare package <span class="cf">for</span> lazy loading</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="sc">**</span> help</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="sc">**</span><span class="er">*</span> installing help indices</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="sc">**</span> building package indices</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="sc">**</span> testing <span class="cf">if</span> installed package can be loaded from temporary location</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="sc">**</span> checking absolute paths <span class="cf">in</span> shared objects and dynamic libraries</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="sc">**</span> testing <span class="cf">if</span> installed package can be loaded from final location</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="sc">**</span> testing <span class="cf">if</span> installed package keeps a record of temporary installation path</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="sc">*</span> <span class="fu">DONE</span> (cluster)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Caution</strong>: After using this approach for a few days, I have seen issues with certain packages (e.g.&nbsp;<code>hsdar</code>). It is unclear if the issues trace back to the packages or the new way of using <code>gfortran</code>. You might want to re-think using this proposed approach and eventually manually install the linked standalone <code>gfortran</code> binary shown earlier in this post.</p>
+</section>
+<section id="notes" class="level2">
+<h2 class="anchored" data-anchor-id="notes">Notes</h2>
+<ul>
+<li>I am not sure about the <code>ld: warning: object file (dysta.o) was built for newer macOS version (11.2) than being linked (11.0)</code> warning, but it does not seem to have a practical impact.</li>
+<li>This approach was tested with R 4.0.4, macOS 11.2.3 in March 2021.</li>
+<li>If you still have the old <code>gfortran</code> cask installed, you may want to switch to the new approach as the cask is no longer being updated. Hence, you will run a very outdated <code>gfortran</code> at some point without noticing. You can remove the old cask with <code>brew remove – cask gfortran</code>.</li>
+</ul>
 
 
 </section>

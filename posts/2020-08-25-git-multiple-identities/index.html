@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Kirill Müller">
+<meta name="dcterms.date" content="2020-08-25">
 
-<title>cynkra blog</title>
+<title>cynkra blog - Maintaining multiple identities with Git</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,23 +25,23 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<link href="../favicon-32x32.png" rel="icon" type="image/png">
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon-32x32.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -140,7 +142,7 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">blog</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="../index.xml"> <i class="bi bi-rss" role="img">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -160,53 +162,61 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Maintaining multiple identities with Git</h1>
+</div>
 
 
 
-<section id="summary" class="level2">
-<h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Status</th>
-<th>Count</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>🔍 Total</td>
-<td>887</td>
-</tr>
-<tr class="even">
-<td>✅ Successful</td>
-<td>841</td>
-</tr>
-<tr class="odd">
-<td>⏳ Timeouts</td>
-<td>0</td>
-</tr>
-<tr class="even">
-<td>🔀 Redirected</td>
-<td>0</td>
-</tr>
-<tr class="odd">
-<td>👻 Excluded</td>
-<td>46</td>
-</tr>
-<tr class="even">
-<td>❓ Unknown</td>
-<td>0</td>
-</tr>
-<tr class="odd">
-<td>🚫 Errors</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p><a href="https://github.com/cynkra/cynkrablog/actions/runs/7781600897?check_suite_focus=true">Full Github Actions output</a></p>
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Kirill Müller </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 25, 2020</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
 
 
-</section>
+</header>
+
+
+<p>When committing to a Git repository related to my consulting work, I must use my company e-mail address, kirill@cynkra.com. Not so much for my open-source work – for this, I prefer to use other e-mail addresses, like krlmlr+r@mailbox.org . (For example, Travis CI sends notification e-mails to the committer’s e-mail address, and I have set up filtering for that other address.)</p>
+<figure class="figure">
+<img alt="Illustration" src="banner.jpg" style=" width: 100%; height: auto" class="figure-img">
+<figcaption>
+Photo by Carson Arias
+</figcaption>
+</figure>
+<p><br></p>
+<p>Having to configure the e-mail address for each repository separately eventually gets annoying. Instead, I’d rather have all repos within a specific subdirectory use particular e-mail address.</p>
+<p>All my Git repos live in <code>~/git</code>. Subdirectories <code>R</code> and <code>cynkra</code>, contain R packages and repos related to consulting, respectively. To achieve the desired setup, I edit my <code>~/.gitconfig</code> with the following entry:</p>
+<pre><code>[includeIf "gitdir:git/**"]
+    path = git/.gitconfig</code></pre>
+<p>This ensures that all repos in the <code>git</code> directory use the <code>git/.gitconfig</code> file in addition to the main configuration. That file contains the following:</p>
+<pre><code>[includeIf "gitdir:R/**"]
+    path = R/.gitconfig
+[includeIf "gitdir:cynkra/**"]
+    path = cynkra/.gitconfig</code></pre>
+<p>Finally, in <code>~/git/R/.gitconfig</code> and <code>~/git/cynkra/.gitconfig</code>, I configure the e-mail addresses I want to use for all repos pertaining to <code>R</code> and <code>cynkra</code>, respectively.</p>
+<pre><code>[user]
+    email = ...</code></pre>
+<p>I verify the setup with <code>git config -l | grep user</code>. Indeed, cynkra repos use the cynkra e-mail address. Voilà!</p>
+<p>The above approach requires a recent-ish version of <code>git</code>- version 2.14 or later should suffice. Read more about <a href="https://git-scm.com/docs/git-config#_conditional_includes">conditional includes</a>.</p>
+
+
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

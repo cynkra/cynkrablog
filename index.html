@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.549">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -48,7 +48,13 @@ ul.task-list li input[type="checkbox"] {
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -57,6 +63,7 @@ ul.task-list li input[type="checkbox"] {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -97,16 +104,43 @@ ul.task-list li input[type="checkbox"] {
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="alternate" type="application/rss+xml" title="cynkra blog" href="index.xml"></head>
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="alternate" type="application/rss+xml" title="cynkra blog" href="index.xml" data-external="1"></head>
 
 <body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
-    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+      <div class="navbar-brand-container mx-auto">
+    <a href="https://cynkra.com/" class="navbar-brand navbar-brand-logo">
     <img src="https://cynkra.com/assets/img/logo_small.svg" alt="" class="navbar-logo">
     </a>
   </div>
@@ -117,65 +151,65 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-consulting" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-consulting" role="button" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Consulting</span>
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-consulting">    
         <li>
-    <a class="dropdown-item" href="https://cynkra.com/consulting/" rel="" target="">
+    <a class="dropdown-item" href="https://cynkra.com/consulting/">
  <span class="dropdown-text">R Consulting</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="https://cynkra.com/workshops/" rel="" target="">
+    <a class="dropdown-item" href="https://cynkra.com/workshops/">
  <span class="dropdown-text">Workshops</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="https://cynkra.com/rmarkdown/" rel="" target="">
+    <a class="dropdown-item" href="https://cynkra.com/rmarkdown/">
  <span class="dropdown-text">R Markdown templates</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-solutions" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-solutions" role="button" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Solutions</span>
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-solutions">    
         <li>
-    <a class="dropdown-item" href="https://cynkra.com/posit-based-enterprise-data-science-environments/" rel="" target="">
+    <a class="dropdown-item" href="https://cynkra.com/posit-based-enterprise-data-science-environments/">
  <span class="dropdown-text">Enterprise Data Science Environments</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="https://cynkra.com/cicd-images/" rel="" target="">
+    <a class="dropdown-item" href="https://cynkra.com/cicd-images/">
  <span class="dropdown-text">Container Images</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="https://cynkra.com/posit/" rel="" target="">
+    <a class="dropdown-item" href="https://cynkra.com/posit/">
  <span class="dropdown-text">Posit Licences</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="https://cynkra.com/opensource" rel="" target="">
- <span class="menu-text">open source</span></a>
+    <a class="nav-link" href="https://cynkra.com/opensource"> 
+<span class="menu-text">open source</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="https://cynkra.com/about" rel="" target="">
- <span class="menu-text">about</span></a>
+    <a class="nav-link" href="https://cynkra.com/about"> 
+<span class="menu-text">about</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="https://cynkra.com/blog" rel="" target="">
- <span class="menu-text">blog</span></a>
+    <a class="nav-link" href="https://cynkra.com/blog"> 
+<span class="menu-text">blog</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="./blog/index.xml" rel="" target=""><i class="bi bi-rss" role="img">
+    <a class="nav-link" href="./index.xml"> <i class="bi bi-rss" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
 </ul>
-            <div class="quarto-navbar-tools">
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
-          </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -196,7 +230,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<div class="quarto-title-meta">
+<div class="quarto-title-meta column-page-left">
 
     
   
@@ -204,7 +238,9 @@ ul.task-list li input[type="checkbox"] {
   </div>
   
 
+
 </header>
+
 
 <div id="listing-blog" class="quarto-listing quarto-listing-container-grid">
 <div class="listing-actions-group">
@@ -214,11 +250,11 @@ ul.task-list li input[type="checkbox"] {
     </div>
 </div>
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-listing-date-sort="1663113600000" data-listing-file-modified-sort="1705913234931" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="18">
-<a href="./blog/posts/2022-09-14-rstudio-efs-nfs/index.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="0" data-listing-date-sort="1663113600000" data-listing-file-modified-sort="1707121852537" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="18" data-listing-word-count-sort="3564">
+<a href="./posts/2022-09-14-rstudio-efs-nfs/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
-<img src="./blog/posts/2022-09-14-rstudio-efs-nfs/banner.png" class="thumbnail-image card-img" style="height: 150px;">
+<img src="./posts/2022-09-14-rstudio-efs-nfs/banner.png" class="thumbnail-image card-img" style="height: 150px;">
 </p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
@@ -242,11 +278,11 @@ Sep 14, 2022
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="1" data-listing-date-sort="1652486400000" data-listing-file-modified-sort="1705913234927" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9">
-<a href="./blog/posts/2022-05-14-accessing-google-api-via-oauth2/index.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="1" data-listing-date-sort="1652486400000" data-listing-file-modified-sort="1707121852533" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1611">
+<a href="./posts/2022-05-14-accessing-google-api-via-oauth2/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
-<img src="./blog/posts/2022-05-14-accessing-google-api-via-oauth2/banner.jpg" class="thumbnail-image card-img" style="height: 150px;">
+<img src="./posts/2022-05-14-accessing-google-api-via-oauth2/banner.jpg" class="thumbnail-image card-img" style="height: 150px;">
 </p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
@@ -256,7 +292,7 @@ Accessing Google’s API via OAuth2
 9 min
 </div>
 <div class="card-text listing-description">
-At cynkra we recently aimed to automate more parts of our internal toolstack. One tool is Google Workspace. Google Workspace offers a comprehensive REST API which can be used for…
+At cynkra we recently aimed to automate more parts of our internal toolstack. One tool is Google Workspace. Google Workspace offers a comprehensive REST API which can be…
 </div>
 <div class="card-attribution card-text-small justify">
 <div class="listing-author">
@@ -270,11 +306,11 @@ May 14, 2022
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="2" data-listing-date-sort="1650326400000" data-listing-file-modified-sort="1705913234915" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2">
-<a href="./blog/posts/2022-04-19-seasonal-1.9/index.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="2" data-listing-date-sort="1650326400000" data-listing-file-modified-sort="1707121852521" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="264">
+<a href="./posts/2022-04-19-seasonal-1.9/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
-<img src="./blog/posts/2022-04-19-seasonal-1.9/banner.jpg" class="thumbnail-image card-img" style="height: 150px;">
+<img src="./posts/2022-04-19-seasonal-1.9/banner.jpg" class="thumbnail-image card-img" style="height: 150px;">
 </p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
@@ -284,7 +320,7 @@ seasonal 1.9: Accessing composite output
 2 min
 </div>
 <div class="card-text listing-description">
-seasonal is an easy-to-use and full-featured R interface to X-13ARIMA-SEATS, the seasonal…
+seasonal is an easy-to-use and full-featured R interface to X-13ARIMA-SEATS, the seasonal adjustment software developed by the United States Census Bureau. The latest CRAN…
 </div>
 <div class="card-attribution card-text-small justify">
 <div class="listing-author">
@@ -298,11 +334,11 @@ Apr 19, 2022
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="3" data-listing-date-sort="1641340800000" data-listing-file-modified-sort="1705913234915" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6">
-<a href="./blog/posts/2022-01-05-gsod-user-infoboard/index.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="3" data-listing-date-sort="1641340800000" data-listing-file-modified-sort="1707121852521" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1028">
+<a href="./posts/2022-01-05-gsod-user-infoboard/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
-<img src="./blog/posts/2022-01-05-gsod-user-infoboard/banner.png" class="thumbnail-image card-img" style="height: 150px;">
+<img src="./posts/2022-01-05-gsod-user-infoboard/banner.png" class="thumbnail-image card-img" style="height: 150px;">
 </p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
@@ -312,7 +348,7 @@ Google Season of Docs with R: useR! Information Board
 6 min
 </div>
 <div class="card-text listing-description">
-“Google Season of Docs…
+“Google Season of Docs (GSoD) provides support for open source projects to improve their documentation and gives professional technical writers an opportunity to gain…
 </div>
 <div class="card-attribution card-text-small justify">
 <div class="listing-author">
@@ -326,11 +362,11 @@ Jan 5, 2022
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="4" data-listing-date-sort="1633564800000" data-listing-file-modified-sort="1705913234915" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5">
-<a href="./blog/posts/2021-10-07-old-texlive/index.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="4" data-listing-date-sort="1633564800000" data-listing-file-modified-sort="1707121852517" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="825">
+<a href="./posts/2021-10-07-old-texlive/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
-<img src="./blog/posts/2021-10-07-old-texlive/banner.jpg" class="thumbnail-image card-img" style="height: 150px;">
+<img src="./posts/2021-10-07-old-texlive/banner.jpg" class="thumbnail-image card-img" style="height: 150px;">
 </p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
@@ -340,7 +376,7 @@ Running old versions of TeXlive with tinytex
 5 min
 </div>
 <div class="card-text listing-description">
-Rendering PDFs with rmarkdown requires a working LaTeX installation, such as tinytex. Occasionally, existing workflows break with the newest…
+Rendering PDFs with rmarkdown requires a working LaTeX installation, such as tinytex. Occasionally, existing workflows break with the newest version of LaTeX. This post…
 </div>
 <div class="card-attribution card-text-small justify">
 <div class="listing-author">
@@ -354,11 +390,11 @@ Oct 7, 2021
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="5" data-listing-date-sort="1631923200000" data-listing-file-modified-sort="1705913234911" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5">
-<a href="./blog/posts/2021-09-18-tsbox-03/index.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="5" data-listing-date-sort="1631923200000" data-listing-file-modified-sort="1707121852517" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="927">
+<a href="./posts/2021-09-18-tsbox-03/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
-<img src="./blog/posts/2021-09-18-tsbox-03/banner.jpg" class="thumbnail-image card-img" style="height: 150px;">
+<img src="./posts/2021-09-18-tsbox-03/banner.jpg" class="thumbnail-image card-img" style="height: 150px;">
 </p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
@@ -368,7 +404,7 @@ tsbox 0.3.1: extended functionality
 5 min
 </div>
 <div class="card-text listing-description">
-The tsbox package provides a set of tools that are agnostic towards existing time…
+The tsbox package provides a set of tools that are agnostic towards existing time series classes. The tools also allow you to handle time series as plain data frames, thus…
 </div>
 <div class="card-attribution card-text-small justify">
 <div class="listing-author">
@@ -382,11 +418,11 @@ Sep 18, 2021
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="6" data-listing-date-sort="1625788800000" data-listing-file-modified-sort="1705913234891" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8">
-<a href="./blog/posts/2021-07-09-certified-partner-anniversary/index.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="6" data-listing-date-sort="1625788800000" data-listing-file-modified-sort="1707121852497" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1421">
+<a href="./posts/2021-07-09-certified-partner-anniversary/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
-<img src="./blog/posts/2021-07-09-certified-partner-anniversary/banner.jpg" class="thumbnail-image card-img" style="height: 150px;">
+<img src="./posts/2021-07-09-certified-partner-anniversary/banner.jpg" class="thumbnail-image card-img" style="height: 150px;">
 </p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
@@ -396,7 +432,7 @@ Celebrating one-year anniversary as RStudio Full Service Certified Partner
 8 min
 </div>
 <div class="card-text listing-description">
-cynkra celebrates its first anniversary as an RStudio Full Service Certified Partner! Every day, we help our clients set up professional IT infrastructures using RStudio products and license compositions suited to their individual needs. In the context of…
+cynkra celebrates its first anniversary as an RStudio Full Service Certified Partner! Every day, we help our clients set up professional IT infrastructures using RStudio…
 </div>
 <div class="card-attribution card-text-small justify">
 <div class="listing-author">
@@ -410,11 +446,11 @@ Jul 9, 2021
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="7" data-listing-date-sort="1617926400000" data-listing-file-modified-sort="1705913234891" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4">
-<a href="./blog/posts/2021-04-09-deprecating-pkgdown/index.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="7" data-listing-date-sort="1617926400000" data-listing-file-modified-sort="1707121852497" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="783">
+<a href="./posts/2021-04-09-deprecating-pkgdown/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
-<img src="./blog/posts/2021-04-09-deprecating-pkgdown/banner.jpg" class="thumbnail-image card-img" style="height: 150px;">
+<img src="./posts/2021-04-09-deprecating-pkgdown/banner.jpg" class="thumbnail-image card-img" style="height: 150px;">
 </p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
@@ -424,7 +460,7 @@ Deprecating a pkgdown site served via GitHub Pages
 4 min
 </div>
 <div class="card-text listing-description">
-Websites for R packages built with {pkgdown} have become a de-facto standard…<code></code>
+Websites for R packages built with {pkgdown} have become a de-facto standard over the last few years. Many R packages build their site during Continuous Integration (CI)…<code></code>
 </div>
 <div class="card-attribution card-text-small justify">
 <div class="listing-author">
@@ -438,12 +474,10 @@ Apr 9, 2021
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="8" data-listing-date-sort="1615852800000" data-listing-file-modified-sort="1705913234891" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5">
-<a href="./blog/posts/2021-03-16-gfortran-macos/index.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="8" data-listing-date-sort="1615852800000" data-listing-file-modified-sort="1707121852493" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="916">
+<a href="./posts/2021-03-16-gfortran-macos/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img src="mountain.jpg" class="thumbnail-image card-img" style="height: 150px;">
-</p>
+<p class="card-img-top"><img src="mountain.jpg" style="height: 150px;"  class="thumbnail-image card-img"/></p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 gfortran support for R on macOS
@@ -466,11 +500,11 @@ Mar 16, 2021
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="9" data-listing-date-sort="1615248000000" data-listing-file-modified-sort="1705913234887" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3">
-<a href="./blog/posts/2021-03-09-seasonal-1.8/index.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="9" data-listing-date-sort="1615248000000" data-listing-file-modified-sort="1707121852493" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="515">
+<a href="./posts/2021-03-09-seasonal-1.8/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
-<img src="./blog/posts/2021-03-09-seasonal-1.8/banner.jpg" class="thumbnail-image card-img" style="height: 150px;">
+<img src="./posts/2021-03-09-seasonal-1.8/banner.jpg" class="thumbnail-image card-img" style="height: 150px;">
 </p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
@@ -480,7 +514,7 @@ Seasonal Adjustment of Multiple Series
 3 min
 </div>
 <div class="card-text listing-description">
-seasonal is an easy-to-use and full-featured R-interface to…
+seasonal is an easy-to-use and full-featured R-interface to X-13ARIMA-SEATS, the seasonal adjustment software developed by the United States Census Bureau. The latest CRAN…
 </div>
 <div class="card-attribution card-text-small justify">
 <div class="listing-author">
@@ -494,11 +528,11 @@ Mar 9, 2021
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="10" data-listing-date-sort="1608681600000" data-listing-file-modified-sort="1705913234887" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8">
-<a href="./blog/posts/2020-12-23-dynamic-gha/index.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="10" data-listing-date-sort="1608681600000" data-listing-file-modified-sort="1707121852493" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1438">
+<a href="./posts/2020-12-23-dynamic-gha/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
-<img src="./blog/posts/2020-12-23-dynamic-gha/banner.jpg" class="thumbnail-image card-img" style="height: 150px;">
+<img src="./posts/2020-12-23-dynamic-gha/banner.jpg" class="thumbnail-image card-img" style="height: 150px;">
 </p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
@@ -522,12 +556,10 @@ Dec 23, 2020
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="11" data-listing-date-sort="1604275200000" data-listing-file-modified-sort="1705913234887" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4">
-<a href="./blog/posts/2020-11-02-jitsi-load-balanced/index.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="11" data-listing-date-sort="1604275200000" data-listing-file-modified-sort="1707121852493" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="743">
+<a href="./posts/2020-11-02-jitsi-load-balanced/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img src="mountain.jpg" class="thumbnail-image card-img" style="height: 150px;">
-</p>
+<p class="card-img-top"><img src="posts/2020-11-02-jitsi-load-balanced/banner.jpg" alt="Illustration" style="height: 150px;"  class="thumbnail-image card-img"/></p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Setting up a load-balanced Jitsi Meet instance
@@ -536,7 +568,7 @@ Setting up a load-balanced Jitsi Meet instance
 4 min
 </div>
 <div class="card-text listing-description">
-Jitsi Meet is a self-hosted Free and Open-Source…
+Jitsi Meet is a self-hosted Free and Open-Source Software (FOSS) video conferencing solution. During the recent COVID-19 pandemic, the project became quite popular, and many…
 </div>
 <div class="card-attribution card-text-small justify">
 <div class="listing-author">
@@ -550,11 +582,11 @@ Nov 2, 2020
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="12" data-listing-date-sort="1598313600000" data-listing-file-modified-sort="1705913234887" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2">
-<a href="./blog/posts/2020-08-25-git-multiple-identities/index.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="12" data-listing-date-sort="1598313600000" data-listing-file-modified-sort="1707121852493" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="241">
+<a href="./posts/2020-08-25-git-multiple-identities/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
-<img src="./blog/posts/2020-08-25-git-multiple-identities/banner.jpg" class="thumbnail-image card-img" style="height: 150px;">
+<img src="./posts/2020-08-25-git-multiple-identities/banner.jpg" class="thumbnail-image card-img" style="height: 150px;">
 </p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
@@ -578,11 +610,11 @@ Aug 25, 2020
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="13" data-listing-date-sort="1585785600000" data-listing-file-modified-sort="1705913234887" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12">
-<a href="./blog/posts/2020-04-02-dm/index.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="13" data-listing-date-sort="1585785600000" data-listing-file-modified-sort="1707121852493" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2368">
+<a href="./posts/2020-04-02-dm/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
-<img src="./blog/posts/2020-04-02-dm/banner.jpg" class="thumbnail-image card-img" style="height: 150px;">
+<img src="./posts/2020-04-02-dm/banner.jpg" class="thumbnail-image card-img" style="height: 150px;">
 </p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
@@ -592,7 +624,7 @@ Relational data models in R
 12 min
 </div>
 <div class="card-text listing-description">
-Relational databases are powerful tools for analyzing and manipulating data. However, many modeling…
+Relational databases are powerful tools for analyzing and manipulating data. However, many modeling workflows require a great deal of time and effort to wrangle data from…
 </div>
 <div class="card-attribution card-text-small justify">
 <div class="listing-author">
@@ -606,11 +638,11 @@ Apr 2, 2020
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="14" data-listing-date-sort="1581206400000" data-listing-file-modified-sort="1705913234887" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4">
-<a href="./blog/posts/2020-02-09-tempdisagg/index.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="14" data-listing-date-sort="1581206400000" data-listing-file-modified-sort="1707121852493" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="761">
+<a href="./posts/2020-02-09-tempdisagg/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
-<img src="./blog/posts/2020-02-09-tempdisagg/banner.jpg" class="thumbnail-image card-img" style="height: 150px;">
+<img src="./posts/2020-02-09-tempdisagg/banner.jpg" class="thumbnail-image card-img" style="height: 150px;">
 </p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
@@ -634,12 +666,10 @@ Feb 9, 2020
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="15" data-listing-date-sort="1565568000000" data-listing-file-modified-sort="1705913234883" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4">
-<a href="./blog/posts/2019-08-12-tsbox-02/index.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="15" data-listing-date-sort="1565568000000" data-listing-file-modified-sort="1707121852489" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="691">
+<a href="./posts/2019-08-12-tsbox-02/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img src="mountain.jpg" class="thumbnail-image card-img" style="height: 150px;">
-</p>
+<p class="card-img-top"><img src="posts/2019-08-12-tsbox-02/unnamed-chunk-2-1.png" style="height: 150px;" title="Illustration" class="thumbnail-image card-img"/></p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 tsbox 0.2: supporting additional time series classes
@@ -648,7 +678,7 @@ tsbox 0.2: supporting additional time series classes
 4 min
 </div>
 <div class="card-text listing-description">
-The tsbox package makes life with time series in R easier. It is built around a set of functions that convert time series of different classes to each other. They are frequency-agnostic…
+The tsbox package makes life with time series in R easier. It is built around a set of functions that convert time series of different classes to each other. They are…
 </div>
 <div class="card-attribution card-text-small justify">
 <div class="listing-author">
@@ -662,11 +692,11 @@ Aug 12, 2019
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="16" data-listing-date-sort="1563321600000" data-listing-file-modified-sort="1705913234883" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7">
-<a href="./blog/posts/2019-07-17-dm/index.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="16" data-listing-date-sort="1563321600000" data-listing-file-modified-sort="1707121852489" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1389">
+<a href="./posts/2019-07-17-dm/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
-<img src="./blog/posts/2019-07-17-dm/banner.jpg" class="thumbnail-image card-img" style="height: 150px;">
+<img src="./posts/2019-07-17-dm/banner.jpg" class="thumbnail-image card-img" style="height: 150px;">
 </p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
@@ -676,7 +706,7 @@ Introducing dm: easy juggling of tables and relations
 7 min
 </div>
 <div class="card-text listing-description">
-The dm package reduces your mental strain when working with many tables. It…
+The dm package reduces your mental strain when working with many tables. It connects your data, while still keeping them in their original tables. You can easily perform…
 </div>
 <div class="card-attribution card-text-small justify">
 <div class="listing-author">
@@ -690,12 +720,10 @@ Jul 17, 2019
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="17" data-listing-date-sort="1554854400000" data-listing-file-modified-sort="1705913234875" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3">
-<a href="./blog/posts/2019-04-10-tsbox-01/index.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="17" data-listing-date-sort="1554854400000" data-listing-file-modified-sort="1707121852481" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="590">
+<a href="./posts/2019-04-10-tsbox-01/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img src="mountain.jpg" class="thumbnail-image card-img" style="height: 150px;">
-</p>
+<p class="card-img-top"><img src="mountain.jpg" style="height: 150px;"  class="thumbnail-image card-img"/></p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 tsbox 0.1: class-agnostic time series
@@ -718,12 +746,10 @@ Apr 10, 2019
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="18" data-listing-date-sort="1526342400000" data-listing-file-modified-sort="1705913234875" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3">
-<a href="./blog/posts/2018-05-15-tsbox/index.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="18" data-listing-date-sort="1526342400000" data-listing-file-modified-sort="1707121852481" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="578">
+<a href="./posts/2018-05-15-tsbox/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img data-src="mountain.jpg" class="thumbnail-image card-img" style="height: 150px;">
-</p>
+<p class="card-img-top"><img data-src="posts/2018-05-15-tsbox/unnamed-chunk-2-1.png" style="height: 150px;" title="Illustration" class="thumbnail-image card-img"/></p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Time series of the world, unite!
@@ -746,12 +772,10 @@ May 15, 2018
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="19" data-listing-date-sort="1525132800000" data-listing-file-modified-sort="1705913234875" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15">
-<a href="./blog/posts/2018-05-01-dbi-2/index.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="19" data-listing-date-sort="1525132800000" data-listing-file-modified-sort="1707121852481" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15" data-listing-word-count-sort="2897">
+<a href="./posts/2018-05-01-dbi-2/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img data-src="mountain.jpg" class="thumbnail-image card-img" style="height: 150px;">
-</p>
+<p class="card-img-top"><img data-src="mountain.jpg" style="height: 150px;"  class="thumbnail-image card-img"/></p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Done “Establishing DBI”!?
@@ -760,7 +784,7 @@ Done “Establishing DBI”!?
 15 min
 </div>
 <div class="card-text listing-description">
-The “Establishing DBI” project, funded by the R consortium, started about a year ago. It includes the completion of two new backends, <em>RPostgres</em> and <em>RMariaDB</em>, and quite a few interface…
+The “Establishing DBI” project, funded by the R consortium, started about a year ago. It includes the completion of two new backends, <em>RPostgres</em> and <em>RMariaDB</em>, and quite a few…
 </div>
 <div class="card-attribution card-text-small justify">
 <div class="listing-author">
@@ -830,6 +854,33 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       }
     }
   }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
   const toggleColorMode = (alternate) => {
     // Switch the stylesheets
     const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
@@ -896,13 +947,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return localAlternateSentinel;
     }
   }
-  let localAlternateSentinel = 'default';
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
   // Dark / light mode switch
   window.quartoToggleColorScheme = () => {
     // Read the current dark / light value 
     let toAlternate = !hasAlternateSentinel();
     toggleColorMode(toAlternate);
     setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
   };
   // Ensure there is a toggle, if there isn't float one in the top right
   if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
@@ -981,10 +1034,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -994,8 +1046,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1008,6 +1069,125 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1051,6 +1231,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1076,6 +1257,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1138,13 +1345,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-    <div class="nav-footer-left">Except where otherwise noted, content on this blog is licensed under the <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a> licence.</div>   
+    <div class="nav-footer-left">
+<p>Except where otherwise noted, content on this blog is licensed under the <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a> licence.</p>
+</div>   
     <div class="nav-footer-center">
       &nbsp;
     </div>
-    <div class="nav-footer-right">Blog created with <a href="https://quarto.org/">Quarto</a>.</div>
+    <div class="nav-footer-right">
+<p>Blog created with <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
   </div>
 </footer>
+
 
 
 

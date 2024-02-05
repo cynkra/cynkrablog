@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Patrick Schratz, Kirill Müller">
+<meta name="dcterms.date" content="2021-04-09">
 
-<title>cynkra blog</title>
+<title>cynkra blog - Deprecating a pkgdown site served via GitHub Pages</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,26 +22,60 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<link href="../favicon-32x32.png" rel="icon" type="image/png">
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon-32x32.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -140,7 +176,7 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">blog</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="../index.xml"> <i class="bi bi-rss" role="img">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -160,50 +196,118 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Deprecating a pkgdown site served via GitHub Pages</h1>
+</div>
 
 
 
-<section id="summary" class="level2">
-<h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Status</th>
-<th>Count</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>🔍 Total</td>
-<td>887</td>
-</tr>
-<tr class="even">
-<td>✅ Successful</td>
-<td>841</td>
-</tr>
-<tr class="odd">
-<td>⏳ Timeouts</td>
-<td>0</td>
-</tr>
-<tr class="even">
-<td>🔀 Redirected</td>
-<td>0</td>
-</tr>
-<tr class="odd">
-<td>👻 Excluded</td>
-<td>46</td>
-</tr>
-<tr class="even">
-<td>❓ Unknown</td>
-<td>0</td>
-</tr>
-<tr class="odd">
-<td>🚫 Errors</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p><a href="https://github.com/cynkra/cynkrablog/actions/runs/7781600897?check_suite_focus=true">Full Github Actions output</a></p>
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Patrick Schratz, Kirill Müller </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 9, 2021</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Websites for R packages built with <a href="https://pkgdown.r-lib.org/">{pkgdown}</a> have become a de-facto standard over the last few years. Many R packages build their site during Continuous Integration (CI) runs, pushing the assets to the special <code>gh-pages</code> branch (even though now <a href="https://github.blog/changelog/2020-09-03-build-and-deploy-github-pages-from-any-branch/">any branch can be used to deploy a website</a>).</p>
+<figure class="figure">
+<img alt="Illustration" src="banner.jpg" style=" width: 100%; height: auto" class="figure-img">
+<figcaption>
+Photo by Paweł Czerwiński
+</figcaption>
+</figure>
+<p><br></p>
+<p>Sometimes, repositories are transferred to a new user/organization or the package is renamed. While GitHub takes care of redirecting repository URLs, the pkgdown URLs (<code>https://&lt;username&gt;.github.io/&lt;rpackage&gt;</code>) are not redirected. Since some users might have bookmarked specific URLs or the URLs appear in their browsing history, it would be great if these links do not return a 404.</p>
+<p>This blog post proposes several ways to handle this gracefully:</p>
+<ul>
+<li>Redirection</li>
+<li>Deprecation with CSS</li>
+<li>Deprecation via bulk edit</li>
+</ul>
+<p>All options hinge on the observation that users and organizations can create a <a href="https://docs.github.com/en/github/working-with-github-pages/about-github-pages#types-of-github-pages-sites">user or organization site</a> that will be the source for <code>https://&lt;username&gt;.github.io/&lt;package&gt;</code> after the renaming. The user site will also serve <code>robots.txt</code> that advises crawlers to avoid deprecated contents.</p>
+<section id="user-or-organization-site" class="level2">
+<h2 class="anchored" data-anchor-id="user-or-organization-site">User or organization site</h2>
+<p>In GitHub, users can create a <em>user repository</em> <code>&lt;username&gt;/&lt;username&gt;.github.io</code>. This repo will be served automatically as a web page on <code>https://&lt;username&gt;.github.io/</code> . In this repo, a directory can be created which corresponds to the respective GitHub Pages site of the original repo. Example: The <code>rpackage/</code> directory in the <code>&lt;username&gt;/&lt;username&gt;.github.io</code> repository corresponds to <code>https://&lt;username&gt;.github.io/rpackage</code>. If both <code>&lt;username&gt;/&lt;rpackage&gt;</code> and <code>&lt;username&gt;/&lt;username&gt;.github.io/&lt;rpackage&gt;</code> exist, the former takes precedence. This means that you can prepare everything in your user repository <code>&lt;username&gt;/&lt;username&gt;.github.io</code> and it will work immediately after you rename your package repository. The following has worked for <a href="https://krlmlr.github.io/fledge/" class="uri">https://krlmlr.github.io/fledge/</a>, which has moved to <a href="https://cynkra.github.io/fledge/" class="uri">https://cynkra.github.io/fledge/</a>:</p>
+<ul>
+<li>Create repository <code>&lt;username&gt;/&lt;username&gt;.github.io</code></li>
+<li>In <code>&lt;username&gt;/&lt;username&gt;.github.io</code> create directory <code>&lt;rpackage&gt;</code></li>
+<li>Populate the <code>&lt;rpackage&gt;</code> directory using one of the methods described below</li>
+<li>Push to GitHub</li>
+<li>Rename repository</li>
+</ul>
+<p>All of this works the same way for organizations. The <a href="https://cynkra.github.io/munch/">munch package</a> was previously located at <a href="https://cynkra.github.io/SwissCommunes/" class="uri">https://cynkra.github.io/SwissCommunes/</a> The original pages, with a warning, are defined at <a href="https://github.com/cynkra/cynkra.github.io/">cynkra/cynkra.github.io</a>.</p>
+</section>
+<section id="redirection" class="level2">
+<h2 class="anchored" data-anchor-id="redirection">Redirection</h2>
+<p>Basic idea: set up an HTML redirect from <code>https://&lt;username-old&gt;.github.io/&lt;package&gt;</code> to <code>https://&lt;username-new&gt;.github.io/&lt;package&gt;</code>.</p>
+<p>To achieve this, create an <code>index.html</code> in <code>&lt;username&gt;/&lt;username&gt;.github.io/rpackage</code> with the following contents:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">meta</span><span class="ot"> http-equiv</span><span class="op">=</span><span class="st">"refresh"</span><span class="ot"> content</span><span class="op">=</span><span class="st">"0; url=</span><span class="er">&lt;</span><span class="st">url to redirect to&gt;"</span><span class="ot"> </span><span class="dt">/&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>However, some redirection practices like this one are considered bad practice (“Use of meta refresh is discouraged by the World Wide Web Consortium (W3C).”)[^1]. Also, users might find it sketchy to see some redirection happening shortly after they visited a site. Last, the redirection shown above only works for the top-level domain. Level 2 or level 3 links like <code>&lt;url&gt;/level1/level2</code> will not work and return a 404.</p>
+</section>
+<section id="deprecation-via-css" class="level2">
+<h2 class="anchored" data-anchor-id="deprecation-via-css">Deprecation via CSS</h2>
+<p>A better way to deprecate a pkgdown/GitHub Pages site is to serve a static version of the last state before the package was moved, and add information to the user that the site has moved.</p>
+<p>An easy way to achieve this is to include a little CSS snippet. The following will add a colored line before the <code>page-header</code> div in the pkgdown site.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode css code-with-copy"><code class="sourceCode css"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">.page-header</span><span class="in">:after</span> {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">content</span><span class="ch">:</span> <span class="st">"You are viewing an outdated page which is not going to be updated anymore. Please go to &lt;https:/new-url.com&gt; for the latest version."</span><span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">font-size</span><span class="ch">:</span> <span class="dv">12</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">font-style</span><span class="ch">:</span> <span class="dv">italic</span><span class="op">;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">color</span><span class="ch">:</span> <span class="cn">#f03333</span><span class="op">;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<figure class="figure">
+<img alt="Screenshot: Deprecation via CSS" src="css.png" style=" width: 100%; height: auto" class="figure-img">
+<figcaption>
+Deprecation information in the header via CSS
+</figcaption>
+</figure>
+<p><br></p>
+<p>Place this code in the <code>pkgdown/</code> directory of your package and it will be automatically picked up when the site is built next time:</p>
+<ul>
+<li>In your package, add the CSS snippet from above to <code>pkgdown/extra.css</code> (CSS name can be different) in the repository/R package which should be deprecated</li>
+<li>Call <code>pkgdown::build_site()</code> one last time</li>
+<li>Copy the contents of <code>docs/</code> to <code>&lt;username&gt;/&lt;username&gt;.github.io/&lt;packagename&gt;</code></li>
+</ul>
+<p>Unfortunately, the <code>:after</code> operator does not allow hyperlinks, so the new URL will not be clickable.</p>
+</section>
+<section id="deprecation-via-bulk-edit" class="level2">
+<h2 class="anchored" data-anchor-id="deprecation-via-bulk-edit">Deprecation via bulk edit</h2>
+<p>For the URL to be clickable, the HTML files must be edited. The <code>find</code>, <code>xargs</code> and <code>sed</code> utilities help to automate this.</p>
+<p>pkgdown uses the Bootstrap framework, which has <a href="https://getbootstrap.com/docs/3.3/components/#alerts">alerts</a> that serve the purpose. They look best just before the closing <code>&lt;/header&gt;</code> element. The following command line adds an alert to each HTML page, advertising <a href="https://cynkra.github.io/munch" class="uri">https://cynkra.github.io/munch</a> as the target URL. It must be run in the <code>rpackage</code> directory of <code>&lt;username&gt;/&lt;username&gt;.github.io</code>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> <span class="at">-name</span> <span class="st">"*.html"</span> <span class="kw">|</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xargs</span> sed <span class="at">-i</span> <span class="at">-r</span> <span class="st">'s#(^.*[&lt;]/header[&gt;])#&lt;div class="alert alert-warning" role="alert"&gt;&lt;strong&gt;Warning!&lt;/strong&gt; This content has moved to &lt;a href="https://cynkra.github.io/munch"&gt;https://cynkra.github.io/munch&lt;/a&gt;.&lt;/div&gt;\n\1#'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This assumes GNU <code>sed</code>. MacOS users will need to use <code>gsed</code>, or <code>-i.bak</code> instead of <code>-i</code> and deal with the leftover <code>*.bak</code> files.</p>
+<figure class="figure">
+<img alt="Screenshot: Deprecation via editing HTML" src="bootstrap.png" style=" width: 100%; height: auto" class="figure-img">
+<figcaption>
+Deprecation information in the header via editing HTML
+</figcaption>
+</figure>
+<p><br></p>
+<p>Always advertising the new root works well enough because it is very likely that the structure of the site will eventually change after the repository rename.</p>
+</section>
+<section id="web-crawlers" class="level2">
+<h2 class="anchored" data-anchor-id="web-crawlers">Web crawlers</h2>
+<p>It is a good idea to make the deprecated contents invisible to web crawlers. Add a file <a href="https://developers.google.com/search/docs/advanced/robots/create-robots-txt"><code>robots.txt</code></a> to the root of <code>&lt;username&gt;/&lt;username&gt;.github.io</code>. The following contents forbids crawling the <a href="https://cynkra.github.io/SwissCommunes/"><code>/SwissCommunes/</code> directory</a> which contains the old snapshot with pointers to the new location:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>User-agent: *</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>Disallow: /SwissCommunes/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>

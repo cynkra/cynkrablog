@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Christoph Sax">
+<meta name="dcterms.date" content="2020-02-09">
 
-<title>cynkra blog</title>
+<title>cynkra blog - tempdisagg: converting quarterly time series to daily</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,26 +22,60 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<link href="../favicon-32x32.png" rel="icon" type="image/png">
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon-32x32.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -140,7 +176,7 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">blog</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="../index.xml"> <i class="bi bi-rss" role="img">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -160,50 +196,133 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">tempdisagg: converting quarterly time series to daily</h1>
+</div>
 
 
 
-<section id="summary" class="level2">
-<h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Status</th>
-<th>Count</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>🔍 Total</td>
-<td>887</td>
-</tr>
-<tr class="even">
-<td>✅ Successful</td>
-<td>841</td>
-</tr>
-<tr class="odd">
-<td>⏳ Timeouts</td>
-<td>0</td>
-</tr>
-<tr class="even">
-<td>🔀 Redirected</td>
-<td>0</td>
-</tr>
-<tr class="odd">
-<td>👻 Excluded</td>
-<td>46</td>
-</tr>
-<tr class="even">
-<td>❓ Unknown</td>
-<td>0</td>
-</tr>
-<tr class="odd">
-<td>🚫 Errors</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p><a href="https://github.com/cynkra/cynkrablog/actions/runs/7781600897?check_suite_focus=true">Full Github Actions output</a></p>
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Christoph Sax </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">February 9, 2020</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Not having a time series at the desired frequency is a common problem for researchers and analysts. For example, instead of quarterly sales, they only have annual sales. Instead of a daily stock market index, they only have a weekly index. While there is no way to fully make up for the missing data, there are useful workarounds: with the help of one or more high-frequency indicator series, the low-frequency series may be disaggregated into a high-frequency series.</p>
+<figure class="figure">
+<img alt="Illustration" src="banner.jpg" style=" width: 100%; height: auto" class="figure-img">
+<figcaption>
+Photo by Jordan McDonald
+</figcaption>
+</figure>
+<p><br></p>
+<p>The package tempdisagg implements the standard methods for temporal disaggregation: Denton, Denton-Cholette, Chow-Lin, Fernandez and Litterman. Our article on <a href="https://doi.org/10.32614/RJ-2013-028">temporal disaggregation of time series</a> in the R-Journal describes the package and the theory of temporal disaggregation in more detail.</p>
+<p>The package has been around for eight years, enabling the standard year or quarter to month or quarter disaggregation. With version 1.0, there are now some major new features: disaggregation can be performed from any frequency to any frequency. Also, tempdisagg now supports time series classes other than <code>ts</code>.</p>
+<section id="convert-between-any-frequency" class="level3">
+<h3 class="anchored" data-anchor-id="convert-between-any-frequency">Convert between any frequency</h3>
+<p>tempdisagg can now convert between most frequencies, for example, it can disaggregate a monthly series to daily. It is no longer restricted to regular conversions, where each low-frequency period had the same number of high-frequency periods. Instead, a low-frequency period (e.g.&nbsp;month) can contain any number of high-frequency periods (e.g.&nbsp;31, 28 or 29 days). Thanks to Roger Kissling and Stella Sim who have suggested this idea.</p>
+<p>We can not only convert months to days, but also years to days, weeks to seconds, or academic years to seconds, or lunar years to hours,etc. The downside is that the computation time depends on the number of observations. Thus, for longer high-frequency series, the computation may take a while.</p>
+<p>In the following, we try to disaggregate quarterly GDP of Switzerland to a hypothetical daily GDP series. The example series are shipped with the package.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tempdisagg)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(tempdisagg)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gdp.q)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="do">##         time    value</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 2005-01-01 133101.3</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 2005-04-01 136320.4</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 2005-07-01 137693.7</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 2005-10-01 139475.9</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 2006-01-01 139204.7</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 6 2006-04-01 141112.5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="time-series-can-be-stored-in-data-frames" class="level2">
+<h2 class="anchored" data-anchor-id="time-series-can-be-stored-in-data-frames">Time series can be stored in data frames</h2>
+<p>Because we are dealing with daily data, we keep the data in a <code>data.frame</code>, rather than in a <code>ts</code> object. Other time series objects, such as <code>xts</code> and <code>tsibble</code>, are possible as well. For conversion and visualization, we use the <a href="https://www.tsbox.help">tsbox</a> package.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tsbox)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ts_plot</span>(gdp.q, <span class="at">title =</span> <span class="st">"Swiss GDP"</span>, <span class="at">subtitle =</span> <span class="st">"real, not seasonally adjusted"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<figure class="figure">
+<img alt="Graph: Swiss GDP, not seasonally adjusted" src="quarterly-1.png" style=" width: 100%; height: auto" class="figure-img">
+<figcaption>
+Series to disaggregate: quarterly gross domestic product of Switzerland
+</figcaption>
+</figure>
+<p><br></p>
+</section>
+<section id="disaggregation-to-daily-frequency" class="level2">
+<h2 class="anchored" data-anchor-id="disaggregation-to-daily-frequency">Disaggregation to daily frequency</h2>
+<p>While disaggregation can also be performed without other series, we use Swiss stock market data as an indicator series to disaggregate GDP. Data of the stock market index, the SMI, is also included in tempdisagg. Weekend and holiday values have been interpolated, because <code>td</code> does not allow the presence of missing values.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ts_plot</span>(spi.d, <span class="at">title =</span> <span class="st">"Swiss Performance Index"</span>, <span class="at">subtitle =</span> <span class="st">"daily values, interpolated"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<figure class="figure">
+<img alt="Graph: Swiss Performance Index, daily" src="indicator-1.png" style=" width: 100%; height: auto" class="figure-img">
+<figcaption>
+Daily indicator series: Swiss Performance Index
+</figcaption>
+</figure>
+<p><br></p>
+<p>The following uses the Chow-Lin method to disaggregate the series. A high <em>rho</em> parameter takes into account that the two series are unlikely to be co-integrated.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>m.d.stocks <span class="ot">&lt;-</span> <span class="fu">td</span>(gdp.q <span class="sc">~</span> spi.d, <span class="at">method =</span> <span class="st">"chow-lin-fixed"</span>, <span class="at">fixed.rho =</span> <span class="fl">0.9</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m.d.stocks)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="do">##</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Call:</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="do">## td(formula = gdp.q ~ spi.d, method = "chow-lin-fixed", fixed.rho = 0.9)</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="do">##</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Residuals:</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="do">##    Min     1Q Median     3Q    Max</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="do">## -10656  -1760   1076   3796   8891</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="do">##</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Coefficients:</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="do">##              Estimate Std. Error t value Pr(&gt;|t|)</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="do">## (Intercept) 1.320e+03  2.856e+01   46.22   &lt;2e-16 ***</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="do">## spi.d       5.512e-02  3.735e-03   14.76   &lt;2e-16 ***</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="do">## ---</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="do">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="do">##</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="do">## 'chow-lin-fixed' disaggregation with 'sum' conversion</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="do">## 59 low-freq. obs. converted to 5493 high-freq. obs.</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="do">## Adjusted R-squared: 0.7928 AR1-Parameter:   0.9</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>And here is the result: A daily series of GDP</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>gdp.d.stocks <span class="ot">&lt;-</span> <span class="fu">predict</span>(m.d.stocks)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ts_plot</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ts_scale</span>(</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ts_c</span>(gdp.d.stocks, gdp.q)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Daily disaggregated GDP"</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">"one indicator"</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<figure class="figure">
+<img alt="Graph: Daily disaggregated Swiss GDP" src="daily-1.png" style=" width: 100%; height: auto" class="figure-img">
+<figcaption>
+Swiss GDP, disaggregated to daily
+</figcaption>
+</figure>
+<p><br></p>
+<p>Like with all disaggregation methods in tempdisagg, the resulting series fulfills the aggregation constraint (the resulting series is as long as the indicator, and needs to be shortened for a comparison):</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ts_span</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ts_frequency</span>(gdp.d.stocks, <span class="st">"quarter"</span>, <span class="at">aggregate =</span> <span class="st">"sum"</span>),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">end =</span> <span class="st">"2019-07-01"</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  gdp.q</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>

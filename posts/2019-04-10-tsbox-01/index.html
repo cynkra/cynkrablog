@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Christoph Sax">
+<meta name="dcterms.date" content="2019-04-10">
 
-<title>cynkra blog</title>
+<title>cynkra blog - tsbox 0.1: class-agnostic time series</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,26 +22,60 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<link href="../favicon-32x32.png" rel="icon" type="image/png">
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon-32x32.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -140,7 +176,7 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">blog</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="../index.xml"> <i class="bi bi-rss" role="img">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -160,50 +196,94 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">tsbox 0.1: class-agnostic time series</h1>
+</div>
 
 
 
-<section id="summary" class="level2">
-<h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Status</th>
-<th>Count</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>🔍 Total</td>
-<td>887</td>
-</tr>
-<tr class="even">
-<td>✅ Successful</td>
-<td>841</td>
-</tr>
-<tr class="odd">
-<td>⏳ Timeouts</td>
-<td>0</td>
-</tr>
-<tr class="even">
-<td>🔀 Redirected</td>
-<td>0</td>
-</tr>
-<tr class="odd">
-<td>👻 Excluded</td>
-<td>46</td>
-</tr>
-<tr class="even">
-<td>❓ Unknown</td>
-<td>0</td>
-</tr>
-<tr class="odd">
-<td>🚫 Errors</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p><a href="https://github.com/cynkra/cynkrablog/actions/runs/7781600897?check_suite_focus=true">Full Github Actions output</a></p>
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Christoph Sax </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 10, 2019</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>The R ecosystem knows a vast number of time series classes: ts, xts, zoo, tsibble, tibbletime or timeSeries. The plethora of standards causes confusion. As different packages rely on different classes, it is hard to use them in the same analysis. tsbox provides a set of tools that make it easy to switch between these classes. It also allows the user to treat time series as plain data frames, facilitating the use with tools that assume rectangular data.</p>
+<br>
+<div style="padding-left: 15%; width: 80%">
+<figure class="figure">
+<img alt="xkcd comic: Standards" src="https://imgs.xkcd.com/comics/standards.png" style="width: 100%; height: auto;" class="figure-img">
+<figcaption>
+comic by <a href="https://xkcd.com/927/">xkcd</a>
+</figcaption>
+</figure>
+</div>
+<p><br></p>
+<p><a href="https://www.tsbox.help/">The tsbox package</a> is built around a set of functions that convert time series of different classes to each other. They are frequency-agnostic and allow the user to combine multiple non-standard and irregular frequencies. Because coercion works reliably, it is easy to write functions that work identically for all classes. So whether we want to smooth, scale, differentiate, chain-link, forecast, regularize, or seasonally adjust a time series, we can use the same tsbox-command for any time series class.</p>
+<p>This blog gives a short overview of the changes introduced in 0.1. A detailed overview of the package functionality is given in the <a href="https://www.tsbox.help/">documentation page</a> (or in a <a href="https://www.cynkra.com/blog/2018-05-15-tsbox/">previous blog-post</a>).</p>
+<section id="keeping-explicit-missing-values" class="level3">
+<h3 class="anchored" data-anchor-id="keeping-explicit-missing-values">Keeping explicit missing values</h3>
+<p>Version 0.1, now on <a href="https://cran.r-project.org/package=tsbox">CRAN</a>, brings many bug fixes and improvements. A substantial change involves the treatment of <code>NA</code> values in data frames. Previously, all <code>NA</code>s in data frames were treated as implicit and were only made explicit by a call to <code>ts_regular</code>.</p>
+<p>This has changed now. If you convert a <code>ts</code> object to a data frame, all <code>NA</code> values will be preserved. To replicate previous behavior, apply the <code>ts_na_omit</code> function:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tsbox)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>x.ts <span class="ot">&lt;-</span> <span class="fu">ts_c</span>(mdeaths, austres)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>x.ts</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ts_df</span>(x.ts)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ts_na_omit</span>(<span class="fu">ts_df</span>(x.ts))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="ts_span-extends-outside-of-series-span" class="level3">
+<h3 class="anchored" data-anchor-id="ts_span-extends-outside-of-series-span"><code>ts_span</code> extends outside of series span</h3>
+<p>This lays the groundwork for <a href="https://www.tsbox.help/reference/ts_span.html"><code>ts_span</code></a> to be extensible. With <code>extend = TRUE</code>, <code>ts_span</code> extends a regular series with <code>NA</code> values, up to the specified limits, similar to base <code>window</code>. Like all functions in tsbox, this is frequency-agnostic. For example, in the following, the monthly series <code>mdeaths</code> is extended by monthly <code>NA</code> values, while the quarterly series <code>austres</code> is extended by quarterly <code>NA</code> values.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>x.df <span class="ot">&lt;-</span> <span class="fu">ts_df</span>(<span class="fu">ts_c</span>(mdeaths, austres))</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ts_span</span>(x.df, <span class="at">end =</span> <span class="st">"1999-12-01"</span>, <span class="at">extend =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="ts_default-standardizes-column-names-in-a-data-frame" class="level3">
+<h3 class="anchored" data-anchor-id="ts_default-standardizes-column-names-in-a-data-frame"><code>ts_default</code> standardizes column names in a data frame</h3>
+<p>In rectangular data structures, i.e., in a <code>data.frame</code>, a <code>data.table</code>, or a <code>tibble</code>, tsbox stores one or multiple time series in the ‘long’ format. By default, tsbox detects a <em>value</em>, a <em>time</em> and zero, one or several <em>id</em> columns. Alternatively, the time column and the value column can be explicitly named <code>time</code> and <code>value</code>. If explicit names are used, the column order will be ignored.</p>
+<p>While automatic column name detection is useful in interactive mode, it produces unnecessary overhead in longer workflows. The helper function <a href="https://www.tsbox.help/reference/ts_default.html"><code>ts_default</code></a> detects and renames the time and the value column so that auto-detection will be turned off in subsequent steps (note that the names of the id columns are not affected):</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>x.df <span class="ot">&lt;-</span> <span class="fu">ts_df</span>(<span class="fu">ts_c</span>(mdeaths, austres))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(x.df) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"a fancy id name"</span>, <span class="st">"date"</span>, <span class="st">"count"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ts_plot</span>(x.df)  <span class="co"># tsbox is fine with that</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ts_default</span>(x.df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="ts_summary-summarizes-time-series" class="level3">
+<h3 class="anchored" data-anchor-id="ts_summary-summarizes-time-series"><code>ts_summary</code> summarizes time series</h3>
+<p><a href="https://www.tsbox.help/reference/ts_summary.html"><code>ts_summary</code></a> provides a frequency agnostic summary of a ts-boxable object:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ts_summary</span>(<span class="fu">ts_c</span>(mdeaths, austres))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        id obs    diff freq      start        end</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 mdeaths  72 1 month   12 1974-01-01 1979-12-01</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 austres  89 3 month    4 1971-04-01 1993-04-01</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>ts_summary</code> returns a plain data frame that can be used for any purpose. It is also recommended for the extraction of various time series properties, such as <code>start</code>, <code>freq</code> or <code>id</code>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ts_summary</span>(austres)<span class="sc">$</span>id</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "austres"</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ts_summary</span>(austres)<span class="sc">$</span>start</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "1971-04-01"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="and-a-cheat-sheet" class="level3">
+<h3 class="anchored" data-anchor-id="and-a-cheat-sheet">And a cheat sheet!</h3>
+<p>Finally, we fabricated a tsbox cheat sheet that summarizes most functionality. Print and enjoy working with time series.</p>
+<div style="padding: 10%">
+<p><a href="tsbox-cheatsheet.pdf"> <img alt="tsbox cheat sheet" src="tsbox-cheatsheet-small.jpg" style="width: 100%; height: auto;"> </a></p>
+</div>
 
 
 </section>

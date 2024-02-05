@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Patrick Schratz">
+<meta name="dcterms.date" content="2020-11-02">
 
-<title>cynkra blog</title>
+<title>cynkra blog - Setting up a load-balanced Jitsi Meet instance</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,26 +22,60 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<link href="../favicon-32x32.png" rel="icon" type="image/png">
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon-32x32.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -140,7 +176,7 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">blog</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="../index.xml"> <i class="bi bi-rss" role="img">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -160,50 +196,85 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Setting up a load-balanced Jitsi Meet instance</h1>
+</div>
 
 
 
-<section id="summary" class="level2">
-<h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Status</th>
-<th>Count</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>🔍 Total</td>
-<td>887</td>
-</tr>
-<tr class="even">
-<td>✅ Successful</td>
-<td>841</td>
-</tr>
-<tr class="odd">
-<td>⏳ Timeouts</td>
-<td>0</td>
-</tr>
-<tr class="even">
-<td>🔀 Redirected</td>
-<td>0</td>
-</tr>
-<tr class="odd">
-<td>👻 Excluded</td>
-<td>46</td>
-</tr>
-<tr class="even">
-<td>❓ Unknown</td>
-<td>0</td>
-</tr>
-<tr class="odd">
-<td>🚫 Errors</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p><a href="https://github.com/cynkra/cynkrablog/actions/runs/7781600897?check_suite_focus=true">Full Github Actions output</a></p>
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Patrick Schratz </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 2, 2020</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Jitsi Meet is a self-hosted Free and Open-Source Software (FOSS) video conferencing solution. During the recent COVID-19 pandemic, the project became quite popular, and many companies decided to host their own Jitsi instance.</p>
+<figure class="figure">
+<img alt="Illustration" src="banner.jpg" style=" width: 100%; height: auto" class="figure-img">
+<figcaption>
+Photo by Chuttersnap
+</figcaption>
+</figure>
+<p>There are many <a href="https://jitsi.github.io/handbook/docs/devops-guide">different ways</a> to install and run <a href="https://github.com/jitsi/jitsi-meet">Jitsi</a> on a machine. A popular choice in the DevOps space is to use <a href="https://github.com/jitsi/docker-jitsi-meet">Docker</a> via <code>docker-compose</code>, which was the method used in our scenario.</p>
+<p>At cynkra, while we have been running our own Jitsi instance quite happily for some months, there was a slightly challenging task coming up: hosting a virtual meeting for approximately 100 participants.</p>
+<section id="the-challenge" class="level2">
+<h2 class="anchored" data-anchor-id="the-challenge">The Challenge</h2>
+<p>cynkra actively supports the local <a href="https://www.meetup.com/Zurich-R-User-Group/">Zurich R User Group</a>. For one of their <a href="https://www.meetup.com/Zurich-R-User-Group/events/273910283/">recent meetings</a>, about 100 people RSVP’ed.</p>
+<p>When browsing the load capabilities of a single Jitsi instance, we found that the stock setup begins to experience some challenges at around 35 people and fails at around 70 people. The limiting factor appears to be the “videobridge”. One solution is to add a second videobridge to the Jitsi instance. Jitsi can then distribute the load and should be able to host more than 100 people in a meeting.</p>
+<p>The best approach is to deploy the second videobridge on a new instance to avoid running into CPU limitations on the main machine. While there is a <a href="https://github.com/jitsi/jitsi-meet/wiki/jitsi-meet-load-balancing-installation-Ubuntu-18.04-with-MUC-and-JID">guide</a> in the Jitsi Wiki and a <a href="https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-videotutorials#how-to-load-balance-jitsi-meethttpsjitsiorgblogtutorial-video-how-to-load-balance-jitsi-meet">video</a> that explains how to do it, many people still struggle (<a href="https://github.com/jitsi/docker-jitsi-meet/issues/372">1</a>, <a href="https://community.jitsi.org/t/how-can-i-add-extra-jvb-in-docker-meet/30911/36">2</a>) to get this set up successfully.</p>
+<p>Hence, we thought it would be valuable to take another, hopefully simple and understandable stab at explaining this task to the community.</p>
+</section>
+<section id="load-balancing-jitsi-meet" class="level2">
+<h2 class="anchored" data-anchor-id="load-balancing-jitsi-meet">Load-balancing Jitsi Meet</h2>
+<p>In the following, we will denote the main machine on which Jitsi runs, as MAIN. The second machine, which will only host a standalone videobridge, will be named BRIDGE.</p>
+<ol type="1">
+<li><p>The first step is to create a working installation on MAIN, following the <a href="https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-docker">official docker guide</a> from the Jitsi developers. There is no need to use Docker. An installation on the host system will also work.</p>
+<p>At this point, we assume that you already have installed Jitsi with SSL support at a fictitious domain.</p></li>
+<li><p>To be able to connect to the XMPP server (managed by <code>prosody</code>) on MAIN from BRIDGE (details in point 4 below), port 5222 needs to be exported to the public. This requires adding</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ports:</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-</span> <span class="st">"5222:5222"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>to the <code>prosody</code> section in <code>docker-compose.yml</code> and ensuring that the port is opened in the firewall (<code>ufw allow 5222</code>).</p></li>
+<li><p>On BRIDGE, start with the same <code>.env</code> and <code>docker-compose.yml</code> as MAIN.</p>
+<p>In <code>docker-compose.yml</code>, remove all services besides <code>jvb</code>. The videobridge will later connect to all services on MAIN.</p>
+<p>Make sure that <code>JVB_AUTH_USER</code> and <code>JVB_AUTH_PASSWORD</code> in <code>.env</code> are the same as on MAIN, otherwise the authentication will fail.</p></li>
+<li><p>On BRIDGE in <code>.env</code> change <code>XMPP_SERVER=xmpp.&lt;DOMAIN&gt;</code> to <code>XMPP_SERVER=&lt;DOMAIN&gt;</code>.</p></li>
+<li><p>Run <code>docker-compose up</code> and observe what happens. The videobridge should successfully connect to <code>&lt;DOMAIN&gt;</code>. On MAIN, in <code>docker logs jitsi_jicofo_1</code>, an entry should appear denoting that a new videobridge was successfully connected.</p>
+<p>It looks like</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Jicofo</span> 2020-10-23 19:01:52.173 INFO: <span class="pp">[</span><span class="ss">29</span><span class="pp">]</span> org.jitsi.jicofo.bridge.BridgeSelector.log<span class="er">(</span><span class="kw">)</span> <span class="ex">Added</span> new videobridge: Bridge[jid=jvbbrewery@internal-muc.<span class="op">&lt;</span>DOMAIN<span class="op">&gt;</span>/d789de303e9b, relayId=null, region=null, stress=0.00]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If you have another videobridge running on MAIN, you should see that the identifier of the new videobridge (here <code>d789de303e9b</code>) is different to your main videobridge identifier. On BRIDGE, the logs should show something like</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">INFO:</span> Joined MUC: jvbbrewery@internal-muc.<span class="op">&lt;</span>DOMAIN<span class="op">&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">INFO:</span> Performed a successful health check in PT0S. Sticky failure: false</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ol>
+<p>To test that the external videobridge is active, one can disable the main videobridge (<code>docker stop jitsi_jvb_1</code>) and try to enable the camera in a new meeting.</p>
+</section>
+<section id="troubleshooting-and-tips" class="level2">
+<h2 class="anchored" data-anchor-id="troubleshooting-and-tips">Troubleshooting and Tips</h2>
+<ul>
+<li><p>If you see something like <code>SASLError using SCRAM-SHA-1: not-authorized</code>, this indicates that the <code>JVB_AUTH_PASSWORD</code> and/or <code>JVB_AUTH_USER</code> on BRIDGE are incorrect.</p></li>
+<li><p>If you change something in <code>.env</code> of MAIN, you need to delete all config folders before running <code>docker-compose up</code> again. Otherwise changes won’t be picked up even when force destroying the containers.</p></li>
+<li><p>Do not run <code>gen-passwords.sh</code> multiple times as <code>JVB_AUTH_PASSWORD</code> and BRIDGE will not be able to connect anymore.</p></li>
+<li><p>Unrelated to the content above: if you want to create a user manually for your instance, the following command might be helpful:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> exec jitsi_prosody_1 prosodyctl <span class="at">--config</span> /config/prosody.cfg.lua register <span class="op">&lt;</span>USER<span class="op">&gt;</span> <span class="op">&lt;</span>DOMAIN<span class="op">&gt;</span> <span class="st">"&lt;PASSWORD&gt;"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul>
 
 
 </section>
