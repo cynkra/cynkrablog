@@ -39,5 +39,9 @@ $pre-color: $white !default;
 
 /* Navbar */
 li.active a.nav-link {
-  color: #005f7e !important;
+  color: #3782fd !important;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover, .navbar-dark .navbar-nav .nav-link:focus {
+  color: #3782fd !important;
 }
