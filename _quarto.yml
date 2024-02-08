@@ -1,6 +1,10 @@
 project:
   type: website
   output-dir: docs
+  # For some reasons the logo light isn't properly copied
+  # so we have to do it post-render.
+  post-render: 
+    - "cp ./logo_light.svg docs/"
 
 execute:
   freeze: auto
@@ -14,7 +18,7 @@ website:
     left: "Except where otherwise noted, content on this blog is licensed under the [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) licence."
     right: Blog created with [Quarto](https://quarto.org/).
   navbar:
-    logo: https://cynkra.com/assets/img/logo_small.svg
+    logo: ./logo_dark.svg #https://cynkra.com/assets/img/logo_small.svg
     title: false
     right:
       - text: Consulting
@@ -43,6 +47,10 @@ website:
         href: blog/index.xml
 format:
   html:
+    # Include JS code for logo toggle
+    include-after-body:
+      text: |
+        <script src="./custom.js"><\script>
     code-link: true
     highlight-style:
       light: arrow
