@@ -9,7 +9,6 @@ $body-color: rgba($white, .7) !default;
 $border-dark-color: rgba(255, 255, 255, 0.14);
 $heading-link-color: rgba($white, .85) !default;
 $heading-link-hover-color: $primary !default;
-$code-color: #f33185 !default;
 
 $pagination-color: $fg;
 $pagination-hover-color: $bg;
@@ -29,8 +28,13 @@ $dropdown-border-color: $border-dark-color;
 $card-border-color: $border-dark-color !default;
 $card-bg: $bg !default;
 $card-color: rgba($white, .7) !default;
+
+$tooltip-bg: $fg;
+
+$code-color: #f33185 !default;
 $pre-bg: rgba($white, .04) !default;
 $pre-color: $white !default;
+$code-block-bg: $black;
 
 /* navbar */
 .navbar {

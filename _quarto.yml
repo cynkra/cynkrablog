@@ -56,9 +56,7 @@ format:
       text: |
         <script src="./custom.js"><\script>
     code-link: true
-    highlight-style:
-      light: arrow
-      dark: arrow-dark
+    highlight-style: github
     theme:
       light: [cosmo, light.scss, custom.scss]
       dark: [cosmo, dark.scss, custom.scss]
