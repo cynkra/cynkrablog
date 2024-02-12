@@ -6,7 +6,7 @@ og_image: og_image.jpg
 author: Kirill Müller
 title: 'Maintaining multiple identities with Git'
 categories:
-- git
+- Git
 ---
 
 When committing to a Git repository related to my consulting work, I must use my company e-mail address, kirill@cynkra.com. Not so much for my open-source work -- for this, I prefer to use other e-mail addresses, like krlmlr+r@mailbox.org . (For example, Travis CI sends notification e-mails to the committer's e-mail address, and I have set up filtering for that other address.)

@@ -11,9 +11,6 @@ categories:
   - api
   - google
   - oauth2
-  - JWT
-  - ansible
-  - automation
 badges:
 - label: DevOps
   bg: bg-info

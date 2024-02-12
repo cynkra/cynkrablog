@@ -6,8 +6,7 @@ image: banner.png
 author: Ben Ubah
 title: 'Google Season of Docs with R: useR! Information Board'
 categories:
-- r
-- useR!
+- R
 - gsod
 - dashboard
 badges:

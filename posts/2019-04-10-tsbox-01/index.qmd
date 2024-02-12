@@ -5,7 +5,7 @@ og_image: og_image.jpg
 author: Christoph Sax
 title: 'tsbox 0.1: class-agnostic time series'
 categories:
-- r
+- R
 - time-series
 ---
 

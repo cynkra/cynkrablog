@@ -6,7 +6,7 @@ og_image: og_image.jpg
 author: Angel D'az, Kirill Müller
 title: 'Relational data models in R'
 categories:
-- r
+- R
 - dm
 - databases
 ---

@@ -5,7 +5,7 @@ og_image: og_image.jpg
 author: Christoph Sax
 title: 'tsbox 0.2: supporting additional time series classes'
 categories:
-- r
+- R
 - time-series
 ---
 

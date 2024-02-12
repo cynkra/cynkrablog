@@ -6,7 +6,7 @@ image: banner.jpg
 author: Christoph Sax
 title: 'tsbox 0.3.1: extended functionality'
 categories:
-- r
+- R
 - time-series
 badges:
 - label: CRAN

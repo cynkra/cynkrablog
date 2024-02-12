@@ -6,7 +6,7 @@ og_image: og_image.jpg
 author: Christoph Sax
 title: 'Seasonal Adjustment of Multiple Series'
 categories:
-- r
+- R
 - time-series
 ---
 

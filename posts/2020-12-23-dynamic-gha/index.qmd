@@ -6,8 +6,8 @@ og_image: og_image.jpg
 author: Kirill Müller
 title: 'Dynamic build matrix in GitHub Actions'
 categories:
-- r
-- github
+- R
+- GitHub
 ---
 
 I wanted to try out the new `fromJSON()` that allows dynamic build matrices in GitHub Actions for quite some time now.

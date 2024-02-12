@@ -4,7 +4,7 @@ layout: post
 author: Kirill Müller
 title: 'Done “Establishing DBI”!?'
 categories:
-- r
+- R
 - databases
 ---
 

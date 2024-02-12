@@ -7,7 +7,7 @@ author: cynkra team
 title: 'DevOps Expert (f/m/d, 60-100%)'
 categories:
 - jobs
-- devops
+- DevOps
 draft: true
 ---
 

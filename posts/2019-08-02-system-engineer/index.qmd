@@ -7,7 +7,7 @@ author: cynkra team
 title: 'DevOps System Engineer (40-60%)'
 categories:
 - jobs
-- devops
+- DevOps
 draft: true
 ---
 

@@ -6,7 +6,7 @@ og_image: og_image.jpg
 author: Christoph Sax
 title: 'tempdisagg: converting quarterly time series to daily'
 categories:
-- r
+- R
 - time-series
 ---
 

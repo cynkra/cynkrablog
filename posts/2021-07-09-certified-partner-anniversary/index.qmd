@@ -6,9 +6,7 @@ layout: post
 image: banner.jpg
 categories:
   - certified partner
-  - anniversary
-  - RStudio Workbench
-  - RStudio Managed Workbench
+  - Posit
   - Docker
 ---
 

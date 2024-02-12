@@ -5,7 +5,7 @@ og_image: og_image.jpg
 author: Christoph Sax
 title: 'Time series of the world, unite!'
 categories:
-- r
+- R
 - time-series
 ---
 

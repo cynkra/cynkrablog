@@ -6,9 +6,8 @@ og_image: og_image.jpg
 author: Christoph Sax
 title: 'seasonal 1.9: Accessing composite output'
 categories:
-- r
+- R
 - time-series
-- seasonal adjustment
 badges:
 - label: CRAN
   bg: bg-warning

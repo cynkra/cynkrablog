@@ -8,17 +8,10 @@ date: '2022-09-14'
 avatar: /user/img/about/patrick2.jpg
 slug: 'rstudio-efs-nfs'
 categories:
-  - posit
-  - rstudio
-  - workbench
-  - connect
-  - kubernetes
+  - DevOps
+  - Posit
   - file system
-  - EFS
-  - NFS
   - performance
-  - AWS
-  - Azure
 badges:
 - label: DevOps
   bg: bg-info
