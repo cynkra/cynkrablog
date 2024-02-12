@@ -800,14 +800,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // Version: <1.0.0>
     // Description: Change image src depending on body class (quarto-light or quarto-dark)
     // License: MIT
-    function updateNavbarImage() {
+    function isDarkMode() {
       var bodyClass = window.document.body.classList;
+      return(bodyClass.contains('quarto-dark'))
+    }
+
+    function updateNavbarImage() {
       var navbarImg = window.document.getElementsByClassName('navbar-logo')[0];
       var src = navbarImg.src;
       var newSrc = src;
-      if (bodyClass.contains('quarto-light') && src.includes('_dark')) {
+      if (!isDarkMode() && src.includes('_dark')) {
         newSrc = src.replace('_dark', '_light');
-      } else if (bodyClass.contains('quarto-dark') && src.includes('_light')) {
+      } else if (isDarkMode() && src.includes('_light')) {
         newSrc = src.replace('_light', '_dark');
       }
       if (newSrc !== src) {
@@ -820,6 +824,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       themeToggle.addEventListener("click", function() {
         updateNavbarImage();
       });
+      if (isDarkMode()) {
+        updateNavbarImage();
+      }
     });
 </script>
 
