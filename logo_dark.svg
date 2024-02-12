@@ -39,7 +39,7 @@
   </defs>
   <g id="surface1">
     <g clip-path="url(#clip1)" clip-rule="nonzero">
-      <rect x="0" y="0" width="200.25887" height="49.9899" style="fill-opacity: 1; stroke: none;"/>
+      <rect x="0" y="0" width="200.25887" height="49.9899" style="fill-opacity: 1; stroke: none; fill: rgb(11, 15, 25);"/>
     </g>
     <g style="fill:rgb(0%,0%,0%);fill-opacity:1;">
       <use transform="matrix(1, 0, 0, 1, -1.4504300355911255, 38.400699615478516)" style="fill: rgb(255, 255, 255); fill-opacity: 0.8;" xlink:href="#glyph0-1"/>
