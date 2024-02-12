@@ -4,7 +4,7 @@ project:
   # For some reasons the logo light isn't properly copied
   # so we have to do it post-render.
   post-render: 
-    - "cp ./logo_light.svg docs/"
+    - "cp logo_light.svg docs/"
 
 resources:
   - "mountain.jpg"
@@ -21,7 +21,7 @@ website:
     left: "Except where otherwise noted, content on this blog is licensed under the [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) licence."
     right: Blog created with [Quarto](https://quarto.org/).
   navbar:
-    logo: ./logo_dark.svg #https://cynkra.com/assets/img/logo_small.svg
+    logo: logo_light.svg #https://cynkra.com/assets/img/logo_small.svg
     logo-href: https://cynkra.com/
     title: false
     right:
@@ -53,8 +53,7 @@ format:
   html:
     # Include JS code for logo toggle
     include-after-body:
-      text: |
-        <script src="./custom.js"><\script>
+      file: toggle-theme-image.html
     code-link: true
     highlight-style: github
     theme:
