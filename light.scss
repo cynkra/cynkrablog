@@ -5,6 +5,9 @@ $fg: $black;
 $border-color: rgba($white, .14) !default;
 $border-light-color: rgba($white, .14) !default;
 
+$pagination-color: $fg;
+$pagination-hover-color: $fg;
+
 $navbar-bg: $white;
 $nav-link-color: #33354d;
 $navbar-hover-color: $primary;
