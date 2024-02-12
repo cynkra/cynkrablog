@@ -9,7 +9,7 @@
 <link>https://blog.cynkra.com/</link>
 <atom:link href="https://blog.cynkra.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>By the cynkra team</description>
-<generator>quarto-1.4.549</generator>
+<generator>quarto-1.5.9</generator>
 <lastBuildDate>Wed, 14 Sep 2022 00:00:00 GMT</lastBuildDate>
 <item>
   <title>EFS vs. NFS for RStudio on Kubernetes (AWS): Configuration and considerations</title>
@@ -223,17 +223,20 @@ font-style: inherit;"># only needed for dynamic provisioning - static provisioni
 background-color: null;
 font-style: inherit;">storageClasses</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb2-3"><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">  </span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">name</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> efs-sc-rsc</span></span>
@@ -243,6 +246,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">reclaimPolicy</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> Retain</span></span>
@@ -252,6 +256,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">volumeBindingMode</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> Immediate</span></span>
@@ -261,6 +266,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">allowVolumeExpansion</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="ch" style="color: #20794D;
@@ -272,11 +278,13 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">mountOptions</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb2-8"><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">      </span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> tls</span></span>
@@ -286,6 +294,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">parameters</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb2-10"><span class="at" style="color: #657422;
 background-color: null;
@@ -293,6 +302,7 @@ font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">provisioningMode</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> efs-ap</span></span>
@@ -302,6 +312,7 @@ font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">directoryPerms</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -313,6 +324,7 @@ font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">uid</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -324,6 +336,7 @@ font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">gid</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -335,6 +348,7 @@ font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">basePath</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -344,12 +358,14 @@ font-style: inherit;">"/dynamic_provisioning"</span></span>
 background-color: null;
 font-style: inherit;">  </span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">name</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> efs-sc-rsw</span></span>
@@ -359,6 +375,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">reclaimPolicy</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> Retain</span></span>
@@ -368,6 +385,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">volumeBindingMode</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> Immediate</span></span>
@@ -377,6 +395,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">allowVolumeExpansion</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="ch" style="color: #20794D;
@@ -388,11 +407,13 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">mountOptions</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb2-20"><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">      </span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> tls</span></span>
@@ -402,6 +423,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">parameters</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb2-22"><span class="at" style="color: #657422;
 background-color: null;
@@ -409,6 +431,7 @@ font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">basePath</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -418,12 +441,14 @@ font-style: inherit;">"/"</span></span>
 background-color: null;
 font-style: inherit;">  </span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">name</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> efs-sc-rspm</span></span>
@@ -433,6 +458,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">reclaimPolicy</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> Retain</span></span>
@@ -442,6 +468,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">volumeBindingMode</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> Immediate</span></span>
@@ -451,6 +478,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">allowVolumeExpansion</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="ch" style="color: #20794D;
@@ -462,11 +490,13 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">mountOptions</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb2-28"><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">      </span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> tls</span></span>
@@ -476,6 +506,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">parameters</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb2-30"><span class="at" style="color: #657422;
 background-color: null;
@@ -483,6 +514,7 @@ font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">provisioningMode</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> efs-ap</span></span>
@@ -492,6 +524,7 @@ font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">directoryPerms</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -503,6 +536,7 @@ font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">uid</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -514,6 +548,7 @@ font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">gid</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -525,6 +560,7 @@ font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">basePath</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -672,6 +708,7 @@ font-style: inherit;">}</span></span></code></pre></div>
 background-color: null;
 font-style: inherit;">homeStorage</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb5-2"><span class="at" style="color: #657422;
 background-color: null;
@@ -679,6 +716,7 @@ font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">create</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="ch" style="color: #20794D;
@@ -690,6 +728,7 @@ font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">mount</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="ch" style="color: #20794D;
@@ -701,6 +740,7 @@ font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">name</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -712,6 +752,7 @@ font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">storageClassName</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -723,6 +764,7 @@ font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">requests</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb5-7"><span class="at" style="color: #657422;
 background-color: null;
@@ -730,6 +772,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">storage</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -740,6 +783,7 @@ font-style: inherit;">"50Gi"</span></span></code></pre></div>
 background-color: null;
 font-style: inherit;">config</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb6-2"><span class="at" style="color: #657422;
 background-color: null;
@@ -747,6 +791,7 @@ font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">server</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb6-3"><span class="at" style="color: #657422;
 background-color: null;
@@ -754,6 +799,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">rserver.conf</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb6-4"><span class="at" style="color: #657422;
 background-color: null;
@@ -761,6 +807,7 @@ font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">server-shared-storage-path</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> /home/rstudio-shared-storage</span></span></code></pre></div>
@@ -824,12 +871,14 @@ font-style: inherit;"> /home/rstudio-shared-storage</span></span></code></pre></
 <p><em>Disclaimer: The <code>jwt.rb</code> script below and parts of the ansible logic are taken/adapted from another blog post which I am unable to find again.</em> <em>Memo to myself: always instantly store the link somewhere if you find some helpful content on a website…</em></p>
 <div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">name</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -839,6 +888,7 @@ font-style: inherit;">"Google Workspace: Create JWT for Google OAuth2"</span></s
 background-color: null;
 font-style: inherit;">  command</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">: </span><span class="ch" style="color: #20794D;
 background-color: null;
 font-style: inherit;">&gt;</span></span>
@@ -852,16 +902,19 @@ font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">args</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">{</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">chdir</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -870,6 +923,7 @@ font-style: inherit;">"/usr/bin/"</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">}</span></span>
 <span id="cb1-8"><span class="at" style="color: #657422;
 background-color: null;
@@ -877,6 +931,7 @@ font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">register</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> jwt</span></span></code></pre></div>
@@ -885,11 +940,13 @@ font-style: inherit;"> jwt</span></span></code></pre></div>
 background-color: null;
 font-style: inherit;">google_workspace_oauth2_api_scopes</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb2-2"><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">  </span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -899,6 +956,7 @@ font-style: inherit;">'https://www.googleapis.com/auth/admin.directory.user'</sp
 background-color: null;
 font-style: inherit;">  </span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -908,6 +966,7 @@ font-style: inherit;">'https://www.googleapis.com/auth/admin.directory.group'</s
 background-color: null;
 font-style: inherit;">  </span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -917,6 +976,7 @@ font-style: inherit;">'https://www.googleapis.com/auth/admin.directory.domain'</
 background-color: null;
 font-style: inherit;">  </span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -926,6 +986,7 @@ font-style: inherit;">'https://www.googleapis.com/auth/admin.directory.userschem
 background-color: null;
 font-style: inherit;">  </span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -935,6 +996,7 @@ font-style: inherit;">'https://www.googleapis.com/auth/apps.licensing'</span></s
 <p>The <code>jwt.rb</code> file referenced in the call above looks as follows:</p>
 <div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode ruby code-with-copy"><code class="sourceCode ruby"><span id="cb3-1"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">#!/usr/bin/env ruby</span></span>
 <span id="cb3-2"><span class="co" style="color: #5E5E5E;
 background-color: null;
@@ -958,8 +1020,10 @@ font-style: inherit;">'openssl'</span></span>
 <span id="cb3-7"></span>
 <span id="cb3-8">options <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">{}</span></span>
 <span id="cb3-9"><span class="dt" style="color: #AD0000;
 background-color: null;
@@ -967,15 +1031,19 @@ font-style: inherit;">OptionParser</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">.new</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">do</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span>opts<span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span></span>
 <span id="cb3-10">  opts<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">.banner</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=</span> <span class="vs" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'Usage: jwt.rb [options]'</span></span>
@@ -988,22 +1056,29 @@ font-style: inherit;">'--iss ISS'</span>, <span class="vs" style="color: #20794D
 background-color: null;
 font-style: inherit;">'Issuer'</span>) <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">do</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span>iss<span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span></span>
 <span id="cb3-13">    options<span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">[</span><span class="wa" style="color: #5E5E5E;
 background-color: null;
 font-style: italic;">:iss</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">]</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=</span> iss</span>
 <span id="cb3-14">  <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">end</span></span>
 <span id="cb3-15">  opts<span class="at" style="color: #657422;
 background-color: null;
@@ -1013,26 +1088,33 @@ font-style: inherit;">'--sub SUB'</span>, <span class="vs" style="color: #20794D
 background-color: null;
 font-style: inherit;">'Subject'</span>) <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">do</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">sub</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span></span>
 <span id="cb3-16">    options<span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">[</span><span class="wa" style="color: #5E5E5E;
 background-color: null;
 font-style: italic;">:sub</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">]</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">sub</span></span>
 <span id="cb3-17">  <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">end</span></span>
 <span id="cb3-18">  opts<span class="at" style="color: #657422;
 background-color: null;
@@ -1042,22 +1124,29 @@ font-style: inherit;">'--scope SCOPE'</span>, <span class="vs" style="color: #20
 background-color: null;
 font-style: inherit;">'API Scopes'</span>) <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">do</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span>scope<span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span></span>
 <span id="cb3-19">    options<span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">[</span><span class="wa" style="color: #5E5E5E;
 background-color: null;
 font-style: italic;">:scope</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">]</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=</span> scope</span>
 <span id="cb3-20">  <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">end</span></span>
 <span id="cb3-21">  opts<span class="at" style="color: #657422;
 background-color: null;
@@ -1067,22 +1156,29 @@ font-style: inherit;">'--kid KID'</span>, <span class="vs" style="color: #20794D
 background-color: null;
 font-style: inherit;">'Key id'</span>) <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">do</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span>kid<span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span></span>
 <span id="cb3-22">    options<span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">[</span><span class="wa" style="color: #5E5E5E;
 background-color: null;
 font-style: italic;">:kid</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">]</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=</span> kid</span>
 <span id="cb3-23">  <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">end</span></span>
 <span id="cb3-24">  opts<span class="at" style="color: #657422;
 background-color: null;
@@ -1092,31 +1188,40 @@ font-style: inherit;">'--pkey PKEY'</span>, <span class="vs" style="color: #2079
 background-color: null;
 font-style: inherit;">'Key'</span>) <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">do</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span>pkey<span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span></span>
 <span id="cb3-25">    options<span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">[</span><span class="wa" style="color: #5E5E5E;
 background-color: null;
 font-style: italic;">:pkey</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">]</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=</span> pkey</span>
 <span id="cb3-26">  <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">end</span></span>
 <span id="cb3-27"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">end</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">.parse!</span></span>
 <span id="cb3-28"></span>
 <span id="cb3-29">iat <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=</span> <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">Time</span><span class="at" style="color: #657422;
@@ -1124,8 +1229,10 @@ background-color: null;
 font-style: inherit;">.now.to_i</span></span>
 <span id="cb3-30">exp <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=</span> iat <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">900</span> <span class="co" style="color: #5E5E5E;
@@ -1134,16 +1241,20 @@ font-style: inherit;"># token is 900s valid</span></span>
 <span id="cb3-31"></span>
 <span id="cb3-32">payload <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">{</span> <span class="wa" style="color: #5E5E5E;
 background-color: null;
 font-style: italic;">iss: </span>options<span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">[</span><span class="wa" style="color: #5E5E5E;
 background-color: null;
 font-style: italic;">:iss</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">]</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">.to_s</span>,</span>
@@ -1151,10 +1262,12 @@ font-style: inherit;">.to_s</span>,</span>
 background-color: null;
 font-style: inherit;">sub</span>: options<span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">[</span><span class="wa" style="color: #5E5E5E;
 background-color: null;
 font-style: italic;">:sub</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">]</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">.to_s</span>,</span>
@@ -1162,10 +1275,12 @@ font-style: inherit;">.to_s</span>,</span>
 background-color: null;
 font-style: italic;">scope: </span>options<span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">[</span><span class="wa" style="color: #5E5E5E;
 background-color: null;
 font-style: italic;">:scope</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">]</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">.to_s</span>,</span>
@@ -1178,10 +1293,12 @@ font-style: inherit;">'https://oauth2.googleapis.com/token'</span>,</span>
 background-color: null;
 font-style: italic;">kid: </span>options<span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">[</span><span class="wa" style="color: #5E5E5E;
 background-color: null;
 font-style: italic;">:kid</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">]</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">.to_s</span>,</span>
@@ -1192,16 +1309,20 @@ font-style: italic;">exp: </span>exp,</span>
 background-color: null;
 font-style: italic;">iat: </span>iat <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">}</span></span>
 <span id="cb3-39"></span>
 <span id="cb3-40">pkey <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=</span> options<span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">[</span><span class="wa" style="color: #5E5E5E;
 background-color: null;
 font-style: italic;">:pkey</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">]</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">.to_s.gsub</span>(<span class="ch" style="color: #20794D;
@@ -1211,14 +1332,17 @@ background-color: null;
 font-style: inherit;">"\n"</span>)</span>
 <span id="cb3-41">priv_key <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=</span> <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">OpenSSL</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">::</span><span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">PKey</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">::</span><span class="cn" style="color: #8f5902;
 background-color: null;
 font-style: inherit;">RSA</span><span class="at" style="color: #657422;
@@ -1227,6 +1351,7 @@ font-style: inherit;">.new</span>(pkey)</span>
 <span id="cb3-42"></span>
 <span id="cb3-43">token <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
 background-color: null;
 font-style: inherit;">JWT</span><span class="at" style="color: #657422;
@@ -1242,12 +1367,14 @@ font-style: inherit;">puts</span> token</span></code></pre></div>
 <p>Next, this JWT needs to be passed to the <code>https://oauth2.googleapis.com/token</code> endpoint to ask for a <em>Bearer</em> access token by using the following payload in the body:</p>
 <div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode yml code-with-copy"><code class="sourceCode yaml"><span id="cb4-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">name</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -1259,6 +1386,7 @@ font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">uri</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb4-3"><span class="at" style="color: #657422;
 background-color: null;
@@ -1266,6 +1394,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">url</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -1277,6 +1406,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">method</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> POST</span></span>
@@ -1286,6 +1416,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">body</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -1297,6 +1428,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">return_content</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="ch" style="color: #20794D;
@@ -1308,6 +1440,7 @@ font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">register</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> token</span></span></code></pre></div>
@@ -1315,12 +1448,14 @@ font-style: inherit;"> token</span></span></code></pre></div>
 <p>Finally, this (short-lived) <em>Bearer</em> token can be used to issue the desired API call, e.g.&nbsp;creating a new user:</p>
 <div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode yml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">name</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -1332,6 +1467,7 @@ font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">uri</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb5-3"><span class="at" style="color: #657422;
 background-color: null;
@@ -1339,6 +1475,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">method</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> POST</span></span>
@@ -1348,6 +1485,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">url</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> https://admin.googleapis.com/admin/directory/v1/users</span></span>
@@ -1357,6 +1495,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">headers</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb5-6"><span class="at" style="color: #657422;
 background-color: null;
@@ -1364,6 +1503,7 @@ font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">authorization</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -1375,6 +1515,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">body_format</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> json</span></span>
@@ -1384,6 +1525,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">body</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -1424,12 +1566,14 @@ font-style: inherit;">         }'</span></span></code></pre></div>
 <div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode yml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"></span>
 <span id="cb6-2"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">name</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -1439,6 +1583,7 @@ font-style: inherit;">"Google Workspace: Create JWT for Google OAuth2"</span></s
 background-color: null;
 font-style: inherit;">  command</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">: </span><span class="ch" style="color: #20794D;
 background-color: null;
 font-style: inherit;">&gt;</span></span>
@@ -1452,16 +1597,19 @@ font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">args</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">{</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">chdir</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -1470,6 +1618,7 @@ font-style: inherit;">"/usr/bin/"</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">}</span></span>
 <span id="cb6-9"><span class="at" style="color: #657422;
 background-color: null;
@@ -1477,18 +1626,21 @@ font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">register</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> jwt</span></span>
 <span id="cb6-10"></span>
 <span id="cb6-11"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">name</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -1500,6 +1652,7 @@ font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">uri</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb6-13"><span class="at" style="color: #657422;
 background-color: null;
@@ -1507,6 +1660,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">url</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -1518,6 +1672,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">method</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> POST</span></span>
@@ -1527,6 +1682,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">body</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -1538,6 +1694,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">return_content</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="ch" style="color: #20794D;
@@ -1549,18 +1706,21 @@ font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">register</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> token</span></span>
 <span id="cb6-18"></span>
 <span id="cb6-19"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">name</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -1572,6 +1732,7 @@ font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">uri</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb6-21"><span class="at" style="color: #657422;
 background-color: null;
@@ -1579,6 +1740,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">method</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> POST</span></span>
@@ -1588,6 +1750,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">url</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> https://admin.googleapis.com/admin/directory/v1/users</span></span>
@@ -1597,6 +1760,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">headers</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb6-24"><span class="at" style="color: #657422;
 background-color: null;
@@ -1604,6 +1768,7 @@ font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">authorization</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -1615,6 +1780,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">body_format</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> json</span></span>
@@ -1624,6 +1790,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">body</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -1673,6 +1840,7 @@ Photo by Aaron Burden
 <p><code>seas()</code> is the core function of the <a href="https://cran.r-project.org/package=seasonal">seasonal</a> package. By default, <code>seas()</code> calls the automatic procedures of X-13ARIMA-SEATS to perform a seasonal adjustment that works well in most circumstances:</p>
 <div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">(</span><span class="va" style="color: #111111;
@@ -1697,6 +1865,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 <div class="cell">
 <div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">(</span><span class="va" style="color: #111111;
@@ -2731,6 +2900,7 @@ Photo by Paweł Czerwiński
 background-color: null;
 font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">meta</span><span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;"> http-equiv</span><span class="op" style="color: #5E5E5E;
@@ -2765,6 +2935,7 @@ background-color: null;
 font-style: inherit;">:after</span> {</span>
 <span id="cb2-2">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">content</span><span class="ch" style="color: #20794D;
 background-color: null;
 font-style: inherit;">:</span> <span class="st" style="color: #20794D;
@@ -2774,6 +2945,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb2-3">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">font-size</span><span class="ch" style="color: #20794D;
 background-color: null;
 font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
@@ -2785,6 +2957,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb2-4">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">font-style</span><span class="ch" style="color: #20794D;
 background-color: null;
 font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
@@ -2794,6 +2967,7 @@ background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb2-5">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">color</span><span class="ch" style="color: #20794D;
 background-color: null;
 font-style: inherit;">:</span> <span class="cn" style="color: #8f5902;
@@ -2829,6 +3003,7 @@ font-style: inherit;">-name</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"*.html"</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span></span>
 <span id="cb3-2">  <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -2985,6 +3160,7 @@ font-style: inherit;">127</span></span>
 background-color: null;
 font-style: inherit;">:</span> compilation failed <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> package ‘cluster’</span></code></pre></div>
 <p>There was a <a href="https://github.com/Homebrew/homebrew-cask/issues/96135">discussion</a> about these changes in the homebrew PR, but the comments that highlighted potential issues seem to have gone unnoticed. Also, some workarounds posted in the thread do not work.</p>
 <section id="so-how-does-one-now-install-gfortran-on-macos-these-days" class="level2">
@@ -3379,6 +3555,7 @@ font-style: inherit;">:</span> object <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">file</span> (daisy.o) was built <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> newer macOS <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">version</span> (<span class="fl" style="color: #AD0000;
@@ -3396,6 +3573,7 @@ font-style: inherit;">:</span> object <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">file</span> (dysta.o) was built <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> newer macOS <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">version</span> (<span class="fl" style="color: #AD0000;
@@ -3454,6 +3632,7 @@ font-style: inherit;">**</span> byte<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">-</span>compile and prepare package <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> lazy loading</span>
 <span id="cb3-24"><span class="sc" style="color: #5E5E5E;
 background-color: null;
@@ -3470,21 +3649,25 @@ font-style: inherit;">**</span> building package indices</span>
 background-color: null;
 font-style: inherit;">**</span> testing <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> installed package can be loaded from temporary location</span>
 <span id="cb3-28"><span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">**</span> checking absolute paths <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> shared objects and dynamic libraries</span>
 <span id="cb3-29"><span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">**</span> testing <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> installed package can be loaded from final location</span>
 <span id="cb3-30"><span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">**</span> testing <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> installed package keeps a record of temporary installation path</span>
 <span id="cb3-31"><span class="sc" style="color: #5E5E5E;
 background-color: null;
@@ -3543,6 +3726,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 <div class="cell">
 <div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">(</span><span class="va" style="color: #111111;
@@ -3976,6 +4160,7 @@ Photo by <a href="https://unsplash.com/photos/iar-afB0QQw" target="_blank"> Mark
 background-color: null;
 font-style: inherit;">jobs</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb1-2"><span class="at" style="color: #657422;
 background-color: null;
@@ -3983,6 +4168,7 @@ font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">backend</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb1-3"><span class="at" style="color: #657422;
 background-color: null;
@@ -3990,6 +4176,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">strategy</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb1-4"><span class="at" style="color: #657422;
 background-color: null;
@@ -3997,6 +4184,7 @@ font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">fail-fast</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="ch" style="color: #20794D;
@@ -4008,6 +4196,7 @@ font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">matrix</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb1-6"><span class="at" style="color: #657422;
 background-color: null;
@@ -4015,11 +4204,13 @@ font-style: inherit;">        </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">package</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb1-7"><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">          </span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> duckdb</span></span>
@@ -4027,6 +4218,7 @@ font-style: inherit;"> duckdb</span></span>
 background-color: null;
 font-style: inherit;">          </span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> RSQLite</span></span>
@@ -4034,6 +4226,7 @@ font-style: inherit;"> RSQLite</span></span>
 background-color: null;
 font-style: inherit;">          </span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> RMariaDB</span></span>
@@ -4041,6 +4234,7 @@ font-style: inherit;"> RMariaDB</span></span>
 background-color: null;
 font-style: inherit;">          </span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> RPostgres</span></span>
@@ -4048,6 +4242,7 @@ font-style: inherit;"> RPostgres</span></span>
 background-color: null;
 font-style: inherit;">          </span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> RKazam</span></span></code></pre></div>
@@ -4073,18 +4268,21 @@ font-style: inherit;">-n</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"/^REVDEP *:= */ { s///; p }"</span> revdep-dev/Makefile <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">sed</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'s/ /, /g'</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">xargs</span> <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">-n</span> 1 echo <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">sed</span> <span class="at" style="color: #657422;
@@ -4118,6 +4316,7 @@ font-style: inherit;">## ]}</span></span></code></pre></div>
 <p>This is not pretty, but still valid JSON when put together. We can prettify with <a href="https://stedolan.github.io/jq/"><code>jq .</code></a>, later we will use <code>jq -c .</code> to condense to a single line.</p>
 <div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">(</span></span>
 <span id="cb3-2">  <span class="bu" style="color: null;
 background-color: null;
@@ -4132,18 +4331,21 @@ font-style: inherit;">-n</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"/^REVDEP *:= */ { s///; p }"</span> revdep-dev/Makefile <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">sed</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'s/ /, /g'</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">xargs</span> <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">-n</span> 1 echo <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">sed</span> <span class="at" style="color: #657422;
@@ -4158,8 +4360,10 @@ background-color: null;
 font-style: inherit;">"]}"</span></span>
 <span id="cb3-5"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">)</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">jq</span> .</span></code></pre></div>
@@ -4212,11 +4416,13 @@ font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">package</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb5-3"><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">    </span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -4226,6 +4432,7 @@ font-style: inherit;">"RMariaDB"</span></span>
 background-color: null;
 font-style: inherit;">    </span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -4235,6 +4442,7 @@ font-style: inherit;">"RSQLite"</span></span>
 background-color: null;
 font-style: inherit;">    </span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -4244,6 +4452,7 @@ font-style: inherit;">"RPostgres"</span></span>
 background-color: null;
 font-style: inherit;">    </span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -4253,6 +4462,7 @@ font-style: inherit;">"RKazam"</span></span>
 background-color: null;
 font-style: inherit;">    </span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="st" style="color: #20794D;
@@ -4267,6 +4477,7 @@ font-style: inherit;">"duckdb"</span></span></code></pre></div>
 background-color: null;
 font-style: inherit;">jobs</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb6-2"><span class="at" style="color: #657422;
 background-color: null;
@@ -4274,6 +4485,7 @@ font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">matrix</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb6-3"><span class="at" style="color: #657422;
 background-color: null;
@@ -4281,6 +4493,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">runs-on</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> ubuntu-latest</span></span>
@@ -4290,6 +4503,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">outputs</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb6-5"><span class="at" style="color: #657422;
 background-color: null;
@@ -4297,6 +4511,7 @@ font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">matrix</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> ${{ steps.set-matrix.outputs.matrix }}</span></span>
@@ -4306,17 +4521,20 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">steps</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb6-7"><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">      </span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">uses</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> actions/checkout@v2</span></span>
@@ -4325,12 +4543,14 @@ font-style: inherit;"> actions/checkout@v2</span></span>
 background-color: null;
 font-style: inherit;">      </span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">id</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> set-matrix</span></span>
@@ -4338,6 +4558,7 @@ font-style: inherit;"> set-matrix</span></span>
 background-color: null;
 font-style: inherit;">        run</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">: </span><span class="ch" style="color: #20794D;
 background-color: null;
 font-style: inherit;">|</span></span>
@@ -4356,6 +4577,7 @@ font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">backend</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb6-21"><span class="co" style="color: #5E5E5E;
 background-color: null;
@@ -4371,6 +4593,7 @@ font-style: inherit;">    # ...</span></span></code></pre></div>
 background-color: null;
 font-style: inherit;">jobs</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb7-2"><span class="at" style="color: #657422;
 background-color: null;
@@ -4378,6 +4601,7 @@ font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">matrix</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb7-3"><span class="co" style="color: #5E5E5E;
 background-color: null;
@@ -4389,6 +4613,7 @@ font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">check-matrix</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb7-6"><span class="at" style="color: #657422;
 background-color: null;
@@ -4396,6 +4621,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">runs-on</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> ubuntu-latest</span></span>
@@ -4405,6 +4631,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">needs</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> matrix</span></span>
@@ -4414,17 +4641,20 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">steps</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb7-9"><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">      </span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">name</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> Install json2yaml</span></span>
@@ -4432,6 +4662,7 @@ font-style: inherit;"> Install json2yaml</span></span>
 background-color: null;
 font-style: inherit;">        run</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">: </span><span class="ch" style="color: #20794D;
 background-color: null;
 font-style: inherit;">|</span></span>
@@ -4441,12 +4672,14 @@ font-style: inherit;">|</span></span>
 background-color: null;
 font-style: inherit;">      </span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">-</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">name</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> Check matrix definition</span></span>
@@ -4454,6 +4687,7 @@ font-style: inherit;"> Check matrix definition</span></span>
 background-color: null;
 font-style: inherit;">        run</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">: </span><span class="ch" style="color: #20794D;
 background-color: null;
 font-style: inherit;">|</span></span>
@@ -4468,6 +4702,7 @@ font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">backend</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb7-21"><span class="co" style="color: #5E5E5E;
 background-color: null;
@@ -4483,6 +4718,7 @@ font-style: inherit;">    # ...</span></span></code></pre></div>
 background-color: null;
 font-style: inherit;">jobs</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb8-2"><span class="at" style="color: #657422;
 background-color: null;
@@ -4490,6 +4726,7 @@ font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">matrix</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb8-3"><span class="co" style="color: #5E5E5E;
 background-color: null;
@@ -4501,6 +4738,7 @@ font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">check-matrix</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb8-6"><span class="co" style="color: #5E5E5E;
 background-color: null;
@@ -4512,6 +4750,7 @@ font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">backend</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb8-9"><span class="at" style="color: #657422;
 background-color: null;
@@ -4519,6 +4758,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">needs</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> matrix</span></span>
@@ -4529,6 +4769,7 @@ font-style: inherit;">    </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">strategy</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span></span>
 <span id="cb8-12"><span class="at" style="color: #657422;
 background-color: null;
@@ -4536,6 +4777,7 @@ font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">fail-fast</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> </span><span class="ch" style="color: #20794D;
@@ -4547,6 +4789,7 @@ font-style: inherit;">      </span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">matrix</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;"> ${{fromJson(needs.matrix.outputs.matrix)}}</span></span>
@@ -4652,6 +4895,7 @@ font-style: inherit;">]</span> org.jitsi.jicofo.bridge.BridgeSelector.log<span c
 background-color: null;
 font-style: inherit;">(</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">)</span> <span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">Added</span> new videobridge: Bridge[jid=jvbbrewery@internal-muc.<span class="op" style="color: #5E5E5E;
