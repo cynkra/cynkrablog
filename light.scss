@@ -1,29 +1,20 @@
 /*-- scss:defaults --*/
-$bg: "white";
-$fg: "black";
-$primary: #6366f1 !default;
-$link-color: #184fa9;
-$input-focus-border-color: #005f7e;
-$input-btn-focus-box-shadow: #005f7e;
-$border-color: rgba($white, .14) !default;
-$nav-link-color: #33354d;
-$navbar-light-color: #33354d;
-$border-light-color: rgba($white, .14) !default;
-$dropdown-link-hover-bg: #e0e0fc;
-$dropdown-link-active-bg: #e0e0fc;
+$bg: $white;
+$fg: $black;
 
-/* navbar */
+$border-color: rgba($white, .14) !default;
+$border-light-color: rgba($white, .14) !default;
+
+$navbar-bg: $white;
+$nav-link-color: #33354d;
+$navbar-hover-color: $primary;
+
+$dropdown-bg: $bg;
+$dropdown-link-color: $fg;
+$dropdown-link-hover-bg: $bg;
+$dropdown-link-hover-color: $primary;
+
+/* navbar custom shadow */
 .navbar {
   box-shadow: rgba(19, 16, 34, 0.06) 0px 4.4px 12px -1px, rgba(19, 16, 34, 0.03) 0px 2px 6.4px -1px;
-  background-color: white !important;
-}
-
-.navbar-light .navbar-nav .active > .nav-link {
-  color: #3134ED;
-  background-color: #f2f2f2;
-}
-
-/* Navbar */
-li.active a.nav-link {
-  color: #005f7e !important;
 }

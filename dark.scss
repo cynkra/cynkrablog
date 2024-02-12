@@ -1,26 +1,30 @@
 /*-- scss:defaults --*/
-$primary: #6366f1;
+$bg: #0b0f19;
+$fg: $white;
+
 $border-light-color: rgba($black, .14) !default;
-$body-dark-mode-bg: $gray-900 !default;
+$body-dark-mode-bg: #131024;
 $body-bg: $body-dark-mode-bg;
 $body-color: rgba($white, .7) !default;
-$link-color: #184fa9;
-$input-focus-border-color: #005f7e;
-$input-btn-focus-box-shadow: #005f7e;
-$dropdown-link-hover-bg: $black;
-$dropdown-link-active-bg: $black;
-$dropdown-link-hover-color: $white;
-$dropdown-link-active-color: $white;
-$border-dark-color: rgba($white, .4) !default;
+$border-dark-color: rgba(255, 255, 255, 0.14);
 $heading-link-color: rgba($white, .85) !default;
 $heading-link-hover-color: $primary !default;
-$nav-link-color: $white;
-$navbar-dark-color: $white;
 $code-color: #f33185 !default;
-$navbar-fg: rgba($white, .8);
+
+$navbar-bg: $bg;
+$navbar-fg: rgba(255, 255, 255, 0.85);
+$navbar-hover-color: $primary;
+
+$input-group-addon-color: $bg;
+
+$dropdown-bg: $bg;
+$dropdown-link-color: $fg;
+$dropdown-link-hover-bg: $bg;
+$dropdown-link-hover-color: $primary;
+$dropdown-border-color: $border-dark-color;
 
 $card-border-color: $border-dark-color !default;
-$card-bg: $body-dark-mode-bg !default;
+$card-bg: $bg !default;
 $card-color: rgba($white, .7) !default;
 $pre-bg: rgba($white, .04) !default;
 $pre-color: $white !default;
@@ -28,20 +32,5 @@ $pre-color: $white !default;
 /* navbar */
 .navbar {
   box-shadow: rgba(19, 16, 34, 0.06) 0px 4.4px 12px -1px, rgba(19, 16, 34, 0.03) 0px 2px 6.4px -1px;
-  background-color: $black !important;
 }
 
-.navbar-light .navbar-nav .active > .nav-link {
-  color: #3134ED;
-  background-color: #f2f2f2;
-}
-
-
-/* Navbar */
-li.active a.nav-link {
-  color: #3782fd !important;
-}
-
-.navbar-dark .navbar-nav .nav-link:hover, .navbar-dark .navbar-nav .nav-link:focus {
-  color: #3782fd !important;
-}
