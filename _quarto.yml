@@ -6,6 +6,9 @@ project:
   post-render: 
     - "cp ./logo_light.svg docs/"
 
+resources:
+  - "mountain.jpg"
+
 execute:
   freeze: auto
 
@@ -19,6 +22,7 @@ website:
     right: Blog created with [Quarto](https://quarto.org/).
   navbar:
     logo: ./logo_dark.svg #https://cynkra.com/assets/img/logo_small.svg
+    logo-href: https://cynkra.com/
     title: false
     right:
       - text: Consulting
@@ -44,7 +48,7 @@ website:
       - text: blog
         href: https://cynkra.com/blog
       - icon: rss
-        href: blog/index.xml
+        href: index.xml
 format:
   html:
     # Include JS code for logo toggle
