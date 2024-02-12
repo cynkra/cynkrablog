@@ -5,7 +5,7 @@ $fg: $white;
 $border-light-color: rgba($black, .14) !default;
 $body-dark-mode-bg: #131024;
 $body-bg: $body-dark-mode-bg;
-$body-color: rgba($white, .7) !default;
+$body-color: $fg;
 $border-dark-color: rgba(255, 255, 255, 0.14);
 $heading-link-color: rgba($white, .85) !default;
 $heading-link-hover-color: $primary !default;
@@ -27,7 +27,8 @@ $dropdown-border-color: $border-dark-color;
 
 $card-border-color: $border-dark-color !default;
 $card-bg: $bg !default;
-$card-color: rgba($white, .7) !default;
+$card-color: rgba($white, .7);
+$card-title-color: $fg;
 
 $tooltip-bg: $fg;
 
