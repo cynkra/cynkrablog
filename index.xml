@@ -9,7 +9,7 @@
 <link>https://blog.cynkra.com/</link>
 <atom:link href="https://blog.cynkra.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>By the cynkra team</description>
-<generator>quarto-1.5.9</generator>
+<generator>quarto-1.5.10</generator>
 <lastBuildDate>Wed, 14 Sep 2022 00:00:00 GMT</lastBuildDate>
 <item>
   <title>EFS vs. NFS for RStudio on Kubernetes (AWS): Configuration and considerations</title>
@@ -822,17 +822,10 @@ font-style: inherit;"> /home/rstudio-shared-storage</span></span></code></pre></
 </section>
 
  ]]></description>
-  <category>posit</category>
-  <category>rstudio</category>
-  <category>workbench</category>
-  <category>connect</category>
-  <category>kubernetes</category>
+  <category>DevOps</category>
+  <category>Posit</category>
   <category>file system</category>
-  <category>EFS</category>
-  <category>NFS</category>
   <category>performance</category>
-  <category>AWS</category>
-  <category>Azure</category>
   <guid>https://blog.cynkra.com/posts/2022-09-14-rstudio-efs-nfs/</guid>
   <pubDate>Wed, 14 Sep 2022 00:00:00 GMT</pubDate>
   <media:content url="https://blog.cynkra.com/posts/2022-09-14-rstudio-efs-nfs/banner.png" medium="image" type="image/png" height="120" width="144"/>
@@ -1839,9 +1832,6 @@ font-style: inherit;">         }'</span></span></code></pre></div>
   <category>api</category>
   <category>google</category>
   <category>oauth2</category>
-  <category>JWT</category>
-  <category>ansible</category>
-  <category>automation</category>
   <guid>https://blog.cynkra.com/posts/2022-05-14-accessing-google-api-via-oauth2/</guid>
   <pubDate>Sat, 14 May 2022 00:00:00 GMT</pubDate>
   <media:content url="https://blog.cynkra.com/posts/2022-05-14-accessing-google-api-via-oauth2/banner.jpg" medium="image" type="image/jpeg"/>
@@ -2085,9 +2075,8 @@ font-style: inherit;">)</span></span></code></pre></div>
 
 
 </section> ]]></description>
-  <category>r</category>
+  <category>R</category>
   <category>time-series</category>
-  <category>seasonal adjustment</category>
   <guid>https://blog.cynkra.com/posts/2022-04-19-seasonal-1.9/</guid>
   <pubDate>Tue, 19 Apr 2022 00:00:00 GMT</pubDate>
   <media:content url="https://blog.cynkra.com/posts/2022-04-19-seasonal-1.9/banner.jpg" medium="image" type="image/jpeg"/>
@@ -2156,8 +2145,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </section>
 
  ]]></description>
-  <category>r</category>
-  <category>useR!</category>
+  <category>R</category>
   <category>gsod</category>
   <category>dashboard</category>
   <guid>https://blog.cynkra.com/posts/2022-01-05-gsod-user-infoboard/</guid>
@@ -2335,7 +2323,7 @@ font-style: inherit;">TRUE</span>)</span></code></pre></div>
 </section>
 
  ]]></description>
-  <category>r</category>
+  <category>R</category>
   <guid>https://blog.cynkra.com/posts/2021-10-07-old-texlive/</guid>
   <pubDate>Thu, 07 Oct 2021 00:00:00 GMT</pubDate>
   <media:content url="https://blog.cynkra.com/posts/2021-10-07-old-texlive/banner.jpg" medium="image" type="image/jpeg"/>
@@ -2653,7 +2641,7 @@ font-style: inherit;">"Monthly passengers, annual trappings, monthly deaths"</sp
 </section>
 
  ]]></description>
-  <category>r</category>
+  <category>R</category>
   <category>time-series</category>
   <guid>https://blog.cynkra.com/posts/2021-09-18-tsbox-03/</guid>
   <pubDate>Sat, 18 Sep 2021 00:00:00 GMT</pubDate>
@@ -2879,9 +2867,7 @@ IBM DB2
 
  ]]></description>
   <category>certified partner</category>
-  <category>anniversary</category>
-  <category>RStudio Workbench</category>
-  <category>RStudio Managed Workbench</category>
+  <category>Posit</category>
   <category>Docker</category>
   <guid>https://blog.cynkra.com/posts/2021-07-09-certified-partner-anniversary/</guid>
   <pubDate>Fri, 09 Jul 2021 00:00:00 GMT</pubDate>
@@ -3066,8 +3052,8 @@ Deprecation information in the header via editing HTML
 </section>
 
  ]]></description>
-  <category>r</category>
-  <category>github</category>
+  <category>R</category>
+  <category>GitHub</category>
   <guid>https://blog.cynkra.com/posts/2021-04-09-deprecating-pkgdown/</guid>
   <pubDate>Fri, 09 Apr 2021 00:00:00 GMT</pubDate>
   <media:content url="https://blog.cynkra.com/posts/2021-04-09-deprecating-pkgdown/banner.jpg" medium="image" type="image/jpeg"/>
@@ -3722,8 +3708,8 @@ font-style: inherit;">DONE</span> (cluster)</span></code></pre></div>
 </section>
 
  ]]></description>
-  <category>r</category>
-  <category>macos</category>
+  <category>R</category>
+  <category>macOS</category>
   <guid>https://blog.cynkra.com/posts/2021-03-16-gfortran-macos/</guid>
   <pubDate>Tue, 16 Mar 2021 00:00:00 GMT</pubDate>
 </item>
@@ -4161,7 +4147,7 @@ Coefficients:
 
 
 </section> ]]></description>
-  <category>r</category>
+  <category>R</category>
   <category>time-series</category>
   <guid>https://blog.cynkra.com/posts/2021-03-09-seasonal-1.8/</guid>
   <pubDate>Tue, 09 Mar 2021 00:00:00 GMT</pubDate>
@@ -4870,8 +4856,8 @@ Final workflow with dynamic build matrix
 <li id="fn1"><p>You can use any tool or ecosystem you are familiar with to come up with the JSON definition. To avoid long installation times, use a specific image for your step via <a href="https://www.petefreitag.com/item/903.cfm"><code>uses: docker://...</code></a> or implement a <a href="https://docs.github.com/en/free-pro-team@latest/actions/creating-actions/creating-a-docker-container-action">container action</a>, also possible <a href="https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstepsuses">in the same repository</a>.↩︎</p></li>
 </ol>
 </section></div> ]]></description>
-  <category>r</category>
-  <category>github</category>
+  <category>R</category>
+  <category>GitHub</category>
   <guid>https://blog.cynkra.com/posts/2020-12-23-dynamic-gha/</guid>
   <pubDate>Wed, 23 Dec 2020 00:00:00 GMT</pubDate>
   <media:content url="https://blog.cynkra.com/posts/2020-12-23-dynamic-gha/banner.jpg" medium="image" type="image/jpeg"/>
@@ -4985,7 +4971,7 @@ font-style: inherit;">"&lt;PASSWORD&gt;"</span></span></code></pre></div></li>
 </section>
 
  ]]></description>
-  <category>devops</category>
+  <category>DevOps</category>
   <guid>https://blog.cynkra.com/posts/2020-11-02-jitsi-load-balanced/</guid>
   <pubDate>Mon, 02 Nov 2020 00:00:00 GMT</pubDate>
 </item>
@@ -5024,7 +5010,7 @@ Photo by Carson Arias
 
 
  ]]></description>
-  <category>git</category>
+  <category>Git</category>
   <guid>https://blog.cynkra.com/posts/2020-08-25-git-multiple-identities/</guid>
   <pubDate>Tue, 25 Aug 2020 00:00:00 GMT</pubDate>
   <media:content url="https://blog.cynkra.com/posts/2020-08-25-git-multiple-identities/banner.jpg" medium="image" type="image/jpeg"/>
@@ -5593,7 +5579,7 @@ font-style: italic;">## #   A15 &lt;int&gt;, A16 &lt;int&gt;</span></span></code
 </section>
 
  ]]></description>
-  <category>r</category>
+  <category>R</category>
   <category>dm</category>
   <category>databases</category>
   <guid>https://blog.cynkra.com/posts/2020-04-02-dm/</guid>
@@ -5840,7 +5826,7 @@ font-style: italic;">## [1] TRUE</span></span></code></pre></div>
 </section>
 
  ]]></description>
-  <category>r</category>
+  <category>R</category>
   <category>time-series</category>
   <guid>https://blog.cynkra.com/posts/2020-02-09-tempdisagg/</guid>
   <pubDate>Sun, 09 Feb 2020 00:00:00 GMT</pubDate>
@@ -6012,7 +5998,7 @@ font-style: inherit;">"Monthly passengers, annual trappings, monthly deaths"</sp
 </section>
 
  ]]></description>
-  <category>r</category>
+  <category>R</category>
   <category>time-series</category>
   <guid>https://blog.cynkra.com/posts/2019-08-12-tsbox-02/</guid>
   <pubDate>Mon, 12 Aug 2019 00:00:00 GMT</pubDate>
@@ -6235,7 +6221,7 @@ font-style: inherit;">cdm_draw</span>()</span></code></pre></div>
 </section>
 
  ]]></description>
-  <category>r</category>
+  <category>R</category>
   <category>dm</category>
   <category>databases</category>
   <guid>https://blog.cynkra.com/posts/2019-07-17-dm/</guid>
@@ -6387,7 +6373,7 @@ font-style: inherit;">#&gt; [1] "1971-04-01"</span></span></code></pre></div>
 </section>
 
  ]]></description>
-  <category>r</category>
+  <category>R</category>
   <category>time-series</category>
   <guid>https://blog.cynkra.com/posts/2019-04-10-tsbox-01/</guid>
   <pubDate>Wed, 10 Apr 2019 00:00:00 GMT</pubDate>
@@ -6587,7 +6573,7 @@ font-style: inherit;">ts_c</span>(mdeaths, fdeaths))</span></code></pre></div>
 </section>
 
  ]]></description>
-  <category>r</category>
+  <category>R</category>
   <category>time-series</category>
   <guid>https://blog.cynkra.com/posts/2018-05-15-tsbox/</guid>
   <pubDate>Tue, 15 May 2018 00:00:00 GMT</pubDate>
@@ -6896,7 +6882,7 @@ dbGetQuery(pg_conn, 'SELECT 1 AS a, 2 AS a, 3 AS "a..2"')
 </section>
 
  ]]></description>
-  <category>r</category>
+  <category>R</category>
   <category>databases</category>
   <guid>https://blog.cynkra.com/posts/2018-05-01-dbi-2/</guid>
   <pubDate>Tue, 01 May 2018 00:00:00 GMT</pubDate>
