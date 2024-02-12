@@ -4,7 +4,7 @@ layout: post
 og_image: og_image.jpg
 author: Christoph Sax
 title: 'tsbox 0.2: supporting additional time series classes'
-tags:
+categories:
 - r
 - time-series
 ---

@@ -5,7 +5,7 @@ og_image: banner.jpg
 image: banner.jpg
 author: Kirill Müller
 title: 'Running old versions of TeXlive with tinytex'
-tags:
+categories:
 - r
 badges:
 - label: Tips

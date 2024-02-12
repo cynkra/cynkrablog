@@ -7,7 +7,7 @@ author: Patrick Schratz
 date: '2022-09-14'
 avatar: /user/img/about/patrick2.jpg
 slug: 'rstudio-efs-nfs'
-tags:
+categories:
   - posit
   - rstudio
   - workbench

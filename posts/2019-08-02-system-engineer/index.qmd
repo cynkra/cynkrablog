@@ -5,7 +5,7 @@ image: banner.jpg
 og_image: og_image.jpg
 author: cynkra team
 title: 'DevOps System Engineer (40-60%)'
-tags:
+categories:
 - jobs
 - devops
 draft: true

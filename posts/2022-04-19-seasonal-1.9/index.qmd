@@ -5,7 +5,7 @@ image: banner.jpg
 og_image: og_image.jpg
 author: Christoph Sax
 title: 'seasonal 1.9: Accessing composite output'
-tags:
+categories:
 - r
 - time-series
 - seasonal adjustment

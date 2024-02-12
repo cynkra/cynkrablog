@@ -5,7 +5,7 @@ image: banner.jpg
 og_image: og_image.jpg
 author: Balthasar Sager
 title: "Introducing dm: easy juggling of tables and relations"
-tags:
+categories:
 - r
 - dm
 - databases

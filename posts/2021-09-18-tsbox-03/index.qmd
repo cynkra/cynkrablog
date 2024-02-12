@@ -5,7 +5,7 @@ og_image: og_image.jpg
 image: banner.jpg
 author: Christoph Sax
 title: 'tsbox 0.3.1: extended functionality'
-tags:
+categories:
 - r
 - time-series
 badges:

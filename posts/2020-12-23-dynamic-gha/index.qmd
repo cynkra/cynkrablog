@@ -5,7 +5,7 @@ image: banner.jpg
 og_image: og_image.jpg
 author: Kirill Müller
 title: 'Dynamic build matrix in GitHub Actions'
-tags:
+categories:
 - r
 - github
 ---

@@ -5,7 +5,7 @@ image: banner.jpg
 og_image: og_image.jpg
 author: Kirill Müller
 title: 'Maintaining multiple identities with Git'
-tags:
+categories:
 - git
 ---
 
