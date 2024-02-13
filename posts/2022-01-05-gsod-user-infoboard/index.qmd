@@ -5,9 +5,8 @@ og_image: banner.png
 image: banner.png
 author: Ben Ubah
 title: 'Google Season of Docs with R: useR! Information Board'
-tags:
-- r
-- useR!
+categories:
+- R
 - gsod
 - dashboard
 badges:

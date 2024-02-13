@@ -1,6 +1,10 @@
 project:
   type: website
   output-dir: docs
+  # For some reasons the logo light isn't properly copied
+  # so we have to do it post-render.
+  post-render: 
+    - "cp logo_dark.svg docs/"
 
 resources:
   - "mountain.jpg"
@@ -11,14 +15,13 @@ execute:
 website:
   favicon: favicon-32x32.png
   site-url: https://blog.cynkra.com/
-  reader-mode: true
   title: "cynkra blog"
   description: "By the cynkra team"
   page-footer:
     left: "Except where otherwise noted, content on this blog is licensed under the [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) licence."
     right: Blog created with [Quarto](https://quarto.org/).
   navbar:
-    logo: https://cynkra.com/assets/img/logo_small.svg
+    logo: logo_light.svg #https://cynkra.com/assets/img/logo_small.svg
     logo-href: https://cynkra.com/
     title: false
     right:
@@ -48,12 +51,14 @@ website:
         href: index.xml
 format:
   html:
+    # Include JS code for logo toggle
+    include-after-body:
+      file: toggle-theme-image.html
     code-link: true
+    highlight-style: github
     theme:
-      light:
-        - cosmo
-        - custom.scss
-      dark: darkly
+      light: [cosmo, light.scss, custom.scss]
+      dark: [cosmo, dark.scss, custom.scss]
 
 
 

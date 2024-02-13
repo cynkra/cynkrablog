@@ -4,11 +4,9 @@ author: Cosima Meyer, Patrick Schratz
 date: '2021-07-09'
 layout: post
 image: banner.jpg
-tags:
+categories:
   - certified partner
-  - anniversary
-  - RStudio Workbench
-  - RStudio Managed Workbench
+  - Posit
   - Docker
 ---
 

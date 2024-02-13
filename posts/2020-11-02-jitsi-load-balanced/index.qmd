@@ -4,8 +4,8 @@ layout: post
 og_image: og_image.jpg
 author: Patrick Schratz
 title: 'Setting up a load-balanced Jitsi Meet instance'
-tags:
-- devops
+categories:
+- DevOps
 ---
 
 Jitsi Meet is a self-hosted Free and Open-Source Software (FOSS) video conferencing solution.

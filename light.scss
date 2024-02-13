@@ -1,0 +1,26 @@
+/*-- scss:defaults --*/
+$bg: $white;
+$fg: $black;
+
+$border-color: rgba($white, .14) !default;
+
+$pagination-color: $fg;
+$pagination-hover-color: $fg;
+
+$navbar-bg: $white;
+$nav-link-color: #33354d;
+$navbar-hover-color: $primary;
+
+$dropdown-bg: $bg;
+$dropdown-link-color: $fg;
+$dropdown-link-hover-bg: $bg;
+$dropdown-link-hover-color: $primary;
+
+/* navbar custom shadow */
+.navbar {
+  box-shadow: rgba(19, 16, 34, 0.06) 0px 4.4px 12px -1px, rgba(19, 16, 34, 0.03) 0px 2px 6.4px -1px;
+}
+
+.quarto-light .quarto-title .quarto-categories .quarto-category {
+  color: $fg;
+}

@@ -1,0 +1,53 @@
+/*-- scss:defaults --*/
+$bg: #0b0f19;
+$fg: $white;
+
+$body-bg: #131024;
+$body-color: $fg;
+$border-dark-color: rgba(255, 255, 255, 0.14);
+$heading-link-color: rgba($white, .85) !default;
+$heading-link-hover-color: $primary !default;
+
+$pagination-color: $fg;
+$pagination-hover-color: $bg;
+
+$navbar-bg: $bg;
+$navbar-fg: rgba(255, 255, 255, 0.85);
+$navbar-hover-color: $primary;
+
+$footer-bg: $bg;
+$footer-fg: $navbar-fg;
+
+$input-group-addon-color: $bg;
+
+$dropdown-bg: $bg;
+$dropdown-link-color: $fg;
+$dropdown-link-hover-bg: $bg;
+$dropdown-link-hover-color: $primary;
+$dropdown-border-color: $border-dark-color;
+
+$card-border-color: $border-dark-color !default;
+$card-bg: $bg !default;
+$card-color: rgba($white, .7);
+$card-title-color: $fg;
+
+$tooltip-bg: $fg;
+
+$code-color: #f33185 !default;
+$pre-bg: rgba($white, .04) !default;
+$pre-color: $white !default;
+$code-block-bg: $black;
+
+/* navbar */
+.navbar {
+  box-shadow: rgba(19, 16, 34, 0.06) 0px 4.4px 12px -1px, rgba(19, 16, 34, 0.03) 0px 2px 6.4px -1px;
+}
+
+/* No sass var available */
+.quarto-dark .quarto-grid-item .listing-categories .listing-category {
+  color: $fg;
+}
+
+.quarto-dark .quarto-grid-item .card-attribution {
+  color: $card-color;
+}

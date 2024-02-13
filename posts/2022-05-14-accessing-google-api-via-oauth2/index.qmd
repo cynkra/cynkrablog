@@ -7,13 +7,10 @@ author: Patrick Schratz
 avatar: /user/img/about/patrick2.jpg
 date: '2022-05-14'
 slug: 'accessing-google-api-via-oauth2'
-tags:
+categories:
   - api
   - google
   - oauth2
-  - JWT
-  - ansible
-  - automation
 badges:
 - label: DevOps
   bg: bg-info
