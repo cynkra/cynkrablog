@@ -1,3 +1,7 @@
+:root {
+  --bs-body-font-weight: 400;
+}
+
 /*-- scss:defaults --*/
 
 // Grayscale
@@ -13,7 +17,7 @@ $gray-800:                    #33354d !default;
 $gray-900:                    #0b0f19 !default;
 $black:                       #000 !default;
 $primary: #3782fd !default; /* same as cynkra.com */
-$font-family-base: "frutiger-light", sans-serif;
+$font-family-base: "frutiger", sans-serif;
 $font-family-code: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 /*-- scss:rules --*/
 
@@ -46,7 +50,6 @@ $input-btn-focus-box-shadow: $primary;
 
 // header font
 h1, h2, h3, h4, h5:not(.quarto-listing-category-title), h6 {
-  font-family: "frutiger-thin","Helvetica Neue",sans-serif;
   font-weight: 300;
 }
 
@@ -59,21 +62,28 @@ h1, h2, h3, h4, h5:not(.quarto-listing-category-title), h6 {
   border-radius: 0.5rem 0.5rem 0px 0px;
 }
 
-// body font
+// NOTE: 'new' frutiger normal=400
 @font-face {
-    font-family: "frutiger-light";
+    font-family: "frutiger";
     src: url("https://cynkra.com/assets/css/fonts/6135829/b05d44ef-6a78-4aa4-9388-3f0e05252a48.woff2") format("woff2");
     font-weight: normal;
     font-style: normal;
-    font-display: fallback
 }
 
-// header font
+// NOTE: 'new' frutiger light=300
 @font-face {
-    font-family: "frutiger-thin";
-    src: url("https://cynkra.com/assets/css/fonts/1449009/b3ca2df2-7bee-4fc0-84cb-b029b99c3b61.woff2") format("woff2");
-    font-weight: normal;
-    font-style: normal
+  font-family: "frutiger";
+  src: url("https://cynkra.com/assets/css/fonts/1449009/b3ca2df2-7bee-4fc0-84cb-b029b99c3b61.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+}
+
+// NOTE: 'new' frutiger bold=700
+@font-face {
+  font-family: "frutiger";
+  src: url("https://cynkra.com/assets/css/fonts/1449025/c31af250-c28e-40ef-bed6-866e7ed6fedf.woff2") format("woff2");
+  font-weight: bold; // same as 700
+  font-style: normal;
 }
 
 /* copy-paste button ---------------------------------------------------------*/
@@ -93,4 +103,9 @@ h1, h2, h3, h4, h5:not(.quarto-listing-category-title), h6 {
   height: 25px;
   padding-right: 20px;
   padding-bottom: 2px;
+}
+
+strong,
+#quarto-margin-sidebar .quarto-listing-category-title {
+  font-weight: 700; // NOTE: we only have 300=light, 400=normal and 700=bold
 }
