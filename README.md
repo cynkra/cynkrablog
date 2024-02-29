@@ -1,12 +1,18 @@
 # source of the cynkra blog
 
-To render,
+### Render
 
 - install [Quarto](https://quarto.org/docs/get-started/);
 - run `quarto render`;
 - the output is in `docs/`. To serve the folder, in R you can use `servr::httw("docs")`.
 
-## Fonts
+### Preview Pull Requests
+
+https://cynkra.github.io/cynkrablog
+
+This means two PRs will compete to deploy to the same link (https://github.com/cynkra/cynkrablog/issues/54).
+
+### Fonts
 
 The cynkra blog uses the same fonts from [cynkra/cynkraweb on GitHub](https://github.com/cynkra/cynkraweb/blob/main/www/user/_fonts.scss), specifically `font-family: "frutiger", sans-serif;` with font weights of `300` (light), `400` (normal), and `700` (bold). Please ensure not to use **500**, **600**, **bolder**, or other weights, as the browser would render them using faux styles.
 
