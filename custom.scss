@@ -16,7 +16,7 @@ $gray-700:                    #565973 !default;
 $gray-800:                    #33354d !default;
 $gray-900:                    #0b0f19 !default;
 $black:                       #000 !default;
-$primary: #3782fd !default; /* same as cynkra.com */
+$primary: #3782fd;
 $font-family-base: "frutiger", sans-serif;
 $font-family-code: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 /*-- scss:rules --*/
@@ -108,4 +108,14 @@ h1, h2, h3, h4, h5:not(.quarto-listing-category-title), h6 {
 strong,
 #quarto-margin-sidebar .quarto-listing-category-title {
   font-weight: 700; // NOTE: we only have 300=light, 400=normal and 700=bold
+}
+
+.quarto-listing-category {
+  .category {
+    &.active {
+      color: $primary;
+      font-weight: var(--bs-body-font-weight);
+      text-decoration: underline;
+    }
+  }
 }
