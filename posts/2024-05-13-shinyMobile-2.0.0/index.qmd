@@ -1,0 +1,333 @@
+---
+layout: post
+title: "shinyMobile 2.0.0: a preview"
+image: logo.png
+author: David Granjon
+date: '2024-05-13'
+categories:
+  - shiny
+---
+
+shinyMobile has been around for about 5 years now. It allows to develop outstanding Shiny apps for iOS and Android, owing to the awesome open source Framework7 [template](https://framework7.io/) which powers it.
+
+Guess what? This year shinyMobile gets a major update to v2.2.0. I'd like to warmly thank [Veerle van Leemput](https://hypebright.nl/) and Michael S. Czahor from [AthlyticZ](https://linktr.ee/athlyticz) for providing significant support during this marathon.
+
+# What's new
+
+shinyMobile 1.0.0 and above were running Framework5 v5, a pretty old ancient version. With the new Framework7 v8, you might expect a significant number of changes (TO DO link), but for the best!
+
+## Major changes
+
+### Updated md design
+
+By updating to the latest Framework7 version, we now benefit from a totally revamped Android (md) design, which looks more modern. TO DO: demo app.
+
+### Refined inputs layout and style
+
+Whenever you have multiple inputs, we now recommend to wrap all of them within `f7List()` so as to benefit from new styling options such as outline, inset, strong, ... Internally, we use a function able to detect whether the input is inside a `f7List()`: if yes, you can style this list by passing parameters like `f7List(outline = TRUE, inset = TRUE, ...)`; if not, the input is internally wrapped in a list to have correct rendering but no styling is possible. Besides, some input like `f7Text()` can have custom styling (add an icon, clear button, outline style), which is independent from the external list wrapper style. Hence, we don't recommend doing `f7List(outline = TRUE, f7Text(outline = TRUE))` since it won't render very well and instead use `f7List(outline = TRUE, f7Text())`. Inputs having more specific styling options are:
+
+- `f7AutoComplete()`.
+- `f7Text()`, `f7Password()`, `f7TextArea()`.
+- `f7Select()`.
+- `f7Picker()`, `f7ColorPicker()` and `f7DatePicker()`.
+- `f7Radio()` and `f7CheckboxGroup()`.
+
+`f7Stepper()` and `f7Toggle()` label is now displayed on the left.
+
+We now recommend to wrap any list of inputs in `f7List()` for a better rendering. 
+
+```{r, eval=FALSE}
+library(shiny)
+library(shinyMobile)
+
+shinyApp(
+  ui = f7Page(
+    options = list(dark = FALSE, theme = "ios"),
+    title = "Inputs Layout",
+    f7SingleLayout(
+      navbar = f7Navbar(
+        title = "Inputs Layout",
+        hairline = FALSE
+      ),
+      f7List(
+        inset = TRUE,
+        dividers = TRUE,
+        strong = TRUE,
+        outline = FALSE,
+        f7Text(
+          inputId = "text",
+          label = "Text input",
+          value = "Some text",
+          placeholder = "Your text here"
+        ),
+        f7TextArea(
+          inputId = "textarea",
+          label = "Text area input",
+          value = "Some text",
+          placeholder = "Your text here"
+        ),
+        f7Select(
+          inputId = "select",
+          label = "Make a choice",
+          choices = 1:3,
+          selected = 1
+        ),
+        f7AutoComplete(
+          inputId = "myautocomplete",
+          placeholder = "Some text here!",
+          openIn = "dropdown",
+          label = "Type a fruit name",
+          choices = c(
+            "Apple", "Apricot", "Avocado", "Banana", "Melon",
+            "Orange", "Peach", "Pear", "Pineapple"
+          )
+        ),
+        f7Stepper(
+          inputId = "stepper",
+          label = "My stepper",
+          min = 0,
+          color = "default",
+          max = 10,
+          value = 4
+        ),
+        f7Toggle(
+          inputId = "toggle",
+          label = "Toggle me"
+        ),
+        f7Picker(
+          inputId = "picker",
+          placeholder = "Some text here!",
+          label = "Picker Input",
+          choices = c("a", "b", "c"),
+          options = list(sheetPush = TRUE)
+        ),
+        f7DatePicker(
+          inputId = "date",
+          label = "Pick a date",
+          value = Sys.Date()
+        ),
+        f7ColorPicker(
+          inputId = "mycolorpicker",
+          placeholder = "Some text here!",
+          label = "Select a color"
+        )
+      ),
+      f7CheckboxGroup(
+        inputId = "checkbox",
+        label = "Checkbox group",
+        choices = c("a", "b", "c"),
+        selected = "a",
+        style = list(
+          inset = TRUE,
+          dividers = TRUE,
+          strong = TRUE,
+          outline = FALSE
+        )
+      ),
+      f7Radio(
+        inputId = "radio",
+        label = "Radio group",
+        choices = c("a", "b", "c"),
+        selected = "a",
+        style = list(
+          inset = TRUE,
+          dividers = TRUE,
+          strong = TRUE,
+          outline = FALSE
+        )
+      )
+    )
+  ),
+  server = function(input, output) {
+  }
+)
+```
+
+We added a new way to pass options to `f7Radio()` and `f7CheckboxGroup()`, namely `f7CheckboxChoice()` and `f7RadioChoice()` (note: you can't use `update_*` functions on them yet):
+
+```{r, eval=FALSE}
+library(shiny)
+library(shinyMobile)
+
+shinyApp(
+  ui = f7Page(
+    title = "Update radio",
+    f7SingleLayout(
+      navbar = f7Navbar(title = "Update f7Radio"),
+      f7Block(
+        f7Radio(
+          inputId = "radio",
+          label = "Custom choices",
+          choices = list(
+            f7RadioChoice(
+              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Nulla sagittis tellus ut turpis condimentum,
+            ut dignissim lacus tincidunt",
+              title = "Choice 1",
+              subtitle = "David",
+              after = "March 16, 2024"
+            ),
+            f7RadioChoice(
+              "Cras dolor metus, ultrices condimentum sodales sit
+            amet, pharetra sodales eros. Phasellus vel felis tellus.
+            Mauris rutrum ligula nec dapibus feugiat",
+              title = "Choice 2",
+              subtitle = "Veerle",
+              after = "March 17, 2024"
+            )
+          ),
+          selected = 2,
+          style = list(
+            outline = TRUE,
+            strong = TRUE,
+            inset = TRUE,
+            dividers = TRUE
+          )
+        ),
+        textOutput("res")
+      )
+    )
+  ),
+  server = function(input, output, session) {
+    output$res <- renderText(input$radio)
+  }
+)
+```
+
+### New `f7Treeview()` component
+
+We implemented the `trewiew` widget which is now available as new input source:
+
+```{r, eval=FALSE}
+library(shiny)
+library(shinyMobile)
+
+shinyApp(
+  ui = f7Page(
+    title = "My app",
+    f7SingleLayout(
+      navbar = f7Navbar(title = "f7Treeview"),
+      # group treeview with selectable items
+      f7BlockTitle("Selectable items"),
+      f7Block(
+        f7Treeview(
+          id = "treeview1",
+          selectable = TRUE,
+          f7TreeviewGroup(
+            title = "Selected images",
+            icon = f7Icon("folder_fill"),
+            itemToggle = TRUE,
+            lapply(1:3, function(i) f7TreeviewItem(label = paste0("image", i, ".png"),
+                                                   icon = f7Icon("photo_fill")))
+          )
+        ),
+        textOutput("selected")
+      ),
+
+      # group treeview with checkbox items
+      f7BlockTitle("Checkbox"),
+      f7Block(
+        f7Treeview(
+          id = "treeview2",
+          withCheckbox = TRUE,
+          f7TreeviewGroup(
+            title = "Selected images",
+            icon = f7Icon("folder_fill"),
+            itemToggle = TRUE,
+            lapply(1:3, function(i) f7TreeviewItem(label = paste0("image", i, ".png"),
+                                                   icon = f7Icon("photo_fill")))
+          )
+        ),
+        textOutput("selected2")
+      )
+    )
+  ),
+  server = function(input, output) {
+    output$selected <- renderText(input$treeview1)
+    output$selected2 <- renderText(input$treeview2)
+  }
+)
+```
+
+### New `f7Form()`
+
+We added a brand new function, `f7Form()` to support HTML forms, a form being composed of multiple input elements. Contrary to basic shiny inputs, we don't get one input value per element but a single input value with a nested list, thereby allowing to reduce the number of inputs on the server side. `updateF7Form()` can quickly update any input from the form.
+
+```{r, eval=FALSE}
+library(shiny)
+library(shinyMobile)
+
+shinyApp(
+  ui = f7Page(
+    f7SingleLayout(
+      navbar = f7Navbar(title = "Inputs form"),
+      f7Block(f7Button("update", "Click me")),
+      f7BlockTitle("A list of inputs in a form"),
+      f7List(
+        inset = TRUE,
+        dividers = FALSE,
+        strong = TRUE,
+        f7Form(
+          id = "myform",
+          f7Text(
+            inputId = "text",
+            label = "Text input",
+            value = "Some text",
+            placeholder = "Your text here",
+            style = list(
+              description = "A cool text input",
+              outline = TRUE,
+              media = f7Icon("house"),
+              clearable = TRUE,
+              floating = TRUE
+            )
+          ),
+          f7TextArea(
+            inputId = "textarea",
+            label = "Text Area",
+            value = "Lorem ipsum dolor sit amet, consectetur
+              adipiscing elit, sed do eiusmod tempor incididunt ut
+              labore et dolore magna aliqua",
+            placeholder = "Your text here",
+            resize = TRUE,
+            style = list(
+              description = "A cool text input",
+              outline = TRUE,
+              media = f7Icon("house"),
+              clearable = TRUE,
+              floating = TRUE
+            )
+          ),
+          f7Password(
+            inputId = "password",
+            label = "Password:",
+            placeholder = "Your password here",
+            style = list(
+              description = "A cool text input",
+              outline = TRUE,
+              media = f7Icon("house"),
+              clearable = TRUE,
+              floating = TRUE
+            )
+          )
+        )
+      ),
+      verbatimTextOutput("form")
+    )
+  ),
+  server = function(input, output, session) {
+    output$form <- renderPrint(input$myform)
+
+    observeEvent(input$update, {
+      updateF7Form(
+        "myform",
+        data = list(
+          "text" = "New text",
+          "textarea" = "New text area",
+          "password" = "New password"
+        )
+      )
+    })
+  }
+)
+```
