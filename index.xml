@@ -9,8 +9,1715 @@
 <link>https://blog.cynkra.com/</link>
 <atom:link href="https://blog.cynkra.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>By the cynkra team</description>
-<generator>quarto-1.5.22</generator>
-<lastBuildDate>Wed, 14 Sep 2022 00:00:00 GMT</lastBuildDate>
+<generator>quarto-1.5.33</generator>
+<lastBuildDate>Mon, 13 May 2024 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>shinyMobile 2.0.0: a preview</title>
+  <dc:creator>David Granjon</dc:creator>
+  <link>https://blog.cynkra.com/posts/2024-05-13-shinyMobile-2.0.0/</link>
+  <description><![CDATA[ <p>shinyMobile has been around for about 5 years now. It allows to develop outstanding Shiny apps for iOS and Android, owing to the awesome open source Framework7 <a href="https://framework7.io/">template</a> which powers it.</p>
+<p>Guess what? This year shinyMobile gets a major update to v2.2.0. I’d like to warmly thank <a href="https://hypebright.nl/">Veerle van Leemput</a> and Michael S. Czahor from <a href="https://linktr.ee/athlyticz">AthlyticZ</a> for providing significant support during this marathon.</p>
+<section id="whats-new" class="level1"><h1>What’s new</h1>
+<p>shinyMobile 1.0.0 and above were running Framework5 v5, a pretty old ancient version. With the new Framework7 v8, you might expect a significant number of changes (TO DO link), but for the best!</p>
+<section id="major-changes" class="level2"><h2 class="anchored" data-anchor-id="major-changes">Major changes</h2>
+<section id="updated-md-design" class="level3"><h3 class="anchored" data-anchor-id="updated-md-design">Updated md design</h3>
+<p>By updating to the latest Framework7 version, we now benefit from a totally revamped Android (md) design, which looks more modern. TO DO: demo app.</p>
+</section><section id="refined-inputs-layout-and-style" class="level3"><h3 class="anchored" data-anchor-id="refined-inputs-layout-and-style">Refined inputs layout and style</h3>
+<p>Whenever you have multiple inputs, we now recommend to wrap all of them within <code>f7List()</code> so as to benefit from new styling options such as outline, inset, strong, … Internally, we use a function able to detect whether the input is inside a <code>f7List()</code>: if yes, you can style this list by passing parameters like <code>f7List(outline = TRUE, inset = TRUE, ...)</code>; if not, the input is internally wrapped in a list to have correct rendering but no styling is possible. Besides, some input like <code>f7Text()</code> can have custom styling (add an icon, clear button, outline style), which is independent from the external list wrapper style. Hence, we don’t recommend doing <code>f7List(outline = TRUE, f7Text(outline = TRUE))</code> since it won’t render very well and instead use <code>f7List(outline = TRUE, f7Text())</code>. Inputs having more specific styling options are:</p>
+<ul>
+<li>
+<code>f7AutoComplete()</code>.</li>
+<li>
+<code>f7Text()</code>, <code>f7Password()</code>, <code>f7TextArea()</code>.</li>
+<li>
+<code>f7Select()</code>.</li>
+<li>
+<code>f7Picker()</code>, <code>f7ColorPicker()</code> and <code>f7DatePicker()</code>.</li>
+<li>
+<code>f7Radio()</code> and <code>f7CheckboxGroup()</code>.</li>
+</ul>
+<p><code>f7Stepper()</code> and <code>f7Toggle()</code> label is now displayed on the left.</p>
+<p>We now recommend to wrap any list of inputs in <code>f7List()</code> for a better rendering.</p>
+<div class="cell">
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;"><a href="https://shiny.posit.co/">shiny</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;"><a href="https://github.com/RinteRface/shinyMobile">shinyMobile</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span></span>
+<span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">shinyApp</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>  ui <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7Page</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>    options <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>dark <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>, theme <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ios"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>    title <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Inputs Layout"</span>,</span>
+<span>    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7SingleLayout</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>      navbar <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7Navbar</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>        title <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Inputs Layout"</span>,</span>
+<span>        hairline <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span></span>
+<span>      <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7List</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>        inset <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>,</span>
+<span>        dividers <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>,</span>
+<span>        strong <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>,</span>
+<span>        outline <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>,</span>
+<span>        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7Text</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>          inputId <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"text"</span>,</span>
+<span>          label <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Text input"</span>,</span>
+<span>          value <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Some text"</span>,</span>
+<span>          placeholder <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Your text here"</span></span>
+<span>        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7TextArea</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>          inputId <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"textarea"</span>,</span>
+<span>          label <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Text area input"</span>,</span>
+<span>          value <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Some text"</span>,</span>
+<span>          placeholder <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Your text here"</span></span>
+<span>        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7Select</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>          inputId <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"select"</span>,</span>
+<span>          label <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Make a choice"</span>,</span>
+<span>          choices <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>,</span>
+<span>          selected <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span>        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7AutoComplete</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>          inputId <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"myautocomplete"</span>,</span>
+<span>          placeholder <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Some text here!"</span>,</span>
+<span>          openIn <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"dropdown"</span>,</span>
+<span>          label <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Type a fruit name"</span>,</span>
+<span>          choices <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>            <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Apple"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Apricot"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Avocado"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Banana"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Melon"</span>,</span>
+<span>            <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Orange"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Peach"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Pear"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Pineapple"</span></span>
+<span>          <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7Stepper</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>          inputId <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"stepper"</span>,</span>
+<span>          label <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"My stepper"</span>,</span>
+<span>          min <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,</span>
+<span>          color <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"default"</span>,</span>
+<span>          max <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>,</span>
+<span>          value <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span></span>
+<span>        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7Toggle</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>          inputId <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"toggle"</span>,</span>
+<span>          label <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Toggle me"</span></span>
+<span>        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7Picker</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>          inputId <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"picker"</span>,</span>
+<span>          placeholder <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Some text here!"</span>,</span>
+<span>          label <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Picker Input"</span>,</span>
+<span>          choices <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"a"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"b"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"c"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>          options <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>sheetPush <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7DatePicker</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>          inputId <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"date"</span>,</span>
+<span>          label <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Pick a date"</span>,</span>
+<span>          value <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.Date</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7ColorPicker</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>          inputId <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"mycolorpicker"</span>,</span>
+<span>          placeholder <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Some text here!"</span>,</span>
+<span>          label <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Select a color"</span></span>
+<span>        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>      <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7CheckboxGroup</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>        inputId <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"checkbox"</span>,</span>
+<span>        label <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Checkbox group"</span>,</span>
+<span>        choices <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"a"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"b"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"c"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>        selected <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"a"</span>,</span>
+<span>        style <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>          inset <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>,</span>
+<span>          dividers <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>,</span>
+<span>          strong <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>,</span>
+<span>          outline <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span></span>
+<span>        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>      <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7Radio</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>        inputId <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"radio"</span>,</span>
+<span>        label <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Radio group"</span>,</span>
+<span>        choices <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"a"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"b"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"c"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>        selected <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"a"</span>,</span>
+<span>        style <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>          inset <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>,</span>
+<span>          dividers <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>,</span>
+<span>          strong <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>,</span>
+<span>          outline <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span></span>
+<span>        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>      <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>    <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>  server <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">input</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">output</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span>  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div>
+</div>
+<p>We added a new way to pass options to <code>f7Radio()</code> and <code>f7CheckboxGroup()</code>, namely <code>f7CheckboxChoice()</code> and <code>f7RadioChoice()</code> (note: you can’t use <code>update_*</code> functions on them yet):</p>
+<div class="cell">
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;"><a href="https://shiny.posit.co/">shiny</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;"><a href="https://github.com/RinteRface/shinyMobile">shinyMobile</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span></span>
+<span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">shinyApp</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>  ui <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7Page</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>    title <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Update radio"</span>,</span>
+<span>    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7SingleLayout</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>      navbar <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7Navbar</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>title <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Update f7Radio"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7Block</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7Radio</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>          inputId <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"radio"</span>,</span>
+<span>          label <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Custom choices"</span>,</span>
+<span>          choices <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>            <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7RadioChoice</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>              <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span></span>
+<span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">            Nulla sagittis tellus ut turpis condimentum,</span></span>
+<span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">            ut dignissim lacus tincidunt"</span>,</span>
+<span>              title <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Choice 1"</span>,</span>
+<span>              subtitle <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"David"</span>,</span>
+<span>              after <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"March 16, 2024"</span></span>
+<span>            <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>            <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7RadioChoice</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>              <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Cras dolor metus, ultrices condimentum sodales sit</span></span>
+<span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">            amet, pharetra sodales eros. Phasellus vel felis tellus.</span></span>
+<span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">            Mauris rutrum ligula nec dapibus feugiat"</span>,</span>
+<span>              title <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Choice 2"</span>,</span>
+<span>              subtitle <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Veerle"</span>,</span>
+<span>              after <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"March 17, 2024"</span></span>
+<span>            <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>          <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>          selected <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>,</span>
+<span>          style <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>            outline <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>,</span>
+<span>            strong <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>,</span>
+<span>            inset <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>,</span>
+<span>            dividers <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span></span>
+<span>          <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">textOutput</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"res"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>      <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>    <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>  server <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">input</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">output</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">session</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span>    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">output</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">res</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">renderText</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">input</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">radio</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div>
+</div>
+</section><section id="new-f7treeview-component" class="level3"><h3 class="anchored" data-anchor-id="new-f7treeview-component">New <code>f7Treeview()</code> component</h3>
+<p>We implemented the <code>trewiew</code> widget which is now available as new input source:</p>
+<div class="cell">
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;"><a href="https://shiny.posit.co/">shiny</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;"><a href="https://github.com/RinteRface/shinyMobile">shinyMobile</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span></span>
+<span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">shinyApp</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>  ui <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7Page</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>    title <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"My app"</span>,</span>
+<span>    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7SingleLayout</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>      navbar <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7Navbar</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>title <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"f7Treeview"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>      <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># group treeview with selectable items</span></span>
+<span>      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7BlockTitle</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Selectable items"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7Block</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7Treeview</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>          id <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"treeview1"</span>,</span>
+<span>          selectable <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>,</span>
+<span>          <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7TreeviewGroup</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>            title <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Selected images"</span>,</span>
+<span>            icon <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7Icon</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"folder_fill"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>            itemToggle <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>,</span>
+<span>            <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>, <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">i</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7TreeviewItem</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>label <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"image"</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">i</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">".png"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>                                                   icon <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7Icon</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"photo_fill"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>          <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">textOutput</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"selected"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>      <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span></span>
+<span>      <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># group treeview with checkbox items</span></span>
+<span>      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7BlockTitle</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Checkbox"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7Block</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7Treeview</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>          id <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"treeview2"</span>,</span>
+<span>          withCheckbox <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>,</span>
+<span>          <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7TreeviewGroup</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>            title <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Selected images"</span>,</span>
+<span>            icon <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7Icon</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"folder_fill"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>            itemToggle <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>,</span>
+<span>            <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>, <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">i</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7TreeviewItem</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>label <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"image"</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">i</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">".png"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>                                                   icon <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7Icon</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"photo_fill"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>          <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">textOutput</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"selected2"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>      <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>    <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>  server <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">input</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">output</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span>    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">output</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">selected</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">renderText</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">input</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">treeview1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">output</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">selected2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">renderText</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">input</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">treeview2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div>
+</div>
+</section><section id="new-f7form" class="level3"><h3 class="anchored" data-anchor-id="new-f7form">New <code>f7Form()</code>
+</h3>
+<p>We added a brand new function, <code>f7Form()</code> to support HTML forms, a form being composed of multiple input elements. Contrary to basic shiny inputs, we don’t get one input value per element but a single input value with a nested list, thereby allowing to reduce the number of inputs on the server side. <code>updateF7Form()</code> can quickly update any input from the form.</p>
+<div class="cell">
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;"><a href="https://shiny.posit.co/">shiny</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;"><a href="https://github.com/RinteRface/shinyMobile">shinyMobile</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span></span>
+<span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">shinyApp</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>  ui <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7Page</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7SingleLayout</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>      navbar <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7Navbar</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>title <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Inputs form"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7Block</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7Button</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"update"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Click me"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7BlockTitle</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"A list of inputs in a form"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7List</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>        inset <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>,</span>
+<span>        dividers <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>,</span>
+<span>        strong <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>,</span>
+<span>        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7Form</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>          id <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"myform"</span>,</span>
+<span>          <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7Text</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>            inputId <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"text"</span>,</span>
+<span>            label <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Text input"</span>,</span>
+<span>            value <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Some text"</span>,</span>
+<span>            placeholder <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Your text here"</span>,</span>
+<span>            style <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>              description <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"A cool text input"</span>,</span>
+<span>              outline <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>,</span>
+<span>              media <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7Icon</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"house"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>              clearable <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>,</span>
+<span>              floating <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span></span>
+<span>            <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>          <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>          <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7TextArea</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>            inputId <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"textarea"</span>,</span>
+<span>            label <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Text Area"</span>,</span>
+<span>            value <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Lorem ipsum dolor sit amet, consectetur</span></span>
+<span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">              adipiscing elit, sed do eiusmod tempor incididunt ut</span></span>
+<span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">              labore et dolore magna aliqua"</span>,</span>
+<span>            placeholder <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Your text here"</span>,</span>
+<span>            resize <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>,</span>
+<span>            style <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>              description <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"A cool text input"</span>,</span>
+<span>              outline <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>,</span>
+<span>              media <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7Icon</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"house"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>              clearable <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>,</span>
+<span>              floating <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span></span>
+<span>            <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>          <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>          <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7Password</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>            inputId <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"password"</span>,</span>
+<span>            label <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Password:"</span>,</span>
+<span>            placeholder <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Your password here"</span>,</span>
+<span>            style <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>              description <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"A cool text input"</span>,</span>
+<span>              outline <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>,</span>
+<span>              media <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">f7Icon</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"house"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>              clearable <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>,</span>
+<span>              floating <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span></span>
+<span>            <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>          <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>      <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">verbatimTextOutput</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"form"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>    <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>  server <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">input</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">output</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">session</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span>    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">output</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">form</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">renderPrint</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">input</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">myform</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span></span>
+<span>    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">observeEvent</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">input</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">update</span>, <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span>      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">updateF7Form</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"myform"</span>,</span>
+<span>        data <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>          <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"text"</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"New text"</span>,</span>
+<span>          <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"textarea"</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"New text area"</span>,</span>
+<span>          <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"password"</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"New password"</span></span>
+<span>        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>      <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>    <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div>
+</div>
+
+
+</section></section></section> ]]></description>
+  <category>shiny</category>
+  <guid>https://blog.cynkra.com/posts/2024-05-13-shinyMobile-2.0.0/</guid>
+  <pubDate>Mon, 13 May 2024 00:00:00 GMT</pubDate>
+  <media:content url="https://blog.cynkra.com/posts/2024-05-13-shinyMobile-2.0.0/logo.png" medium="image" type="image/png" height="166" width="144"/>
+</item>
 <item>
   <title>EFS vs. NFS for RStudio on Kubernetes (AWS): Configuration and considerations</title>
   <dc:creator>Patrick Schratz</dc:creator>
@@ -6577,315 +8284,6 @@ font-style: inherit;">ts_c</span>(mdeaths, fdeaths))</span></code></pre></div>
   <category>time-series</category>
   <guid>https://blog.cynkra.com/posts/2018-05-15-tsbox/</guid>
   <pubDate>Tue, 15 May 2018 00:00:00 GMT</pubDate>
-</item>
-<item>
-  <title>Done “Establishing DBI”!?</title>
-  <dc:creator>Kirill Müller</dc:creator>
-  <link>https://blog.cynkra.com/posts/2018-05-01-dbi-2/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p>The “Establishing DBI” project, funded by the R consortium, started about a year ago. It includes the completion of two new backends, <em>RPostgres</em> and <em>RMariaDB</em>, and quite a few interface extensions and specifications.</p>
-<p>Learn more about DBI, R’s database interface, on <a href="https://r-dbi.org" class="uri">https://r-dbi.org</a>.</p>
-<p>This blog post showcases only the visible changes, a substantial amount of work went into extending the DBI specification and making the three open-source database backends compliant to it. After describing the release of the two new backends <em>RMariaDB</em> and <em>RPostgres</em>, I’ll be discussing the following improvements:</p>
-<ul>
-<li>Consistent support for accessing tables in schemas</li>
-<li>Quoting literal values, in addition to strings and identifiers</li>
-<li>More fine-grained creation of tables</li>
-<li>Reading and writing 64-bit integers</li>
-<li>Reading geometry columns from a PostGIS database</li>
-<li>Handling of duplicate column names</li>
-<li>New helpers in <em>DBI</em></li>
-<li>Reusing code across backends</li>
-</ul>
-<p>I conclude with an outlook on things left to do.</p>
-<section id="release-of-rpostgres-and-rmariadb" class="level2">
-<h2 class="anchored" data-anchor-id="release-of-rpostgres-and-rmariadb">Release of <em>RPostgres</em> and <em>RMariaDB</em></h2>
-<p>The DBI specification has been formulated in the preceding R consortium project, “Improving DBI”. It is both an automated test suite and a human-readable description of behavior, implemented in the <em>DBItest</em> package. For this project, I extended this specification and could also use it to implement <em>RPostgres</em> and <em>RMariaDB</em>: for once, test-driven development was pure pleasure because the tests were already there!</p>
-<p>I took over maintenance of the <em>RPostgres</em> and <em>RMariaDB</em> packages, which are complete rewrites of the <em>RPostgreSQL</em> and <em>RMySQL</em> packages, respectively. These packages use C++ (with <em>Rcpp</em>) as the glue between R and the native database libraries. A reimplementation and release under a different name has made it much easier to fully conform to the DBI specification: only listing temporary tables and casting to blob or character is not supported by <em>RMariaDB</em> (due to a limitation of the DBMS), all other parts of the specification are fully covered.</p>
-<p>Projects that use <em>RPostgreSQL</em> or <em>RMySQL</em> can continue to do so, or switch to the new backends at their own pace (which likely requires some changes to the code). For new projects I recommend <em>RPostgres</em> or <em>RMariaDB</em> to take advantage of the thorougly tested codebases and of the consistency across backends.</p>
-</section>
-<section id="schema-support" class="level2">
-<h2 class="anchored" data-anchor-id="schema-support">Schema support</h2>
-<p>Consistent access of tables in database schemas was planned for the “Improving DBI” project already, but I have implemented it only recently. It felt safer to see how the interface works on three backends, as opposed to implementing it for just <em>RSQLite</em> and then perhaps having to adapt it.</p>
-<p>The new <code>Id()</code> function constructs identifiers. All arguments must be named, yet <em>DBI</em> doesn’t specify the argument names because DBMS have an inconsistent notion of namespaces. The objects returned by <code>Id()</code> are “dumb”, they gain meaning only when used in methods such as <code>dbQuoteIdentifier()</code> or <code>dbWriteTable()</code>.</p>
-<p>For listing database objects in schemas, the new <code>dbListObjects()</code> generic can be used. It returns a data frame that contains identifiers (like those created by the <code>Id()</code> function) and a flag that indicates if the identifier is complete (i.e., pointing to a table or view) or a prefix. Incomplete identifiers can be passed to <code>dbListObjects()</code> again, which allows traversing the tree of database objects.</p>
-<p>The following example assumes a schema <code>my_schema</code>. A table named <code>my_table</code> is created in this schema, objects are listed, and the table is read again.</p>
-<pre><code>library(RPostgres)
-pg_conn &lt;- dbConnect(Postgres())
-
-table_name &lt;- Id(schema = "my_schema", table = "my_table")
-table_name
-
-## &lt;Id&gt; schema = my_schema, table = my_table
-
-data &lt;- data.frame(a = 1:3, b = letters[1:3])
-dbWriteTable(pg_conn, table_name, data)
-
-dbListObjects(pg_conn)
-
-##                               table is_prefix
-## 1    &lt;Id&gt; table = geography_columns     FALSE
-## 2     &lt;Id&gt; table = geometry_columns     FALSE
-## 3      &lt;Id&gt; table = spatial_ref_sys     FALSE
-## 4       &lt;Id&gt; table = raster_columns     FALSE
-## 5     &lt;Id&gt; table = raster_overviews     FALSE
-## 6             &lt;Id&gt; table = topology     FALSE
-## 7                &lt;Id&gt; table = layer     FALSE
-## 8                 &lt;Id&gt; table = temp     FALSE
-## 9            &lt;Id&gt; schema = topology      TRUE
-## 10          &lt;Id&gt; schema = my_schema      TRUE
-## 11 &lt;Id&gt; schema = information_schema      TRUE
-## 12         &lt;Id&gt; schema = pg_catalog      TRUE
-## 13             &lt;Id&gt; schema = public      TRUE
-
-dbListObjects(
-  pg_conn,
-  prefix = Id(schema = "my_schema")
-)
-
-##                                       table is_prefix
-## 1 &lt;Id&gt; schema = my_schema, table = my_table     FALSE
-
-dbReadTable(pg_conn, table_name)
-
-##   a b
-## 1 1 a
-## 2 2 b
-## 3 3 c</code></pre>
-<p>In addition to <code>dbReadTable()</code> and <code>dbWriteTable()</code>, also <code>dbExistsTable()</code> and <code>dbRemoveTable()</code> and the new <code>dbCreateTable()</code> and <code>dbAppendTable()</code> (see below) support an <code>Id()</code> object as table name. The <code>dbQuoteIdentifier()</code> method converts these objects to SQL strings. Some operations (e.g.&nbsp;checking if a table exists) require the inverse, the new <code>dbUnquoteIdentifier()</code> generic takes care of converting valid SQL identifiers to (a list of) <code>Id()</code> objects:</p>
-<pre><code>quoted &lt;- dbQuoteIdentifier(pg_conn, table_name)
-quoted
-
-## &lt;SQL&gt; "my_schema"."my_table"
-
-dbUnquoteIdentifier(pg_conn, quoted)
-
-## [[1]]
-## &lt;Id&gt; schema = my_schema, table = my_table</code></pre>
-<p>The new methods work consistently across backends - only <em>RSQLite</em> is currently restricted to the default schema. (Schemas in <em>RSQLite</em> are created by attaching another database, this use case seemed rather exotic but can be supported with the new infrastructure.)</p>
-</section>
-<section id="quoting-literal-values" class="level2">
-<h2 class="anchored" data-anchor-id="quoting-literal-values">Quoting literal values</h2>
-<p>When working on the database backends, it has become apparent that quoting strings and identifiers isn’t quite enough. Now there is a way to quote arbitrary values, that is, convert them to a string that can be pasted into an SQL query:</p>
-<pre><code>library(RSQLite)
-sqlite_conn &lt;- dbConnect(SQLite())
-
-library(RMariaDB)
-mariadb_conn &lt;- dbConnect(MariaDB(), dbname = "test")
-
-dbQuoteLiteral(sqlite_conn, 1.5)
-
-## &lt;SQL&gt; 1.5
-
-dbQuoteLiteral(mariadb_conn, 1.5)
-
-## &lt;SQL&gt; 1.5
-
-dbQuoteLiteral(pg_conn, 1.5)
-
-## &lt;SQL&gt; 1.5::float8
-
-dbQuoteLiteral(mariadb_conn, Sys.time())
-
-## &lt;SQL&gt; '20180501204025'
-
-dbQuoteLiteral(pg_conn, Sys.time())
-
-## &lt;SQL&gt; '2018-05-01 22:40:25'::timestamp</code></pre>
-<p>The default implementation works for ANSI SQL compliant DBMS, the method for <em>RPostgres</em> takes advantage of the <code>::</code> casting operator as seen in the examples.</p>
-</section>
-<section id="more-fine-grained-creation-of-tables" class="level2">
-<h2 class="anchored" data-anchor-id="more-fine-grained-creation-of-tables">More fine-grained creation of tables</h2>
-<p><em>DBI</em> supports storing data frames as tables in the database via <code>dbWriteTable()</code>. This operation consists of multiple steps:</p>
-<ul>
-<li>Checking if a table of this name exists, if yes:
-<ul>
-<li>If <code>overwrite = TRUE</code>, removing the table</li>
-<li>If not, throwing an error</li>
-</ul></li>
-<li>Creating the table with the correct field structure</li>
-<li>Preparing the data for writing</li>
-<li>Writing the data</li>
-</ul>
-<p>To reduce complexity and allow for more options without cluttering the argument list of <code>dbWriteTable()</code>, <em>DBI</em> now provides generics for the individual steps:</p>
-<ul>
-<li><p>The existing <code>dbRemoveTable()</code> generic has been extended with <code>temporary</code> and <code>fail_if_missing</code> arguments. Setting <code>temporary = TRUE</code> makes sure that only temporaries are removed. By default, trying to remove a table that doesn’t exist fails, setting <code>fail_if_missing = FALSE</code> changes this behavior to a silent success.</p></li>
-<li><p>The new <code>dbCreateTable()</code> generic accepts a data frame or a character vector of DBMS data types and creates a table in the database. It builds upon the existing <code>sqlCreateTable()</code> generic and also supports the <code>temporary</code> argument. If a table by that name already exists, an error is raised.</p></li>
-<li><p>The new <code>dbAppendTable()</code> generic uses a prepared statement (created via <code>sqlAppendTableTemplate()</code>) to efficiently insert rows into the database. This avoids the internal overhead of converting values to SQL literals.</p></li>
-</ul>
-<p>The following example shows the creation and population of a table with the new methods.</p>
-<pre><code>table_name
-
-## &lt;Id&gt; schema = my_schema, table = my_table
-
-dbRemoveTable(pg_conn, table_name, fail_if_missing = FALSE)
-
-dbCreateTable(pg_conn, table_name, c(a = "int8", b = "float8"))
-
-dbAppendTable(pg_conn, table_name, data.frame(a = 1:3, b = 1:3))
-
-## [1] 3
-
-str(dbReadTable(pg_conn, table_name))
-
-## 'data.frame':    3 obs. of  2 variables:
-##  $ a:integer64 1 2 3
-##  $ b: num  1 2 3</code></pre>
-<p>The <code>dbWriteTable()</code> methods in the three backends have been adapted to use the new methods.</p>
-</section>
-<section id="support-for-64-bit-integers" class="level2">
-<h2 class="anchored" data-anchor-id="support-for-64-bit-integers">Support for 64-bit integers</h2>
-<p>As seen in the previous example, 64-bit integers can be read from the database. The three backends <em>RSQLite</em>, <em>RPostgres</em> and <em>RMariaDB</em> now also support writing 64-bit integers via the <em>bit64</em> package:</p>
-<pre><code>data &lt;- data.frame(a = bit64::as.integer64(4:6), b = 4:6)
-dbAppendTable(pg_conn, table_name, data)
-
-## [1] 3
-
-str(dbReadTable(pg_conn, table_name))
-
-## 'data.frame':    6 obs. of  2 variables:
-##  $ a:integer64 1 2 3 4 5 6
-##  $ b: num  1 2 3 4 5 6</code></pre>
-<p>Because R still lacks support for native 64-bit integers, the <em>bit64</em> package feels like the best compromise: the returned values can be computed on, or coerced to <code>integer</code>, <code>numeric</code> or even <code>character</code> depending on the application. In some cases, it may be useful to always coerce. This is where the new <code>bigint</code> argument to <code>dbConnect()</code> helps:</p>
-<pre><code>pg_conn_int &lt;- dbConnect(Postgres(), bigint = "integer")
-str(dbReadTable(pg_conn_int, table_name))
-
-## 'data.frame':    6 obs. of  2 variables:
-##  $ a: int  1 2 3 4 5 6
-##  $ b: num  1 2 3 4 5 6
-
-pg_conn_num &lt;- dbConnect(Postgres(), bigint = "numeric")
-str(dbReadTable(pg_conn_num, table_name))
-
-## 'data.frame':    6 obs. of  2 variables:
-##  $ a: num  1 2 3 4 5 6
-##  $ b: num  1 2 3 4 5 6
-
-pg_conn_chr &lt;- dbConnect(Postgres(), bigint = "character")
-str(dbReadTable(pg_conn_chr, table_name))
-
-## 'data.frame':    6 obs. of  2 variables:
-##  $ a: chr  "1" "2" "3" "4" ...
-##  $ b: num  1 2 3 4 5 6</code></pre>
-<p>The <code>bigint</code> argument works consistently across the three backends <em>RSQLite</em>, <em>RPostgres</em> and <em>RMariaDB</em>, the DBI specification contains a test for and a description of the requirements.</p>
-</section>
-<section id="geometry-columns" class="level2">
-<h2 class="anchored" data-anchor-id="geometry-columns">Geometry columns</h2>
-<p>PostgreSQL has support for user-defined data types, this is used e.g.&nbsp;by PostGIS to store spatial data. Before, user-defined data types were returned as character values, with a warning. Thanks to a contribution by Etienne B. Racine:</p>
-<ul>
-<li>the warnings are gone,</li>
-<li>the user-defined data type is now stored in an attribute of the column in the data frame,</li>
-<li>details on columns with user-defined data types are available in <code>dbColumnInfo()</code>.</li>
-</ul>
-<!-- -->
-<pre><code>dbCreateTable(
-  pg_conn,
-  "geom_test",
-  c(id = "int4", geom = "geometry(Point, 4326)")
-)
-
-data &lt;- data.frame(
-  id = 1,
-  geom = "SRID=4326;POINT(-71.060316 48.432044)",
-  stringsAsFactors = FALSE
-)
-dbAppendTable(pg_conn, "geom_test", data)
-
-## [1] 1
-
-str(dbReadTable(pg_conn, "geom_test"))
-
-## 'data.frame':    1 obs. of  2 variables:
-##  $ id  : int 1
-##  $ geom:Class 'pq_geometry'  chr "0101000020E61000003CDBA337DCC351C06D37C1374D374840"
-
-res &lt;- dbSendQuery(pg_conn, "SELECT * FROM geom_test")
-dbColumnInfo(res)
-
-##   name      type   .oid .known .typname
-## 1   id   integer     23   TRUE     int4
-## 2 geom character 101529  FALSE geometry
-
-dbClearResult(res)</code></pre>
-<p>Special support for geometry columns is currently available only in <em>RPostgres</em>.</p>
-</section>
-<section id="duplicate-column-names" class="level2">
-<h2 class="anchored" data-anchor-id="duplicate-column-names">Duplicate column names</h2>
-<p>The specification has been extended to disallow duplicate, empty, or <code>NA</code> column names. The deduplication used by our three backends is similar to that used by <code>tibble::set_tidy_names()</code>, but the DBI specification does not require any particular deduplication mechanism. Syntactic names aren’t required either:</p>
-<pre><code>dbGetQuery(sqlite_conn, "SELECT 1, 2, 3")
-
-##   1 2 3
-## 1 1 2 3
-
-dbGetQuery(sqlite_conn, "SELECT 1 AS a, 2 AS a, 3 AS `a..2`")
-
-##   a a..2 a..3
-## 1 1    2    3
-
-dbGetQuery(mariadb_conn, "SELECT 1, 2, 3")
-
-##   1 2 3
-## 1 1 2 3
-
-dbGetQuery(mariadb_conn, "SELECT 1 AS a, 2 AS a, 3 AS `a..2`")
-
-##   a a..2 a..3
-## 1 1    2    3
-
-dbGetQuery(pg_conn, "SELECT 1, 2, 3")
-
-##   ?column? ?column?..2 ?column?..3
-## 1        1           2           3
-
-dbGetQuery(pg_conn, 'SELECT 1 AS a, 2 AS a, 3 AS "a..2"')
-
-##   a a..2 a..3
-## 1 1    2    3</code></pre>
-</section>
-<section id="helpers" class="level2">
-<h2 class="anchored" data-anchor-id="helpers">Helpers</h2>
-<p>Two little helper generics have been added.</p>
-<p>The new <code>dbIsReadOnly()</code> generic (contributed by Anh Le) should return <code>TRUE</code> for a read-only connection. This is not part of the specification yet.</p>
-<p>The <code>dbCanConnect()</code> tests a set of connection parameters. The default implementation simply connects and then disconnects upon success. For DBMS that can provide more efficient methods of checking connectivity, a lighter-weight implementation of this method may give a better experience.</p>
-<p>None of the three backends currently provide specialized implementations for these generics.</p>
-</section>
-<section id="code-reuse" class="level2">
-<h2 class="anchored" data-anchor-id="code-reuse">Code reuse</h2>
-<p>I have made some efforts to extract common C++ classes for assembling data frames and prepare them for reuse. The C++ source code for the three backends contains files prefixed with <code>Db</code>, these are almost identical across the backends. The planned packaging into the <em>RKazam</em> package had to yield to higher-priority features described above.</p>
-<p>The situation in the R code is similar: I have found myself copy-pasting code from one backend into another because I didn’t feel it’s ready (or standardized enough) to be included in the <em>DBI</em> package.</p>
-<p>For both use cases, a code reuse strategy based on copying/updating template files or reconciling files may be more robust than the traditional importing mechanisms offered by R.</p>
-</section>
-<section id="outlook" class="level2">
-<h2 class="anchored" data-anchor-id="outlook">Outlook</h2>
-<p>The upcoming CRAN release of <em>DBI</em>, <em>DBItest</em> and the three backends <em>RSQLite</em>, <em>RMariaDB</em>, and <em>RPostgres</em> are important milestones. Stability is important when more and more users and projects use the new backends. Nevertheless, I see quite a few potential improvements that so far were out of scope of the “Improving DBI” and “Establishing DBI” projects:</p>
-<ol type="1">
-<li><p>Support running the test suite locally, to validate adherence to DBI for a particular installation.</p></li>
-<li><p>Consistent fast data import.</p></li>
-<li><p>Consistent query placeholders (currently <code>$1</code> for <em>RPostgres</em> and <code>?</code> for many other backends).</p></li>
-<li><p>Support for arbitrary data types via hooks.</p></li>
-<li><p>Assistance with installation problems on specific architectures, or connectivity problems with certain databases, or other specific issues.</p></li>
-<li><p>Rework the internal architecture of <em>DBItest</em> to simplify locating test failures.</p></li>
-<li><p>Improve the <a href="https://r-dbi.org" class="uri">https://r-dbi.org</a> website.</p></li>
-<li><p>Non-blocking queries.</p></li>
-</ol>
-<p>I have submitted another proposal to the R Consortium, hoping to receive support with these and other issues.</p>
-</section>
-<section id="acknowledgments" class="level2">
-<h2 class="anchored" data-anchor-id="acknowledgments">Acknowledgments</h2>
-<p>I’d like to thank the R Consortium for their generous financial support. Many thanks to the numerous contributors who helped make the past two projects a success.</p>
-<p>This post appeared previously on https://r-dbi.org.</p>
-
-
-</section>
-
- ]]></description>
-  <category>R</category>
-  <category>databases</category>
-  <guid>https://blog.cynkra.com/posts/2018-05-01-dbi-2/</guid>
-  <pubDate>Tue, 01 May 2018 00:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>
