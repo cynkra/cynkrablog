@@ -6,6 +6,9 @@ author: David Granjon
 date: '2024-05-13'
 categories:
   - shiny
+format: 
+  html:
+    code-fold: true
 ---
 
 shinyMobile has been around for about 5 years now. It allows to develop outstanding Shiny apps for iOS and Android, owing to the awesome open source Framework7 [template](https://framework7.io/) which powers it.
@@ -14,9 +17,238 @@ Guess what? This year shinyMobile gets a major update to v2.2.0. I'd like to war
 
 # What's new
 
-shinyMobile 1.0.0 and above were running Framework5 v5, a pretty old ancient version. With the new Framework7 v8, you might expect a significant number of changes (TO DO link), but for the best!
+shinyMobile 1.0.0 and above were running Framework5 v5, a rather ancient version. With the new Framework7 v8, you might expect a significant number of changes (TO DO link), but for the best!
 
 ## Major changes
+
+### New multi pages experimental support
+
+We are very excited to bring this feature out for this new release. Under the hood, this is possible owing to the `{brochure}` [package](https://github.com/ColinFay/brochure) from 
+[Colin Fay](https://github.com/ColinFay) as well as the internal Framework7 [router](https://framework7.io/docs/view) component.
+
+#### What does this mean? 
+
+You can now develop __real multi pages__ Shiny applications and have different url endpoints and redirections. For instance, `https://my-app/home` can be the home page while `https://my-app/settings` brings to the settings page.
+
+#### How does this work?
+
+At the time of writting of this blog post, you must install a patched `{brochure}` version with `devtools::install_github("DivadNojnarg/brochure")`.
+
+In the below code, we basically have 3 pages having their own content and a common layout for consistency. The router ensure beautiful transitions from one page to another. We invite you to look at the getting started article which provides more technical details.
+
+```{r, eval=FALSE}
+library(shiny)
+# Needs a specific version of brochure for now.
+# This allows to pass wrapper functions with options
+# as list. We need it because of the f7Page options parameter
+# and to pass the routes list object for JS.
+# devtools::install_github("DivadNojnarg/brochure")
+library(brochure)
+library(shinyMobile)
+
+# Allows to use the app on a server like 
+# shinyapps.io where basepath is /app_name
+# instead of "/" or "".
+make_link <- function(path = NULL, basepath = "") {
+  if (is.null(path)) {
+    if (nchar(basepath) > 0) {
+      return(basepath)
+    } else {
+      return("/")
+    }
+  }
+  sprintf("%s/%s", basepath, path)
+}
+
+links <- lapply(2:3, function(i) {
+  tags$li(
+    f7Link(
+      routable = TRUE,
+      label = sprintf("Link to page %s", i),
+      href = make_link(i)
+    )
+  )
+})
+
+page_1 <- function() {
+  page(
+    href = "/",
+    ui = function(request) {
+      shiny::tags$div(
+        class = "page",
+        # top navbar goes here
+        f7Navbar(title = "Home page"),
+        # NOTE: when the main toolbar is enabled in
+        # f7MultiLayout, we can't use individual page toolbars.
+        # f7Toolbar(
+        #  position = "bottom",
+        #  tags$a(
+        #    href = "/2",
+        #    "Second page",
+        #    class = "link"
+        #  )
+        # ),
+        # Page content
+        tags$div(
+          class = "page-content",
+          f7List(
+            inset = TRUE,
+            strong = TRUE,
+            outline = TRUE,
+            dividers = TRUE,
+            mode = "links",
+            links
+          ),
+          f7Block(
+            f7Text("text", "Text input", "default"),
+            f7Select("select", "Select", colnames(mtcars)),
+            textOutput("res"),
+            textOutput("res2")
+          )
+        )
+      )
+    }
+  )
+}
+
+page_2 <- function() {
+  page(
+    href = "/2",
+    ui = function(request) {
+      shiny::tags$div(
+        class = "page",
+        # top navbar goes here
+        f7Navbar(
+          title = "Second page",
+          # Allows to go back to main
+          leftPanel = tagList(
+            tags$a(
+              href = make_link(),
+              class = "link back",
+              tags$i(class = "icon icon-back"),
+              tags$span(
+                class = "if-not-md",
+                "Back"
+              )
+            )
+          )
+        ),
+        shiny::tags$div(
+          class = "page-content",
+          f7Block(f7Button(inputId = "update", label = "Update stepper")),
+          f7List(
+            strong = TRUE,
+            inset = TRUE,
+            outline = FALSE,
+            f7Stepper(
+              inputId = "stepper",
+              label = "My stepper",
+              min = 0,
+              max = 10,
+              size = "small",
+              value = 4,
+              wraps = TRUE,
+              autorepeat = TRUE,
+              rounded = FALSE,
+              raised = FALSE,
+              manual = FALSE
+            )
+          ),
+          f7Block(textOutput("test"))
+        )
+      )
+    }
+  )
+}
+
+page_3 <- function() {
+  page(
+    href = "/3",
+    ui = function(request) {
+      shiny::tags$div(
+        class = "page",
+        # top navbar goes here
+        f7Navbar(
+          title = "Third page",
+          # Allows to go back to main
+          leftPanel = tagList(
+            tags$a(
+              href = make_link(),
+              class = "link back",
+              tags$i(class = "icon icon-back"),
+              tags$span(
+                class = "if-not-md",
+                "Back"
+              )
+            )
+          )
+        ),
+        shiny::tags$div(
+          class = "page-content",
+          f7Block("Nothing to show yet ...")
+        )
+      )
+    }
+  )
+}
+
+brochureApp(
+  basepath = make_link(),
+  # Pages
+  page_1(),
+  page_2(),
+  page_3(),
+  # Important: in theory brochure makes
+  # each page having its own shiny session/ server function.
+  # That's not what we want here so we'll have
+  # a global server function.
+  server = function(input, output, session) {
+    output$res <- renderText(input$text)
+    output$res2 <- renderText(input$select)
+    output$test <- renderText(input$stepper)
+
+    observeEvent(input$update, {
+      updateF7Stepper(
+        inputId = "stepper",
+        value = 0.1,
+        step = 0.01,
+        size = "large",
+        min = 0,
+        max = 1,
+        wraps = FALSE,
+        autorepeat = FALSE,
+        rounded = TRUE,
+        raised = TRUE,
+        color = "pink",
+        manual = TRUE,
+        decimalPoint = 2
+      )
+    })
+  },
+  wrapped = f7MultiLayout,
+  wrapped_options = list(
+    basepath = make_link(),
+    # Common toolbar
+    toolbar = f7Toolbar(
+      f7Link(icon = f7Icon("house"), href = make_link(), routable = TRUE)
+    ),
+    options = list(
+      dark = TRUE,
+      theme = "md",
+      routes = list(
+        # Important: don't remove keepAlive
+        # for pages as this allows
+        # to save the input state when switching
+        # between pages. If FALSE, each time a page is
+        # changed, inputs are reset.
+        list(path = make_link(), url = make_link(), name = "home", keepAlive = TRUE),
+        list(path = make_link("2"), url = make_link("2"), name = "2", keepAlive = TRUE),
+        list(path = make_link("3"), url = make_link("3"), name = "3", keepAlive = TRUE)
+      )
+    )
+  )
+)
+```
 
 ### Updated md design
 
@@ -24,7 +256,9 @@ By updating to the latest Framework7 version, we now benefit from a totally reva
 
 ### Refined inputs layout and style
 
-Whenever you have multiple inputs, we now recommend to wrap all of them within `f7List()` so as to benefit from new styling options such as outline, inset, strong, ... Internally, we use a function able to detect whether the input is inside a `f7List()`: if yes, you can style this list by passing parameters like `f7List(outline = TRUE, inset = TRUE, ...)`; if not, the input is internally wrapped in a list to have correct rendering but no styling is possible. Besides, some input like `f7Text()` can have custom styling (add an icon, clear button, outline style), which is independent from the external list wrapper style. Hence, we don't recommend doing `f7List(outline = TRUE, f7Text(outline = TRUE))` since it won't render very well and instead use `f7List(outline = TRUE, f7Text())`. Inputs having more specific styling options are:
+Whenever you have multiple inputs, we now recommend to wrap all of them within `f7List()` so as to benefit from new styling options such as outline, inset, strong, ... Internally, we use a function able to detect whether the input is inside a `f7List()`. If yes, you can style this list by passing parameters like `f7List(outline = TRUE, inset = TRUE, ...)`. If not, the input is internally wrapped in a list to have correct rendering but no styling is possible. Besides, some input like `f7Text()` can have custom styling (add an icon, clear button, outline style), which is independent from the external list wrapper style. Hence, we don't recommend doing `f7List(outline = TRUE, f7Text(outline = TRUE))` since it won't render very well and instead use `f7List(outline = TRUE, f7Text())`. 
+
+Besides, independently from `f7List()`, some inputs having more specific styling options:
 
 - `f7AutoComplete()`.
 - `f7Text()`, `f7Password()`, `f7TextArea()`.
@@ -32,9 +266,27 @@ Whenever you have multiple inputs, we now recommend to wrap all of them within `
 - `f7Picker()`, `f7ColorPicker()` and `f7DatePicker()`.
 - `f7Radio()` and `f7CheckboxGroup()`.
 
-`f7Stepper()` and `f7Toggle()` label is now displayed on the left.
+In practices, you can design a supercharged `f7Text()` by doing so:
 
-We now recommend to wrap any list of inputs in `f7List()` for a better rendering. 
+```{r, eval=FALSE}
+f7Text(
+    inputId = "text",
+    label = "Text input",
+    value = "Some text",
+    placeholder = "Your text here",
+    style = list(
+      description = "A cool text input",
+      outline = TRUE,
+      media = f7Icon("house"),
+      clearable = TRUE,
+      floating = TRUE
+    )
+)
+```
+
+This adds a description to the input (below its main content), as well as the outline style option, an icon on the left side. `clearable` is TRUE by default meaning that all text-based inputs can be cleared. `floating` is an effect that makes the label moving in and out the input area depending on the content state. When empty, the label is inside and when there is text, the label is pushed outside in its usual location.
+
+`f7Stepper()` and `f7Toggle()` label is now displayed on the left.
 
 ```{r, eval=FALSE}
 library(shiny)
@@ -143,7 +395,7 @@ shinyApp(
 )
 ```
 
-We added a new way to pass options to `f7Radio()` and `f7CheckboxGroup()`, namely `f7CheckboxChoice()` and `f7RadioChoice()` (note: you can't use `update_*` functions on them yet):
+Moreover, we added a new super cool way to pass options to `f7Radio()` and `f7CheckboxGroup()`, namely `f7CheckboxChoice()` and `f7RadioChoice()` (note: you can't use `update_*` functions on them yet), so that you can pass more metadata and description to each option (instead of just the choice name in basic shiny inputs):
 
 ```{r, eval=FALSE}
 library(shiny)
@@ -196,7 +448,7 @@ shinyApp(
 
 ### New `f7Treeview()` component
 
-We implemented the `trewiew` widget which is now available as new input source:
+A brand new input widget enter in the place. Please welcome `f7Treewiew()`:
 
 ```{r, eval=FALSE}
 library(shiny)
@@ -251,7 +503,12 @@ shinyApp(
 
 ### New `f7Form()`
 
-We added a brand new function, `f7Form()` to support HTML forms, a form being composed of multiple input elements. Contrary to basic shiny inputs, we don't get one input value per element but a single input value with a nested list, thereby allowing to reduce the number of inputs on the server side. `updateF7Form()` can quickly update any input from the form.
+Shiny does not provide HTML forms handling out of the box (a [form](https://www.w3schools.com/html/html_forms.asp) being composed of multiple input elements). That's why we introduce `f7Form()`. Contrary to basic shiny inputs, we don't get one input value per element but a single input value with a nested list for all inputs within the form, thereby allowing to reduce the number of inputs on the server side. `updateF7Form()` can quickly update any input from the form. As a side note, the current list of supported inputs is:
+
+- `f7Text()`
+- `f7TextArea()`
+- `f7Password()`
+- `f7Select()`
 
 ```{r, eval=FALSE}
 library(shiny)
