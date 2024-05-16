@@ -17,7 +17,7 @@ Guess what? This year shinyMobile gets a major update to v2.2.0. I'd like to war
 
 # What's new
 
-shinyMobile 1.0.0 and above were running Framework5 v5, a rather ancient version. With the new Framework7 v8, you might expect a significant number of changes (TO DO link), but for the best!
+shinyMobile 1.0.0 and above were running Framework5 v5, a rather ancient version. With the new Framework7 v8, you might expect a significant number of [changes](https://github.com/RinteRface/shinyMobile/blob/69da6ca46984bf6c73e2dc32ff8d9f415ec36a30/NEWS.md), but for the best!
 
 ## Major changes
 
