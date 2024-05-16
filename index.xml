@@ -1442,7 +1442,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </details>
 </div>
-</section></section><section id="updated-md-design" class="level3"><h3 class="anchored" data-anchor-id="updated-md-design">Updated md design</h3>
+</section></section><section id="updated-material-design-style" class="level3"><h3 class="anchored" data-anchor-id="updated-material-design-style">Updated material design style</h3>
 <p>By updating to the latest Framework7 version, we now benefit from a totally revamped Android (md) design, which looks more modern. TO DO: demo app.</p>
 </section><section id="refined-inputs-layout-and-style" class="level3"><h3 class="anchored" data-anchor-id="refined-inputs-layout-and-style">Refined inputs layout and style</h3>
 <p>Whenever you have multiple inputs, we now recommend to wrap all of them within <code>f7List()</code> so as to benefit from new styling options such as outline, inset, strong, … Internally, we use a function able to detect whether the input is inside a <code>f7List()</code>. If yes, you can style this list by passing parameters like <code>f7List(outline = TRUE, inset = TRUE, ...)</code>. If not, the input is internally wrapped in a list to have correct rendering but no styling is possible. Besides, some input like <code>f7Text()</code> can have custom styling (add an icon, clear button, outline style), which is independent from the external list wrapper style. Hence, we don’t recommend doing <code>f7List(outline = TRUE, f7Text(outline = TRUE))</code> since it won’t render very well and instead use <code>f7List(outline = TRUE, f7Text())</code>.</p>
@@ -2368,7 +2368,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </details>
 </div>
 </section><section id="new-f7treeview-component" class="level3"><h3 class="anchored" data-anchor-id="new-f7treeview-component">New <code>f7Treeview()</code> component</h3>
-<p>A brand new input widget enter in the place. Please welcome <code>f7Treewiew()</code>:</p>
+<p>A brand new input widget enters in the place. As its name suggests, <code>f7Treewiew()</code> allows to hierarchically sort items within a collapsible nested list of items. This is ideal, for instance, to select files within multiple folders, as an alternative to the classic <code>fileInput()</code>.</p>
 <div class="cell">
 <details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw" style="color: #003B4F;
 background-color: null;
