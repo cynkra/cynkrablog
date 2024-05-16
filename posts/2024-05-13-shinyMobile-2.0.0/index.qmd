@@ -588,3 +588,12 @@ shinyApp(
   }
 )
 ```
+
+## Breaking changes
+
+Some components have disappeared from Framework7 and we we had to deprecate them as they no longer work. Other long time deprecated `{shinyMobile}` elements are also removed to cleanup the codebase. We invite you to review the [changelog](https://github.com/RinteRface/shinyMobile/blob/69da6ca46984bf6c73e2dc32ff8d9f415ec36a30/NEWS.md#breaking-changes).
+
+## Soft deprecation
+
+Some function parameters have changed and are now deprecated with `{lifecycle}`. You'll see a warning message if you use them and we invite you to accordingly update your code.
+
