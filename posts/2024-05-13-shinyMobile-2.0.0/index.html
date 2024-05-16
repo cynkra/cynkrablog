@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.33">
+<meta name="generator" content="quarto-1.5.37">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="David Granjon">
 <meta name="dcterms.date" content="2024-05-13">
@@ -214,12 +214,234 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header><p>shinyMobile has been around for about 5 years now. It allows to develop outstanding Shiny apps for iOS and Android, owing to the awesome open source Framework7 <a href="https://framework7.io/">template</a> which powers it.</p>
 <p>Guess what? This year shinyMobile gets a major update to v2.2.0. I’d like to warmly thank <a href="https://hypebright.nl/">Veerle van Leemput</a> and Michael S. Czahor from <a href="https://linktr.ee/athlyticz">AthlyticZ</a> for providing significant support during this marathon.</p>
 <section id="whats-new" class="level1"><h1>What’s new</h1>
-<p>shinyMobile 1.0.0 and above were running Framework5 v5, a pretty old ancient version. With the new Framework7 v8, you might expect a significant number of changes (TO DO link), but for the best!</p>
+<p>shinyMobile 1.0.0 and above were running Framework5 v5, a rather ancient version. With the new Framework7 v8, you might expect a significant number of changes (TO DO link), but for the best!</p>
 <section id="major-changes" class="level2"><h2 class="anchored" data-anchor-id="major-changes">Major changes</h2>
-<section id="updated-md-design" class="level3"><h3 class="anchored" data-anchor-id="updated-md-design">Updated md design</h3>
+<section id="new-multi-pages-experimental-support" class="level3"><h3 class="anchored" data-anchor-id="new-multi-pages-experimental-support">New multi pages experimental support</h3>
+<p>We are very excited to bring this feature out for this new release. Under the hood, this is possible owing to the <code>{brochure}</code> <a href="https://github.com/ColinFay/brochure">package</a> from <a href="https://github.com/ColinFay">Colin Fay</a> as well as the internal Framework7 <a href="https://framework7.io/docs/view">router</a> component.</p>
+<section id="what-does-this-mean" class="level4"><h4 class="anchored" data-anchor-id="what-does-this-mean">What does this mean?</h4>
+<p>You can now develop <strong>real multi pages</strong> Shiny applications and have different url endpoints and redirections. For instance, <code>https://my-app/home</code> can be the home page while <code>https://my-app/settings</code> brings to the settings page.</p>
+</section><section id="how-does-this-work" class="level4"><h4 class="anchored" data-anchor-id="how-does-this-work">How does this work?</h4>
+<p>At the time of writting of this blog post, you must install a patched <code>{brochure}</code> version with <code>devtools::install_github("DivadNojnarg/brochure")</code>.</p>
+<p>In the below code, we basically have 3 pages having their own content and a common layout for consistency. The router ensure beautiful transitions from one page to another. We invite you to look at the getting started article which provides more technical details.</p>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/">shiny</a></span><span class="op">)</span></span>
+<span><span class="co"># Needs a specific version of brochure for now.</span></span>
+<span><span class="co"># This allows to pass wrapper functions with options</span></span>
+<span><span class="co"># as list. We need it because of the f7Page options parameter</span></span>
+<span><span class="co"># and to pass the routes list object for JS.</span></span>
+<span><span class="co"># devtools::install_github("DivadNojnarg/brochure")</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">brochure</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RinteRface/shinyMobile">shinyMobile</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Allows to use the app on a server like </span></span>
+<span><span class="co"># shinyapps.io where basepath is /app_name</span></span>
+<span><span class="co"># instead of "/" or "".</span></span>
+<span><span class="va">make_link</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">path</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">basepath</span> <span class="op">=</span> <span class="st">""</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html">nchar</a></span><span class="op">(</span><span class="va">basepath</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">basepath</span><span class="op">)</span></span>
+<span>    <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>      <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="st">"/"</span><span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"%s/%s"</span>, <span class="va">basepath</span>, <span class="va">path</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">links</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fl">2</span><span class="op">:</span><span class="fl">3</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">tags</span><span class="op">$</span><span class="fu">li</span><span class="op">(</span></span>
+<span>    <span class="fu">f7Link</span><span class="op">(</span></span>
+<span>      routable <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>      label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"Link to page %s"</span>, <span class="va">i</span><span class="op">)</span>,</span>
+<span>      href <span class="op">=</span> <span class="fu">make_link</span><span class="op">(</span><span class="va">i</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">page_1</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/page.html">page</a></span><span class="op">(</span></span>
+<span>    href <span class="op">=</span> <span class="st">"/"</span>,</span>
+<span>    ui <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">request</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="fu">shiny</span><span class="fu">::</span><span class="va">tags</span><span class="op">$</span><span class="fu">div</span><span class="op">(</span></span>
+<span>        class <span class="op">=</span> <span class="st">"page"</span>,</span>
+<span>        <span class="co"># top navbar goes here</span></span>
+<span>        <span class="fu">f7Navbar</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Home page"</span><span class="op">)</span>,</span>
+<span>        <span class="co"># NOTE: when the main toolbar is enabled in</span></span>
+<span>        <span class="co"># f7MultiLayout, we can't use individual page toolbars.</span></span>
+<span>        <span class="co"># f7Toolbar(</span></span>
+<span>        <span class="co">#  position = "bottom",</span></span>
+<span>        <span class="co">#  tags$a(</span></span>
+<span>        <span class="co">#    href = "/2",</span></span>
+<span>        <span class="co">#    "Second page",</span></span>
+<span>        <span class="co">#    class = "link"</span></span>
+<span>        <span class="co">#  )</span></span>
+<span>        <span class="co"># ),</span></span>
+<span>        <span class="co"># Page content</span></span>
+<span>        <span class="va">tags</span><span class="op">$</span><span class="fu">div</span><span class="op">(</span></span>
+<span>          class <span class="op">=</span> <span class="st">"page-content"</span>,</span>
+<span>          <span class="fu">f7List</span><span class="op">(</span></span>
+<span>            inset <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>            strong <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>            outline <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>            dividers <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>            mode <span class="op">=</span> <span class="st">"links"</span>,</span>
+<span>            <span class="va">links</span></span>
+<span>          <span class="op">)</span>,</span>
+<span>          <span class="fu">f7Block</span><span class="op">(</span></span>
+<span>            <span class="fu">f7Text</span><span class="op">(</span><span class="st">"text"</span>, <span class="st">"Text input"</span>, <span class="st">"default"</span><span class="op">)</span>,</span>
+<span>            <span class="fu">f7Select</span><span class="op">(</span><span class="st">"select"</span>, <span class="st">"Select"</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>            <span class="fu">textOutput</span><span class="op">(</span><span class="st">"res"</span><span class="op">)</span>,</span>
+<span>            <span class="fu">textOutput</span><span class="op">(</span><span class="st">"res2"</span><span class="op">)</span></span>
+<span>          <span class="op">)</span></span>
+<span>        <span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">page_2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/page.html">page</a></span><span class="op">(</span></span>
+<span>    href <span class="op">=</span> <span class="st">"/2"</span>,</span>
+<span>    ui <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">request</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="fu">shiny</span><span class="fu">::</span><span class="va">tags</span><span class="op">$</span><span class="fu">div</span><span class="op">(</span></span>
+<span>        class <span class="op">=</span> <span class="st">"page"</span>,</span>
+<span>        <span class="co"># top navbar goes here</span></span>
+<span>        <span class="fu">f7Navbar</span><span class="op">(</span></span>
+<span>          title <span class="op">=</span> <span class="st">"Second page"</span>,</span>
+<span>          <span class="co"># Allows to go back to main</span></span>
+<span>          leftPanel <span class="op">=</span> <span class="fu">tagList</span><span class="op">(</span></span>
+<span>            <span class="va">tags</span><span class="op">$</span><span class="fu">a</span><span class="op">(</span></span>
+<span>              href <span class="op">=</span> <span class="fu">make_link</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>              class <span class="op">=</span> <span class="st">"link back"</span>,</span>
+<span>              <span class="va">tags</span><span class="op">$</span><span class="fu">i</span><span class="op">(</span>class <span class="op">=</span> <span class="st">"icon icon-back"</span><span class="op">)</span>,</span>
+<span>              <span class="va">tags</span><span class="op">$</span><span class="fu">span</span><span class="op">(</span></span>
+<span>                class <span class="op">=</span> <span class="st">"if-not-md"</span>,</span>
+<span>                <span class="st">"Back"</span></span>
+<span>              <span class="op">)</span></span>
+<span>            <span class="op">)</span></span>
+<span>          <span class="op">)</span></span>
+<span>        <span class="op">)</span>,</span>
+<span>        <span class="fu">shiny</span><span class="fu">::</span><span class="va">tags</span><span class="op">$</span><span class="fu">div</span><span class="op">(</span></span>
+<span>          class <span class="op">=</span> <span class="st">"page-content"</span>,</span>
+<span>          <span class="fu">f7Block</span><span class="op">(</span><span class="fu">f7Button</span><span class="op">(</span>inputId <span class="op">=</span> <span class="st">"update"</span>, label <span class="op">=</span> <span class="st">"Update stepper"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>          <span class="fu">f7List</span><span class="op">(</span></span>
+<span>            strong <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>            inset <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>            outline <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>            <span class="fu">f7Stepper</span><span class="op">(</span></span>
+<span>              inputId <span class="op">=</span> <span class="st">"stepper"</span>,</span>
+<span>              label <span class="op">=</span> <span class="st">"My stepper"</span>,</span>
+<span>              min <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>              max <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>              size <span class="op">=</span> <span class="st">"small"</span>,</span>
+<span>              value <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>              wraps <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>              autorepeat <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>              rounded <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>              raised <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>              manual <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>            <span class="op">)</span></span>
+<span>          <span class="op">)</span>,</span>
+<span>          <span class="fu">f7Block</span><span class="op">(</span><span class="fu">textOutput</span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span><span class="op">)</span></span>
+<span>        <span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">page_3</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/page.html">page</a></span><span class="op">(</span></span>
+<span>    href <span class="op">=</span> <span class="st">"/3"</span>,</span>
+<span>    ui <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">request</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="fu">shiny</span><span class="fu">::</span><span class="va">tags</span><span class="op">$</span><span class="fu">div</span><span class="op">(</span></span>
+<span>        class <span class="op">=</span> <span class="st">"page"</span>,</span>
+<span>        <span class="co"># top navbar goes here</span></span>
+<span>        <span class="fu">f7Navbar</span><span class="op">(</span></span>
+<span>          title <span class="op">=</span> <span class="st">"Third page"</span>,</span>
+<span>          <span class="co"># Allows to go back to main</span></span>
+<span>          leftPanel <span class="op">=</span> <span class="fu">tagList</span><span class="op">(</span></span>
+<span>            <span class="va">tags</span><span class="op">$</span><span class="fu">a</span><span class="op">(</span></span>
+<span>              href <span class="op">=</span> <span class="fu">make_link</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>              class <span class="op">=</span> <span class="st">"link back"</span>,</span>
+<span>              <span class="va">tags</span><span class="op">$</span><span class="fu">i</span><span class="op">(</span>class <span class="op">=</span> <span class="st">"icon icon-back"</span><span class="op">)</span>,</span>
+<span>              <span class="va">tags</span><span class="op">$</span><span class="fu">span</span><span class="op">(</span></span>
+<span>                class <span class="op">=</span> <span class="st">"if-not-md"</span>,</span>
+<span>                <span class="st">"Back"</span></span>
+<span>              <span class="op">)</span></span>
+<span>            <span class="op">)</span></span>
+<span>          <span class="op">)</span></span>
+<span>        <span class="op">)</span>,</span>
+<span>        <span class="fu">shiny</span><span class="fu">::</span><span class="va">tags</span><span class="op">$</span><span class="fu">div</span><span class="op">(</span></span>
+<span>          class <span class="op">=</span> <span class="st">"page-content"</span>,</span>
+<span>          <span class="fu">f7Block</span><span class="op">(</span><span class="st">"Nothing to show yet ..."</span><span class="op">)</span></span>
+<span>        <span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">brochureApp</span><span class="op">(</span></span>
+<span>  basepath <span class="op">=</span> <span class="fu">make_link</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Pages</span></span>
+<span>  <span class="fu">page_1</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="fu">page_2</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="fu">page_3</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Important: in theory brochure makes</span></span>
+<span>  <span class="co"># each page having its own shiny session/ server function.</span></span>
+<span>  <span class="co"># That's not what we want here so we'll have</span></span>
+<span>  <span class="co"># a global server function.</span></span>
+<span>  server <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">output</span><span class="op">$</span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">renderText</span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">text</span><span class="op">)</span></span>
+<span>    <span class="va">output</span><span class="op">$</span><span class="va">res2</span> <span class="op">&lt;-</span> <span class="fu">renderText</span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">select</span><span class="op">)</span></span>
+<span>    <span class="va">output</span><span class="op">$</span><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu">renderText</span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">stepper</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="fu">observeEvent</span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">update</span>, <span class="op">{</span></span>
+<span>      <span class="fu">updateF7Stepper</span><span class="op">(</span></span>
+<span>        inputId <span class="op">=</span> <span class="st">"stepper"</span>,</span>
+<span>        value <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>        step <span class="op">=</span> <span class="fl">0.01</span>,</span>
+<span>        size <span class="op">=</span> <span class="st">"large"</span>,</span>
+<span>        min <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>        max <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>        wraps <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>        autorepeat <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>        rounded <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>        raised <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>        color <span class="op">=</span> <span class="st">"pink"</span>,</span>
+<span>        manual <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>        decimalPoint <span class="op">=</span> <span class="fl">2</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">}</span><span class="op">)</span></span>
+<span>  <span class="op">}</span>,</span>
+<span>  wrapped <span class="op">=</span> <span class="va">f7MultiLayout</span>,</span>
+<span>  wrapped_options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>    basepath <span class="op">=</span> <span class="fu">make_link</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    <span class="co"># Common toolbar</span></span>
+<span>    toolbar <span class="op">=</span> <span class="fu">f7Toolbar</span><span class="op">(</span></span>
+<span>      <span class="fu">f7Link</span><span class="op">(</span>icon <span class="op">=</span> <span class="fu">f7Icon</span><span class="op">(</span><span class="st">"house"</span><span class="op">)</span>, href <span class="op">=</span> <span class="fu">make_link</span><span class="op">(</span><span class="op">)</span>, routable <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>      dark <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>      theme <span class="op">=</span> <span class="st">"md"</span>,</span>
+<span>      routes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>        <span class="co"># Important: don't remove keepAlive</span></span>
+<span>        <span class="co"># for pages as this allows</span></span>
+<span>        <span class="co"># to save the input state when switching</span></span>
+<span>        <span class="co"># between pages. If FALSE, each time a page is</span></span>
+<span>        <span class="co"># changed, inputs are reset.</span></span>
+<span>        <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>path <span class="op">=</span> <span class="fu">make_link</span><span class="op">(</span><span class="op">)</span>, url <span class="op">=</span> <span class="fu">make_link</span><span class="op">(</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"home"</span>, keepAlive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>        <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>path <span class="op">=</span> <span class="fu">make_link</span><span class="op">(</span><span class="st">"2"</span><span class="op">)</span>, url <span class="op">=</span> <span class="fu">make_link</span><span class="op">(</span><span class="st">"2"</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"2"</span>, keepAlive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>        <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>path <span class="op">=</span> <span class="fu">make_link</span><span class="op">(</span><span class="st">"3"</span><span class="op">)</span>, url <span class="op">=</span> <span class="fu">make_link</span><span class="op">(</span><span class="st">"3"</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"3"</span>, keepAlive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section></section><section id="updated-md-design" class="level3"><h3 class="anchored" data-anchor-id="updated-md-design">Updated md design</h3>
 <p>By updating to the latest Framework7 version, we now benefit from a totally revamped Android (md) design, which looks more modern. TO DO: demo app.</p>
 </section><section id="refined-inputs-layout-and-style" class="level3"><h3 class="anchored" data-anchor-id="refined-inputs-layout-and-style">Refined inputs layout and style</h3>
-<p>Whenever you have multiple inputs, we now recommend to wrap all of them within <code>f7List()</code> so as to benefit from new styling options such as outline, inset, strong, … Internally, we use a function able to detect whether the input is inside a <code>f7List()</code>: if yes, you can style this list by passing parameters like <code>f7List(outline = TRUE, inset = TRUE, ...)</code>; if not, the input is internally wrapped in a list to have correct rendering but no styling is possible. Besides, some input like <code>f7Text()</code> can have custom styling (add an icon, clear button, outline style), which is independent from the external list wrapper style. Hence, we don’t recommend doing <code>f7List(outline = TRUE, f7Text(outline = TRUE))</code> since it won’t render very well and instead use <code>f7List(outline = TRUE, f7Text())</code>. Inputs having more specific styling options are:</p>
+<p>Whenever you have multiple inputs, we now recommend to wrap all of them within <code>f7List()</code> so as to benefit from new styling options such as outline, inset, strong, … Internally, we use a function able to detect whether the input is inside a <code>f7List()</code>. If yes, you can style this list by passing parameters like <code>f7List(outline = TRUE, inset = TRUE, ...)</code>. If not, the input is internally wrapped in a list to have correct rendering but no styling is possible. Besides, some input like <code>f7Text()</code> can have custom styling (add an icon, clear button, outline style), which is independent from the external list wrapper style. Hence, we don’t recommend doing <code>f7List(outline = TRUE, f7Text(outline = TRUE))</code> since it won’t render very well and instead use <code>f7List(outline = TRUE, f7Text())</code>.</p>
+<p>Besides, independently from <code>f7List()</code>, some inputs having more specific styling options:</p>
 <ul>
 <li>
 <code>f7AutoComplete()</code>.</li>
@@ -232,10 +454,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>
 <code>f7Radio()</code> and <code>f7CheckboxGroup()</code>.</li>
 </ul>
-<p><code>f7Stepper()</code> and <code>f7Toggle()</code> label is now displayed on the left.</p>
-<p>We now recommend to wrap any list of inputs in <code>f7List()</code> for a better rendering.</p>
+<p>In practices, you can design a supercharged <code>f7Text()</code> by doing so:</p>
 <div class="cell">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/">shiny</a></span><span class="op">)</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">f7Text</span><span class="op">(</span></span>
+<span>    inputId <span class="op">=</span> <span class="st">"text"</span>,</span>
+<span>    label <span class="op">=</span> <span class="st">"Text input"</span>,</span>
+<span>    value <span class="op">=</span> <span class="st">"Some text"</span>,</span>
+<span>    placeholder <span class="op">=</span> <span class="st">"Your text here"</span>,</span>
+<span>    style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>      description <span class="op">=</span> <span class="st">"A cool text input"</span>,</span>
+<span>      outline <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>      media <span class="op">=</span> <span class="fu">f7Icon</span><span class="op">(</span><span class="st">"house"</span><span class="op">)</span>,</span>
+<span>      clearable <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>      floating <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>    <span class="op">)</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>This adds a description to the input (below its main content), as well as the outline style option, an icon on the left side. <code>clearable</code> is TRUE by default meaning that all text-based inputs can be cleared. <code>floating</code> is an effect that makes the label moving in and out the input area depending on the content state. When empty, the label is inside and when there is text, the label is pushed outside in its usual location.</p>
+<p><code>f7Stepper()</code> and <code>f7Toggle()</code> label is now displayed on the left.</p>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/">shiny</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RinteRface/shinyMobile">shinyMobile</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">shinyApp</span><span class="op">(</span></span>
@@ -339,10 +578,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  server <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="op">}</span></span>
 <span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
-<p>We added a new way to pass options to <code>f7Radio()</code> and <code>f7CheckboxGroup()</code>, namely <code>f7CheckboxChoice()</code> and <code>f7RadioChoice()</code> (note: you can’t use <code>update_*</code> functions on them yet):</p>
+<p>Moreover, we added a new super cool way to pass options to <code>f7Radio()</code> and <code>f7CheckboxGroup()</code>, namely <code>f7CheckboxChoice()</code> and <code>f7RadioChoice()</code> (note: you can’t use <code>update_*</code> functions on them yet), so that you can pass more metadata and description to each option (instead of just the choice name in basic shiny inputs):</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/">shiny</a></span><span class="op">)</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/">shiny</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RinteRface/shinyMobile">shinyMobile</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">shinyApp</span><span class="op">(</span></span>
@@ -388,11 +628,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>    <span class="va">output</span><span class="op">$</span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">renderText</span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">radio</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
 <span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </section><section id="new-f7treeview-component" class="level3"><h3 class="anchored" data-anchor-id="new-f7treeview-component">New <code>f7Treeview()</code> component</h3>
-<p>We implemented the <code>trewiew</code> widget which is now available as new input source:</p>
+<p>A brand new input widget enter in the place. Please welcome <code>f7Treewiew()</code>:</p>
 <div class="cell">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/">shiny</a></span><span class="op">)</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/">shiny</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RinteRface/shinyMobile">shinyMobile</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">shinyApp</span><span class="op">(</span></span>
@@ -440,12 +681,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>    <span class="va">output</span><span class="op">$</span><span class="va">selected2</span> <span class="op">&lt;-</span> <span class="fu">renderText</span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">treeview2</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
 <span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </section><section id="new-f7form" class="level3"><h3 class="anchored" data-anchor-id="new-f7form">New <code>f7Form()</code>
 </h3>
-<p>We added a brand new function, <code>f7Form()</code> to support HTML forms, a form being composed of multiple input elements. Contrary to basic shiny inputs, we don’t get one input value per element but a single input value with a nested list, thereby allowing to reduce the number of inputs on the server side. <code>updateF7Form()</code> can quickly update any input from the form.</p>
+<p>Shiny does not provide HTML forms handling out of the box (a <a href="https://www.w3schools.com/html/html_forms.asp">form</a> being composed of multiple input elements). That’s why we introduce <code>f7Form()</code>. Contrary to basic shiny inputs, we don’t get one input value per element but a single input value with a nested list for all inputs within the form, thereby allowing to reduce the number of inputs on the server side. <code>updateF7Form()</code> can quickly update any input from the form. As a side note, the current list of supported inputs is:</p>
+<ul>
+<li><code>f7Text()</code></li>
+<li><code>f7TextArea()</code></li>
+<li><code>f7Password()</code></li>
+<li><code>f7Select()</code></li>
+</ul>
 <div class="cell">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/">shiny</a></span><span class="op">)</span></span>
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/">shiny</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RinteRface/shinyMobile">shinyMobile</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">shinyApp</span><span class="op">(</span></span>
@@ -521,10 +769,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>    <span class="op">}</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
 <span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
+</section></section><section id="breaking-changes" class="level2"><h2 class="anchored" data-anchor-id="breaking-changes">Breaking changes</h2>
+<p>Some components have disappeared from Framework7 and we we had to deprecate them as they no longer work. Other long time deprecated <a href="https://github.com/RinteRface/shinyMobile">shinyMobile</a> elements are also removed to cleanup the codebase. We invite you to review the <a href="https://github.com/RinteRface/shinyMobile/blob/69da6ca46984bf6c73e2dc32ff8d9f415ec36a30/NEWS.md#breaking-changes">changelog</a>.</p>
+</section><section id="soft-deprecation" class="level2"><h2 class="anchored" data-anchor-id="soft-deprecation">Soft deprecation</h2>
+<p>Some function parameters have changed and are now deprecated with <a href="https://lifecycle.r-lib.org/">lifecycle</a>. You’ll see a warning message if you use them and we invite you to accordingly update your code.</p>
 
 
-</section></section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
