@@ -250,7 +250,7 @@ brochureApp(
 )
 ```
 
-### Updated md design
+### Updated material design style
 
 By updating to the latest Framework7 version, we now benefit from a totally revamped Android (md) design, which looks more modern. TO DO: demo app.
 
@@ -448,7 +448,8 @@ shinyApp(
 
 ### New `f7Treeview()` component
 
-A brand new input widget enter in the place. Please welcome `f7Treewiew()`:
+A brand new input widget enters in the place. As its name suggests, `f7Treewiew()` allows to hierarchically sort items within a collapsible nested list of items.
+This is ideal, for instance, to select files within multiple folders, as an alternative to the classic `fileInput()`.
 
 ```{r, eval=FALSE}
 library(shiny)
