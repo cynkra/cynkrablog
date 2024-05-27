@@ -220,10 +220,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <figure class="figure"><p><img src="logo.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:25.0%"></p>
 </figure>
 </div>
-<p>shinyMobile has been around for about 5 years now. It allows to develop outstanding Shiny apps for iOS and Android, owing to the awesome open source Framework7 <a href="https://framework7.io/">template</a> which powers it.</p>
-<p>Guess what? This year shinyMobile gets a major update to v2.2.0. I’d like to warmly thank <a href="https://hypebright.nl/">Veerle van Leemput</a> and Michael S. Czahor from <a href="https://linktr.ee/athlyticz">AthlyticZ</a> for providing significant support during this marathon.</p>
+<p>shinyMobile has been enabling the creation of exceptional R Shiny apps for both iOS and Android for nearly five years, thanks to the impressive open-source Framework7 <a href="https://framework7.io/">template</a> that drives its capabilities.</p>
+<p>This year shinyMobile gets a major update to v2.2.0. I’d like to warmly thank <a href="https://hypebright.nl/">Veerle van Leemput</a> and Michael S. Czahor from <a href="https://linktr.ee/athlyticz">AthlyticZ</a> for providing significant support during this marathon.</p>
 <section id="whats-new" class="level1"><h1>What’s new</h1>
-<p>shinyMobile 1.0.0 and above were running Framework7 v5, a rather ancient version. With the new Framework7 v8, you might expect a significant number of <a href="https://github.com/RinteRface/shinyMobile/blob/69da6ca46984bf6c73e2dc32ff8d9f415ec36a30/NEWS.md">changes</a>, for the best!</p>
+<p>shinyMobile 1.0.0 and above have been running on an old version of Framework7 (v5). shinyMobile 2.0.0 has been upgraded to run the newer Framework7 v8. With this comes a significant number of <a href="https://github.com/RinteRface/shinyMobile/blob/69da6ca46984bf6c73e2dc32ff8d9f415ec36a30/NEWS.md">changes</a>, but we believe these are all for the best!</p>
 <section id="major-changes" class="level2"><h2 class="anchored" data-anchor-id="major-changes">Major changes</h2>
 <section id="new-multi-pages-experimental-support" class="level3"><h3 class="anchored" data-anchor-id="new-multi-pages-experimental-support">New multi pages experimental support</h3>
 <p>We are very excited to bring this feature out for this new release. Under the hood, this is possible owing to the <code>{brochure}</code> <a href="https://github.com/ColinFay/brochure">package</a> from <a href="https://github.com/ColinFay">Colin Fay</a> as well as the internal Framework7 <a href="https://framework7.io/docs/view">router</a> component.</p>
@@ -1087,7 +1087,7 @@ shinyApp(
 </div>
 </div>
 </section><section id="refined-inputs-layout-and-style" class="level3"><h3 class="anchored" data-anchor-id="refined-inputs-layout-and-style">Refined inputs layout and style</h3>
-<p>Whenever you have multiple inputs, we now recommend to wrap all of them within <code>f7List()</code> so as to benefit from new styling options such as outline, inset, strong, … Internally, we use a function able to detect whether the input is inside a <code>f7List()</code>. If yes, you can style this list by passing parameters like <code>f7List(outline = TRUE, inset = TRUE, ...)</code>. If not, the input is internally wrapped in a list to have correct rendering but no styling is possible. Besides, some input like <code>f7Text()</code> can have custom styling (add an icon, clear button, outline style), which is independent from the external list wrapper style. Hence, we don’t recommend doing <code>f7List(outline = TRUE, f7Text(outline = TRUE))</code> since it won’t render very well and instead use <code>f7List(outline = TRUE, f7Text())</code>.</p>
+<p>Whenever you have multiple inputs, we now recommend to wrap all of them within <code>f7List()</code> so as to benefit from new styling options such as outline, inset, strong. Internally, we use a function able to detect whether the input is inside a <code>f7List()</code>. If this is the case, you can style this list by passing parameters like <code>f7List(outline = TRUE, inset = TRUE, ...)</code>. If not, the input is internally wrapped in a list to have correct rendering, but no styling is possible. Besides, some inputs like <code>f7Text()</code> can have custom styling (add an icon, clear button, outline style), which is independent from the external list wrapper style. Hence, we don’t recommend doing <code>f7List(outline = TRUE, f7Text(outline = TRUE))</code> since it won’t render well and instead use <code>f7List(outline = TRUE, f7Text())</code>.</p>
 <p>Besides, independently from <code>f7List()</code>, some inputs having more specific styling options:</p>
 <ul>
 <li>
@@ -1101,7 +1101,7 @@ shinyApp(
 <li>
 <code>f7Radio()</code> and <code>f7CheckboxGroup()</code>.</li>
 </ul>
-<p>In practices, you can design a supercharged <code>f7Text()</code> by doing so:</p>
+<p>In practices, you can design a supercharged <code>f7Text()</code> like so:</p>
 <div class="cell">
 <details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">f7Text</span><span class="op">(</span></span>
 <span>    inputId <span class="op">=</span> <span class="st">"text"</span>,</span>
@@ -1118,7 +1118,7 @@ shinyApp(
 <span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>This adds a description to the input (below its main content), as well as the outline style option, an icon on the left side. <code>clearable</code> is TRUE by default meaning that all text-based inputs can be cleared. <code>floating</code> is an effect that makes the label moving in and out the input area depending on the content state. When empty, the label is inside and when there is text, the label is pushed outside in its usual location.</p>
+<p>This adds a description to the input (below its main content), as well as the outline style option and an icon on the left side. <code>clearable</code> is TRUE by default meaning that all text-based inputs can be cleared. <code>floating</code> is an effect that makes the label move in and out the input area depending on the content state. When empty, the label is inside and when there is text, the label is pushed outside into its usual location.</p>
 <p><code>f7Stepper()</code> and <code>f7Toggle()</code> label is now displayed on the left.</p>
 <div class="columns">
 <div class="column" style="width:25%;">
@@ -1408,7 +1408,7 @@ shinyApp(
 <span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>Moreover, we added a new super cool way to pass options to <code>f7Radio()</code> and <code>f7CheckboxGroup()</code>, namely <code>f7CheckboxChoice()</code> and <code>f7RadioChoice()</code> (note: you can’t use <code>update_*</code> functions on them yet), so that you can pass more metadata and description to each option (instead of just the choice name in basic shiny inputs):</p>
+<p>Moreover, we added a new way to pass options to <code>f7Radio()</code> and <code>f7CheckboxGroup()</code>, namely <code>f7CheckboxChoice()</code> and <code>f7RadioChoice()</code> (note: you can’t use <code>update_*</code> functions on them yet), so that you can pass more metadata and a description to each option (instead of just the choice name in basic shiny inputs):</p>
 <div class="columns">
 <div class="column" style="width:25%;">
 
@@ -1582,7 +1582,7 @@ shinyApp(
 </details>
 </div>
 </section><section id="new-f7treeview-component" class="level3"><h3 class="anchored" data-anchor-id="new-f7treeview-component">New <code>f7Treeview()</code> component</h3>
-<p>A brand new input widget enters in the place. As its name suggests, <code>f7Treewiew()</code> allows to hierarchically sort items within a collapsible nested list of items. This is ideal, for instance, to select files within multiple folders, as an alternative to the classic <code>fileInput()</code>.</p>
+<p>The new release welcomes a brand new input widget. As its name suggests, <code>f7Treewiew()</code> enables sorting items hierarchically within a collapsible nested list of items. This is ideal, for instance, to select files within multiple folders, as an alternative to the classic <code>fileInput()</code>.</p>
 <div class="columns">
 <div class="column" style="width:25%;">
 
@@ -1761,7 +1761,7 @@ shinyApp(
 </div>
 </section><section id="new-f7form" class="level3"><h3 class="anchored" data-anchor-id="new-f7form">New <code>f7Form()</code>
 </h3>
-<p>Shiny does not provide HTML forms handling out of the box (a <a href="https://www.w3schools.com/html/html_forms.asp">form</a> being composed of multiple input elements). That’s why we introduce <code>f7Form()</code>. Contrary to basic shiny inputs, we don’t get one input value per element but a single input value with a nested list for all inputs within the form, thereby allowing to reduce the number of inputs on the server side. <code>updateF7Form()</code> can quickly update any input from the form. As a side note, the current list of supported inputs is:</p>
+<p>Shiny does not provide HTML forms handling out of the box (a <a href="https://www.w3schools.com/html/html_forms.asp">form</a> being composed of multiple input elements). That’s why we introduce <code>f7Form()</code>. Contrary to basic shiny inputs, we don’t get one input value per element but a single input value with a nested list for all inputs within the form, thereby allowing a reduction in the number of inputs on the server side. <code>updateF7Form()</code> can quickly update any input from the form. As a side note, the current list of supported inputs is:</p>
 <ul>
 <li><code>f7Text()</code></li>
 <li><code>f7TextArea()</code></li>
@@ -2002,7 +2002,7 @@ shinyApp(
 </details>
 </div>
 </section></section><section id="breaking-changes" class="level2"><h2 class="anchored" data-anchor-id="breaking-changes">Breaking changes</h2>
-<p>Some components have disappeared from Framework7 and we we had to deprecate them as they no longer work. Other long time deprecated <a href="https://github.com/RinteRface/shinyMobile">shinyMobile</a> elements are also removed to cleanup the codebase. We invite you to review the <a href="https://github.com/RinteRface/shinyMobile/blob/69da6ca46984bf6c73e2dc32ff8d9f415ec36a30/NEWS.md#breaking-changes">changelog</a>.</p>
+<p>Some components have disappeared from Framework7 and we had to deprecate them as they no longer work. Other long time deprecated <a href="https://github.com/RinteRface/shinyMobile">shinyMobile</a> elements are also removed to cleanup the codebase. We invite you to review the <a href="https://github.com/RinteRface/shinyMobile/blob/69da6ca46984bf6c73e2dc32ff8d9f415ec36a30/NEWS.md#breaking-changes">changelog</a> to see a list of all changes in this release.</p>
 </section><section id="soft-deprecation" class="level2"><h2 class="anchored" data-anchor-id="soft-deprecation">Soft deprecation</h2>
 <p>Some function parameters have changed and are now deprecated with <a href="https://lifecycle.r-lib.org/">lifecycle</a>. You’ll see a warning message if you use them and we invite you to accordingly update your code.</p>
 
