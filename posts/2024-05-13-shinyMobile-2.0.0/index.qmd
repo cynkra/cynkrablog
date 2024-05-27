@@ -13,6 +13,8 @@ filters:
   - shinylive
 ---
 
+![](logo.png){width=25% fig-align="center"}
+
 shinyMobile has been around for about 5 years now. It allows to develop outstanding Shiny apps for iOS and Android, owing to the awesome open source Framework7 [template](https://framework7.io/) which powers it.
 
 Guess what? This year shinyMobile gets a major update to v2.2.0. I'd like to warmly thank [Veerle van Leemput](https://hypebright.nl/) and Michael S. Czahor from [AthlyticZ](https://linktr.ee/athlyticz) for providing significant support during this marathon.
