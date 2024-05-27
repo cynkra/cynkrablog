@@ -4445,9 +4445,11 @@ font-style: inherit;">)</span></span></code></pre></div>
 <p>Some components have disappeared from Framework7 and we had to deprecate them as they no longer work. Other long time deprecated <a href="https://github.com/RinteRface/shinyMobile">shinyMobile</a> elements are also removed to cleanup the codebase. We invite you to review the <a href="https://github.com/RinteRface/shinyMobile/blob/69da6ca46984bf6c73e2dc32ff8d9f415ec36a30/NEWS.md#breaking-changes">changelog</a> to see a list of all changes in this release.</p>
 </section><section id="soft-deprecation" class="level2"><h2 class="anchored" data-anchor-id="soft-deprecation">Soft deprecation</h2>
 <p>Some function parameters have changed and are now deprecated with <a href="https://lifecycle.r-lib.org/">lifecycle</a>. You’ll see a warning message if you use them and we invite you to accordingly update your code.</p>
+</section></section><section id="conclusion" class="level1"><h1>Conclusion</h1>
+<p>Since the release of <a href="https://shiny.posit.co/">shiny</a> in 2012, many packages substantially improve the layout and design such as <a href="https://rstudio.github.io/bslib/">bslib</a>, <a href="https://rinterface.github.io/bs4Dash/index.html">bs4Dash</a> or <a href="https://appsilon.github.io/shiny.fluent/">shiny.fluent</a>. Yet not much was done for mobile development. <a href="https://github.com/RinteRface/shinyMobile">shinyMobile</a> tries to fill this gap by exposing people to the rich Framework7 mobile-first template. Coupled to progressive web app support (PWA), you can run Shiny apps on a mobile that look very close to native apps with a desktop icon, a launch screen and running fullscreen, that is without the web browser navigation bar. By including an experimental implementation of the multipage navigation as described earlier, we move one step closer to the native apps. Finally, owing to the progress on the <a href="https://docs.r-wasm.org/webr/latest/">webR</a> side, it isn’t impossible that one day, we might run a totally offline Shiny app on mobile.</p>
 
 
-</section></section> ]]></description>
+</section> ]]></description>
   <category>shiny</category>
   <guid>https://blog.cynkra.com/posts/2024-05-13-shinyMobile-2.0.0/</guid>
   <pubDate>Mon, 13 May 2024 00:00:00 GMT</pubDate>
