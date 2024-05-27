@@ -11,4 +11,5 @@ Imports:
   knitr,
   downlit,
   xml2,
-  rmarkdown
+  rmarkdown,
+  shinylive
