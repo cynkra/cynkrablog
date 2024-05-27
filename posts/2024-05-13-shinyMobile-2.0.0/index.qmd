@@ -15,13 +15,13 @@ filters:
 
 ![](logo.png){width=25% fig-align="center"}
 
-shinyMobile has been around for about 5 years now. It allows to develop outstanding Shiny apps for iOS and Android, owing to the awesome open source Framework7 [template](https://framework7.io/) which powers it.
+shinyMobile has been enabling the creation of exceptional R Shiny apps for both iOS and Android for nearly five years, thanks to the impressive open-source Framework7 [template](https://framework7.io/) that drives its capabilities.
 
-Guess what? This year shinyMobile gets a major update to v2.2.0. I'd like to warmly thank [Veerle van Leemput](https://hypebright.nl/) and Michael S. Czahor from [AthlyticZ](https://linktr.ee/athlyticz) for providing significant support during this marathon.
+This year shinyMobile gets a major update to v2.2.0. I'd like to warmly thank [Veerle van Leemput](https://hypebright.nl/) and Michael S. Czahor from [AthlyticZ](https://linktr.ee/athlyticz) for providing significant support during this marathon.
 
 # What's new
 
-shinyMobile 1.0.0 and above were running Framework7 v5, a rather ancient version. With the new Framework7 v8, you might expect a significant number of [changes](https://github.com/RinteRface/shinyMobile/blob/69da6ca46984bf6c73e2dc32ff8d9f415ec36a30/NEWS.md), for the best!
+shinyMobile 1.0.0 and above have been running on an old version of Framework7 (v5). shinyMobile 2.0.0 has been upgraded to run the newer Framework7 v8. With this comes a significant number of [changes](https://github.com/RinteRface/shinyMobile/blob/69da6ca46984bf6c73e2dc32ff8d9f415ec36a30/NEWS.md), but we believe these are all for the best!
 
 ## Major changes
 
@@ -906,7 +906,7 @@ shinyApp(
 
 ### Refined inputs layout and style
 
-Whenever you have multiple inputs, we now recommend to wrap all of them within `f7List()` so as to benefit from new styling options such as outline, inset, strong, ... Internally, we use a function able to detect whether the input is inside a `f7List()`. If yes, you can style this list by passing parameters like `f7List(outline = TRUE, inset = TRUE, ...)`. If not, the input is internally wrapped in a list to have correct rendering but no styling is possible. Besides, some input like `f7Text()` can have custom styling (add an icon, clear button, outline style), which is independent from the external list wrapper style. Hence, we don't recommend doing `f7List(outline = TRUE, f7Text(outline = TRUE))` since it won't render very well and instead use `f7List(outline = TRUE, f7Text())`. 
+Whenever you have multiple inputs, we now recommend to wrap all of them within `f7List()` so as to benefit from new styling options such as outline, inset, strong. Internally, we use a function able to detect whether the input is inside a `f7List()`. If this is the case, you can style this list by passing parameters like `f7List(outline = TRUE, inset = TRUE, ...)`. If not, the input is internally wrapped in a list to have correct rendering, but no styling is possible. Besides, some inputs like `f7Text()` can have custom styling (add an icon, clear button, outline style), which is independent from the external list wrapper style. Hence, we don't recommend doing `f7List(outline = TRUE, f7Text(outline = TRUE))` since it won't render well and instead use `f7List(outline = TRUE, f7Text())`. 
 
 Besides, independently from `f7List()`, some inputs having more specific styling options:
 
@@ -916,7 +916,7 @@ Besides, independently from `f7List()`, some inputs having more specific styling
 - `f7Picker()`, `f7ColorPicker()` and `f7DatePicker()`.
 - `f7Radio()` and `f7CheckboxGroup()`.
 
-In practices, you can design a supercharged `f7Text()` by doing so:
+In practices, you can design a supercharged `f7Text()` like so:
 
 ```{r, eval=FALSE}
 f7Text(
@@ -934,7 +934,7 @@ f7Text(
 )
 ```
 
-This adds a description to the input (below its main content), as well as the outline style option, an icon on the left side. `clearable` is TRUE by default meaning that all text-based inputs can be cleared. `floating` is an effect that makes the label moving in and out the input area depending on the content state. When empty, the label is inside and when there is text, the label is pushed outside in its usual location.
+This adds a description to the input (below its main content), as well as the outline style option and an icon on the left side. `clearable` is TRUE by default meaning that all text-based inputs can be cleared. `floating` is an effect that makes the label move in and out the input area depending on the content state. When empty, the label is inside and when there is text, the label is pushed outside into its usual location.
 
 `f7Stepper()` and `f7Toggle()` label is now displayed on the left.
 
@@ -1234,7 +1234,7 @@ shinyApp(
 )
 ```
 
-Moreover, we added a new super cool way to pass options to `f7Radio()` and `f7CheckboxGroup()`, namely `f7CheckboxChoice()` and `f7RadioChoice()` (note: you can't use `update_*` functions on them yet), so that you can pass more metadata and description to each option (instead of just the choice name in basic shiny inputs):
+Moreover, we added a new way to pass options to `f7Radio()` and `f7CheckboxGroup()`, namely `f7CheckboxChoice()` and `f7RadioChoice()` (note: you can't use `update_*` functions on them yet), so that you can pass more metadata and a description to each option (instead of just the choice name in basic shiny inputs):
 
 :::: {.columns}
 ::: {.column width="25%"}
@@ -1418,7 +1418,7 @@ shinyApp(
 
 ### New `f7Treeview()` component
 
-A brand new input widget enters in the place. As its name suggests, `f7Treewiew()` allows to hierarchically sort items within a collapsible nested list of items.
+The new release welcomes a brand new input widget. As its name suggests, `f7Treewiew()` enables sorting items hierarchically within a collapsible nested list of items.
 This is ideal, for instance, to select files within multiple folders, as an alternative to the classic `fileInput()`.
 
 :::: {.columns}
@@ -1607,7 +1607,7 @@ shinyApp(
 
 ### New `f7Form()`
 
-Shiny does not provide HTML forms handling out of the box (a [form](https://www.w3schools.com/html/html_forms.asp) being composed of multiple input elements). That's why we introduce `f7Form()`. Contrary to basic shiny inputs, we don't get one input value per element but a single input value with a nested list for all inputs within the form, thereby allowing to reduce the number of inputs on the server side. `updateF7Form()` can quickly update any input from the form. As a side note, the current list of supported inputs is:
+Shiny does not provide HTML forms handling out of the box (a [form](https://www.w3schools.com/html/html_forms.asp) being composed of multiple input elements). That's why we introduce `f7Form()`. Contrary to basic shiny inputs, we don't get one input value per element but a single input value with a nested list for all inputs within the form, thereby allowing a reduction in the number of inputs on the server side. `updateF7Form()` can quickly update any input from the form. As a side note, the current list of supported inputs is:
 
 - `f7Text()`
 - `f7TextArea()`
@@ -1857,7 +1857,7 @@ shinyApp(
 
 ## Breaking changes
 
-Some components have disappeared from Framework7 and we we had to deprecate them as they no longer work. Other long time deprecated `{shinyMobile}` elements are also removed to cleanup the codebase. We invite you to review the [changelog](https://github.com/RinteRface/shinyMobile/blob/69da6ca46984bf6c73e2dc32ff8d9f415ec36a30/NEWS.md#breaking-changes).
+Some components have disappeared from Framework7 and we had to deprecate them as they no longer work. Other long time deprecated `{shinyMobile}` elements are also removed to cleanup the codebase. We invite you to review the [changelog](https://github.com/RinteRface/shinyMobile/blob/69da6ca46984bf6c73e2dc32ff8d9f415ec36a30/NEWS.md#breaking-changes) to see a list of all changes in this release.
 
 ## Soft deprecation
 
