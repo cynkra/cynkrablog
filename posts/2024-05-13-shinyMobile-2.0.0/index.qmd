@@ -270,69 +270,9 @@ By updating to the latest Framework7 version, we now benefit from a totally reva
 #| column: screen-inset-shaded
 #| viewerHeight: 800
 webr::unmount("/usr/lib/R/library/shinyMobile")
-
-custom_install <- function (packages, repos = NULL, info = NULL, lib = NULL, quiet = FALSE, 
-    mount = TRUE) 
-{
-    if (is.null(lib)) {
-        lib <- .libPaths()[[1]]
-    }
-    if (is.null(repos)) {
-        repos <- getOption("webr_pkg_repos")
-    }
-    ver <- "4.4.0"
-    ver <- gsub("\\.[^.]+$", "", ver)
-    repos <- gsub("/$", "", repos)
-    contrib <- sprintf("%s/bin/emscripten/contrib/%s", repos, 
-        ver)
-    contrib <- gsub("repo.r-wasm.org/bin/emscripten/contrib/4.3", 
-        "repo.r-wasm.org/bin/emscripten/contrib/4.3.3", contrib, 
-        fixed = TRUE)
-    if (is.null(info)) {
-        info <- utils::available.packages(contriburl = contrib)
-    }
-    deps <- unlist(tools::package_dependencies(packages, info), 
-        use.names = FALSE)
-    deps <- unique(deps)
-    for (dep in deps) {
-        if (length(find.package(dep, quiet = TRUE))) {
-            next
-        }
-        install(dep, repos, info, lib, quiet, mount)
-    }
-    for (pkg in packages) {
-        if (length(find.package(pkg, quiet = TRUE))) {
-            next
-        }
-        if (!pkg %in% rownames(info)) {
-            warning(paste("Requested package", pkg, "not found in webR binary repo."))
-            next
-        }
-        repo <- info[pkg, "Repository"]
-        repo <- sub("file:", "", repo, fixed = TRUE)
-        pkg_ver <- info[pkg, "Version"]
-        if (!quiet) 
-            message(paste("Downloading webR package:", pkg))
-        if (mount) {
-            tryCatch({
-                webr:::install_vfs_image(repo, lib, pkg, pkg_ver)
-            }, error = function(cnd) {
-                if (!grepl("Unable to download", conditionMessage(cnd))) {
-                  stop(cnd)
-                }
-                install_tgz(repo, lib, pkg, pkg_ver)
-            })
-        }
-        else {
-            install_tgz(repo, lib, pkg, pkg_ver)
-        }
-    }
-    invisible(NULL)
-}
-
-custom_install(
+webr::install(
   "shinyMobile",
-  repos = c("https://rinterface.github.io/rinterface-wasm-cran/", "https://repo.r-wasm.org")
+  repos = c("https://rinterface.github.io/rinterface-wasm-cran/")
 )
 
 library(shiny)
@@ -950,66 +890,7 @@ This adds a description to the input (below its main content), as well as the ou
 #| column: screen-inset-shaded
 #| viewerHeight: 800
 webr::unmount("/usr/lib/R/library/shinyMobile")
-custom_install <- function (packages, repos = NULL, info = NULL, lib = NULL, quiet = FALSE, 
-    mount = TRUE) 
-{
-    if (is.null(lib)) {
-        lib <- .libPaths()[[1]]
-    }
-    if (is.null(repos)) {
-        repos <- getOption("webr_pkg_repos")
-    }
-    ver <- "4.4.0"
-    ver <- gsub("\\.[^.]+$", "", ver)
-    repos <- gsub("/$", "", repos)
-    contrib <- sprintf("%s/bin/emscripten/contrib/%s", repos, 
-        ver)
-    contrib <- gsub("repo.r-wasm.org/bin/emscripten/contrib/4.3", 
-        "repo.r-wasm.org/bin/emscripten/contrib/4.3.3", contrib, 
-        fixed = TRUE)
-    if (is.null(info)) {
-        info <- utils::available.packages(contriburl = contrib)
-    }
-    deps <- unlist(tools::package_dependencies(packages, info), 
-        use.names = FALSE)
-    deps <- unique(deps)
-    for (dep in deps) {
-        if (length(find.package(dep, quiet = TRUE))) {
-            next
-        }
-        install(dep, repos, info, lib, quiet, mount)
-    }
-    for (pkg in packages) {
-        if (length(find.package(pkg, quiet = TRUE))) {
-            next
-        }
-        if (!pkg %in% rownames(info)) {
-            warning(paste("Requested package", pkg, "not found in webR binary repo."))
-            next
-        }
-        repo <- info[pkg, "Repository"]
-        repo <- sub("file:", "", repo, fixed = TRUE)
-        pkg_ver <- info[pkg, "Version"]
-        if (!quiet) 
-            message(paste("Downloading webR package:", pkg))
-        if (mount) {
-            tryCatch({
-                webr:::install_vfs_image(repo, lib, pkg, pkg_ver)
-            }, error = function(cnd) {
-                if (!grepl("Unable to download", conditionMessage(cnd))) {
-                  stop(cnd)
-                }
-                install_tgz(repo, lib, pkg, pkg_ver)
-            })
-        }
-        else {
-            install_tgz(repo, lib, pkg, pkg_ver)
-        }
-    }
-    invisible(NULL)
-}
-
-custom_install(
+webr::install(
   "shinyMobile",
   repos = c("https://rinterface.github.io/rinterface-wasm-cran/")
 )
@@ -1248,66 +1129,7 @@ Moreover, we added a new way to pass options to `f7Radio()` and `f7CheckboxGroup
 #| column: screen-inset-shaded
 #| viewerHeight: 800
 webr::unmount("/usr/lib/R/library/shinyMobile")
-custom_install <- function (packages, repos = NULL, info = NULL, lib = NULL, quiet = FALSE, 
-    mount = TRUE) 
-{
-    if (is.null(lib)) {
-        lib <- .libPaths()[[1]]
-    }
-    if (is.null(repos)) {
-        repos <- getOption("webr_pkg_repos")
-    }
-    ver <- "4.4.0"
-    ver <- gsub("\\.[^.]+$", "", ver)
-    repos <- gsub("/$", "", repos)
-    contrib <- sprintf("%s/bin/emscripten/contrib/%s", repos, 
-        ver)
-    contrib <- gsub("repo.r-wasm.org/bin/emscripten/contrib/4.3", 
-        "repo.r-wasm.org/bin/emscripten/contrib/4.3.3", contrib, 
-        fixed = TRUE)
-    if (is.null(info)) {
-        info <- utils::available.packages(contriburl = contrib)
-    }
-    deps <- unlist(tools::package_dependencies(packages, info), 
-        use.names = FALSE)
-    deps <- unique(deps)
-    for (dep in deps) {
-        if (length(find.package(dep, quiet = TRUE))) {
-            next
-        }
-        install(dep, repos, info, lib, quiet, mount)
-    }
-    for (pkg in packages) {
-        if (length(find.package(pkg, quiet = TRUE))) {
-            next
-        }
-        if (!pkg %in% rownames(info)) {
-            warning(paste("Requested package", pkg, "not found in webR binary repo."))
-            next
-        }
-        repo <- info[pkg, "Repository"]
-        repo <- sub("file:", "", repo, fixed = TRUE)
-        pkg_ver <- info[pkg, "Version"]
-        if (!quiet) 
-            message(paste("Downloading webR package:", pkg))
-        if (mount) {
-            tryCatch({
-                webr:::install_vfs_image(repo, lib, pkg, pkg_ver)
-            }, error = function(cnd) {
-                if (!grepl("Unable to download", conditionMessage(cnd))) {
-                  stop(cnd)
-                }
-                install_tgz(repo, lib, pkg, pkg_ver)
-            })
-        }
-        else {
-            install_tgz(repo, lib, pkg, pkg_ver)
-        }
-    }
-    invisible(NULL)
-}
-
-custom_install(
+webr::install(
   "shinyMobile",
   repos = c("https://rinterface.github.io/rinterface-wasm-cran/")
 )
@@ -1433,66 +1255,7 @@ This is ideal, for instance, to select files within multiple folders, as an alte
 #| column: screen-inset-shaded
 #| viewerHeight: 800
 webr::unmount("/usr/lib/R/library/shinyMobile")
-custom_install <- function (packages, repos = NULL, info = NULL, lib = NULL, quiet = FALSE, 
-    mount = TRUE) 
-{
-    if (is.null(lib)) {
-        lib <- .libPaths()[[1]]
-    }
-    if (is.null(repos)) {
-        repos <- getOption("webr_pkg_repos")
-    }
-    ver <- "4.4.0"
-    ver <- gsub("\\.[^.]+$", "", ver)
-    repos <- gsub("/$", "", repos)
-    contrib <- sprintf("%s/bin/emscripten/contrib/%s", repos, 
-        ver)
-    contrib <- gsub("repo.r-wasm.org/bin/emscripten/contrib/4.3", 
-        "repo.r-wasm.org/bin/emscripten/contrib/4.3.3", contrib, 
-        fixed = TRUE)
-    if (is.null(info)) {
-        info <- utils::available.packages(contriburl = contrib)
-    }
-    deps <- unlist(tools::package_dependencies(packages, info), 
-        use.names = FALSE)
-    deps <- unique(deps)
-    for (dep in deps) {
-        if (length(find.package(dep, quiet = TRUE))) {
-            next
-        }
-        install(dep, repos, info, lib, quiet, mount)
-    }
-    for (pkg in packages) {
-        if (length(find.package(pkg, quiet = TRUE))) {
-            next
-        }
-        if (!pkg %in% rownames(info)) {
-            warning(paste("Requested package", pkg, "not found in webR binary repo."))
-            next
-        }
-        repo <- info[pkg, "Repository"]
-        repo <- sub("file:", "", repo, fixed = TRUE)
-        pkg_ver <- info[pkg, "Version"]
-        if (!quiet) 
-            message(paste("Downloading webR package:", pkg))
-        if (mount) {
-            tryCatch({
-                webr:::install_vfs_image(repo, lib, pkg, pkg_ver)
-            }, error = function(cnd) {
-                if (!grepl("Unable to download", conditionMessage(cnd))) {
-                  stop(cnd)
-                }
-                install_tgz(repo, lib, pkg, pkg_ver)
-            })
-        }
-        else {
-            install_tgz(repo, lib, pkg, pkg_ver)
-        }
-    }
-    invisible(NULL)
-}
-
-custom_install(
+webr::install(
   "shinyMobile",
   repos = c("https://rinterface.github.io/rinterface-wasm-cran/")
 )
@@ -1627,66 +1390,7 @@ Shiny does not provide HTML forms handling out of the box (a [form](https://www.
 #| viewerHeight: 800
 #| viewerWidth: 390
 webr::unmount("/usr/lib/R/library/shinyMobile")
-custom_install <- function (packages, repos = NULL, info = NULL, lib = NULL, quiet = FALSE, 
-    mount = TRUE) 
-{
-    if (is.null(lib)) {
-        lib <- .libPaths()[[1]]
-    }
-    if (is.null(repos)) {
-        repos <- getOption("webr_pkg_repos")
-    }
-    ver <- "4.4.0"
-    ver <- gsub("\\.[^.]+$", "", ver)
-    repos <- gsub("/$", "", repos)
-    contrib <- sprintf("%s/bin/emscripten/contrib/%s", repos, 
-        ver)
-    contrib <- gsub("repo.r-wasm.org/bin/emscripten/contrib/4.3", 
-        "repo.r-wasm.org/bin/emscripten/contrib/4.3.3", contrib, 
-        fixed = TRUE)
-    if (is.null(info)) {
-        info <- utils::available.packages(contriburl = contrib)
-    }
-    deps <- unlist(tools::package_dependencies(packages, info), 
-        use.names = FALSE)
-    deps <- unique(deps)
-    for (dep in deps) {
-        if (length(find.package(dep, quiet = TRUE))) {
-            next
-        }
-        install(dep, repos, info, lib, quiet, mount)
-    }
-    for (pkg in packages) {
-        if (length(find.package(pkg, quiet = TRUE))) {
-            next
-        }
-        if (!pkg %in% rownames(info)) {
-            warning(paste("Requested package", pkg, "not found in webR binary repo."))
-            next
-        }
-        repo <- info[pkg, "Repository"]
-        repo <- sub("file:", "", repo, fixed = TRUE)
-        pkg_ver <- info[pkg, "Version"]
-        if (!quiet) 
-            message(paste("Downloading webR package:", pkg))
-        if (mount) {
-            tryCatch({
-                webr:::install_vfs_image(repo, lib, pkg, pkg_ver)
-            }, error = function(cnd) {
-                if (!grepl("Unable to download", conditionMessage(cnd))) {
-                  stop(cnd)
-                }
-                install_tgz(repo, lib, pkg, pkg_ver)
-            })
-        }
-        else {
-            install_tgz(repo, lib, pkg, pkg_ver)
-        }
-    }
-    invisible(NULL)
-}
-
-custom_install(
+webr::install(
   "shinyMobile",
   repos = c("https://rinterface.github.io/rinterface-wasm-cran/")
 )
