@@ -11,7 +11,4 @@ Imports:
   knitr,
   downlit,
   xml2,
-  rmarkdown,
-  shinylive
-Remotes:
-  posit-dev/r-shinylive
+  rmarkdown
