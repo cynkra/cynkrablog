@@ -26,6 +26,7 @@ jobs:
         with:
           extra-packages: |
             posit-dev/r-shinylive
+          cache-version: 2
 
       - name: Render Quarto Project
         uses: quarto-dev/quarto-actions/render@v2

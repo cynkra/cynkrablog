@@ -269,12 +269,6 @@ By updating to the latest Framework7 version, we now benefit from a totally reva
 #| components: [viewer]
 #| column: screen-inset-shaded
 #| viewerHeight: 800
-webr::unmount("/usr/lib/R/library/shinyMobile")
-webr::install(
-  "shinyMobile",
-  repos = c("https://rinterface.github.io/rinterface-wasm-cran/")
-)
-
 library(shiny)
 library(shinyMobile)
 
@@ -889,12 +883,6 @@ This adds a description to the input (below its main content), as well as the ou
 #| components: [viewer]
 #| column: screen-inset-shaded
 #| viewerHeight: 800
-webr::unmount("/usr/lib/R/library/shinyMobile")
-webr::install(
-  "shinyMobile",
-  repos = c("https://rinterface.github.io/rinterface-wasm-cran/")
-)
-
 library(shiny)
 library(shinyMobile)
 
@@ -1128,12 +1116,6 @@ Moreover, we added a new way to pass options to `f7Radio()` and `f7CheckboxGroup
 #| components: [viewer]
 #| column: screen-inset-shaded
 #| viewerHeight: 800
-webr::unmount("/usr/lib/R/library/shinyMobile")
-webr::install(
-  "shinyMobile",
-  repos = c("https://rinterface.github.io/rinterface-wasm-cran/")
-)
-
 library(shiny)
 library(shinyMobile)
 
@@ -1254,12 +1236,6 @@ This is ideal, for instance, to select files within multiple folders, as an alte
 #| components: [viewer]
 #| column: screen-inset-shaded
 #| viewerHeight: 800
-webr::unmount("/usr/lib/R/library/shinyMobile")
-webr::install(
-  "shinyMobile",
-  repos = c("https://rinterface.github.io/rinterface-wasm-cran/")
-)
-
 library(shiny)
 library(shinyMobile)
 
@@ -1389,12 +1365,6 @@ Shiny does not provide HTML forms handling out of the box (a [form](https://www.
 #| column: screen-inset-shaded
 #| viewerHeight: 800
 #| viewerWidth: 390
-webr::unmount("/usr/lib/R/library/shinyMobile")
-webr::install(
-  "shinyMobile",
-  repos = c("https://rinterface.github.io/rinterface-wasm-cran/")
-)
-
 library(shiny)
 library(shinyMobile)
 
