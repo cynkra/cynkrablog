@@ -23,6 +23,15 @@ jobs:
         with:
           use-public-rspm: true
       - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: |
+            posit-dev/r-shinylive
+            any::knitr
+            any::rmarkdown
+            any::downlit
+            any::xml2
+            any::shinyMobile
+          cache-version: 2
 
       - name: Render Quarto Project
         uses: quarto-dev/quarto-actions/render@v2
