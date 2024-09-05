@@ -26,6 +26,10 @@ jobs:
         with:
           extra-packages: |
             posit-dev/r-shinylive
+            any::knitr
+            any::rmarkdown
+            any::downlit
+            any::xml2
           cache-version: 2
 
       - name: Render Quarto Project
