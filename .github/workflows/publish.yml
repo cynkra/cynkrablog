@@ -30,6 +30,7 @@ jobs:
             any::rmarkdown
             any::downlit
             any::xml2
+            any::shinyMobile
           cache-version: 2
 
       - name: Render Quarto Project
