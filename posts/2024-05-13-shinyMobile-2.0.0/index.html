@@ -1,2 +1,2298 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"></html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.9">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="author" content="Veerle van Leemput and David Granjon">
+<meta name="dcterms.date" content="2024-05-13">
+<title>shinyMobile 2.0.0: a preview – cynkra blog</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon-32x32.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-3d3a3f531f1be4526fdd4068b34a2ee6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-a830fe05c40437511722e23bd7ea26de.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-f26e8279ad02a49a09548a4b3c071cf8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<meta name="shinylive:serviceworker_dir" content="../..">
+<script src="../../site_libs/quarto-contrib/shinylive-0.7.0/shinylive/load-shinylive-sw.js" type="module"></script>
+<script src="../../site_libs/quarto-contrib/shinylive-0.7.0/shinylive/run-python-blocks.js" type="module"></script>
+<link href="../../site_libs/quarto-contrib/shinylive-0.7.0/shinylive/shinylive.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/shinylive-quarto-css/shinylive-quarto.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><meta name="robots" content="noindex">
+</head>
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="https://cynkra.com/" class="navbar-brand navbar-brand-logo">
+    <img src="../../logo_light.svg" alt="" class="navbar-logo"></a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-consulting" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Consulting</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-consulting">
+<li>
+    <a class="dropdown-item" href="https://cynkra.com/consulting/">
+ <span class="dropdown-text">R Consulting</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://cynkra.com/workshops/">
+ <span class="dropdown-text">Workshops</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://cynkra.com/rmarkdown/">
+ <span class="dropdown-text">R Markdown templates</span></a>
+  </li>  
+    </ul>
+</li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-solutions" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Solutions</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-solutions">
+<li>
+    <a class="dropdown-item" href="https://cynkra.com/posit-based-enterprise-data-science-environments/">
+ <span class="dropdown-text">Enterprise Data Science Environments</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://cynkra.com/cicd-images/">
+ <span class="dropdown-text">Container Images</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://cynkra.com/posit/">
+ <span class="dropdown-text">Posit Licences</span></a>
+  </li>  
+    </ul>
+</li>
+  <li class="nav-item">
+    <a class="nav-link" href="https://cynkra.com/opensource"> 
+<span class="menu-text">open source</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://cynkra.com/about"> 
+<span class="menu-text">about</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://cynkra.com/blog"> 
+<span class="menu-text">blog</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+</div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title">shinyMobile 2.0.0: a preview</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">shiny</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Veerle van Leemput and David Granjon </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 13, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header><div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="logo.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:25.0%"></p>
+</figure>
+</div>
+<p>shinyMobile has been enabling the creation of exceptional R Shiny apps for both iOS and Android for nearly five years, thanks to the impressive open-source Framework7 <a href="https://framework7.io/">template</a> that drives its capabilities.</p>
+<p>This year shinyMobile gets a major update to v2.2.0. I’d like to warmly thank <a href="https://hypebright.nl/">Veerle van Leemput</a> and Michael S. Czahor from <a href="https://linktr.ee/athlyticz">AthlyticZ</a> for providing significant support during this marathon.</p>
+<section id="whats-new" class="level1"><h1>What’s new</h1>
+<p>shinyMobile 1.0.0 and above have been running on an old version of Framework7 (v5). shinyMobile 2.0.0 has been upgraded to run the newer Framework7 v8. With this comes a significant number of <a href="https://github.com/RinteRface/shinyMobile/blob/69da6ca46984bf6c73e2dc32ff8d9f415ec36a30/NEWS.md">changes</a>, but we believe these are all for the best!</p>
+<section id="major-changes" class="level2"><h2 class="anchored" data-anchor-id="major-changes">Major changes</h2>
+<section id="new-multi-pages-experimental-support" class="level3"><h3 class="anchored" data-anchor-id="new-multi-pages-experimental-support">New multi pages experimental support</h3>
+<p>We are very excited to bring this feature out for this new release. Under the hood, this is possible owing to the <code>{brochure}</code> <a href="https://github.com/ColinFay/brochure">package</a> from <a href="https://github.com/ColinFay">Colin Fay</a> as well as the internal Framework7 <a href="https://framework7.io/docs/view">router</a> component.</p>
+<section id="what-does-this-mean" class="level4"><h4 class="anchored" data-anchor-id="what-does-this-mean">What does this mean?</h4>
+<p>You can now develop <strong>real multi pages</strong> Shiny applications and have different url endpoints and redirections. For instance, <code>https://my-app/home</code> can be the home page while <code>https://my-app/settings</code> brings to the settings page.</p>
+</section><section id="how-does-this-work" class="level4"><h4 class="anchored" data-anchor-id="how-does-this-work">How does this work?</h4>
+<p>At the time of writting of this blog post, you must install a patched <code>{brochure}</code> version with <code>devtools::install_github("DivadNojnarg/brochure")</code>.</p>
+<p>In the below code, we basically have 3 pages having their own content and a common layout for consistency. The router ensure beautiful transitions from one page to another. We invite you to look at the getting started <a href="https://shinymobile.rinterface.com/articles/multipages">article</a> which provides more technical details.</p>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/">shiny</a></span><span class="op">)</span></span>
+<span><span class="co"># Needs a specific version of brochure for now.</span></span>
+<span><span class="co"># This allows to pass wrapper functions with options</span></span>
+<span><span class="co"># as list. We need it because of the f7Page options parameter</span></span>
+<span><span class="co"># and to pass the routes list object for JS.</span></span>
+<span><span class="co"># devtools::install_github("DivadNojnarg/brochure")</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">brochure</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RinteRface/shinyMobile">shinyMobile</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Allows to use the app on a server like </span></span>
+<span><span class="co"># shinyapps.io where basepath is /app_name</span></span>
+<span><span class="co"># instead of "/" or "".</span></span>
+<span><span class="va">make_link</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">path</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">basepath</span> <span class="op">=</span> <span class="st">""</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html">nchar</a></span><span class="op">(</span><span class="va">basepath</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">basepath</span><span class="op">)</span></span>
+<span>    <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>      <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="st">"/"</span><span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"%s/%s"</span>, <span class="va">basepath</span>, <span class="va">path</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">links</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fl">2</span><span class="op">:</span><span class="fl">3</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">tags</span><span class="op">$</span><span class="fu">li</span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/f7Link.html">f7Link</a></span><span class="op">(</span></span>
+<span>      routable <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>      label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"Link to page %s"</span>, <span class="va">i</span><span class="op">)</span>,</span>
+<span>      href <span class="op">=</span> <span class="fu">make_link</span><span class="op">(</span><span class="va">i</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">page_1</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/page.html">page</a></span><span class="op">(</span></span>
+<span>    href <span class="op">=</span> <span class="st">"/"</span>,</span>
+<span>    ui <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">request</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="fu">shiny</span><span class="fu">::</span><span class="va"><a href="https://rstudio.github.io/htmltools/reference/builder.html">tags</a></span><span class="op">$</span><span class="fu">div</span><span class="op">(</span></span>
+<span>        class <span class="op">=</span> <span class="st">"page"</span>,</span>
+<span>        <span class="co"># top navbar goes here</span></span>
+<span>        <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/navbar.html">f7Navbar</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Home page"</span><span class="op">)</span>,</span>
+<span>        <span class="co"># NOTE: when the main toolbar is enabled in</span></span>
+<span>        <span class="co"># f7MultiLayout, we can't use individual page toolbars.</span></span>
+<span>        <span class="co"># f7Toolbar(</span></span>
+<span>        <span class="co">#  position = "bottom",</span></span>
+<span>        <span class="co">#  tags$a(</span></span>
+<span>        <span class="co">#    href = "/2",</span></span>
+<span>        <span class="co">#    "Second page",</span></span>
+<span>        <span class="co">#    class = "link"</span></span>
+<span>        <span class="co">#  )</span></span>
+<span>        <span class="co"># ),</span></span>
+<span>        <span class="co"># Page content</span></span>
+<span>        <span class="va">tags</span><span class="op">$</span><span class="fu">div</span><span class="op">(</span></span>
+<span>          class <span class="op">=</span> <span class="st">"page-content"</span>,</span>
+<span>          <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/f7List.html">f7List</a></span><span class="op">(</span></span>
+<span>            inset <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>            strong <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>            outline <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>            dividers <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>            mode <span class="op">=</span> <span class="st">"links"</span>,</span>
+<span>            <span class="va">links</span></span>
+<span>          <span class="op">)</span>,</span>
+<span>          <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/block.html">f7Block</a></span><span class="op">(</span></span>
+<span>            <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/text.html">f7Text</a></span><span class="op">(</span><span class="st">"text"</span>, <span class="st">"Text input"</span>, <span class="st">"default"</span><span class="op">)</span>,</span>
+<span>            <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/select.html">f7Select</a></span><span class="op">(</span><span class="st">"select"</span>, <span class="st">"Select"</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>            <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/textOutput.html">textOutput</a></span><span class="op">(</span><span class="st">"res"</span><span class="op">)</span>,</span>
+<span>            <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/textOutput.html">textOutput</a></span><span class="op">(</span><span class="st">"res2"</span><span class="op">)</span></span>
+<span>          <span class="op">)</span></span>
+<span>        <span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">page_2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/page.html">page</a></span><span class="op">(</span></span>
+<span>    href <span class="op">=</span> <span class="st">"/2"</span>,</span>
+<span>    ui <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">request</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="fu">shiny</span><span class="fu">::</span><span class="va"><a href="https://rstudio.github.io/htmltools/reference/builder.html">tags</a></span><span class="op">$</span><span class="fu">div</span><span class="op">(</span></span>
+<span>        class <span class="op">=</span> <span class="st">"page"</span>,</span>
+<span>        <span class="co"># top navbar goes here</span></span>
+<span>        <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/navbar.html">f7Navbar</a></span><span class="op">(</span></span>
+<span>          title <span class="op">=</span> <span class="st">"Second page"</span>,</span>
+<span>          <span class="co"># Allows to go back to main</span></span>
+<span>          leftPanel <span class="op">=</span> <span class="fu"><a href="https://rstudio.github.io/htmltools/reference/tagList.html">tagList</a></span><span class="op">(</span></span>
+<span>            <span class="va">tags</span><span class="op">$</span><span class="fu">a</span><span class="op">(</span></span>
+<span>              href <span class="op">=</span> <span class="fu">make_link</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>              class <span class="op">=</span> <span class="st">"link back"</span>,</span>
+<span>              <span class="va">tags</span><span class="op">$</span><span class="fu">i</span><span class="op">(</span>class <span class="op">=</span> <span class="st">"icon icon-back"</span><span class="op">)</span>,</span>
+<span>              <span class="va">tags</span><span class="op">$</span><span class="fu">span</span><span class="op">(</span></span>
+<span>                class <span class="op">=</span> <span class="st">"if-not-md"</span>,</span>
+<span>                <span class="st">"Back"</span></span>
+<span>              <span class="op">)</span></span>
+<span>            <span class="op">)</span></span>
+<span>          <span class="op">)</span></span>
+<span>        <span class="op">)</span>,</span>
+<span>        <span class="fu">shiny</span><span class="fu">::</span><span class="va"><a href="https://rstudio.github.io/htmltools/reference/builder.html">tags</a></span><span class="op">$</span><span class="fu">div</span><span class="op">(</span></span>
+<span>          class <span class="op">=</span> <span class="st">"page-content"</span>,</span>
+<span>          <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/block.html">f7Block</a></span><span class="op">(</span><span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/button.html">f7Button</a></span><span class="op">(</span>inputId <span class="op">=</span> <span class="st">"update"</span>, label <span class="op">=</span> <span class="st">"Update stepper"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>          <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/f7List.html">f7List</a></span><span class="op">(</span></span>
+<span>            strong <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>            inset <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>            outline <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>            <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/stepper.html">f7Stepper</a></span><span class="op">(</span></span>
+<span>              inputId <span class="op">=</span> <span class="st">"stepper"</span>,</span>
+<span>              label <span class="op">=</span> <span class="st">"My stepper"</span>,</span>
+<span>              min <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>              max <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>              size <span class="op">=</span> <span class="st">"small"</span>,</span>
+<span>              value <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>              wraps <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>              autorepeat <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>              rounded <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>              raised <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>              manual <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>            <span class="op">)</span></span>
+<span>          <span class="op">)</span>,</span>
+<span>          <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/block.html">f7Block</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/textOutput.html">textOutput</a></span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span><span class="op">)</span></span>
+<span>        <span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">page_3</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/page.html">page</a></span><span class="op">(</span></span>
+<span>    href <span class="op">=</span> <span class="st">"/3"</span>,</span>
+<span>    ui <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">request</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="fu">shiny</span><span class="fu">::</span><span class="va"><a href="https://rstudio.github.io/htmltools/reference/builder.html">tags</a></span><span class="op">$</span><span class="fu">div</span><span class="op">(</span></span>
+<span>        class <span class="op">=</span> <span class="st">"page"</span>,</span>
+<span>        <span class="co"># top navbar goes here</span></span>
+<span>        <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/navbar.html">f7Navbar</a></span><span class="op">(</span></span>
+<span>          title <span class="op">=</span> <span class="st">"Third page"</span>,</span>
+<span>          <span class="co"># Allows to go back to main</span></span>
+<span>          leftPanel <span class="op">=</span> <span class="fu"><a href="https://rstudio.github.io/htmltools/reference/tagList.html">tagList</a></span><span class="op">(</span></span>
+<span>            <span class="va">tags</span><span class="op">$</span><span class="fu">a</span><span class="op">(</span></span>
+<span>              href <span class="op">=</span> <span class="fu">make_link</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>              class <span class="op">=</span> <span class="st">"link back"</span>,</span>
+<span>              <span class="va">tags</span><span class="op">$</span><span class="fu">i</span><span class="op">(</span>class <span class="op">=</span> <span class="st">"icon icon-back"</span><span class="op">)</span>,</span>
+<span>              <span class="va">tags</span><span class="op">$</span><span class="fu">span</span><span class="op">(</span></span>
+<span>                class <span class="op">=</span> <span class="st">"if-not-md"</span>,</span>
+<span>                <span class="st">"Back"</span></span>
+<span>              <span class="op">)</span></span>
+<span>            <span class="op">)</span></span>
+<span>          <span class="op">)</span></span>
+<span>        <span class="op">)</span>,</span>
+<span>        <span class="fu">shiny</span><span class="fu">::</span><span class="va"><a href="https://rstudio.github.io/htmltools/reference/builder.html">tags</a></span><span class="op">$</span><span class="fu">div</span><span class="op">(</span></span>
+<span>          class <span class="op">=</span> <span class="st">"page-content"</span>,</span>
+<span>          <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/block.html">f7Block</a></span><span class="op">(</span><span class="st">"Nothing to show yet ..."</span><span class="op">)</span></span>
+<span>        <span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">brochureApp</span><span class="op">(</span></span>
+<span>  basepath <span class="op">=</span> <span class="fu">make_link</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Pages</span></span>
+<span>  <span class="fu">page_1</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="fu">page_2</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="fu">page_3</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Important: in theory brochure makes</span></span>
+<span>  <span class="co"># each page having its own shiny session/ server function.</span></span>
+<span>  <span class="co"># That's not what we want here so we'll have</span></span>
+<span>  <span class="co"># a global server function.</span></span>
+<span>  server <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">output</span><span class="op">$</span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html">renderText</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">text</span><span class="op">)</span></span>
+<span>    <span class="va">output</span><span class="op">$</span><span class="va">res2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html">renderText</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">select</span><span class="op">)</span></span>
+<span>    <span class="va">output</span><span class="op">$</span><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html">renderText</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">stepper</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">observeEvent</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">update</span>, <span class="op">{</span></span>
+<span>      <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/stepper.html">updateF7Stepper</a></span><span class="op">(</span></span>
+<span>        inputId <span class="op">=</span> <span class="st">"stepper"</span>,</span>
+<span>        value <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>        step <span class="op">=</span> <span class="fl">0.01</span>,</span>
+<span>        size <span class="op">=</span> <span class="st">"large"</span>,</span>
+<span>        min <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>        max <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>        wraps <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>        autorepeat <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>        rounded <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>        raised <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>        color <span class="op">=</span> <span class="st">"pink"</span>,</span>
+<span>        manual <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>        decimalPoint <span class="op">=</span> <span class="fl">2</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">}</span><span class="op">)</span></span>
+<span>  <span class="op">}</span>,</span>
+<span>  wrapped <span class="op">=</span> <span class="va">f7MultiLayout</span>,</span>
+<span>  wrapped_options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>    basepath <span class="op">=</span> <span class="fu">make_link</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    <span class="co"># Common toolbar</span></span>
+<span>    toolbar <span class="op">=</span> <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/f7Toolbar.html">f7Toolbar</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/f7Link.html">f7Link</a></span><span class="op">(</span>icon <span class="op">=</span> <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/f7Icon.html">f7Icon</a></span><span class="op">(</span><span class="st">"house"</span><span class="op">)</span>, href <span class="op">=</span> <span class="fu">make_link</span><span class="op">(</span><span class="op">)</span>, routable <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>      dark <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>      theme <span class="op">=</span> <span class="st">"md"</span>,</span>
+<span>      routes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>        <span class="co"># Important: don't remove keepAlive</span></span>
+<span>        <span class="co"># for pages as this allows</span></span>
+<span>        <span class="co"># to save the input state when switching</span></span>
+<span>        <span class="co"># between pages. If FALSE, each time a page is</span></span>
+<span>        <span class="co"># changed, inputs are reset.</span></span>
+<span>        <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>path <span class="op">=</span> <span class="fu">make_link</span><span class="op">(</span><span class="op">)</span>, url <span class="op">=</span> <span class="fu">make_link</span><span class="op">(</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"home"</span>, keepAlive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>        <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>path <span class="op">=</span> <span class="fu">make_link</span><span class="op">(</span><span class="st">"2"</span><span class="op">)</span>, url <span class="op">=</span> <span class="fu">make_link</span><span class="op">(</span><span class="st">"2"</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"2"</span>, keepAlive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>        <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>path <span class="op">=</span> <span class="fu">make_link</span><span class="op">(</span><span class="st">"3"</span><span class="op">)</span>, url <span class="op">=</span> <span class="fu">make_link</span><span class="op">(</span><span class="st">"3"</span><span class="op">)</span>, name <span class="op">=</span> <span class="st">"3"</span>, keepAlive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section></section><section id="updated-material-design-style" class="level3"><h3 class="anchored" data-anchor-id="updated-material-design-style">Updated material design style</h3>
+<p>By updating to the latest Framework7 version, we now benefit from a totally revamped Android (md) design, which looks more modern.</p>
+<div class="columns">
+<div class="column" style="width:20%;">
+
+</div><div class="column" style="width:60%;">
+<pre class="shinylive-r" data-engine="r"><code><a href="https://shiny.posit.co/">#| standalone: true
+#| components: [viewer]
+#| column: screen-inset-shaded
+#| viewerHeight: 800
+library(shiny)
+library(shinyMobile)
+
+# source modules
+e &lt;- environment()
+path &lt;- system.file("examples/gallery/tabs/", package = "shinyMobile")
+sapply(
+  list.files(
+    path,
+    include.dirs = FALSE,
+    pattern = ".R",
+    ignore.case = TRUE
+  ),
+  function(f) {
+    source(file.path(path, f), local = e)
+  }
+)
+
+app_options &lt;- list(
+  theme = "md",
+  dark = TRUE,
+  filled = FALSE,
+  preloader = TRUE,
+  color = "#007aff",
+  navbar = list(
+    hideOnPageScroll = TRUE,
+    mdCenterTitle = TRUE
+  )
+)
+
+# shiny app
+shinyApp(
+  ui = f7Page(
+    allowPWA = TRUE,
+    options = app_options,
+    f7TabLayout(
+      title = "shinyMobile Gallery",
+      messagebar = f7MessageBar(inputId = "mymessagebar",
+                                placeholder = "Message"),
+      panels = tagList(
+        f7Panel(
+          id = "panelLeft",
+          title = "Left Panel",
+          side = "left",
+          f7Block("A panel with push effect"),
+          f7PanelMenu(
+            inset = TRUE,
+            outline = TRUE,
+            # Use items as tab navigation only
+            f7PanelItem(
+              tabName = "tabset-Inputs",
+              title = "Input tabs",
+              icon = f7Icon("largecircle_fill_circle"),
+              active = TRUE
+            ),
+            f7PanelItem(
+              tabName = "tabset-FABs",
+              title = "Buttons tabs",
+              icon = f7Icon("largecircle_fill_circle")
+            )
+          ),
+          effect = "push",
+          options = list(swipe = TRUE)
+        ),
+        f7Panel(
+          title = "Right Panel",
+          side = "right",
+          f7Radio(
+            inputId = "theme",
+            label = "Theme",
+            choices = c("md", "ios"),
+            selected = app_options$theme
+          ),
+          f7Radio(
+            inputId = "dark",
+            label = "Mode",
+            choices = c("dark", "light"),
+            selected = ifelse(app_options$dark, "dark", "light")
+          ),
+          f7Radio(
+            inputId = "color",
+            label = "Color",
+            choices = getF7Colors(),
+            selected = "primary"
+          ),
+          effect = "floating",
+          options = list(swipe = TRUE)
+        )
+      ),
+      navbar = f7Navbar(
+        title = "shinyMobile Gallery",
+        hairline = TRUE,
+        leftPanel = TRUE,
+        rightPanel = TRUE
+      ),
+      f7Login(
+        id = "loginPage",
+        title = "You really think you can go here?",
+        footer = "This section simulates an authentication process. There
+        is actually no user and password database. Put whatever you want but
+        don't leave blank!",
+        startOpen = FALSE
+      ),
+      # recover the color picker input and update the text background
+      # color accordingly.
+      tags$script(
+        "$(function() {
+          Shiny.addCustomMessageHandler('text-color', function(message) {
+            $('#colorPickerVal').css('background-color', message);
+          });
+
+          // toggle message bar based on the currently selected tab
+          Shiny.addCustomMessageHandler('toggleMessagebar', function(message) {
+            if (message === 'chat') {
+              $('#mymessagebar').show();
+              $('.toolbar.tabLinks').hide();
+            } else {
+              $('#mymessagebar').hide();
+              $('.toolbar.tabLinks').show();
+            }
+          });
+        });
+        "
+      ),
+      f7Tabs(
+        id = "tabset",
+        animated = FALSE,
+        swipeable = TRUE,
+        tabInputs,
+        tabBtns,
+        tabCards,
+        tabLists,
+        tabText,
+        tabInfo,
+        tabOthers
+      )
+    )
+  ),
+  server = function(input, output, session) {
+
+    # update theme
+    observeEvent(input$theme, ignoreInit = TRUE, {
+      updateF7App(
+        options = list(
+          theme = input$theme
+        )
+      )
+    })
+
+    # update mode
+    observeEvent(input$dark, ignoreInit = TRUE, {
+      updateF7App(
+        options = list(
+          dark = ifelse(input$dark == "dark", TRUE, FALSE)
+        )
+      )
+    })
+
+    # update color
+    observeEvent(input$color, ignoreInit = TRUE, {
+      updateF7App(
+        options = list(
+          color = input$color
+        )
+      )
+    })
+
+    # input validation
+    observe({
+      validateF7Input(inputId = "text", info = "Whatever")
+      validateF7Input(
+        inputId = "password",
+        pattern = "[0-9]*",
+        error = "Only numbers please!"
+      )
+    })
+
+    # toggle message bar: should only be dislayed when on the messages tab
+    observeEvent(input$tabset, {
+      session$sendCustomMessage(type = "toggleMessagebar", input$tabset)
+      session$sendCustomMessage(type = "toggleSearchbar", input$tabset)
+    })
+
+    # user send new message
+    observeEvent(input[["mymessagebar-send"]], {
+      updateF7Messages(
+        id = "mymessages",
+        list(
+          f7Message(
+            text = input$mymessagebar,
+            name = "David",
+            type = "sent",
+            header = "Message Header",
+            footer = "Message Footer",
+            textHeader = "Text Header",
+            textFooter = "text Footer",
+            avatar = "https://cdn.framework7.io/placeholder/people-100x100-7.jpg"
+          )
+        )
+      )
+    })
+
+    # fake to receive random messages
+    observe({
+      invalidateLater(5000)
+      names &lt;- c("Victor", "John")
+      name &lt;- sample(names, 1)
+
+      updateF7Messages(
+        id = "mymessages",
+        list(
+          f7Message(
+            text = "Message",
+            name = name,
+            type = "received",
+            avatar = "https://cdn.framework7.io/placeholder/people-100x100-9.jpg"
+          )
+        )
+      )
+    })
+
+    # trigger for login
+    trigger &lt;- reactive({
+      req(input$tabset == "chat")
+    })
+    # login server module
+    f7LoginServer(
+      id = "loginPage",
+      ignoreInit = TRUE,
+      trigger = trigger
+    )
+
+    output$sin &lt;- renderPlot(plot(sin, -pi, 2 * pi))
+    output$cos &lt;- renderPlot(plot(cos, -pi, 2 * pi))
+
+    output$text &lt;- renderPrint(input$text)
+    output$password &lt;- renderPrint(input$password)
+    output$textarea &lt;- renderPrint(input$textarea)
+    output$slider &lt;- renderPrint(input$sliderInput)
+    output$sliderRange &lt;- renderPrint(input$sliderRangeInput)
+    output$stepper &lt;- renderPrint(input$stepper)
+    output$check &lt;- renderPrint(input$check)
+    output$checkgroup &lt;- renderPrint(input$checkgroup)
+    output$checkgroup2 &lt;- renderPrint(input$checkgroup2)
+    output$radio &lt;- renderPrint(input$radio)
+    output$radio2 &lt;- renderPrint(input$radio2)
+    output$toggle &lt;- renderPrint(input$toggle)
+    output$select &lt;- renderPrint(input$select)
+    output$smartdata &lt;- renderTable(
+      {
+        head(mtcars[, c("mpg", input$smartsel), drop = FALSE])
+      },
+      rownames = TRUE
+    )
+    output$dateval &lt;- renderPrint(input$mydatepicker)
+    output$autocompleteval &lt;- renderPrint(input$myautocomplete)
+
+    lapply(1:12, function(i) {
+      output[[paste0("res", i)]] &lt;- renderText(paste0("Button", i, " is ", input[[paste0("btn", i)]]))
+    })
+    output$pickerval &lt;- renderText(input$mypicker)
+    output$colorPickerVal &lt;- renderPrint(input$mycolorpicker$hex)
+
+    # send the color picker input to JS
+    observeEvent(input$mycolorpicker, {
+      session$sendCustomMessage(type = "text-color", message = input$mycolorpicker$hex)
+    })
+
+
+    # popup
+    output$popupContent &lt;- renderPrint(input$popupText)
+
+    observeEvent(input$togglePopup, {
+      f7Popup(
+        id = "popup1",
+        title = "My first popup",
+        f7Block(
+          p("Popup can push the view behind. By default it has effect only when
+            'safe-area-inset-top' is more than zero (iOS fullscreen webapp or iOS cordova app)"),
+          f7Text(inputId = "popupText",
+                 label = "Popup content",
+                 value = "This is my first popup, I swear!"),
+          verbatimTextOutput("popupContent")
+        )
+      )
+    })
+
+    observeEvent(input$popup1, {
+      if (input$tabset == "Popups") {
+        popupStatus &lt;- if (input$popup1) "opened" else "closed"
+        f7Toast(
+          position = "top",
+          text = paste("Popup is", popupStatus)
+        )
+      }
+    })
+
+    # sheet plot
+    output$sheetPlot &lt;- renderPlot({
+      hist(rnorm(input$sheetObs))
+    })
+
+    observeEvent(input$toggleSheet, {
+      updateF7Sheet(id = "sheet1")
+    })
+
+    # notifications
+    lapply(1:3, function(i) {
+      observeEvent(input[[paste0("goNotif", i)]], {
+        icon &lt;- if (i %% 2 == 0) f7Icon("bolt_fill") else NULL
+
+        f7Notif(
+          text = "test",
+          icon = icon,
+          title = paste("Notification", i),
+          subtitle = "A subtitle",
+          titleRightText = i
+        )
+      })
+    })
+
+    # Dialogs
+    # notifications
+    lapply(1:3, function(i) {
+      observeEvent(input[[paste0("goDialog", i)]], {
+        if (i == 1) {
+          f7Dialog(
+            title = "Dialog title",
+            text = "This is an alert dialog"
+          )
+        } else if (i == 2) {
+          f7Dialog(
+            id = "confirmDialog",
+            title = "Dialog title",
+            type = "confirm",
+            text = "This is an confirm dialog"
+          )
+        } else if (i == 3) {
+          f7Dialog(
+            id = "promptDialog",
+            title = "Dialog title",
+            type = "prompt",
+            text = "This is a prompt dialog"
+          )
+        }
+      })
+    })
+
+    observeEvent(input$confirmDialog, {
+      f7Toast(text = paste("Alert input is:", input$confirmDialog))
+    })
+
+    output$promptres &lt;- renderUI({
+      if (is.null(input$promptDialog)) {
+        f7BlockTitle(title = "Click on dialog button 3")
+      }
+      f7BlockTitle(title = input$promptDialog)
+    })
+
+    # popovers
+    observeEvent(input$popoverButton, {
+      addF7Popover(
+        id = "popoverButton",
+        options = list(content = "This is a f7Button")
+      )
+    })
+
+    # toasts
+    observeEvent(input$toast, {
+      f7Toast(
+        position = "bottom",
+        text = "I am a toast. Eat me!"
+      )
+    })
+
+    # action sheet
+    observeEvent(input$goActionSheet, {
+      f7ActionSheet(
+        grid = TRUE,
+        id = "action1",
+        buttons = list(
+          list(
+            text = "Notification",
+            icon = f7Icon("info"),
+            color = NULL
+          ),
+          list(
+            text = "Dialog",
+            icon = f7Icon("lightbulb_fill"),
+            color = NULL
+          )
+        )
+      )
+    })
+
+    observeEvent(input$action1_button, {
+      if (input$action1_button == 1) {
+        f7Notif(
+          text = "You clicked on the first button",
+          icon = f7Icon("bolt_fill"),
+          title = "Notification",
+          titleRightText = "now"
+        )
+      } else if (input$action1_button == 2) {
+        f7Dialog(
+          id = "actionSheetDialog",
+          title = "Click me to launch a Toast!",
+          type = "confirm",
+          text = "You clicked on the second button"
+        )
+      }
+    })
+
+    observeEvent(input$swipeAction_button, {
+      if (input$swipeAction_button == 1) {
+        f7Notif(
+          text = "You clicked on the first button",
+          icon = f7Icon("bolt_fill"),
+          title = "Notification",
+          titleRightText = "now"
+        )
+      } else if (input$swipeAction_button == 2) {
+        f7Dialog(
+          id = "actionSheetDialog",
+          title = "Click me to launch a Toast!",
+          type = "confirm",
+          text = "You clicked on the second button"
+        )
+      }
+    })
+
+    observeEvent(input$actionSheetDialog, {
+      f7Toast(text = paste("Alert input is:", input$actionSheetDialog))
+    })
+
+    # update progress bar
+    observeEvent(input$updatepg1, {
+      updateF7Progress(id = "pg1", value = input$updatepg1)
+    })
+
+    # update gauge
+    observeEvent(input$updategauge1, {
+      updateF7Gauge(id = "mygauge1", value = input$updategauge1)
+    })
+
+    # expand card 3
+    observeEvent(input$goCard, {
+      updateF7Card(id = "card3")
+    })
+
+    # toggle accordion
+    observeEvent(input$goAccordion, {
+      updateF7Accordion(
+        id = "accordion1",
+        selected = 1
+      )
+    })
+
+    # update panel
+    observeEvent(input$goPanel, {
+      updateF7Panel(id = "panelLeft")
+    })
+
+    # swipeout
+    observeEvent(input$swipeNotif, {
+      f7Notif(
+        text = "test",
+        icon = f7Icon("bolt_fill"),
+        title = "Notification",
+        subtitle = "A subtitle",
+        titleRightText = "now"
+      )
+    })
+
+    observeEvent(input$swipeAlert, {
+      f7Dialog(
+        title = "Dialog title",
+        text = "This is an alert dialog"
+      )
+    })
+
+    observeEvent(input$swipeActionSheet, {
+      f7ActionSheet(
+        grid = TRUE,
+        id = "swipeAction",
+        buttons = list(
+          list(
+            text = "Notification",
+            icon = f7Icon("info"),
+            color = NULL
+          ),
+          list(
+            text = "Dialog",
+            icon = f7Icon("lightbulb_fill"),
+            color = NULL
+          )
+        )
+      )
+    })
+
+    # preloaders
+    observeEvent(input$showLoader, {
+      showF7Preloader(target = "#preloaderPlot", color = "blue")
+      Sys.sleep(2)
+      hideF7Preloader(target = "#preloaderPlot")
+    })
+    output$preloaderPlot &lt;- renderPlot({
+      hist(rnorm(100))
+    })
+
+    # photo browser
+    observeEvent(input$togglePhoto, {
+      f7PhotoBrowser(
+        theme = "dark",
+        type = "standalone",
+        photos = c(
+          "https://cdn.framework7.io/placeholder/sports-1024x1024-1.jpg",
+          "https://cdn.framework7.io/placeholder/sports-1024x1024-2.jpg",
+          "https://cdn.framework7.io/placeholder/sports-1024x1024-3.jpg"
+        )
+      )
+    })
+
+    # Menus
+    observeEvent(input$toggleMenu, {
+      updateF7MenuDropdown("menu1")
+    })
+
+    observeEvent(input$menuItem1, {
+      f7Notif(text = "Well done!")
+    })
+
+    # skeleton
+    observe({
+      invalidateLater(4000)
+      f7Skeleton(".skeleton-list", "fade", 2)
+    })
+
+    # Treeview
+    output$treeview &lt;- renderText({
+      input$treeview
+    })
+
+    # Table
+    output$table &lt;- renderUI({
+      f7Table(mtcars[1:15,])
+    })
+
+    # pull to refresh
+    # observeEvent(input$ptr, {
+    #
+    #   ptrStatus &lt;- if (input$ptr) "on"
+    #
+    #   f7Dialog(
+    #     text = paste('ptr is', ptrStatus),
+    #     type = "alert"
+    #   )
+    # })
+  }
+)</a></code></pre>
+</div><div class="column" style="width:20%;">
+
+</div>
+</div>
+</section><section id="refined-inputs-layout-and-style" class="level3"><h3 class="anchored" data-anchor-id="refined-inputs-layout-and-style">Refined inputs layout and style</h3>
+<p>Whenever you have multiple inputs, we now recommend to wrap all of them within <code><a href="https://rinterface.github.io/shinyMobile/reference/f7List.html">f7List()</a></code> so as to benefit from new styling options such as outline, inset, strong. Internally, we use a function able to detect whether the input is inside a <code><a href="https://rinterface.github.io/shinyMobile/reference/f7List.html">f7List()</a></code>. If this is the case, you can style this list by passing parameters like <code>f7List(outline = TRUE, inset = TRUE, ...)</code>. If not, the input is internally wrapped in a list to have correct rendering, but no styling is possible. Besides, some inputs like <code><a href="https://rinterface.github.io/shinyMobile/reference/text.html">f7Text()</a></code> can have custom styling (add an icon, clear button, outline style), which is independent from the external list wrapper style. Hence, we don’t recommend doing <code>f7List(outline = TRUE, f7Text(outline = TRUE))</code> since it won’t render well and instead use <code>f7List(outline = TRUE, f7Text())</code>.</p>
+<p>Besides, independently from <code><a href="https://rinterface.github.io/shinyMobile/reference/f7List.html">f7List()</a></code>, some inputs having more specific styling options:</p>
+<ul>
+<li>
+<code><a href="https://rinterface.github.io/shinyMobile/reference/autocomplete.html">f7AutoComplete()</a></code>.</li>
+<li>
+<code><a href="https://rinterface.github.io/shinyMobile/reference/text.html">f7Text()</a></code>, <code><a href="https://rinterface.github.io/shinyMobile/reference/text.html">f7Password()</a></code>, <code><a href="https://rinterface.github.io/shinyMobile/reference/text.html">f7TextArea()</a></code>.</li>
+<li>
+<code><a href="https://rinterface.github.io/shinyMobile/reference/select.html">f7Select()</a></code>.</li>
+<li>
+<code><a href="https://rinterface.github.io/shinyMobile/reference/picker.html">f7Picker()</a></code>, <code><a href="https://rinterface.github.io/shinyMobile/reference/f7ColorPicker.html">f7ColorPicker()</a></code> and <code><a href="https://rinterface.github.io/shinyMobile/reference/datepicker.html">f7DatePicker()</a></code>.</li>
+<li>
+<code><a href="https://rinterface.github.io/shinyMobile/reference/radio.html">f7Radio()</a></code> and <code><a href="https://rinterface.github.io/shinyMobile/reference/checkboxgroup.html">f7CheckboxGroup()</a></code>.</li>
+</ul>
+<p>In practices, you can design a supercharged <code><a href="https://rinterface.github.io/shinyMobile/reference/text.html">f7Text()</a></code> like so:</p>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/text.html">f7Text</a></span><span class="op">(</span></span>
+<span>    inputId <span class="op">=</span> <span class="st">"text"</span>,</span>
+<span>    label <span class="op">=</span> <span class="st">"Text input"</span>,</span>
+<span>    value <span class="op">=</span> <span class="st">"Some text"</span>,</span>
+<span>    placeholder <span class="op">=</span> <span class="st">"Your text here"</span>,</span>
+<span>    style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>      description <span class="op">=</span> <span class="st">"A cool text input"</span>,</span>
+<span>      outline <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>      media <span class="op">=</span> <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/f7Icon.html">f7Icon</a></span><span class="op">(</span><span class="st">"house"</span><span class="op">)</span>,</span>
+<span>      clearable <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>      floating <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>    <span class="op">)</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>This adds a description to the input (below its main content), as well as the outline style option and an icon on the left side. <code>clearable</code> is TRUE by default meaning that all text-based inputs can be cleared. <code>floating</code> is an effect that makes the label move in and out the input area depending on the content state. When empty, the label is inside and when there is text, the label is pushed outside into its usual location.</p>
+<p><code><a href="https://rinterface.github.io/shinyMobile/reference/stepper.html">f7Stepper()</a></code> and <code><a href="https://rinterface.github.io/shinyMobile/reference/toggle.html">f7Toggle()</a></code> label is now displayed on the left.</p>
+<div class="columns">
+<div class="column" style="width:25%;">
+
+</div><div class="column" style="width:50%;">
+<pre class="shinylive-r" data-engine="r"><code><a href="https://shiny.posit.co/">#| standalone: true
+#| components: [viewer]
+#| column: screen-inset-shaded
+#| viewerHeight: 800
+library(shiny)
+library(shinyMobile)
+
+shinyApp(
+  ui = f7Page(
+    options = list(dark = FALSE, theme = "ios"),
+    title = "Inputs Layout",
+    f7SingleLayout(
+      navbar = f7Navbar(
+        title = "Inputs Layout",
+        hairline = FALSE
+      ),
+      f7List(
+        inset = TRUE,
+        dividers = TRUE,
+        strong = TRUE,
+        outline = FALSE,
+        f7Text(
+          inputId = "text",
+          label = "Text input",
+          value = "Some text",
+          placeholder = "Your text here"
+        ),
+        f7TextArea(
+          inputId = "textarea",
+          label = "Text area input",
+          value = "Some text",
+          placeholder = "Your text here"
+        ),
+        f7Select(
+          inputId = "select",
+          label = "Make a choice",
+          choices = 1:3,
+          selected = 1
+        ),
+        f7AutoComplete(
+          inputId = "myautocomplete",
+          placeholder = "Some text here!",
+          openIn = "dropdown",
+          label = "Type a fruit name",
+          choices = c(
+            "Apple", "Apricot", "Avocado", "Banana", "Melon",
+            "Orange", "Peach", "Pear", "Pineapple"
+          )
+        ),
+        f7Stepper(
+          inputId = "stepper",
+          label = "My stepper",
+          min = 0,
+          color = "default",
+          max = 10,
+          value = 4
+        ),
+        f7Toggle(
+          inputId = "toggle",
+          label = "Toggle me"
+        ),
+        f7Picker(
+          inputId = "picker",
+          placeholder = "Some text here!",
+          label = "Picker Input",
+          choices = c("a", "b", "c"),
+          options = list(sheetPush = TRUE)
+        ),
+        f7DatePicker(
+          inputId = "date",
+          label = "Pick a date",
+          value = Sys.Date()
+        ),
+        f7ColorPicker(
+          inputId = "mycolorpicker",
+          placeholder = "Some text here!",
+          label = "Select a color"
+        )
+      ),
+      f7CheckboxGroup(
+        inputId = "checkbox",
+        label = "Checkbox group",
+        choices = c("a", "b", "c"),
+        selected = "a",
+        style = list(
+          inset = TRUE,
+          dividers = TRUE,
+          strong = TRUE,
+          outline = FALSE
+        )
+      ),
+      f7Radio(
+        inputId = "radio",
+        label = "Radio group",
+        choices = c("a", "b", "c"),
+        selected = "a",
+        style = list(
+          inset = TRUE,
+          dividers = TRUE,
+          strong = TRUE,
+          outline = FALSE
+        )
+      )
+    )
+  ),
+  server = function(input, output) {
+  }
+) </a></code></pre>
+</div><div class="column" style="width:25%;">
+
+</div>
+</div>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/">shiny</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RinteRface/shinyMobile">shinyMobile</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span></span>
+<span>  ui <span class="op">=</span> <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/f7Page.html">f7Page</a></span><span class="op">(</span></span>
+<span>    options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>dark <span class="op">=</span> <span class="cn">FALSE</span>, theme <span class="op">=</span> <span class="st">"ios"</span><span class="op">)</span>,</span>
+<span>    title <span class="op">=</span> <span class="st">"Inputs Layout"</span>,</span>
+<span>    <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/f7SingleLayout.html">f7SingleLayout</a></span><span class="op">(</span></span>
+<span>      navbar <span class="op">=</span> <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/navbar.html">f7Navbar</a></span><span class="op">(</span></span>
+<span>        title <span class="op">=</span> <span class="st">"Inputs Layout"</span>,</span>
+<span>        hairline <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>      <span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/f7List.html">f7List</a></span><span class="op">(</span></span>
+<span>        inset <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>        dividers <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>        strong <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>        outline <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>        <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/text.html">f7Text</a></span><span class="op">(</span></span>
+<span>          inputId <span class="op">=</span> <span class="st">"text"</span>,</span>
+<span>          label <span class="op">=</span> <span class="st">"Text input"</span>,</span>
+<span>          value <span class="op">=</span> <span class="st">"Some text"</span>,</span>
+<span>          placeholder <span class="op">=</span> <span class="st">"Your text here"</span></span>
+<span>        <span class="op">)</span>,</span>
+<span>        <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/text.html">f7TextArea</a></span><span class="op">(</span></span>
+<span>          inputId <span class="op">=</span> <span class="st">"textarea"</span>,</span>
+<span>          label <span class="op">=</span> <span class="st">"Text area input"</span>,</span>
+<span>          value <span class="op">=</span> <span class="st">"Some text"</span>,</span>
+<span>          placeholder <span class="op">=</span> <span class="st">"Your text here"</span></span>
+<span>        <span class="op">)</span>,</span>
+<span>        <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/select.html">f7Select</a></span><span class="op">(</span></span>
+<span>          inputId <span class="op">=</span> <span class="st">"select"</span>,</span>
+<span>          label <span class="op">=</span> <span class="st">"Make a choice"</span>,</span>
+<span>          choices <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,</span>
+<span>          selected <span class="op">=</span> <span class="fl">1</span></span>
+<span>        <span class="op">)</span>,</span>
+<span>        <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/autocomplete.html">f7AutoComplete</a></span><span class="op">(</span></span>
+<span>          inputId <span class="op">=</span> <span class="st">"myautocomplete"</span>,</span>
+<span>          placeholder <span class="op">=</span> <span class="st">"Some text here!"</span>,</span>
+<span>          openIn <span class="op">=</span> <span class="st">"dropdown"</span>,</span>
+<span>          label <span class="op">=</span> <span class="st">"Type a fruit name"</span>,</span>
+<span>          choices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
+<span>            <span class="st">"Apple"</span>, <span class="st">"Apricot"</span>, <span class="st">"Avocado"</span>, <span class="st">"Banana"</span>, <span class="st">"Melon"</span>,</span>
+<span>            <span class="st">"Orange"</span>, <span class="st">"Peach"</span>, <span class="st">"Pear"</span>, <span class="st">"Pineapple"</span></span>
+<span>          <span class="op">)</span></span>
+<span>        <span class="op">)</span>,</span>
+<span>        <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/stepper.html">f7Stepper</a></span><span class="op">(</span></span>
+<span>          inputId <span class="op">=</span> <span class="st">"stepper"</span>,</span>
+<span>          label <span class="op">=</span> <span class="st">"My stepper"</span>,</span>
+<span>          min <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>          color <span class="op">=</span> <span class="st">"default"</span>,</span>
+<span>          max <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>          value <span class="op">=</span> <span class="fl">4</span></span>
+<span>        <span class="op">)</span>,</span>
+<span>        <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/toggle.html">f7Toggle</a></span><span class="op">(</span></span>
+<span>          inputId <span class="op">=</span> <span class="st">"toggle"</span>,</span>
+<span>          label <span class="op">=</span> <span class="st">"Toggle me"</span></span>
+<span>        <span class="op">)</span>,</span>
+<span>        <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/picker.html">f7Picker</a></span><span class="op">(</span></span>
+<span>          inputId <span class="op">=</span> <span class="st">"picker"</span>,</span>
+<span>          placeholder <span class="op">=</span> <span class="st">"Some text here!"</span>,</span>
+<span>          label <span class="op">=</span> <span class="st">"Picker Input"</span>,</span>
+<span>          choices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span><span class="op">)</span>,</span>
+<span>          options <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>sheetPush <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>        <span class="op">)</span>,</span>
+<span>        <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/datepicker.html">f7DatePicker</a></span><span class="op">(</span></span>
+<span>          inputId <span class="op">=</span> <span class="st">"date"</span>,</span>
+<span>          label <span class="op">=</span> <span class="st">"Pick a date"</span>,</span>
+<span>          value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.Date</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>        <span class="op">)</span>,</span>
+<span>        <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/f7ColorPicker.html">f7ColorPicker</a></span><span class="op">(</span></span>
+<span>          inputId <span class="op">=</span> <span class="st">"mycolorpicker"</span>,</span>
+<span>          placeholder <span class="op">=</span> <span class="st">"Some text here!"</span>,</span>
+<span>          label <span class="op">=</span> <span class="st">"Select a color"</span></span>
+<span>        <span class="op">)</span></span>
+<span>      <span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/checkboxgroup.html">f7CheckboxGroup</a></span><span class="op">(</span></span>
+<span>        inputId <span class="op">=</span> <span class="st">"checkbox"</span>,</span>
+<span>        label <span class="op">=</span> <span class="st">"Checkbox group"</span>,</span>
+<span>        choices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span><span class="op">)</span>,</span>
+<span>        selected <span class="op">=</span> <span class="st">"a"</span>,</span>
+<span>        style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>          inset <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>          dividers <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>          strong <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>          outline <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>        <span class="op">)</span></span>
+<span>      <span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/radio.html">f7Radio</a></span><span class="op">(</span></span>
+<span>        inputId <span class="op">=</span> <span class="st">"radio"</span>,</span>
+<span>        label <span class="op">=</span> <span class="st">"Radio group"</span>,</span>
+<span>        choices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span><span class="op">)</span>,</span>
+<span>        selected <span class="op">=</span> <span class="st">"a"</span>,</span>
+<span>        style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>          inset <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>          dividers <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>          strong <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>          outline <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>        <span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  server <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Moreover, we added a new way to pass options to <code><a href="https://rinterface.github.io/shinyMobile/reference/radio.html">f7Radio()</a></code> and <code><a href="https://rinterface.github.io/shinyMobile/reference/checkboxgroup.html">f7CheckboxGroup()</a></code>, namely <code><a href="https://rinterface.github.io/shinyMobile/reference/checkboxgroup.html">f7CheckboxChoice()</a></code> and <code><a href="https://rinterface.github.io/shinyMobile/reference/radio.html">f7RadioChoice()</a></code> (note: you can’t use <code>update_*</code> functions on them yet), so that you can pass more metadata and a description to each option (instead of just the choice name in basic shiny inputs):</p>
+<div class="columns">
+<div class="column" style="width:25%;">
+
+</div><div class="column" style="width:50%;">
+<pre class="shinylive-r" data-engine="r"><code><a href="https://shiny.posit.co/">#| standalone: true
+#| components: [viewer]
+#| column: screen-inset-shaded
+#| viewerHeight: 800
+library(shiny)
+library(shinyMobile)
+
+shinyApp(
+  ui = f7Page(
+    title = "Update radio",
+    f7SingleLayout(
+      navbar = f7Navbar(title = "Update f7Radio"),
+      f7Block(
+        f7Radio(
+          inputId = "radio",
+          label = "Custom choices",
+          choices = list(
+            f7RadioChoice(
+              "Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Nulla sagittis tellus ut turpis condimentum,
+            ut dignissim lacus tincidunt",
+              title = "Choice 1",
+              subtitle = "David",
+              after = "March 16, 2024"
+            ),
+            f7RadioChoice(
+              "Cras dolor metus, ultrices condimentum sodales sit
+            amet, pharetra sodales eros. Phasellus vel felis tellus.
+            Mauris rutrum ligula nec dapibus feugiat",
+              title = "Choice 2",
+              subtitle = "Veerle",
+              after = "March 17, 2024"
+            )
+          ),
+          selected = 2,
+          style = list(
+            outline = TRUE,
+            strong = TRUE,
+            inset = TRUE,
+            dividers = TRUE
+          )
+        ),
+        textOutput("res")
+      )
+    )
+  ),
+  server = function(input, output, session) {
+    output$res &lt;- renderText(input$radio)
+  }
+)</a></code></pre>
+</div><div class="column" style="width:25%;">
+
+</div>
+</div>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/">shiny</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RinteRface/shinyMobile">shinyMobile</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span></span>
+<span>  ui <span class="op">=</span> <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/f7Page.html">f7Page</a></span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="st">"Update radio"</span>,</span>
+<span>    <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/f7SingleLayout.html">f7SingleLayout</a></span><span class="op">(</span></span>
+<span>      navbar <span class="op">=</span> <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/navbar.html">f7Navbar</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Update f7Radio"</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/block.html">f7Block</a></span><span class="op">(</span></span>
+<span>        <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/radio.html">f7Radio</a></span><span class="op">(</span></span>
+<span>          inputId <span class="op">=</span> <span class="st">"radio"</span>,</span>
+<span>          label <span class="op">=</span> <span class="st">"Custom choices"</span>,</span>
+<span>          choices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>            <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/radio.html">f7RadioChoice</a></span><span class="op">(</span></span>
+<span>              <span class="st">"Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span></span>
+<span><span class="st">            Nulla sagittis tellus ut turpis condimentum,</span></span>
+<span><span class="st">            ut dignissim lacus tincidunt"</span>,</span>
+<span>              title <span class="op">=</span> <span class="st">"Choice 1"</span>,</span>
+<span>              subtitle <span class="op">=</span> <span class="st">"David"</span>,</span>
+<span>              after <span class="op">=</span> <span class="st">"March 16, 2024"</span></span>
+<span>            <span class="op">)</span>,</span>
+<span>            <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/radio.html">f7RadioChoice</a></span><span class="op">(</span></span>
+<span>              <span class="st">"Cras dolor metus, ultrices condimentum sodales sit</span></span>
+<span><span class="st">            amet, pharetra sodales eros. Phasellus vel felis tellus.</span></span>
+<span><span class="st">            Mauris rutrum ligula nec dapibus feugiat"</span>,</span>
+<span>              title <span class="op">=</span> <span class="st">"Choice 2"</span>,</span>
+<span>              subtitle <span class="op">=</span> <span class="st">"Veerle"</span>,</span>
+<span>              after <span class="op">=</span> <span class="st">"March 17, 2024"</span></span>
+<span>            <span class="op">)</span></span>
+<span>          <span class="op">)</span>,</span>
+<span>          selected <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>          style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>            outline <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>            strong <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>            inset <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>            dividers <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>          <span class="op">)</span></span>
+<span>        <span class="op">)</span>,</span>
+<span>        <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/textOutput.html">textOutput</a></span><span class="op">(</span><span class="st">"res"</span><span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  server <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">output</span><span class="op">$</span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html">renderText</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">radio</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section><section id="new-f7treeview-component" class="level3"><h3 class="anchored" data-anchor-id="new-f7treeview-component">New <code>f7Treeview()</code> component</h3>
+<p>The new release welcomes a brand new input widget. As its name suggests, <code>f7Treewiew()</code> enables sorting items hierarchically within a collapsible nested list of items. This is ideal, for instance, to select files within multiple folders, as an alternative to the classic <code><a href="https://rdrr.io/pkg/shiny/man/fileInput.html">fileInput()</a></code>.</p>
+<div class="columns">
+<div class="column" style="width:25%;">
+
+</div><div class="column" style="width:50%;">
+<pre class="shinylive-r" data-engine="r"><code><a href="https://shiny.posit.co/">#| standalone: true
+#| components: [viewer]
+#| column: screen-inset-shaded
+#| viewerHeight: 800
+library(shiny)
+library(shinyMobile)
+
+shinyApp(
+  ui = f7Page(
+    title = "My app",
+    f7SingleLayout(
+      navbar = f7Navbar(title = "f7Treeview"),
+      # group treeview with selectable items
+      f7BlockTitle("Selectable items"),
+      f7Block(
+        f7Treeview(
+          id = "treeview1",
+          selectable = TRUE,
+          f7TreeviewGroup(
+            title = "Selected images",
+            icon = f7Icon("folder_fill"),
+            itemToggle = TRUE,
+            lapply(1:3, function(i) f7TreeviewItem(label = paste0("image", i, ".png"),
+                                                   icon = f7Icon("photo_fill")))
+          )
+        ),
+        textOutput("selected")
+      ),
+
+      # group treeview with checkbox items
+      f7BlockTitle("Checkbox"),
+      f7Block(
+        f7Treeview(
+          id = "treeview2",
+          withCheckbox = TRUE,
+          f7TreeviewGroup(
+            title = "Selected images",
+            icon = f7Icon("folder_fill"),
+            itemToggle = TRUE,
+            lapply(1:3, function(i) f7TreeviewItem(label = paste0("image", i, ".png"),
+                                                   icon = f7Icon("photo_fill")))
+          )
+        ),
+        textOutput("selected2")
+      )
+    )
+  ),
+  server = function(input, output) {
+    output$selected &lt;- renderText(input$treeview1)
+    output$selected2 &lt;- renderText(input$treeview2)
+  }
+)</a></code></pre>
+</div><div class="column" style="width:25%;">
+
+</div>
+</div>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/">shiny</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RinteRface/shinyMobile">shinyMobile</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span></span>
+<span>  ui <span class="op">=</span> <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/f7Page.html">f7Page</a></span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="st">"My app"</span>,</span>
+<span>    <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/f7SingleLayout.html">f7SingleLayout</a></span><span class="op">(</span></span>
+<span>      navbar <span class="op">=</span> <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/navbar.html">f7Navbar</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"f7Treeview"</span><span class="op">)</span>,</span>
+<span>      <span class="co"># group treeview with selectable items</span></span>
+<span>      <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/block.html">f7BlockTitle</a></span><span class="op">(</span><span class="st">"Selectable items"</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/block.html">f7Block</a></span><span class="op">(</span></span>
+<span>        <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/f7Treeview.html">f7Treeview</a></span><span class="op">(</span></span>
+<span>          id <span class="op">=</span> <span class="st">"treeview1"</span>,</span>
+<span>          selectable <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>          <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/f7TreeviewGroup.html">f7TreeviewGroup</a></span><span class="op">(</span></span>
+<span>            title <span class="op">=</span> <span class="st">"Selected images"</span>,</span>
+<span>            icon <span class="op">=</span> <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/f7Icon.html">f7Icon</a></span><span class="op">(</span><span class="st">"folder_fill"</span><span class="op">)</span>,</span>
+<span>            itemToggle <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>            <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/f7TreeviewItem.html">f7TreeviewItem</a></span><span class="op">(</span>label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"image"</span>, <span class="va">i</span>, <span class="st">".png"</span><span class="op">)</span>,</span>
+<span>                                                   icon <span class="op">=</span> <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/f7Icon.html">f7Icon</a></span><span class="op">(</span><span class="st">"photo_fill"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>          <span class="op">)</span></span>
+<span>        <span class="op">)</span>,</span>
+<span>        <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/textOutput.html">textOutput</a></span><span class="op">(</span><span class="st">"selected"</span><span class="op">)</span></span>
+<span>      <span class="op">)</span>,</span>
+<span></span>
+<span>      <span class="co"># group treeview with checkbox items</span></span>
+<span>      <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/block.html">f7BlockTitle</a></span><span class="op">(</span><span class="st">"Checkbox"</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/block.html">f7Block</a></span><span class="op">(</span></span>
+<span>        <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/f7Treeview.html">f7Treeview</a></span><span class="op">(</span></span>
+<span>          id <span class="op">=</span> <span class="st">"treeview2"</span>,</span>
+<span>          withCheckbox <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>          <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/f7TreeviewGroup.html">f7TreeviewGroup</a></span><span class="op">(</span></span>
+<span>            title <span class="op">=</span> <span class="st">"Selected images"</span>,</span>
+<span>            icon <span class="op">=</span> <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/f7Icon.html">f7Icon</a></span><span class="op">(</span><span class="st">"folder_fill"</span><span class="op">)</span>,</span>
+<span>            itemToggle <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>            <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/f7TreeviewItem.html">f7TreeviewItem</a></span><span class="op">(</span>label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"image"</span>, <span class="va">i</span>, <span class="st">".png"</span><span class="op">)</span>,</span>
+<span>                                                   icon <span class="op">=</span> <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/f7Icon.html">f7Icon</a></span><span class="op">(</span><span class="st">"photo_fill"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>          <span class="op">)</span></span>
+<span>        <span class="op">)</span>,</span>
+<span>        <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/textOutput.html">textOutput</a></span><span class="op">(</span><span class="st">"selected2"</span><span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  server <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">output</span><span class="op">$</span><span class="va">selected</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html">renderText</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">treeview1</span><span class="op">)</span></span>
+<span>    <span class="va">output</span><span class="op">$</span><span class="va">selected2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html">renderText</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">treeview2</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section><section id="new-f7form" class="level3"><h3 class="anchored" data-anchor-id="new-f7form">New <code>f7Form()</code>
+</h3>
+<p>Shiny does not provide HTML forms handling out of the box (a <a href="https://www.w3schools.com/html/html_forms.asp">form</a> being composed of multiple input elements). That’s why we introduce <code><a href="https://rinterface.github.io/shinyMobile/reference/form-inputs.html">f7Form()</a></code>. Contrary to basic shiny inputs, we don’t get one input value per element but a single input value with a nested list for all inputs within the form, thereby allowing a reduction in the number of inputs on the server side. <code><a href="https://rinterface.github.io/shinyMobile/reference/form-inputs.html">updateF7Form()</a></code> can quickly update any input from the form. As a side note, the current list of supported inputs is:</p>
+<ul>
+<li><code><a href="https://rinterface.github.io/shinyMobile/reference/text.html">f7Text()</a></code></li>
+<li><code><a href="https://rinterface.github.io/shinyMobile/reference/text.html">f7TextArea()</a></code></li>
+<li><code><a href="https://rinterface.github.io/shinyMobile/reference/text.html">f7Password()</a></code></li>
+<li><code><a href="https://rinterface.github.io/shinyMobile/reference/select.html">f7Select()</a></code></li>
+</ul>
+<div class="columns">
+<div class="column" style="width:25%;">
+
+</div><div class="column" style="width:50%;">
+<pre class="shinylive-r" data-engine="r"><code><a href="https://shiny.posit.co/">#| standalone: true
+#| components: [viewer]
+#| column: screen-inset-shaded
+#| viewerHeight: 800
+#| viewerWidth: 390
+library(shiny)
+library(shinyMobile)
+
+shinyApp(
+  ui = f7Page(
+    f7SingleLayout(
+      navbar = f7Navbar(title = "Inputs form"),
+      f7Block(f7Button("update", "Click me")),
+      f7BlockTitle("A list of inputs in a form"),
+      f7List(
+        inset = TRUE,
+        dividers = FALSE,
+        strong = TRUE,
+        f7Form(
+          id = "myform",
+          f7Text(
+            inputId = "text",
+            label = "Text input",
+            value = "Some text",
+            placeholder = "Your text here",
+            style = list(
+              description = "A cool text input",
+              outline = TRUE,
+              media = f7Icon("house"),
+              clearable = TRUE,
+              floating = TRUE
+            )
+          ),
+          f7TextArea(
+            inputId = "textarea",
+            label = "Text Area",
+            value = "Lorem ipsum dolor sit amet, consectetur
+              adipiscing elit, sed do eiusmod tempor incididunt ut
+              labore et dolore magna aliqua",
+            placeholder = "Your text here",
+            resize = TRUE,
+            style = list(
+              description = "A cool text input",
+              outline = TRUE,
+              media = f7Icon("house"),
+              clearable = TRUE,
+              floating = TRUE
+            )
+          ),
+          f7Password(
+            inputId = "password",
+            label = "Password:",
+            placeholder = "Your password here",
+            style = list(
+              description = "A cool text input",
+              outline = TRUE,
+              media = f7Icon("house"),
+              clearable = TRUE,
+              floating = TRUE
+            )
+          )
+        )
+      ),
+      verbatimTextOutput("form")
+    )
+  ),
+  server = function(input, output, session) {
+    output$form &lt;- renderPrint(input$myform)
+
+    observeEvent(input$update, {
+      updateF7Form(
+        "myform",
+        data = list(
+          "text" = "New text",
+          "textarea" = "New text area",
+          "password" = "New password"
+        )
+      )
+    })
+  }
+)</a></code></pre>
+</div><div class="column" style="width:25%;">
+
+</div>
+</div>
+<div class="cell">
+<details class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/">shiny</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RinteRface/shinyMobile">shinyMobile</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span></span>
+<span>  ui <span class="op">=</span> <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/f7Page.html">f7Page</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/f7SingleLayout.html">f7SingleLayout</a></span><span class="op">(</span></span>
+<span>      navbar <span class="op">=</span> <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/navbar.html">f7Navbar</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Inputs form"</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/block.html">f7Block</a></span><span class="op">(</span><span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/button.html">f7Button</a></span><span class="op">(</span><span class="st">"update"</span>, <span class="st">"Click me"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/block.html">f7BlockTitle</a></span><span class="op">(</span><span class="st">"A list of inputs in a form"</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/f7List.html">f7List</a></span><span class="op">(</span></span>
+<span>        inset <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>        dividers <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>        strong <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>        <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/form-inputs.html">f7Form</a></span><span class="op">(</span></span>
+<span>          id <span class="op">=</span> <span class="st">"myform"</span>,</span>
+<span>          <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/text.html">f7Text</a></span><span class="op">(</span></span>
+<span>            inputId <span class="op">=</span> <span class="st">"text"</span>,</span>
+<span>            label <span class="op">=</span> <span class="st">"Text input"</span>,</span>
+<span>            value <span class="op">=</span> <span class="st">"Some text"</span>,</span>
+<span>            placeholder <span class="op">=</span> <span class="st">"Your text here"</span>,</span>
+<span>            style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>              description <span class="op">=</span> <span class="st">"A cool text input"</span>,</span>
+<span>              outline <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>              media <span class="op">=</span> <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/f7Icon.html">f7Icon</a></span><span class="op">(</span><span class="st">"house"</span><span class="op">)</span>,</span>
+<span>              clearable <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>              floating <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>            <span class="op">)</span></span>
+<span>          <span class="op">)</span>,</span>
+<span>          <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/text.html">f7TextArea</a></span><span class="op">(</span></span>
+<span>            inputId <span class="op">=</span> <span class="st">"textarea"</span>,</span>
+<span>            label <span class="op">=</span> <span class="st">"Text Area"</span>,</span>
+<span>            value <span class="op">=</span> <span class="st">"Lorem ipsum dolor sit amet, consectetur</span></span>
+<span><span class="st">              adipiscing elit, sed do eiusmod tempor incididunt ut</span></span>
+<span><span class="st">              labore et dolore magna aliqua"</span>,</span>
+<span>            placeholder <span class="op">=</span> <span class="st">"Your text here"</span>,</span>
+<span>            resize <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>            style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>              description <span class="op">=</span> <span class="st">"A cool text input"</span>,</span>
+<span>              outline <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>              media <span class="op">=</span> <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/f7Icon.html">f7Icon</a></span><span class="op">(</span><span class="st">"house"</span><span class="op">)</span>,</span>
+<span>              clearable <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>              floating <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>            <span class="op">)</span></span>
+<span>          <span class="op">)</span>,</span>
+<span>          <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/text.html">f7Password</a></span><span class="op">(</span></span>
+<span>            inputId <span class="op">=</span> <span class="st">"password"</span>,</span>
+<span>            label <span class="op">=</span> <span class="st">"Password:"</span>,</span>
+<span>            placeholder <span class="op">=</span> <span class="st">"Your password here"</span>,</span>
+<span>            style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>              description <span class="op">=</span> <span class="st">"A cool text input"</span>,</span>
+<span>              outline <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>              media <span class="op">=</span> <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/f7Icon.html">f7Icon</a></span><span class="op">(</span><span class="st">"house"</span><span class="op">)</span>,</span>
+<span>              clearable <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>              floating <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>            <span class="op">)</span></span>
+<span>          <span class="op">)</span></span>
+<span>        <span class="op">)</span></span>
+<span>      <span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/textOutput.html">verbatimTextOutput</a></span><span class="op">(</span><span class="st">"form"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  server <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">output</span><span class="op">$</span><span class="va">form</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPrint.html">renderPrint</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">myform</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">observeEvent</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">update</span>, <span class="op">{</span></span>
+<span>      <span class="fu"><a href="https://rinterface.github.io/shinyMobile/reference/form-inputs.html">updateF7Form</a></span><span class="op">(</span></span>
+<span>        <span class="st">"myform"</span>,</span>
+<span>        data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>          <span class="st">"text"</span> <span class="op">=</span> <span class="st">"New text"</span>,</span>
+<span>          <span class="st">"textarea"</span> <span class="op">=</span> <span class="st">"New text area"</span>,</span>
+<span>          <span class="st">"password"</span> <span class="op">=</span> <span class="st">"New password"</span></span>
+<span>        <span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">}</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section></section><section id="breaking-changes" class="level2"><h2 class="anchored" data-anchor-id="breaking-changes">Breaking changes</h2>
+<p>Some components have disappeared from Framework7 and we had to deprecate them as they no longer work. Other long time deprecated <a href="https://github.com/RinteRface/shinyMobile">shinyMobile</a> elements are also removed to cleanup the codebase. We invite you to review the <a href="https://github.com/RinteRface/shinyMobile/blob/69da6ca46984bf6c73e2dc32ff8d9f415ec36a30/NEWS.md#breaking-changes">changelog</a> to see a list of all changes in this release.</p>
+</section><section id="soft-deprecation" class="level2"><h2 class="anchored" data-anchor-id="soft-deprecation">Soft deprecation</h2>
+<p>Some function parameters have changed and are now deprecated with <a href="https://lifecycle.r-lib.org/">lifecycle</a>. You’ll see a warning message if you use them and we invite you to accordingly update your code.</p>
+</section></section><section id="conclusion" class="level1"><h1>Conclusion</h1>
+<p>Since the release of <a href="https://shiny.posit.co/">shiny</a> in 2012, many packages have been released that substantially improve its layout and design such as <a href="https://rstudio.github.io/bslib/">bslib</a>, <a href="https://github.com/RinteRface/bs4Dash">bs4Dash</a> or <a href="https://appsilon.github.io/shiny.fluent/">shiny.fluent</a>. Yet not much was done for mobile development. <a href="https://github.com/RinteRface/shinyMobile">shinyMobile</a> tries to fill this gap by exposing people to the rich Framework7 mobile-first template. Coupled with progressive web app support (PWA), you can run Shiny apps on a mobile that look very close to native apps with a desktop icon, a launch screen and running fullscreen, that is without the web browser navigation bar. By including an experimental implementation of the multipage navigation as described earlier, we move one step closer to the native apps. Finally, owing to the progress on the <a href="https://docs.r-wasm.org/webr/latest/">webR</a> side, it isn’t impossible that one day, we might run a totally offline Shiny app on mobile.</p>
+
+
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/blog\.cynkra\.com\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Except where otherwise noted, content on this blog is licensed under the <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a> licence.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>Blog created with <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer><script async="">
+    // Author: David Granjon (adapted from Mickaël Canouil)
+    // Version: <1.0.0>
+    // Description: Change image src depending on body class (quarto-light or quarto-dark)
+    // License: MIT
+    function isDarkMode() {
+      var bodyClass = window.document.body.classList;
+      return(bodyClass.contains('quarto-dark'))
+    }
+
+    function updateNavbarImage() {
+      var navbarImg = window.document.getElementsByClassName('navbar-logo')[0];
+      var src = navbarImg.src;
+      var newSrc = src;
+      if (!isDarkMode() && src.includes('_dark')) {
+        newSrc = src.replace('_dark', '_light');
+      } else if (isDarkMode() && src.includes('_light')) {
+        newSrc = src.replace('_light', '_dark');
+      }
+      if (newSrc !== src) {
+        navbarImg.src = newSrc;
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      const themeToggle = document.getElementsByClassName("quarto-color-scheme-toggle")[0];
+      themeToggle.addEventListener("click", function() {
+        updateNavbarImage();
+      });
+      if (isDarkMode()) {
+        updateNavbarImage();
+      }
+    });
+</script>
+
+
+</body></html>
