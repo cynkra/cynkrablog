@@ -1,0 +1,301 @@
+---
+layout: post
+title: "2024 road and para-cycling road world championships: preliminaRy analysis"
+image: logo.png
+author: David Granjon
+date: '2024-05-13'
+categories:
+  - shiny
+format: 
+  html:
+    code-fold: 'show'
+filters:
+  - shinylive
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(message = FALSE)
+```
+
+```{r setup, message=FALSE}
+library(gpx)
+library(dplyr)
+library(leaflet)
+library(ggplot2)
+library(patchwork)
+library(rayshader)
+```
+
+From Sept 21 to Sept 29, Zurich will welcome the 2024 road and para-cycling road world [championships](https://zurich2024.com/en/). To mark the occasion, I went to do the 2 first loops ("only" 140km, 1700m elevation) of the Elite Mens circuit that will start from [Winterthur](https://zurich2024.com/en/rennstrecken/winterthur-zurich/) on Sept 29. 273km and 4470m of pure pleasure! I am not sure whether riders will have time to enjoy the view. At least I hope they have a better weather than us.
+
+## Circuit overview
+
+The road circuit is available as GPX [format](https://zurich2024.com/wp-content/uploads/2024/08/GPX-22-Winterthur-Zurich-1.gpx), which can be imported by any route planner like Komoot or Strava ... or R :).
+
+To read this file, we leverage the `gpx` [package](https://www.rdocumentation.org/packages/tmaptools/versions/2.0/topics/read_GPX):
+
+```{r, read-gpx}
+zch_gpx <- read_gpx("GPX-22-Winterthur-Zurich-1.gpx")
+glimpse(zch_gpx)
+```
+
+We obtain a list containing 3 dataframes: `routes`, `tracks` and `waypoints`.
+
+We can plot this on an interactive map, by also showing the starting point and end point of the race located in `zch_gpx$waypoints`. Note that since the last loop goes 7 times around the finish line, the GPS coordinates are duplicated:
+
+```{r, map}
+leaflet(zch_gpx$routes[[1]]) |>
+    addTiles(
+        urlTemplate = "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+        attribution = "&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors &copy; <a href=\"https://carto.com/attributions\">CARTO</a>",
+        options = tileOptions(
+            subdomains = "abcd",
+	        maxZoom = 20
+        )
+    ) |>
+    addPolylines(lat = ~Latitude, lng = ~Longitude, color = "#000000", opacity = 0.8, weight = 3) |>
+    addCircleMarkers(data = zch_gpx$waypoints[1, ], lat = ~Latitude, lng = ~Longitude, color = "#3eaf15", opacity = 0.8, weight = 5, radius = 10, label = "Start of race") |>
+    addCircleMarkers(data = zch_gpx$waypoints[2, ], lat = ~Latitude, lng = ~Longitude, color = "#e73939", opacity = 0.8, weight = 5, radius = 10, label = "End of race") |>
+    addMarkers(
+        lng = 8.64389380440116,
+        lat = 47.5413932128899,
+        icon = list(
+            iconUrl = "https://www.vanuatubeachbar.com/wp-content/uploads/leaflet-maps-marker-icons/mountains.png",
+            iconWidth = 32,
+            iconHeight = 37,
+            iconAnchorX = 0,
+            iconAnchorY = 0
+        ),
+        label = "Buch am Irchel: 4.83km at 4.2% **"
+    ) |>
+    addMarkers(
+        lng = 8.743660245090725,
+        lat = 47.45665840019784,
+        icon = list(
+            iconUrl = "https://www.vanuatubeachbar.com/wp-content/uploads/leaflet-maps-marker-icons/mountains.png",
+            iconWidth = 32,
+            iconHeight = 37,
+            iconAnchorX = 0,
+            iconAnchorY = 0
+        ),
+        label = "Kyburg: 1.28km at 10.3% ****"
+    ) |>
+    addMarkers(
+        lng = 8.624014738015832,
+        lat = 47.351512429613024,
+        icon = list(
+            iconUrl = "https://www.vanuatubeachbar.com/wp-content/uploads/leaflet-maps-marker-icons/mountains.png",
+            iconWidth = 32,
+            iconHeight = 37,
+            iconAnchorX = 0,
+            iconAnchorY = 0
+        ),
+        label = "Maur-Binz: 3.7km at 4.4% **"
+    ) |>
+    addMarkers(
+        lng = 8.607488349080088,
+        lat = 47.36219723777833,
+        icon = list(
+            iconUrl = "https://www.vanuatubeachbar.com/wp-content/uploads/leaflet-maps-marker-icons/mountains.png",
+            iconWidth = 32,
+            iconHeight = 37,
+            iconAnchorX = 0,
+            iconAnchorY = 0
+        ),
+        label = "ZurichbergStrasse/Witikon: 2.63km at 5.3% **"
+    ) |>
+    htmlwidgets::onRender(
+      "function(x, el, data) {
+        var map = this;
+        map.on('click', function(e) {
+        var coord = e.latlng;
+        var lat = coord.lat;
+        var lng = coord.lng;
+        alert('You clicked the map at latitude: ' + lat + ' and       longitude: ' + lng);
+        });
+      }"  
+    )
+```
+
+We displayed the four most difficult climbs:
+
+    - Buch am Irchel: 4.83km at 4.2%.
+    - Kyburg: 1.28km at 10.3%.
+    - Binz: 3.7km at 4.4%.
+    - Witikon: 2.63km at 5.3%.
+
+While those climbs aren't particularly hard, except Kyburg, repeating them 7 times after more than 200km will be certainly challenging.
+
+This map does not say much about the elevation profile. The cumulated positive elevation is obtained by summing the elevation difference between 2 consecutive time points, only taking positive results:
+
+```{r, elevation-gain}
+gain <- 0
+i <- 1
+n_iter <- nrow(zch_gpx$routes[[1]]) - 1
+while (i <= n_iter) {
+    current_elevation <- zch_gpx$routes[[1]][i, "Elevation"]
+    new_elevation <- zch_gpx$routes[[1]][i + 1, "Elevation"]
+    diff <- new_elevation - current_elevation
+    if  (diff > 0) gain <- gain + diff
+    i <- i + 1
+}
+```
+
+```{r, map-elevation}
+race_route <- zch_gpx$routes[[1]] |>
+    filter(Time <= "2023-11-03 09:13:52")
+city_circuit <- zch_gpx$routes[[1]] |>
+    filter(Time > "2023-11-03 09:13:52")
+ggplot() +
+    geom_area(data = race_route, aes(x = Time, y = Elevation), fill = "darkblue") +
+    geom_area(data = city_circuit, aes(x = Time, y = Elevation), fill = "darkred") +
+    labs(
+        title = "Zurich UCI 2024 Elevation profile",
+        subtitle = "men elite race",
+        caption = sprintf("Cumulated elevation: + %sm", round(gain))
+    ) +
+    ylab("Elevation (m)") +
+    theme(
+        axis.title.x = element_blank(),
+        axis.text.x = element_blank(),
+        axis.ticks.x = element_blank()
+    )
+```
+
+As you can, see we never go above 700m and under 350m as lowest point.
+
+We could cumulate both information about elevation and x and y coordinates to get the 3d profile with `rayshader`:
+
+```{r, 3d-profil}
+make_3d_plot <- function(dat, color_col, legend_title, scale = 150) {
+    tmp_3d_plot <- ggplot(dat) + 
+ geom_point(aes(x = Longitude, y = Latitude, color = .data[[color_col]])) + 
+ geom_point(data = zch_gpx$waypoints[2, ], aes(x = Longitude, y = Latitude), color = "blue") +
+ geom_point(data = zch_gpx$waypoints[2, ], aes(x = Longitude, y = Latitude), color = "red") +
+ scale_color_continuous(type = "viridis", limits = c(0, max(dat[[color_col]])), name = legend_title) +
+ theme(
+     axis.title.x = element_blank(),
+     axis.text.x = element_blank(),
+     axis.ticks.x = element_blank(),
+     axis.title.y = element_blank(),
+     axis.text.y = element_blank(),
+     axis.ticks.y = element_blank()
+ )
+ plot_gg(tmp_3d_plot, width = 3.5, multicore = TRUE, windowsize = c(1600, 1000), sunangle = 225, zoom = 0.40, phi = 15, theta = 80, scale = scale)
+render_snapshot()
+}
+
+make_3d_plot(zch_gpx$routes[[1]], "Elevation", "Elevation (m)")
+```
+
+Overall, 4490m for 275km is definitely not the most hilly ride for professional athletes, compared to the amateur Alpen Brevet Platinium, which offers 275km for 8907m elevation, just a tiny bit higher than Mount Everest. Here again, it all depends on the average speed at which this race will go. I personally forsee between 40-42km/h average, depending on the weather conditions (rain, wind, ...). Let's see.
+
+## The ride
+
+### FIT TO CSV
+
+In the below section, we analyse few logs of my ride. I extracted the `fit` file from my bike GPS. The first step is to convert this file to a format that R can read, for instance `csv`. I used this [website](https://gotoes.org/strava/convert_fit_files_to_csv.php), but you can also find cli alternatives like [here](https://developer.garmin.com/fit/fitcsvtool/).
+
+```{r, fit-to-csv, message=FALSE, warning=FALSE}
+# I found this R package but could not make it work
+# Given that it is 5 years old.
+#remotes::install_github("muschellij2/fit2csv")
+res <- readr::read_csv("2024-09-08-063850.csv")
+head(res)
+```
+
+We select only few interesting columns for the analysis and also remove the 43 minutes coffee break we took in the middle of the ride:
+
+```{r, col-select}
+res <- res |>
+    tibble::rowid_to_column() |>
+    mutate(
+        Latitude = position_lat,
+        Longitude = position_long,
+        distance = distance / 1000,
+        timestamp = case_when(rowid >= 9017 ~ timestamp - 43 * 60, .default = timestamp)
+    ) |>
+    select(timestamp, cadence, distance, speed, grade, power, temperature, calories, altitude, Latitude, Longitude)
+```
+
+### Power analysis
+
+The power chart shows that my power is decreasing as time goes. There is an effect of the fatigue but also the weather as the last part of the ride was under heavy rain and we had to adjust the speed not to take too much risks.
+Besides, when looking at the power distribution, we notice that the average power is way below the threshold power (FTP), which is theoretically the power than one can sustain for 1h. For a 5h ride, this makes sense as one wants to save energy to last as long as possible.
+
+```{r, power-time-serie, message=FALSE}
+make_time_plot <- function(dat, col, elevation_scale = 1) {
+    ggplot(dat, aes(x = distance, y = .data[[col]])) +
+    geom_line() +
+    geom_area(aes(x = distance, y = altitude / elevation_scale), alpha = 0.15) +
+    geom_smooth(aes(x = distance, y = .data[[col]])) +
+    geom_hline(yintercept = mean(dat[[col]]), linetype = "dashed", color = "darkred")
+}
+
+make_distrib_plot <- function(dat, col) {
+    ggplot(dat) +
+    geom_histogram(aes(x = .data[[col]])) +
+    geom_vline(xintercept = 250, linetype = "dashed", color = "darkgreen") +
+    geom_vline(xintercept = mean(dat[[col]]), linetype = "dashed", color = "darkred")
+}
+
+power_time <- make_time_plot(res, "power") +
+    annotate(
+        "text",
+        x = 10,
+        y = 400,
+        label = "Average power",
+        fontface = "bold",
+        color = "darkred",
+        size = 4.5
+    ) +
+    ggtitle("Power over time") +
+    xlab("Distance (km)") +
+    ylab("Power (Watts)")
+
+power_distrib <- make_distrib_plot(res, "power") +
+    annotate(
+        "text",
+        x = 310,
+        y = 2500,
+        label = "Threshold power (FTP)",
+        fontface = "bold",
+        color = "darkgreen",
+        size = 2.5
+    ) +
+    annotate(
+        "text",
+        x = mean(res$power) + 20 - 60,
+        y = 2500,
+        label = "Average power",
+        fontface = "bold",
+        color = "darkred",
+        size = 2.5
+    ) +
+    theme(
+     axis.title.y = element_blank(),
+     axis.text.y = element_blank(),
+     axis.ticks.y = element_blank()
+    ) +
+    ggtitle("Power distribution") +
+    xlab("Power (Watts)")
+
+power_time / power_distrib + plot_annotation(
+  title = "Power data",
+  subtitle = "Elevation data shown in the background",
+  caption = "More about power: https://support.strava.com/hc/en-us/articles/216918457-Power"
+)
+```
+
+### Speed
+
+```{r, speed-ts}
+library(ggside)
+make_time_plot(res, "speed", elevation_scale = 10) +
+    ylab("Speed (km/h)") +
+    xlab("Distance (km)")
+```
+
+### Calories
+
+During that ride, I smoked about `r res[nrow(res), "calories"]` calories, which corresponds to the average daily energy needs for an adult man.
