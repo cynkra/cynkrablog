@@ -161,7 +161,7 @@ leaflet(zch_gpx$routes[[1]]) |>
         var coord = e.latlng;
         var lat = coord.lat;
         var lng = coord.lng;
-        alert('You clicked the map at latitude: ' + lat + ' and       longitude: ' + lng);
+        console.log('You clicked the map at latitude: ' + lat + ' and       longitude: ' + lng);
         });
       }"  
     )
