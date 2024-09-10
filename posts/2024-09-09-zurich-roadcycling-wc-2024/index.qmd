@@ -218,7 +218,7 @@ ggplot() +
     )
 ```
 
-As you can see, we never go above 700m and under 350m as the lowest point.
+As you can see, altough the race never goes above 700m, we manage to reach 4500m elevation gain.
 
 ### A 3D elevation profile with rayshader
 
@@ -270,6 +270,9 @@ p
 
 <img src="./rgl-profile.png" alt="rgl profile of the race" width="100%">
 
+On the left, you can notice the steepest climb (Kyburg), that connects the two loops. I highly recommend you to play around locally so you can try out different angles and explore
+the different parts.
+
 Overall, 4490m for 275km is definitely not the most hilly ride for professional athletes, compared to the amateur Alpen Brevet Platinium, which offers 275km for 8907m elevation, just a tiny bit higher than __Mount Everest__. Here again, it all depends on the average speed at which this race will go. I personally expect a value between 40-42km/h, depending on the weather conditions (rain, wind, ...). Let's see ...
 
 ## The ride
@@ -286,7 +289,7 @@ res <- readr::read_csv("2024-09-08-063850.csv")
 head(res)
 ```
 
-We select only few interesting columns for the analysis and also remove the 43 minutes coffee break we took in the middle of the ride in Kyburg's castle:
+We select only few interesting columns for the analysis and also remove the 43 minutes coffee break we took in the middle of the ride in Kyburg's [castle](https://www.myswitzerland.com/en-ch/experiences/kyburg-castle-museum/):
 
 ```{r, col-select}
 res <- res |>
@@ -302,7 +305,7 @@ res <- res |>
 
 ### Data summary
 
-Below are some continuous variable summary using `gtsummary`. Notice the maximum gradient which was 18.2%! The overall ride has a 1.1% grade, which means there is more climbings than downhills.
+Below are some __continuous__ variable summary using `gtsummary`. Notice the maximum gradient which was __18.2%__! The overall ride has a 1.1% grade, which means there is more climbings than downhills.
 
 ```{r, ride-summary}
 res |> 
@@ -326,18 +329,17 @@ __Power__ measures how much __work__ is done at a given time (in our case, on th
 P = Strength x velocity
 ```
 
-There are 2 ways to rise the power. At low __velocity__ by putting more strength or increase the velocity while applying the same strength.
+There are 2 ways to rise the power. At low __velocity__ by putting more __strength__ or increase the velocity while applying the same strength.
 
 In cycling, we also calculate the  __Power/Body Weight__ ratio, as from physiological point of view, the more muscles, the more theoritical power. This is important in the climbs, where, because of the gravity, the weight becomes more important as the gradient increases. Therefore, taking cyclist 1 (bodyweight + bike 60kg) and cyclist 2 (bodyweight + bike 90kg) side by side on the same climb with similar bikes, cyclist 2 has to produce more power to climb at the same speed as cyclist 1.
 
-Therefore, a 58kg pro cyclist climber and 100kg pro track cyclist may have similar power ratio for a given duration, even though the former will be better for longer efforts. Talking about power without considering the effort __duration__ does not make much sense. World class women cyclist can sustain > 19W/kg during 5s (1360 for a 70kg athlete), men cyclist can sustain 24 W/kg during 5 seconds (2160W output for 90kg).
+Therefore, a 58kg pro cyclist climber and 100kg pro track cyclist may have similar power ratio for a given duration, even though the former will likely be better at longer efforts. Talking about power without considering the effort __duration__ does not make much sense. World class women cyclists can sustain > 19W/kg during 5s (1360 for a 70kg athlete), men cyclists can sustain 24 W/kg during 5 seconds (2160W output for 90kg).
 
 We won't have time to cover all the theory, but keep in mind that knowing your __threshold power__ (FTP) is critical for successful training. This is the power you can theoretically sustain for 1h. Based on this, one can establish __power zones__ to plan the training. For profesional riders, FTP are respectively > 5W/kg for women and > 5.8 W/kg for men. You can find more [here](https://www.highnorth.co.uk/articles/power-profiling-cycling).
 
 #### Results
 
-To proceed, we create a plot showing the __power__ as a function of the __distance__. We also
-add the elevation profile in the background with `geom_area()` with a rather transparent alpha setting, so the user can focus on the power data. We add some `geom_smooth()` to see the relation between the power and distance ()`power ~ distance`) and display the mean power on an horizontal line with `geom_hline()`. On the second plot, we want to show the power distribution and leverage `geom_histogram`, the idea being to compare the mean power to the threshold power.
+To proceed, we create a plot showing the __power__ as a function of the __distance__. We also add the elevation profile in the background with `geom_area()` with a rather transparent alpha setting, so the user can focus on the power data. We add some `geom_smooth()` to see the relation between the power and distance ()`power ~ distance`) and display the mean power on an horizontal line with `geom_hline()`. On the second plot, we want to show the power __distribution__ and leverage `geom_histogram`, the idea being to compare the mean power to the threshold power.
 
 The power chart shows that my power is decreasing over time, not a surprise. There is an effect of the __fatigue__ but also the __weather__ conditions, as the last part of the ride was in the city and under heavy rain and we had to adjust the speed not to take too much risks. Besides, when looking at the power distribution, we notice that the average power is significantly below my threshold power (FTP), which is my theoretical maximum power for 1h. For a 5h ride, this makes sense as one wants to save energy to last as long as possible.
 
@@ -414,7 +416,7 @@ make_time_plot(res, "speed", elevation_scale = 10) +
     xlab("Distance (km)")
 ```
 
-The ride was covered at `27.2km/h` average speed on an open road with wind and rain, definitely not the best conditions.
+The ride was covered at 27km/h average speed on an open road with wind and rain, definitely not the best conditions.
 
 Interestingly, I found this nice [article](https://www.gribble.org/cycling/power_v_speed.html) about the relation between power and speed. Overall, the simulator predicts 150W to maintain an average speed of 27km/h with a 0.5% gradient coefficient, not far from what we have here. It's rather challenging to account for the wind, as it can sometimes help or makes things more challenging.
 
