@@ -78,7 +78,7 @@ function(x, el, data) {
 }
 ```
 
-I then copied the results and passed them to `addMarkers()`. I faced somes challenges while trying to get the markers render well when zooming in and out. Be careful to fix the X an Y anchors and specify the size of the icon you use:
+I then copied the results and passed them to `addMarkers()`. I faced some challenges while trying to get the markers render well when zooming in and out. Be careful to fix the X and Y anchors and specify the size of the icon you use:
 
 ```r
 icon = list(
@@ -218,11 +218,11 @@ ggplot() +
     )
 ```
 
-As you can, see we never go above 700m and under 350m as lowest point.
+As you can see, we never go above 700m and under 350m as the lowest point.
 
 ### A 3D elevation profile with rayshader
 
-We could cumulate both information about elevation and x and y coordinates to get the __3D profile__ with [`rayshader`](https://www.rayshader.com/). The `make_3d_plot` function first creates a `ggplot` object using coordinates and `color_col` as color aesthetic. We set `color_col` to `Elevation` and hide the x and y axis information (as they won't be very useful). Could you guess where is `(47.5, 8.4)`? Probably not :). This plot object is passed to `plot_gg`, to proceed to the 3D conversion.
+We could cumulate both information about elevation and x and y coordinates to get the __3D profile__ with [`rayshader`](https://www.rayshader.com/). The `make_3d_plot` function first creates a `ggplot` object using coordinates and `color_col` as color aesthetic. We set `color_col` to `Elevation` and hide the x and y axis information (as they won't be very useful). Could you guess where `(47.5, 8.4)` is? Probably not :). This plot object is passed to `plot_gg`, to proceed to the 3D conversion.
 
 ```{r, 3d-profil}
 make_3d_plot <- function(dat, color_col, legend_title, scale = 150) {
