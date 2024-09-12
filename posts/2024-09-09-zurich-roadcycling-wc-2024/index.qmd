@@ -171,7 +171,7 @@ While the main climbs aren't particularly difficult, except Kyburg, repeating th
 
 <blockquote class="mycols-embed-col"><p lang="en"><a href="https://mycols.app/col/buch-am-irchel-berg-am-irchel" target="_blank">Buch am Irchel</a>, Berg Am Irchel, Switzerland</p>&bull; Distance: 4.8 km, Elevation: 201 m, Avg. Grade: 4.3 %</blockquote><script async src="https://mycols.app/js/embed.js" charset="utf-8"></script>
 
-As a side note, the current GPX file indicates a duration of `r max(zch_gpx$routes[[1]]$Time) - min(zch_gpx$routes[[1]]$Time)` hours, which gives roughly 35km/h average speed, substantially lower than what the pro will do during the race.
+As a side note, the current GPX file indicates a duration of `r round(max(zch_gpx$routes[[1]]$Time) - min(zch_gpx$routes[[1]]$Time))` hours, which gives roughly 35km/h average speed, substantially lower than what the pro will do during the race.
 
 ```{r, circuit-duration}
 duration <- max(zch_gpx$routes[[1]]$Time) - min(zch_gpx$routes[[1]]$Time)
@@ -194,6 +194,8 @@ while (i <= n_iter) {
     i <- i + 1
 }
 ```
+
+Note that the website gain is officially 4470m whereas ours is `r round(gain)`m. This difference might be explained by the usage of different __smoothing algorithms__ for the [elevation](https://support.strava.com/hc/en-us/articles/216919447-Elevation). Funnily, we all had different bike computers and none of us had the same elevation result at the end of the ride.
 
 We split the trace into 2 parts. The first loop takes place around Winterthur, north of Zurich. Then, a transition leads to the __city loop__, which is repeated 7 times.
 
@@ -225,7 +227,7 @@ As you can see, altough the race never goes above 700m, we manage to reach 4500m
 We could cumulate both information about elevation and x and y coordinates to get the __3D profile__ with [`rayshader`](https://www.rayshader.com/). The `make_3d_plot` function first creates a `ggplot` object using coordinates and `color_col` as color aesthetic. We set `color_col` to `Elevation` and hide the x and y axis information (as they won't be very useful). Could you guess where `(47.5, 8.4)` is? Probably not :). This plot object is passed to `plot_gg`, to proceed to the 3D conversion.
 
 ```{r, 3d-profil}
-make_3d_plot <- function(dat, color_col, legend_title, scale = 150) {
+make_3d_plot <- function(dat, color_col, legend_title, scale = 150, show_legend = TRUE) {
     tmp_3d_plot <- ggplot(dat) + 
  geom_point(aes(x = Longitude, y = Latitude, color = .data[[color_col]])) +
  scale_color_continuous(type = "viridis", limits = c(0, max(dat[[color_col]])), name = legend_title) +
@@ -235,13 +237,14 @@ make_3d_plot <- function(dat, color_col, legend_title, scale = 150) {
      axis.ticks.x = element_blank(),
      axis.title.y = element_blank(),
      axis.text.y = element_blank(),
-     axis.ticks.y = element_blank()
+     axis.ticks.y = element_blank(),
+     legend.position = if (!show_legend) "none"
  )
  plot_gg(tmp_3d_plot, width = 3.5, multicore = TRUE, windowsize = c(1600, 1000), sunangle = 225, zoom = 0.40, phi = 15, theta = 80, scale = scale)
 render_snapshot()
 }
 
-make_3d_plot(zch_gpx$routes[[1]], "Elevation", "Elevation (m)")
+make_3d_plot(zch_gpx$routes[[1]], "Elevation", "Elevation (m)", show_legend = FALSE)
 ```
 
 Wouldn't it be nice to be able to move the plot around and have different angles? We can do this with the help of [`ggrgl`](https://coolbutuseless.github.io/package/ggrgl/articles/geom-path-3d.html), particularly the `geom_path_3d()`. We extract some Zurich's canton cities and project them on the map with `geom_point()` and `geom_text()` to add annotations. Since this plot does not render with quarto, we included an image after the code.
