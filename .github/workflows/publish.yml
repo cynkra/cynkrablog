@@ -25,7 +25,7 @@ jobs:
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: |
-            posit-dev/r-shinylive
+            posit-dev/r-shinylive@tgz-packages
             any::knitr
             any::rmarkdown
             any::downlit
