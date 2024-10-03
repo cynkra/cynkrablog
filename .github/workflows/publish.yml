@@ -31,6 +31,8 @@ jobs:
             any::downlit
             any::xml2
             any::shinyMobile
+            BristolMyersSquibb/blockr@v0.0.2.9023
+            any::pracma
           cache-version: 2
 
       - name: Render Quarto Project
