@@ -15,7 +15,7 @@ filters:
 
 ![](https://avatars.githubusercontent.com/u/145758851?s=400&u=1545a34095e8e84f5cb2b292b1e900df59ba7239&v=4){width=25% fig-align="center"}
 
-Since 2023, [BristolMyersSquibb](https://www.bms.com/), the Y [company](https://the-y-company.com/) and [cynkra](cynkra.com) have teamed up to develop a novel __no-code__ solution for R.
+Since 2023, [BristolMyersSquibb](https://www.bms.com/), the Y [company](https://the-y-company.com/) and [cynkra](https://cynkra.com) have teamed up to develop a novel __no-code__ solution for R.
 
 ```{r, setup}
 library(blockr)
