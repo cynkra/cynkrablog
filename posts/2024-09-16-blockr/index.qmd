@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Introducing blockr: a no-code dashboard builder for R"
-image: logo.png
+image: https://avatars.githubusercontent.com/u/145758851?s=400&u=1545a34095e8e84f5cb2b292b1e900df59ba7239&v=4
 author: David Granjon
 date: '2024-09-16'
 categories:
