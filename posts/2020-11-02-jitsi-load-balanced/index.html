@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.9">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -72,11 +72,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-3d3a3f531f1be4526fdd4068b34a2ee6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-a830fe05c40437511722e23bd7ea26de.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-f26e8279ad02a49a09548a4b3c071cf8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
@@ -243,7 +243,7 @@ Photo by Chuttersnap
 <p>At cynkra, while we have been running our own Jitsi instance quite happily for some months, there was a slightly challenging task coming up: hosting a virtual meeting for approximately 100 participants.</p>
 <section id="the-challenge" class="level2">
 <h2 class="anchored" data-anchor-id="the-challenge">The Challenge</h2>
-<p>cynkra actively supports the local <a href="https://www.meetup.com/Zurich-R-User-Group/">Zurich R User Group</a>. For one of their <a href="https://www.meetup.com/Zurich-R-User-Group/events/273910283/">recent meetings</a>, about 100 people RSVP’ed.</p>
+<p>cynkra actively supports the local <a href="https://www.meetup.com/Zurich-R-User-Group/">Zurich R User Group</a>. For one of their <a href="https://www.meetup.com/Zurich-R-User-Group">recent meetings</a>, about 100 people RSVP’ed.</p>
 <p>When browsing the load capabilities of a single Jitsi instance, we found that the stock setup begins to experience some challenges at around 35 people and fails at around 70 people. The limiting factor appears to be the “videobridge”. One solution is to add a second videobridge to the Jitsi instance. Jitsi can then distribute the load and should be able to host more than 100 people in a meeting.</p>
 <p>The best approach is to deploy the second videobridge on a new instance to avoid running into CPU limitations on the main machine. While there is a <a href="https://github.com/jitsi/jitsi-meet/wiki/jitsi-meet-load-balancing-installation-Ubuntu-18.04-with-MUC-and-JID">guide</a> in the Jitsi Wiki and a <a href="https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-videotutorials#how-to-load-balance-jitsi-meethttpsjitsiorgblogtutorial-video-how-to-load-balance-jitsi-meet">video</a> that explains how to do it, many people still struggle (<a href="https://github.com/jitsi/docker-jitsi-meet/issues/372">1</a>, <a href="https://community.jitsi.org/t/how-can-i-add-extra-jvb-in-docker-meet/30911/36">2</a>) to get this set up successfully.</p>
 <p>Hence, we thought it would be valuable to take another, hopefully simple and understandable stab at explaining this task to the community.</p>
