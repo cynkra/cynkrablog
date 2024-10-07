@@ -95,7 +95,62 @@ stack <- new_stack(
 serve_stack(stack)
 ```
 
-TBD: add workspace example to connect stacks
+#### Toward more complex analysis
+
+Let's consider this [dataset](https://www.kaggle.com/datasets/heesoo37/120-years-of-olympic-history-athletes-and-results?select=athlete_events.csv), which contains 120 years of olympics athletes data until Rio in 2016. In the below kitchen sink, we first add an upload block:
+
+1. Download the [dataset](https://www.kaggle.com/datasets/heesoo37/120-years-of-olympic-history-athletes-and-results?select=athlete_events.csv) file locally.
+2. CLick on `Add stack`.
+3. Click on the stack `+` button and search for `browser`, then select the `new_filesbrowser_block`.
+4. Uncollapse the stack by click on the top right arrow icon. This makes the upload block file input visible.
+5. Click on `File select` and select the downloaded file at step 1 (`athlete_events.csv`).
+6. As we obtain a csv file, we must parse it with a `new_csv_block`. Repeat step 3 to add the `new_csv_block`. The table is `271116` rows and `15` columns.
+7. Add a `new_filter_block` and select `Sex` as column and then `F` in the values input. We leave the comparison to `==` and click on the `Run` button. Notice we now have 74522 rows.
+8. Add a `new_mutate_block` with the following expression: `birth_year = Year - Age` (this gives us an approximate birth year). Click on submit.
+
+From now on, we leave the first stack as is and will reuse it in other stacks. We want to display the average height distribution for female athletes. Let's do it below.
+
+9. Create a new stack by clicking on `Add stack`.
+10. Add it a `new_result_block`. This allows to import the data from the first stack (and potentially any stack from the dashboard). If you don't see any data, select another stack name from the dropdown menu.
+11. Add a `new_ggplot_block`, leave `x` as default function and select `Height` as variable in the columns input.
+12. Add a `new_geomhistogram_block`. Now we have our distribution plot.
+
+Alternatively, you could remove the 2 plot blocks and add a `new_summarize_block` using `mean` as function and `Height` as column (result: 168 cm).
+
+In the following, we create a look-up table to be able to retrieve the athlete names based on their `ID`.
+
+13. Create a new stack.
+14. Add a result block to import data from the very first stack.
+15. Add a `new_select_block` and only select `ID`, `Name`, `birth_year`, `Team` and `Sport` as columns.
+
+Our goal is now to find which athlete did 2 or more different sports.
+
+16. Create a new stack.
+17. Add a result block to import data from the very first stack.
+18. Add a `new_filter_block` , select `Medal` as column, `!=` as comparison operator and leave the value empty. Click on run, which will only get athletes with medals.
+19. Add a `new_group_by_block`, grouping by `ID` (as some athletes have the same name).
+20. Add a `new_summarize_block` by choising the function `n_distinct` applied on the `Sport` columns.
+21. Add a `new_filter_block` , select `N_DISTINCT` as column, `>=` as comparison operator and set the value to 2. Click on run. This gives us the athletes that are doing 2 sports or more.
+22. Add a `new_join_block`. Select `left_join` as join function, select the third stack (lookup table) as join table and `ID` as column.
+23. Add a `new_arrange_block` for the `birth_year` column.
+
+As a conclusion, Hjrdis Viktoria Tpel (1904) was the first recorded athlete to compete in 2 different sports, swimming and diving for Sweden. Lauryn Chenet Williams (1984) is the latest for US with Athletics and Bobsleigh. It's actually quite amazing to see people competing in two quite unrelated sports like swimming and handbain the case of Roswitha Krause.
+
+```{shinylive-r}
+#| standalone: true
+#| components: [viewer]
+#| column: screen-inset-shaded
+#| viewerHeight: 800
+webr::install("blockr", repos = "https://bristolmyerssquibb.github.io/webr-repos/")
+webr::install("blockr.ggplot2", repos = "https://bristolmyerssquibb.github.io/webr-repos/")
+
+library(blockr)
+library(blockr.ggplot2)
+
+options(shiny.maxRequestSize = 100*1024^2)
+do.call(set_workspace, args = list(title = "My workspace"))
+serve_workspace(clear = FALSE)
+```
 
 As an end-user, you are not supposed to write code. As such, if you think anything is missing, you can open an issue [here](https://github.com/BristolMyersSquibb/blockr/issues), or ask any developer you are working with to create new blocks. This leads us to the second part of this blog post ... How to use blockr as a developers?
 
