@@ -117,11 +117,64 @@ stack &lt;- new_stack(
   layer_block = new_geompoint_block("species", "species")
 )
 serve_stack(stack)</code></pre>
-<p>TBD: add workspace example to connect stacks</p>
+<section id="toward-more-complex-analysis" class="level4"><h4 class="anchored" data-anchor-id="toward-more-complex-analysis">Toward more complex analysis</h4>
+<p>Let’s consider this <a href="https://www.kaggle.com/datasets/heesoo37/120-years-of-olympic-history-athletes-and-results?select=athlete_events.csv">dataset</a>, which contains 120 years of olympics athletes data until Rio in 2016. In the below kitchen sink, we first add an upload block:</p>
+<ol type="1">
+<li>Download the <a href="https://www.kaggle.com/datasets/heesoo37/120-years-of-olympic-history-athletes-and-results?select=athlete_events.csv">dataset</a> file locally.</li>
+<li>CLick on <code>Add stack</code>.</li>
+<li>Click on the stack <code>+</code> button and search for <code>browser</code>, then select the <code>new_filesbrowser_block</code>.</li>
+<li>Uncollapse the stack by click on the top right arrow icon. This makes the upload block file input visible.</li>
+<li>Click on <code>File select</code> and select the downloaded file at step 1 (<code>athlete_events.csv</code>).</li>
+<li>As we obtain a csv file, we must parse it with a <code>new_csv_block</code>. Repeat step 3 to add the <code>new_csv_block</code>. The table is <code>271116</code> rows and <code>15</code> columns.</li>
+<li>Add a <code>new_filter_block</code> and select <code>Sex</code> as column and then <code>F</code> in the values input. We leave the comparison to <code>==</code> and click on the <code>Run</code> button. Notice we now have 74522 rows.</li>
+<li>Add a <code>new_mutate_block</code> with the following expression: <code>birth_year = Year - Age</code> (this gives us an approximate birth year). Click on submit.</li>
+</ol>
+<p>From now on, we leave the first stack as is and will reuse it in other stacks. We want to display the average height distribution for female athletes. Let’s do it below.</p>
+<ol start="9" type="1">
+<li>Create a new stack by clicking on <code>Add stack</code>.</li>
+<li>Add it a <code>new_result_block</code>. This allows to import the data from the first stack (and potentially any stack from the dashboard). If you don’t see any data, select another stack name from the dropdown menu.</li>
+<li>Add a <code>new_ggplot_block</code>, leave <code>x</code> as default function and select <code>Height</code> as variable in the columns input.</li>
+<li>Add a <code>new_geomhistogram_block</code>. Now we have our distribution plot.</li>
+</ol>
+<p>Alternatively, you could remove the 2 plot blocks and add a <code>new_summarize_block</code> using <code>mean</code> as function and <code>Height</code> as column (result: 168 cm).</p>
+<p>In the following, we create a look-up table to be able to retrieve the athlete names based on their <code>ID</code>.</p>
+<ol start="13" type="1">
+<li>Create a new stack.</li>
+<li>Add a result block to import data from the very first stack.</li>
+<li>Add a <code>new_select_block</code> and only select <code>ID</code>, <code>Name</code>, <code>birth_year</code>, <code>Team</code> and <code>Sport</code> as columns.</li>
+</ol>
+<p>Our goal is now to find which athlete did 2 or more different sports.</p>
+<ol start="16" type="1">
+<li>Create a new stack.</li>
+<li>Add a result block to import data from the very first stack.</li>
+<li>Add a <code>new_filter_block</code> , select <code>Medal</code> as column, <code>!=</code> as comparison operator and leave the value empty. Click on run, which will only get athletes with medals.</li>
+<li>Add a <code>new_group_by_block</code>, grouping by <code>ID</code> (as some athletes have the same name).</li>
+<li>Add a <code>new_summarize_block</code> by choising the function <code>n_distinct</code> applied on the <code>Sport</code> columns.</li>
+<li>Add a <code>new_filter_block</code> , select <code>N_DISTINCT</code> as column, <code>&gt;=</code> as comparison operator and set the value to 2. Click on run. This gives us the athletes that are doing 2 sports or more.</li>
+<li>Add a <code>new_join_block</code>. Select <code>left_join</code> as join function, select the third stack (lookup table) as join table and <code>ID</code> as column.</li>
+<li>Add a <code>new_arrange_block</code> for the <code>birth_year</code> column.</li>
+</ol>
+<p>As a conclusion, Hjrdis Viktoria Tpel (1904) was the first recorded athlete to compete in 2 different sports, swimming and diving for Sweden. Lauryn Chenet Williams (1984) is the latest for US with Athletics and Bobsleigh. It’s actually quite amazing to see people competing in two quite unrelated sports like swimming and handbain the case of Roswitha Krause.</p>
+<pre class="shinylive-r" data-engine="r"><code>#| '!! shinylive warning !!': |
+#|   shinylive does not work in self-contained HTML documents.
+#|   Please set `embed-resources: false` in your metadata.
+#| standalone: true
+#| components: [viewer]
+#| column: screen-inset-shaded
+#| viewerHeight: 800
+webr::install("blockr", repos = "https://bristolmyerssquibb.github.io/webr-repos/")
+webr::install("blockr.ggplot2", repos = "https://bristolmyerssquibb.github.io/webr-repos/")
+
+library(blockr)
+library(blockr.ggplot2)
+
+options(shiny.maxRequestSize = 100*1024^2)
+do.call(set_workspace, args = list(title = "My workspace"))
+serve_workspace(clear = FALSE)</code></pre>
 <p>As an end-user, you are not supposed to write code. As such, if you think anything is missing, you can open an issue <a href="https://github.com/BristolMyersSquibb/blockr/issues">here</a>, or ask any developer you are working with to create new blocks. This leads us to the second part of this blog post … How to use blockr as a developers?</p>
-</section><section id="as-a-developer" class="level3"><h3 class="anchored" data-anchor-id="as-a-developer">As a developer</h3>
+</section></section><section id="as-a-developer" class="level3"><h3 class="anchored" data-anchor-id="as-a-developer">As a developer</h3>
 <p>How to install it:</p>
-<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">pak</span><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -136,7 +189,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 <p>blockr can’t provide any single data manipulation or visualization block. That’s the reason why we made it easily <strong>extensible</strong>. You can get an introduction to blockr for developers <a href="https://bristolmyerssquibb.github.io/blockr/articles/blockr.html#blockr-for-developers">here</a>.</p>
 <p>In the following, we create an ordinary differential equations solver block using the pracma package. We choose the Lorenz <a href="https://en.wikipedia.org/wiki/Lorenz_system">attractor</a>. With R, equations may be written as:</p>
-<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">lorenz</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -300,7 +353,7 @@ font-style: inherit;">}</span></span></code></pre></div>
 </section><section id="add-interactivity-with-the-fields" class="level3"><h3 class="anchored" data-anchor-id="add-interactivity-with-the-fields">Add interactivity with the <strong>fields</strong>
 </h3>
 <p>We want to add interactivity on the 3 different parameters. Hence, we create our new block function with 3 <strong>fields</strong> inside a list. Since the expected values are numbers, we leverage the <code>new_numeric_field</code>. Parameters are only explicitly shown for the first field:</p>
-<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">new_ode_block</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -403,13 +456,13 @@ font-style: inherit;">}</span></span></code></pre></div>
 <p>As you may imagine, these fields are subsequently translated into shiny inputs, that is <code>numericInput</code> in our example. If you face a situation where you need to implement a custom field, not included in blockr, you can read this <a href="https://bristolmyerssquibb.github.io/blockr/articles/new-field.html">vignette</a>.</p>
 </section><section id="create-the-block-expression" class="level3"><h3 class="anchored" data-anchor-id="create-the-block-expression">Create the block expression</h3>
 <p>As next step, we <strong>instantiate</strong> our block with the <code>new_block</code> blockr <strong>constructor</strong>:</p>
-<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><span class="fu" style="color: #4758AB;
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">new_block</span>(</span>
-<span id="cb9-2">  <span class="at" style="color: #657422;
+<span id="cb10-2">  <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">fields =</span> fields,</span>
-<span id="cb9-3">  <span class="at" style="color: #657422;
+<span id="cb10-3">  <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">expr =</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -418,23 +471,23 @@ background-color: null;
 font-style: inherit;">&lt;</span>EXPR<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">&gt;</span>),</span>
-<span id="cb9-4">  ...,</span>
-<span id="cb9-5">  <span class="at" style="color: #657422;
+<span id="cb10-4">  ...,</span>
+<span id="cb10-5">  <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">class =</span> <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">&lt;</span>CLASSES<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">&gt;</span>,</span>
-<span id="cb9-6">  <span class="at" style="color: #657422;
+<span id="cb10-6">  <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">submit =</span> <span class="cn" style="color: #8f5902;
 background-color: null;
 font-style: inherit;">FALSE</span></span>
-<span id="cb9-7">)</span></code></pre></div>
+<span id="cb10-7">)</span></code></pre></div>
 <p>A block is composed of fields, a quoted <strong>expression</strong> which involved fields (to delay the evaluation), somes <strong>classes</strong> which control the block behavior, and extra parameters passed with <code>...</code>. Finally, <code>submit</code> allows to delay the block evaluation by requiring the user to click on a submit button (FALSE by default). This prevents from triggering unwanted intensive computations.</p>
 <p>In our example, the expression calls the <code>ode45</code> function. Notice the usage of <code>substitute</code> to inject the <code>lorenz</code> function within the expression. This is necessary since <code>lorenz</code> is defined outside of the expression, and using <code>quote</code> would fail. Fields are invoked with <code>.(field_name)</code>, a rather strange notation, required by <code>bquote</code> to process the expression. It is not mandory to understand this technical underlying detail, but this standard must be respected. You may also notice that some parameters like the initial conditions <code>y0</code> or time values are hardcoded. We leave the reader to transform them into fields, as an exercise:</p>
-<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;"><a href="https://bristolmyerssquibb.github.io/blockr/reference/new_block.html">new_block</a></span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -557,7 +610,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 </section><section id="add-the-right-classes" class="level3"><h3 class="anchored" data-anchor-id="add-the-right-classes">Add the right classes</h3>
 <p>We give our block 2 classes, namely <code>ode_block</code> and <code>data_block</code>:</p>
 <div class="cell">
-<details open="" class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+<details open="" class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">new_ode_block</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -782,7 +835,7 @@ font-style: inherit;">}</span></span></code></pre></div>
 </details>
 </div>
 <p>As explained earlier, they are required to control the block behavior, as blockr is build with <a href="https://adv-r.hadley.nz/s3.html">S3</a>. For instance, <code>data_block</code> have a specific <strong>evaluation</strong> method, to calculate the expression:</p>
-<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">evaluate_block.data_block</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -843,7 +896,7 @@ font-style: inherit;">)</span></span>
 background-color: null;
 font-style: inherit;">}</span></span></code></pre></div>
 <p>where <code>generate_code</code> processes the block code. <strong>Data</strong> blocks are considered as entry point blocks, as opposed to <strong>transformation</strong> blocks, that operate on data. Therefore, you may easily understand that the evaluation method for a transform block requires to pass the data from the previous block with <code>%&gt;%</code>:</p>
-<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+<div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">evaluate_block.block</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1049,7 +1102,7 @@ serve_stack(stack)</code></pre>
 </div>
 <p>To get an overview of all available blocks within the blockr core package, we call <code>get_registry</code>:</p>
 <div class="cell">
-<details open="" class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details open="" class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;"><a href="https://bristolmyerssquibb.github.io/blockr/reference/get_registry.html">get_registry</a></span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1113,7 +1166,7 @@ font-style: inherit;">)</span></span></code></pre></div>
 <p>This function returns a dataframe containing information about blocks such as their constructors, like <code>new_ode_block</code>, the description, the category (data, transform, plot … this is user defined), classes, accepted input, returned output and package.</p>
 <p>To register a block we call <code>register_block</code> (or <code>register_blocks</code> for multiple blocks):</p>
 <div class="cell">
-<details open="" class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb17" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+<details open="" class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb18" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">register_my_blocks</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1193,7 +1246,7 @@ font-style: inherit;">}</span></span></code></pre></div>
 </div>
 <p>where <code>&lt;YOUR_PACKAGE&gt;</code> must be replaced by your real package name.</p>
 <p>Within a <code>zzz.R</code> script, you can ensure to register any block when the package loads with a <strong>hook</strong>:</p>
-<div class="sourceCode" id="cb18" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+<div class="sourceCode" id="cb19" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">.onLoad</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1232,7 +1285,7 @@ background-color: null;
 font-style: inherit;">}</span></span></code></pre></div>
 <p>After the registration, you can check whether the registry is updated, by looking at the ode block:</p>
 <div class="cell">
-<details open="" class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb19" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+<details open="" class="code-fold"><summary>Code</summary><div class="sourceCode" id="cb20" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">register_my_blocks</span><span class="op" style="color: #5E5E5E;
 background-color: null;
