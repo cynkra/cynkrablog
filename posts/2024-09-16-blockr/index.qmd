@@ -42,12 +42,13 @@ blockr has a its own __validation__ system. For instance, using the below exampl
 
 You can dynamically add blocks to a current __stack__, that gathers a set of related blocks. You can think a stack as a data analysis __recipe__ as in cooking, where blocks are instructions. To add a new block, you can click on the `+` icon on the stack top right corner. This opens a sidebar on the left side, where one may search for blocks that are compatible with the current state of the pipeline. With an empty stack, only entry point blocks are suggested, so you can import data. Then, after clicking on the block, the suggestion list changes so you can, for instance, filter data or select only a subset of columns, and much more.
 
+:::{.column-page}
 ```{shinylive-r}
 #| standalone: true
 #| components: [viewer]
 #| column: screen-inset-shaded
 #| viewerHeight: 800
-webr::install("blockr", repos = "https://bristolmyerssquibb.github.io/webr-repos/")
+webr::install("blockr", repos = c("https://bristolmyerssquibb.github.io/webr-repos", "https://repo.r-wasm.org"))
 
 library(blockr)
 library(palmerpenguins)
@@ -94,6 +95,7 @@ stack <- new_stack(
 )
 serve_stack(stack)
 ```
+:::
 
 #### Toward more complex analysis
 
@@ -136,13 +138,14 @@ Our goal is now to find which athlete did 2 or more different sports.
 
 As a conclusion, Hjrdis Viktoria Tpel (1904) was the first recorded athlete to compete in 2 different sports, swimming and diving for Sweden. Lauryn Chenet Williams (1984) is the latest for US with Athletics and Bobsleigh. It's actually quite amazing to see people competing in two quite unrelated sports like swimming and handbain the case of Roswitha Krause.
 
+:::{.column-screen-inset}
 ```{shinylive-r}
 #| standalone: true
 #| components: [viewer]
 #| column: screen-inset-shaded
 #| viewerHeight: 800
-webr::install("blockr", repos = "https://bristolmyerssquibb.github.io/webr-repos/")
-webr::install("blockr.ggplot2", repos = "https://bristolmyerssquibb.github.io/webr-repos/")
+webr::install("blockr", repos = c("https://bristolmyerssquibb.github.io/webr-repos", "https://repo.r-wasm.org"))
+webr::install("blockr.ggplot2", repos = c("https://bristolmyerssquibb.github.io/webr-repos", "https://repo.r-wasm.org"))
 
 library(blockr)
 library(blockr.ggplot2)
@@ -151,6 +154,7 @@ options(shiny.maxRequestSize = 100*1024^2)
 do.call(set_workspace, args = list(title = "My workspace"))
 serve_workspace(clear = FALSE)
 ```
+:::
 
 As an end-user, you are not supposed to write code. As such, if you think anything is missing, you can open an issue [here](https://github.com/BristolMyersSquibb/blockr/issues), or ask any developer you are working with to create new blocks. This leads us to the second part of this blog post ... How to use blockr as a developers?
 
@@ -289,6 +293,7 @@ If you want to build a plot block and plot layers blocks, you would have to desi
 
 ### Demo
 
+:::{.column-screen-inset}
 ```{shinylive-r}
 #| standalone: true
 #| components: [viewer, editor]
@@ -345,6 +350,7 @@ stack <- new_stack(
 )
 serve_stack(stack)
 ```
+:::
 
 ### Packaging new blocks: the registry
 
