@@ -28,7 +28,7 @@ At cynkra, while we have been running our own Jitsi instance quite happily for s
 ## The Challenge
 
 cynkra actively supports the local [Zurich R User Group](https://www.meetup.com/Zurich-R-User-Group/).
-For one of their [recent meetings](https://www.meetup.com/Zurich-R-User-Group/events/273910283/), about 100 people RSVP'ed.
+For one of their [recent meetings](https://www.meetup.com/Zurich-R-User-Group), about 100 people RSVP'ed.
 
 When browsing the load capabilities of a single Jitsi instance, we found that the stock setup begins to experience some challenges at around 35 people and fails at around 70 people.
 The limiting factor appears to be the "videobridge".
