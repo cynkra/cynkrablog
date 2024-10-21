@@ -222,12 +222,12 @@ Photo by Meriç Dağlı
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">seas</span><span class="op">(</span><span class="va">AirPassengers</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>For a more detailed introduction, read our <a href="https://doi.org/10.18637/jss.v087.i11">article in the <em>Journal of Statistical Software</em></a>.</p>
 <section id="multiple-series-adjusmtent" class="level3"><h3 class="anchored" data-anchor-id="multiple-series-adjusmtent">Multiple Series Adjusmtent</h3>
-<p>In the latest <a href="https://cran.r-project.org/package=seasonal">CRAN version 1.8</a>, it is now possible to seasonally adjust multiple series in a single call to <code>seas()</code>. This is done by using the built-in batch mode of X-13. It removes the need for loops or <code><a href="https://rdrr.io/r/base/lapply.html">lapply()</a></code> in such cases and finally brings one missing feature of X-13 to seasonal – the <em>composite</em> spec.</p>
+<p>In the latest <a href="https://cran.r-project.org/package=seasonal">CRAN version 1.8</a>, it is now possible to seasonally adjust multiple series in a single call to <code><a href="https://rdrr.io/pkg/seasonal/man/seas.html">seas()</a></code>. This is done by using the built-in batch mode of X-13. It removes the need for loops or <code><a href="https://rdrr.io/r/base/lapply.html">lapply()</a></code> in such cases and finally brings one missing feature of X-13 to seasonal – the <em>composite</em> spec.</p>
 <p>Multiple adjustments can be performed by supplying multiple time series as an <code>"mts"</code> object:</p>
 <div class="cell">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.seasonal.website">seasonal</a></span><span class="op">)</span></span>
-<span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu">seas</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">fdeaths</span>, <span class="va">mdeaths</span><span class="op">)</span>, x11 <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
-<span><span class="fu">final</span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/seasonal/man/seas.html">seas</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">fdeaths</span>, <span class="va">mdeaths</span><span class="op">)</span>, x11 <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/seasonal/man/final.html">final</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          fdeaths  mdeaths
 Jan 1974 614.1235 1598.740
@@ -308,7 +308,7 @@ Dec 1979 475.5049 1038.506</code></pre>
 </section><section id="backend" class="level3"><h3 class="anchored" data-anchor-id="backend">Backend</h3>
 <p>X-13 ships with a batch mode that allows multiple adjustments in a single call to X-13. This is now the default in seasonal (<code>multimode = "x13"</code>). Alternatively, X-13 can be called for each series (<code>multimode = "R"</code>). The results should be usually the same, but switching to <code>multimode = "R"</code> may be useful for debugging:</p>
 <div class="cell">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">seas</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">fdeaths</span>, <span class="va">mdeaths</span><span class="op">)</span>, multimode <span class="op">=</span> <span class="st">"x13"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/seasonal/man/seas.html">seas</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">fdeaths</span>, <span class="va">mdeaths</span><span class="op">)</span>, multimode <span class="op">=</span> <span class="st">"x13"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$fdeaths
 
@@ -338,7 +338,7 @@ seas(x = cbind(fdeaths, mdeaths), multimode = "x13")
 attr(,"class")
 [1] "seas_multi" "list"      </code></pre>
 </div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">seas</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">fdeaths</span>, <span class="va">mdeaths</span><span class="op">)</span>, multimode <span class="op">=</span> <span class="st">"R"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/seasonal/man/seas.html">seas</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">fdeaths</span>, <span class="va">mdeaths</span><span class="op">)</span>, multimode <span class="op">=</span> <span class="st">"R"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$fdeaths
 
@@ -371,17 +371,17 @@ attr(,"class")
 </div>
 <p>In general, <code>multimode = "x13"</code> is faster. The following comparison on a MacBook Pro shows a modest speed gain, but bigger differences have been observed on other systems:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">many</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">fdeaths</span><span class="op">)</span>, <span class="fl">100</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="fu">seas</span><span class="op">(</span><span class="va">many</span>, multimode <span class="op">=</span> <span class="st">"x13"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/seasonal/man/seas.html">seas</a></span><span class="op">(</span><span class="va">many</span>, multimode <span class="op">=</span> <span class="st">"x13"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#   user  system elapsed</span></span>
 <span><span class="co">#  9.415   0.653  10.079</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="fu">seas</span><span class="op">(</span><span class="va">many</span>, multimode <span class="op">=</span> <span class="st">"R"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/seasonal/man/seas.html">seas</a></span><span class="op">(</span><span class="va">many</span>, multimode <span class="op">=</span> <span class="st">"R"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#   user  system elapsed</span></span>
 <span><span class="co"># 11.130   1.039  12.324</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section><section id="composite-spec" class="level3"><h3 class="anchored" data-anchor-id="composite-spec">composite spec</h3>
 <p>Support for the X-13 batch mode makes it finally possible to use the <em>composite</em> spec – the one feature of X-13 that was missing in seasonal. Sometimes, one has to decide whether seasonal adjustment should be performed on a granular level or on an aggregated level. The <em>composite</em> spec helps you to analyze the problem and to compare the direct and the indirect adjustments.</p>
-<p>The <code>composite</code> argument is a list with an X-13 specification that is applied on the aggregated series. Specification works identically for other series in <code>seas()</code>, including the application of the defaults. If you provide an empty list, the usual defaults of <code>seas()</code> are used. A minimal composite call looks like this:</p>
+<p>The <code>composite</code> argument is a list with an X-13 specification that is applied on the aggregated series. Specification works identically for other series in <code><a href="https://rdrr.io/pkg/seasonal/man/seas.html">seas()</a></code>, including the application of the defaults. If you provide an empty list, the usual defaults of <code><a href="https://rdrr.io/pkg/seasonal/man/seas.html">seas()</a></code> are used. A minimal composite call looks like this:</p>
 <div class="cell">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">seas</span><span class="op">(</span></span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/seasonal/man/seas.html">seas</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">mdeaths</span>, <span class="va">fdeaths</span><span class="op">)</span>,</span>
 <span>  composite <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  series.comptype <span class="op">=</span> <span class="st">"add"</span></span>
@@ -428,7 +428,7 @@ attr(,"class")
 </div>
 <p>You can verify that the composite refers to the total of <code>mdeaths</code> and <code>fdeaths</code> by running:</p>
 <div class="cell">
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">seas</span><span class="op">(</span><span class="va">ldeaths</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/seasonal/man/seas.html">seas</a></span><span class="op">(</span><span class="va">ldeaths</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:

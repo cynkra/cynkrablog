@@ -75,9 +75,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <meta name="shinylive:serviceworker_dir" content="../..">
-<script src="../../site_libs/quarto-contrib/shinylive-0.7.0/shinylive/load-shinylive-sw.js" type="module"></script>
-<script src="../../site_libs/quarto-contrib/shinylive-0.7.0/shinylive/run-python-blocks.js" type="module"></script>
-<link href="../../site_libs/quarto-contrib/shinylive-0.7.0/shinylive/shinylive.css" rel="stylesheet">
+<script src="../../site_libs/quarto-contrib/shinylive-0.8.0/shinylive/load-shinylive-sw.js" type="module"></script>
+<script src="../../site_libs/quarto-contrib/shinylive-0.8.0/shinylive/run-python-blocks.js" type="module"></script>
+<link href="../../site_libs/quarto-contrib/shinylive-0.8.0/shinylive/shinylive.css" rel="stylesheet">
 <link href="../../site_libs/quarto-contrib/shinylive-quarto-css/shinylive-quarto.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -186,7 +186,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<main class="content page-columns page-full" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title">Introducing blockr: a no-code dashboard builder for R</h1>
   <div class="quarto-categories">
     <div class="quarto-category">R</div>
@@ -242,11 +242,12 @@ Attaching package: 'blockr'</code></pre>
 <li>On the other hand, it provides developers with a set of tools to seamlessly create new blocks, thereby enhancing the entire framework and fostering <strong>collaboration</strong> within organizations teams.</li>
 </ol>
 <p>blockr is data <strong>agnostic</strong>, meaning it can work with any kind of dataset, that is pharmaceutical data or sport analytics data. It builds on top of <a href="https://shiny.posit.co/">shiny</a> to ensure real time feedback to any data change. Finally, it allows to export code to create <strong>reproducible</strong> data analysis.</p>
-</section><section id="getting-started" class="level2"><h2 class="anchored" data-anchor-id="getting-started">Getting started</h2>
-<section id="as-a-simple-user" class="level3"><h3 class="anchored" data-anchor-id="as-a-simple-user">As a simple user</h3>
+</section><section id="getting-started" class="level2 page-columns page-full"><h2 class="anchored" data-anchor-id="getting-started">Getting started</h2>
+<section id="as-a-simple-user" class="level3 page-columns page-full"><h3 class="anchored" data-anchor-id="as-a-simple-user">As a simple user</h3>
 <p>As a simple user, you’re not expected to write any single line of code to use blockr. You can use the below kitchen sink to get started. This example is based on the palmer penguins data and running a single stack with 3 blocks: the first block to select the data, another one to create the plot and then add the points to it.</p>
 <p>blockr has a its own <strong>validation</strong> system. For instance, using the below example, you can try to press return on the first block select box (penguins is the selected default). You’ll notice an immediate feedback message. A global message is displayed in the block upper middle part: “1 error(s) found in this block”. You get more detailed mesages next to the faulty input(s): “selected value(s) not among provided choices”. You can repeat the same experience with the last plot layer block, by emptying the color and shape select inputs. Error messages can accumulate.</p>
 <p>You can dynamically add blocks to a current <strong>stack</strong>, that gathers a set of related blocks. You can think a stack as a data analysis <strong>recipe</strong> as in cooking, where blocks are instructions. To add a new block, you can click on the <code>+</code> icon on the stack top right corner. This opens a sidebar on the left side, where one may search for blocks that are compatible with the current state of the pipeline. With an empty stack, only entry point blocks are suggested, so you can import data. Then, after clicking on the block, the suggestion list changes so you can, for instance, filter data or select only a subset of columns, and much more.</p>
+<div class="column-page">
 <pre class="shinylive-r" data-engine="r"><code>#| '!! shinylive warning !!': |
 #|   shinylive does not work in self-contained HTML documents.
 #|   Please set `embed-resources: false` in your metadata.
@@ -254,7 +255,7 @@ Attaching package: 'blockr'</code></pre>
 #| components: [viewer]
 #| column: screen-inset-shaded
 #| viewerHeight: 800
-webr::install("blockr", repos = "https://bristolmyerssquibb.github.io/webr-repos/")
+webr::install("blockr", repos = c("https://bristolmyerssquibb.github.io/webr-repos", "https://repo.r-wasm.org"))
 
 library(blockr)
 library(palmerpenguins)
@@ -300,7 +301,8 @@ stack &lt;- new_stack(
   layer_block = new_geompoint_block("species", "species")
 )
 serve_stack(stack)</code></pre>
-<section id="toward-more-complex-analysis" class="level4"><h4 class="anchored" data-anchor-id="toward-more-complex-analysis">Toward more complex analysis</h4>
+</div>
+<section id="toward-more-complex-analysis" class="level4 page-columns page-full"><h4 class="anchored" data-anchor-id="toward-more-complex-analysis">Toward more complex analysis</h4>
 <p>Let’s consider this <a href="https://www.kaggle.com/datasets/heesoo37/120-years-of-olympic-history-athletes-and-results?select=athlete_events.csv">dataset</a>, which contains 120 years of olympics athletes data until Rio in 2016. In the below kitchen sink, we first add an upload block:</p>
 <ol type="1">
 <li>Download the <a href="https://www.kaggle.com/datasets/heesoo37/120-years-of-olympic-history-athletes-and-results?select=athlete_events.csv">dataset</a> file locally.</li>
@@ -338,6 +340,7 @@ serve_stack(stack)</code></pre>
 <li>Add a <code>new_arrange_block</code> for the <code>birth_year</code> column.</li>
 </ol>
 <p>As a conclusion, Hjrdis Viktoria Tpel (1904) was the first recorded athlete to compete in 2 different sports, swimming and diving for Sweden. Lauryn Chenet Williams (1984) is the latest for US with Athletics and Bobsleigh. It’s actually quite amazing to see people competing in two quite unrelated sports like swimming and handbain the case of Roswitha Krause.</p>
+<div class="column-screen-inset">
 <pre class="shinylive-r" data-engine="r"><code>#| '!! shinylive warning !!': |
 #|   shinylive does not work in self-contained HTML documents.
 #|   Please set `embed-resources: false` in your metadata.
@@ -345,8 +348,8 @@ serve_stack(stack)</code></pre>
 #| components: [viewer]
 #| column: screen-inset-shaded
 #| viewerHeight: 800
-webr::install("blockr", repos = "https://bristolmyerssquibb.github.io/webr-repos/")
-webr::install("blockr.ggplot2", repos = "https://bristolmyerssquibb.github.io/webr-repos/")
+webr::install("blockr", repos = c("https://bristolmyerssquibb.github.io/webr-repos", "https://repo.r-wasm.org"))
+webr::install("blockr.ggplot2", repos = c("https://bristolmyerssquibb.github.io/webr-repos", "https://repo.r-wasm.org"))
 
 library(blockr)
 library(blockr.ggplot2)
@@ -354,6 +357,7 @@ library(blockr.ggplot2)
 options(shiny.maxRequestSize = 100*1024^2)
 do.call(set_workspace, args = list(title = "My workspace"))
 serve_workspace(clear = FALSE)</code></pre>
+</div>
 <p>As an end-user, you are not supposed to write code. As such, if you think anything is missing, you can open an issue <a href="https://github.com/BristolMyersSquibb/blockr/issues">here</a>, or ask any developer you are working with to create new blocks. This leads us to the second part of this blog post … How to use blockr as a developers?</p>
 </section></section><section id="as-a-developer" class="level3"><h3 class="anchored" data-anchor-id="as-a-developer">As a developer</h3>
 <p>How to install it:</p>
@@ -451,7 +455,8 @@ serve_workspace(clear = FALSE)</code></pre>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/eval.html">eval</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substitute.html">substitute</a></span><span class="op">(</span><span class="va">data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="va">expr</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>expr <span class="op">=</span> <span class="fu"><a href="https://bristolmyerssquibb.github.io/blockr/reference/generate_code.html">generate_code</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>If you want to build a plot block and plot layers blocks, you would have to design a specific evaluate method, that accounts for the <code>+</code> operator required by ggplot2. To learn more about how to create a plot block, you can read this <a href="https://bristolmyerssquibb.github.io/blockr/articles/plot-block.html">article</a>.</p>
-</section><section id="demo" class="level3"><h3 class="anchored" data-anchor-id="demo">Demo</h3>
+</section><section id="demo" class="level3 page-columns page-full"><h3 class="anchored" data-anchor-id="demo">Demo</h3>
+<div class="column-screen-inset">
 <pre class="shinylive-r" data-engine="r"><code>#| '!! shinylive warning !!': |
 #|   shinylive does not work in self-contained HTML documents.
 #|   Please set `embed-resources: false` in your metadata.
@@ -509,6 +514,7 @@ stack &lt;- new_stack(
   new_geompoint_block
 )
 serve_stack(stack)</code></pre>
+</div>
 </section><section id="packaging-new-blocks-the-registry" class="level3"><h3 class="anchored" data-anchor-id="packaging-new-blocks-the-registry">Packaging new blocks: the registry</h3>
 <p>In the above example, we define the block on the fly. However, an other outstanding feature of blockr is the <strong>registry</strong>, which you can see as a blocks <strong>supermarket</strong>. From the R side, the registry is an <strong>environment</strong> that can be extended by developers who bring their own blocks packages:</p>
 <div class="cell" data-mermaid-theme="default" data-layout-align="default">
