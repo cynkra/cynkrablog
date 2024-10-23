@@ -173,7 +173,6 @@ font-style: inherit;">m</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </div>
-<p>To visualize the graphical user interface provided by the <code>seasonalview</code> package, here’s an example of what it looks like:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="https://blog.cynkra.com/posts/2024-10-21-seasonal-1.10/seasonalview.png" class="img-fluid figure-img"></p>
 <figcaption>Seasonalview GUI</figcaption></figure>
