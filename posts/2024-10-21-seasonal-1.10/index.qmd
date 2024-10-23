@@ -75,8 +75,6 @@ The *seasonalview* package provides a graphical user interface to explore the re
 view(m)
 ```
 
-To visualize the graphical user interface provided by the `seasonalview` package, here's an example of what it looks like:
-
 ![Seasonalview GUI](seasonalview.png)
 
 This interface allows for interactive exploration and adjustment of seasonal models, making it easier to fine-tune your seasonal adjustments and visualize the results.
