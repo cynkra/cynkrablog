@@ -12,6 +12,7 @@ Imports:
   downlit,
   xml2,
   rmarkdown,
-  shinylive
+  shinylive,
+  seasonal
 Remotes:
   posit-dev/r-shinylive
