@@ -195,7 +195,7 @@ while (i <= n_iter) {
 }
 ```
 
-Note that the website gain is officially 4470m whereas ours is `r round(gain)`m. This difference might be explained by the usage of different __smoothing algorithms__ for the [elevation](https://support.strava.com/hc/en-us/articles/216919447-Elevation). Funnily, we all had different bike computers and none of us had the same elevation result at the end of the ride.
+Note that the website gain is officially 4470m whereas ours is `r round(gain)`m. This difference might be explained by the usage of different __smoothing algorithms__ for the [elevation](https://larahamilton.com/strava-elevation/). Funnily, we all had different bike computers and none of us had the same elevation result at the end of the ride.
 
 We split the trace into 2 parts. The first loop takes place around Winterthur, north of Zurich. Then, a transition leads to the __city loop__, which is repeated 7 times.
 
