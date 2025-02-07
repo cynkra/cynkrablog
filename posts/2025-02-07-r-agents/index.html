@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.5.57">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
-
-<title>out – cynkra blog</title>
+<meta name="author" content="Christoph Sax">
+<meta name="dcterms.date" content="2025-02-07">
+<title>Playing with AI Agents in R – cynkra blog</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,29 +19,61 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
-
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<link href="../favicon-32x32.png" rel="icon" type="image/png">
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<script id="quarto-search-options" type="application/json">{
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon-32x32.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -68,22 +99,16 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
+}</script><script src="../../site_libs/quarto-diagram/mermaid.min.js"></script><script src="../../site_libs/quarto-diagram/mermaid-init.js"></script><link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 <meta name="robots" content="noindex">
-
-
 </head>
-
 <body class="nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
-      <div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="https://cynkra.com/" class="navbar-brand navbar-brand-logo">
-    <img src="../logo_light.svg" alt="" class="navbar-logo">
-    </a>
+    <img src="../../logo_light.svg" alt="" class="navbar-logo"></a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -91,12 +116,12 @@ ul.task-list li input[type="checkbox"] {
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item dropdown ">
+<li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-consulting" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Consulting</span>
     </a>
-    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-consulting">    
-        <li>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-consulting">
+<li>
     <a class="dropdown-item" href="https://cynkra.com/consulting/">
  <span class="dropdown-text">R Consulting</span></a>
   </li>  
@@ -109,13 +134,13 @@ ul.task-list li input[type="checkbox"] {
  <span class="dropdown-text">R Markdown templates</span></a>
   </li>  
     </ul>
-  </li>
+</li>
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-solutions" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Solutions</span>
     </a>
-    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-solutions">    
-        <li>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-solutions">
+<li>
     <a class="dropdown-item" href="https://cynkra.com/posit-based-enterprise-data-science-environments/">
  <span class="dropdown-text">Enterprise Data Science Environments</span></a>
   </li>  
@@ -128,7 +153,7 @@ ul.task-list li input[type="checkbox"] {
  <span class="dropdown-text">Posit Licences</span></a>
   </li>  
     </ul>
-  </li>
+</li>
   <li class="nav-item">
     <a class="nav-link" href="https://cynkra.com/opensource"> 
 <span class="menu-text">open source</span></a>
@@ -142,76 +167,215 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">blog</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="../index.xml"> <i class="bi bi-rss" role="img">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
 </ul>
-          </div> <!-- /navcollapse -->
+</div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
       </div> <!-- /container-fluid -->
-    </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+    </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title">Playing with AI Agents in R</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">R</div>
+    <div class="quarto-category">LLM</div>
+  </div>
+  </div>
 
 
 
+<div class="quarto-title-meta">
 
-<section id="summary" class="level2">
-<h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Status</th>
-<th>Count</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>🔍 Total</td>
-<td>1038</td>
-</tr>
-<tr class="even">
-<td>✅ Successful</td>
-<td>990</td>
-</tr>
-<tr class="odd">
-<td>⏳ Timeouts</td>
-<td>0</td>
-</tr>
-<tr class="even">
-<td>🔀 Redirected</td>
-<td>0</td>
-</tr>
-<tr class="odd">
-<td>👻 Excluded</td>
-<td>48</td>
-</tr>
-<tr class="even">
-<td>❓ Unknown</td>
-<td>0</td>
-</tr>
-<tr class="odd">
-<td>🚫 Errors</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p><a href="https://github.com/cynkra/cynkrablog/actions/runs/13202646845?check_suite_focus=true">Full Github Actions output</a></p>
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Christoph Sax </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">February 7, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
 
 
-</section>
+</header><section id="intro" class="level2"><h2 class="anchored" data-anchor-id="intro">Intro</h2>
+<p>What a ride since I’ve first started to <a href="https://blog.cynkra.com/posts/2024-07-27-llama3.1/">play with local LLMs</a>. With various new Llama models, we got awesome small and large models that run smoothly on consumer hardware. With deepseek R1, we got some ridiculously good MIT-licensed models that are competitive with the best models from OpenAI.</p>
+<p>And now, we also got a shiny fully-specced M4 Mac Mini for our office that runs all of this like a charm. It’s local LLM time! 🥳</p>
+<p>Let’s explore how we can use all of this to run agents in R. I created a simple toy package to demonstrate some key concepts of AI agents in R.</p>
+</section><section id="what-is-an-agent" class="level2"><h2 class="anchored" data-anchor-id="what-is-an-agent">What is an agent?</h2>
+<p>Agents are chats that can use tools to do actual stuff. And R is a wonderful language to tell tools what to do.</p>
+<p>Think about it this way:</p>
+<ol type="1">
+<li>You tell an LLM what you want in plain English and the tools you have available</li>
+<li>The LLM figures out what tools it needs to use</li>
+<li>The agent uses the tools to get the job done</li>
+<li>Iterate, improve or continue with other tasks</li>
+<li>Let the LLM explain what it did</li>
+</ol></section><section id="r-and-ollama" class="level2"><h2 class="anchored" data-anchor-id="r-and-ollama">R and Ollama</h2>
+<p>For the following experiments with agents, I’m using plain R and ollama.</p>
+<p>I know that there is the R package <a href="https://ellmer.tidyverse.org">ellmer</a>, and you can do many things that I am doing here with it. While <a href="https://ellmer.tidyverse.org">ellmer</a> is a great package, I prefer to work directly with the ollama API. In my opinion, this gives us more transparency into the agent mechanics.</p>
+<p>My experiments with agents in R can be found in the <a href="https://github.com/cynkra/ragent">ragent</a> repository on GitHub. To install the package, use:</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"cynkra/ragent"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>I will use diagrams to show the conversation flow and the tools that are used.</p>
+</section><section id="a-simple-chat" class="level2"><h2 class="anchored" data-anchor-id="a-simple-chat">A simple chat</h2>
+<p>Getting started is straightforward. In <a href="https://github.com/cynkra/ragent/blob/main/R/llm_chat.R">llm_chat()</a>, I’ve used the <code>http2</code> package to wrap the ollama API.</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">ragent</span><span class="op">)</span></span>
+<span><span class="fu">llm_chat</span><span class="op">(</span><span class="st">"What is the capital of France?"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Paris is the capital of France.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"></figure><p></p>
+<div>
+<pre class="mermaid mermaid-js">sequenceDiagram
+    autonumber
+    participant User
+    participant LLM
 
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+    User-&gt;&gt;LLM: Question
+    Note over LLM: No tools needed
+    LLM--&gt;&gt;User: Direct response
+</pre>
+</div>
+<p></p>
+</div>
+</div>
+</div>
+<p>No surprise here. It’s just a chat: The user asks a question (1) and the LLM answers (2). By default, I am using the <a href="https://ollama.com/library/llama3.2"><code>llama3.2:3b</code></a> model, because it’s fast and good enough for this demo. But I can change it to any other model that ollama supports. E.g,:</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_chat</span><span class="op">(</span><span class="st">"What is the capital of France?"</span>, model <span class="op">=</span> <span class="st">"deepseek-r1:14b"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="structured-output" class="level2"><h2 class="anchored" data-anchor-id="structured-output">Structured output</h2>
+<p>The ollama API supports structured output. We can use this to tell the LLM to return a specific format. For example:</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_chat</span><span class="op">(</span><span class="st">"What is the capital of France?"</span>, format <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>  type <span class="op">=</span> <span class="st">"object"</span>,</span>
+<span>  properties <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>    country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"string"</span><span class="op">)</span>,</span>
+<span>    capital <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"string"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  required <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"country"</span>, <span class="st">"capital"</span><span class="op">)</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $country</span></span>
+<span><span class="co">#&gt; [1] "France"</span></span>
+<span><span class="co">#&gt;</span></span>
+<span><span class="co">#&gt; $capital</span></span>
+<span><span class="co">#&gt; [1] "Paris"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This structured response makes it easy to process the output programmatically in R, as it will be automatically converted to a list with named elements. It is often a good idea to add a system prompt to guide the LLM to the desired output.</p>
+</section><section id="a-agent-that-can-calculate" class="level2"><h2 class="anchored" data-anchor-id="a-agent-that-can-calculate">A agent that can calculate</h2>
+<p>This is now a sweet setup for tinkering. We can use R to work with this output to do more complex things.</p>
+<p>Note that LLMs are not really good at calculating. The small Llama model that I am using here messes this up:</p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_chat</span><span class="op">(</span><span class="st">"What is 2.111^2.111"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "To calculate this, we can use the formula for squaring a binomial:\n\n(a + b)^2 = a^2 + 2ab + b^2\n\nIn this case, a = 2 and b = 1.111.\n\nSo, \n\n(2 + 1.111)^2 = \n(3.111)^2 = 9.377226\n2*3.111 = 6.222442\n6.222442 + 9.377226 = 15.600668\n\nTherefore, 2.111^2.111 ≈ 15.60"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>But we can tell the LLM to use a calculator tool to do the calculation in R. The result <a href="https://github.com/cynkra/ragent/blob/main/R/agent_calculator.R">looks like this</a>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">agent_calculator</span><span class="op">(</span><span class="st">"What is 2.111^2.111"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; **Calculation Result:** 2.111^2.111 = 4.84166414903285</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"></figure><p></p>
+<div>
+<pre class="mermaid mermaid-js">sequenceDiagram
+    autonumber
+    participant User
+    participant Agent
+    participant Calculator
+
+    User-&gt;&gt;Agent: Math question
+    Note over Agent: Analyzes question&lt;br/&gt;Decides to use calculator
+    Agent-&gt;&gt;Calculator: Structured calculation request
+    Calculator--&gt;&gt;Agent: Numerical result
+    Note over Agent: Formats response
+    Agent--&gt;&gt;User: Explained calculation
+</pre>
+</div>
+<p></p>
+</div>
+</div>
+</div>
+<p>Much better! This is an agent that:</p>
+<ol type="1">
+<li>Analyzes the question</li>
+<li>Decides to use the calculator tool</li>
+<li>Uses the calculator tool to calculate the result in R</li>
+<li>Returns the response to the user</li>
+</ol></section><section id="a-smarter-rag" class="level2"><h2 class="anchored" data-anchor-id="a-smarter-rag">A smarter RAG</h2>
+<p>A simple RAG (Retrieval Augmented Generation) enhances LLM responses by first searching a knowledge base for relevant information. But our smarter RAG goes a step further: after the initial search, the LLM formulates additional questions to gather more context, leading to more comprehensive answers.</p>
+<p>In <a href="https://github.com/cynkra/ragent/blob/main/R/agent_rag.R">our smarter RAG</a>, we build an agent that:</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"></figure><p></p>
+<div>
+<pre class="mermaid mermaid-js">sequenceDiagram
+    autonumber
+    participant User
+    participant Agent
+    participant RAG
+    participant Docs
+
+    User-&gt;&gt;Agent: Question about docs
+    Note over Agent: Analyzes question
+    Agent-&gt;&gt;RAG: Initial search
+    RAG-&gt;&gt;Docs: Search in directory
+    Docs--&gt;&gt;RAG: Initial passages
+    RAG--&gt;&gt;Agent: Initial context
+    Note over Agent: Formulates follow-up&lt;br/&gt;questions for context
+    Agent-&gt;&gt;RAG: Additional searches
+    RAG-&gt;&gt;Docs: Search with new questions
+    Docs--&gt;&gt;RAG: Additional passages
+    RAG--&gt;&gt;Agent: Combined context
+    Note over Agent: Synthesizes all&lt;br/&gt;information
+    Agent--&gt;&gt;User: Complete response&lt;br/&gt;with citations
+</pre>
+</div>
+<p></p>
+</div>
+</div>
+</div>
+<p>In <a href="https://github.com/cynkra/ragent/blob/main/R/agent_rag.R">our smarter RAG</a>, we build an agent that</p>
+<ul>
+<li>Search the knowledge base for relevant passages (2)</li>
+<li>Ask the LLM to provide additional questions to search for (5)</li>
+<li>Search the knowledge base for the additional questions (7)</li>
+<li>Use the context to answer the question (10)</li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">agent_rag</span><span class="op">(</span><span class="st">"What is ggplot2 used for?"</span>, dir <span class="op">=</span> <span class="st">"docs/"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Based on the documentation:</span></span>
+<span><span class="co">#&gt; ggplot2 is a core package of the tidyverse used for visualization.</span></span>
+<span><span class="co">#&gt; [Source: tidyverse.md]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This is just the beginning. We can build much more complex agents. For example, we could create a general agent that combines both the calculator and RAG capabilities. This agent would analyze each question and automatically choose the right approach - either searching the knowledge base or performing calculations.</p>
+</section><section id="conclusion" class="level2"><h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>R is a perfect language for building AI agents. Its functional nature makes tools feel like natural building blocks that we can freely combine. The way R handles lists and data frames fits seamlessly with JSON, and the rich ecosystem provides everything we need to build powerful agents. Best of all, R’s interactive workflow lets us watch our agents in action, making development feel like a conversation itself.</p>
+
+
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -776,8 +940,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
+<footer class="footer"><div class="nav-footer">
     <div class="nav-footer-left">
 <p>Except where otherwise noted, content on this blog is licensed under the <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a> licence.</p>
 </div>   
@@ -788,8 +951,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <p>Blog created with <a href="https://quarto.org/">Quarto</a>.</p>
 </div>
   </div>
-</footer>
-<script async="">
+</footer><script async="">
     // Author: David Granjon (adapted from Mickaël Canouil)
     // Version: <1.0.0>
     // Description: Change image src depending on body class (quarto-light or quarto-dark)
@@ -823,8 +985,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       }
     });
 </script>
-
-
 
 
 </body></html>
