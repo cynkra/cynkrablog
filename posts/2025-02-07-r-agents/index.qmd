@@ -19,9 +19,7 @@ knitr::opts_chunk$set(
 
 ## Intro
 
-It's local LLM time! 🥳
-
-What an adventure it has been since I first started [exploring local LLMs](https://blog.cynkra.com/posts/2024-07-27-llama3.1/). With the introduction of various new Llama models, we now have impressive small and large models that run seamlessly on consumer hardware. With deepseek R1, we have access to remarkably good MIT-licensed reasoning models that rival the top models in the industry.
+It's local LLM time! 🥳 What an adventure it has been since I first started [exploring local LLMs](https://blog.cynkra.com/posts/2024-07-27-llama3.1/). With the introduction of various new Llama models, we now have impressive small and large models that run seamlessly on consumer hardware. With deepseek R1, we have access to remarkably good MIT-licensed reasoning models that rival the top models in the industry.
 
 And now, we've got a fully-specced M4 Mac Mini for our office, which runs all of this like a charm.
 
