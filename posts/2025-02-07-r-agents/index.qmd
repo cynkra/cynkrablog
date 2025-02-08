@@ -41,7 +41,7 @@ A typical agentic workflow looks like this:
 For the following experiments with agents, I'm using plain R and Ollama (which you have to install first, but it's [straightforward.](https://blog.cynkra.com/posts/2024-07-27-llama3.1/))
 
 I know that there is the R package [ellmer](https://ellmer.tidyverse.org), and you can do many things that I am doing here with it.
-While [ellmer](https://ellmer.tidyverse.org) is a great package, I prefer to work directly with the ollama API. In my opinion, this gives us more transparency into the agent mechanics.
+While [ellmer](https://ellmer.tidyverse.org) is a great package, I prefer to work directly with the Ollama API. In my opinion, this gives us more transparency into the agent mechanics.
 
 My experiments with agents in R can be found in the [ragent](https://github.com/cynkra/ragent) repository on GitHub. To install the package, use:
 
@@ -54,7 +54,7 @@ I will use diagrams to show the conversation flow and the tools that are used.
 
 ## A simple chat
 
-Getting started is straightforward. In [llm_chat()](https://github.com/cynkra/ragent/blob/main/R/llm_chat.R), I've used the `http2` package to wrap the ollama API.
+Getting started is straightforward. In [llm_chat()](https://github.com/cynkra/ragent/blob/main/R/llm_chat.R), I've used the `httr2` package to wrap the Ollama API. You can use the function to perform normal chats:
 
 ```{r}
 #| eval: false
@@ -76,7 +76,7 @@ sequenceDiagram
 ```
 
 
-No surprise here. It's just a chat: The user asks a question (1) and the LLM answers (2). By default, I am using the [`llama3.2:3b`](https://ollama.com/library/llama3.2) model, because it's fast and good enough for this demo. But I can change it to any other model that ollama supports. E.g,:
+No surprise here: The user asks a question (1) and the LLM answers (2). By default, I am using the [`llama3.2:3b`](https://ollama.com/library/llama3.2) model, because it's fast and good enough for this demo. But I can change it to any other, more powerful model that Ollama supports. E.g,:
 
 ```{r}
 #| eval: false
@@ -153,9 +153,14 @@ Much better! This is an agent that:
 
 ## A smarter RAG
 
-A simple RAG (Retrieval Augmented Generation) enhances LLM responses by first searching a knowledge base for relevant information. But our smarter RAG goes a step further: after the initial search, the LLM formulates additional questions to gather more context, leading to more comprehensive answers.
+A simple RAG (Retrieval Augmented Generation) enhances LLM responses by first searching a knowledge base for relevant information. But our improved RAG goes a step further: after the initial search, the LLM formulates additional questions to gather more context, leading to more comprehensive answers.
 
 In [our smarter RAG](https://github.com/cynkra/ragent/blob/main/R/agent_rag.R), we build an agent that:
+
+- Search the knowledge base for relevant passages (2)
+- Ask the LLM to provide additional questions to search for (5)
+- Search the knowledge base for the additional questions (7)
+- Use the context to answer the question (10)
 
 ```{mermaid}
 sequenceDiagram
@@ -180,14 +185,6 @@ sequenceDiagram
     Agent-->>User: Complete response<br/>with citations
 ```
 
-In [our smarter RAG](https://github.com/cynkra/ragent/blob/main/R/agent_rag.R), we build an agent that
-
-- Search the knowledge base for relevant passages (2)
-- Ask the LLM to provide additional questions to search for (5)
-- Search the knowledge base for the additional questions (7)
-- Use the context to answer the question (10)
-
-
 ```{r}
 #| eval: false
 agent_rag("What is ggplot2 used for?", dir = "docs/")
@@ -200,4 +197,4 @@ This is just the beginning. We can build much more complex agents. For example, 
 
 ## Conclusion
 
-R is a perfect language for building AI agents. Its functional nature makes tools feel like natural building blocks that we can freely combine. The way R handles lists and data frames fits seamlessly with JSON, and the rich ecosystem provides everything we need to build powerful agents. Best of all, R's interactive workflow lets us watch our agents in action, making development feel like a conversation itself.
+R is a powerful language for building AI agents. Its functional nature makes tools feel like Lego bricks that we can combine. The way R handles lists and data frames fits nicely with the JSON returned from the API, and the rich R ecosystem provides everything we need to build powerful agents. But what I found most useful is R's interactive workflow that allows me to watch and debug the workings of the LLMs and the tools step by step.
