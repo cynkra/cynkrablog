@@ -214,12 +214,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 </header><section id="intro" class="level2"><h2 class="anchored" data-anchor-id="intro">Intro</h2>
-<p>It’s local LLM time! 🥳</p>
-<p>What an adventure it has been since I first started <a href="https://blog.cynkra.com/posts/2024-07-27-llama3.1/">exploring local LLMs</a>. With the introduction of various new Llama models, we now have impressive small and large models that run seamlessly on consumer hardware. With deepseek R1, we have access to remarkably good MIT-licensed reasoning models that rival the top models in the industry.</p>
+<p>It’s local LLM time! 🥳 What an adventure it has been since I first started <a href="https://blog.cynkra.com/posts/2024-07-27-llama3.1/">exploring local LLMs</a>. With the introduction of various new Llama models, we now have impressive small and large models that run seamlessly on consumer hardware. With deepseek R1, we have access to remarkably good MIT-licensed reasoning models that rival the top models in the industry.</p>
 <p>And now, we’ve got a fully-specced M4 Mac Mini for our office, which runs all of this like a charm.</p>
-<p>Let’s explore how we can use all of this to run agent models in R.</p>
+<p>In this post, I will explore how we can use R to run agent models <a href="https://ollama.com">through Ollama</a>.</p>
 </section><section id="what-is-an-agent" class="level2"><h2 class="anchored" data-anchor-id="what-is-an-agent">What is an agent?</h2>
-<p>Unlike normal chats, agents can use tools to do tasks. Tools are pieces of software that can do anything, and it is up to the user to construct the agentic workflow they want. With R, we have a wonderful language to configure these workflows and tell the tools what to do.</p>
+<p>Unlike normal chats, agents can use tools to do tasks. Tools are pieces of software that can do anything, and it is up to the user to construct the agentic workflow they want. With R, we have a powerful language to configure these workflows and tell the tools what to do.</p>
 <p>A typical agentic workflow looks like this:</p>
 <ol type="1">
 <li>You tell an LLM what you want in plain English and the tools it has available</li>
@@ -228,7 +227,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Iterate, improve or continue with other tasks</li>
 <li>Let the LLM explain what it did</li>
 </ol></section><section id="r-and-ollama" class="level2"><h2 class="anchored" data-anchor-id="r-and-ollama">R and Ollama</h2>
-<p>For the following experiments with agents, I’m using plain R and ollama.</p>
+<p>For the following experiments with agents, I’m using plain R and Ollama (which you have to install first, but it’s <a href="https://blog.cynkra.com/posts/2024-07-27-llama3.1/">straightforward.</a>)</p>
 <p>I know that there is the R package <a href="https://ellmer.tidyverse.org">ellmer</a>, and you can do many things that I am doing here with it. While <a href="https://ellmer.tidyverse.org">ellmer</a> is a great package, I prefer to work directly with the ollama API. In my opinion, this gives us more transparency into the agent mechanics.</p>
 <p>My experiments with agents in R can be found in the <a href="https://github.com/cynkra/ragent">ragent</a> repository on GitHub. To install the package, use:</p>
 <div class="cell">

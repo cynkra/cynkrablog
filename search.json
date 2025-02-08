@@ -4,14 +4,14 @@
     "href": "lychee/out.html",
     "title": "cynkra blog",
     "section": "",
-    "text": "Status\nCount\n\n\n\n\n🔍 Total\n1038\n\n\n✅ Successful\n990\n\n\n⏳ Timeouts\n0\n\n\n🔀 Redirected\n0\n\n\n👻 Excluded\n48\n\n\n❓ Unknown\n0\n\n\n🚫 Errors\n0\n\n\n\nFull Github Actions output"
+    "text": "Status\nCount\n\n\n\n\n🔍 Total\n1039\n\n\n✅ Successful\n991\n\n\n⏳ Timeouts\n0\n\n\n🔀 Redirected\n0\n\n\n👻 Excluded\n48\n\n\n❓ Unknown\n0\n\n\n🚫 Errors\n0\n\n\n\nFull Github Actions output"
   },
   {
     "objectID": "lychee/out.html#summary",
     "href": "lychee/out.html#summary",
     "title": "cynkra blog",
     "section": "",
-    "text": "Status\nCount\n\n\n\n\n🔍 Total\n1038\n\n\n✅ Successful\n990\n\n\n⏳ Timeouts\n0\n\n\n🔀 Redirected\n0\n\n\n👻 Excluded\n48\n\n\n❓ Unknown\n0\n\n\n🚫 Errors\n0\n\n\n\nFull Github Actions output"
+    "text": "Status\nCount\n\n\n\n\n🔍 Total\n1039\n\n\n✅ Successful\n991\n\n\n⏳ Timeouts\n0\n\n\n🔀 Redirected\n0\n\n\n👻 Excluded\n48\n\n\n❓ Unknown\n0\n\n\n🚫 Errors\n0\n\n\n\nFull Github Actions output"
   },
   {
     "objectID": "posts/2020-04-02-dm/index.html",
@@ -753,28 +753,28 @@
     "href": "posts/2025-02-07-r-agents/index.html",
     "title": "Playing with AI Agents in R",
     "section": "",
-    "text": "It’s local LLM time! 🥳\nWhat an adventure it has been since I first started exploring local LLMs. With the introduction of various new Llama models, we now have impressive small and large models that run seamlessly on consumer hardware. With deepseek R1, we have access to remarkably good MIT-licensed reasoning models that rival the top models in the industry.\nAnd now, we’ve got a fully-specced M4 Mac Mini for our office, which runs all of this like a charm.\nLet’s explore how we can use all of this to run agent models in R."
+    "text": "It’s local LLM time! 🥳 What an adventure it has been since I first started exploring local LLMs. With the introduction of various new Llama models, we now have impressive small and large models that run seamlessly on consumer hardware. With deepseek R1, we have access to remarkably good MIT-licensed reasoning models that rival the top models in the industry.\nAnd now, we’ve got a fully-specced M4 Mac Mini for our office, which runs all of this like a charm.\nIn this post, I will explore how we can use R to run agent models through Ollama."
   },
   {
     "objectID": "posts/2025-02-07-r-agents/index.html#intro",
     "href": "posts/2025-02-07-r-agents/index.html#intro",
     "title": "Playing with AI Agents in R",
     "section": "",
-    "text": "It’s local LLM time! 🥳\nWhat an adventure it has been since I first started exploring local LLMs. With the introduction of various new Llama models, we now have impressive small and large models that run seamlessly on consumer hardware. With deepseek R1, we have access to remarkably good MIT-licensed reasoning models that rival the top models in the industry.\nAnd now, we’ve got a fully-specced M4 Mac Mini for our office, which runs all of this like a charm.\nLet’s explore how we can use all of this to run agent models in R."
+    "text": "It’s local LLM time! 🥳 What an adventure it has been since I first started exploring local LLMs. With the introduction of various new Llama models, we now have impressive small and large models that run seamlessly on consumer hardware. With deepseek R1, we have access to remarkably good MIT-licensed reasoning models that rival the top models in the industry.\nAnd now, we’ve got a fully-specced M4 Mac Mini for our office, which runs all of this like a charm.\nIn this post, I will explore how we can use R to run agent models through Ollama."
   },
   {
     "objectID": "posts/2025-02-07-r-agents/index.html#what-is-an-agent",
     "href": "posts/2025-02-07-r-agents/index.html#what-is-an-agent",
     "title": "Playing with AI Agents in R",
     "section": "What is an agent?",
-    "text": "What is an agent?\nUnlike normal chats, agents can use tools to do tasks. Tools are pieces of software that can do anything, and it is up to the user to construct the agentic workflow they want. With R, we have a wonderful language to configure these workflows and tell the tools what to do.\nA typical agentic workflow looks like this:\n\nYou tell an LLM what you want in plain English and the tools it has available\nThe LLM figures out what tools it needs to use\nThe agent uses the tools to get the job done\nIterate, improve or continue with other tasks\nLet the LLM explain what it did"
+    "text": "What is an agent?\nUnlike normal chats, agents can use tools to do tasks. Tools are pieces of software that can do anything, and it is up to the user to construct the agentic workflow they want. With R, we have a powerful language to configure these workflows and tell the tools what to do.\nA typical agentic workflow looks like this:\n\nYou tell an LLM what you want in plain English and the tools it has available\nThe LLM figures out what tools it needs to use\nThe agent uses the tools to get the job done\nIterate, improve or continue with other tasks\nLet the LLM explain what it did"
   },
   {
     "objectID": "posts/2025-02-07-r-agents/index.html#r-and-ollama",
     "href": "posts/2025-02-07-r-agents/index.html#r-and-ollama",
     "title": "Playing with AI Agents in R",
     "section": "R and Ollama",
-    "text": "R and Ollama\nFor the following experiments with agents, I’m using plain R and ollama.\nI know that there is the R package ellmer, and you can do many things that I am doing here with it. While ellmer is a great package, I prefer to work directly with the ollama API. In my opinion, this gives us more transparency into the agent mechanics.\nMy experiments with agents in R can be found in the ragent repository on GitHub. To install the package, use:\n\nremotes::install_github(\"cynkra/ragent\")\n\nI will use diagrams to show the conversation flow and the tools that are used."
+    "text": "R and Ollama\nFor the following experiments with agents, I’m using plain R and Ollama (which you have to install first, but it’s straightforward.)\nI know that there is the R package ellmer, and you can do many things that I am doing here with it. While ellmer is a great package, I prefer to work directly with the ollama API. In my opinion, this gives us more transparency into the agent mechanics.\nMy experiments with agents in R can be found in the ragent repository on GitHub. To install the package, use:\n\nremotes::install_github(\"cynkra/ragent\")\n\nI will use diagrams to show the conversation flow and the tools that are used."
   },
   {
     "objectID": "posts/2025-02-07-r-agents/index.html#a-simple-chat",
