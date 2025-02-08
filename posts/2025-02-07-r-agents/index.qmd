@@ -23,13 +23,13 @@ It's local LLM time! 🥳
 
 What an adventure it has been since I first started [exploring local LLMs](https://blog.cynkra.com/posts/2024-07-27-llama3.1/). With the introduction of various new Llama models, we now have impressive small and large models that run seamlessly on consumer hardware. With deepseek R1, we have access to remarkably good MIT-licensed reasoning models that rival the top models in the industry.
 
-And now, we've got a fully-specced M4 Mac Mini for our office, which runs all of this like a charm. 
+And now, we've got a fully-specced M4 Mac Mini for our office, which runs all of this like a charm.
 
-Let's explore how we can use all of this to run agent models in R.
+In this post, I will explore how we can use R to run agent models [through Ollama](https://ollama.com).
 
 ## What is an agent?
 
-Unlike normal chats, agents can use tools to do tasks. Tools are pieces of software that can do anything, and it is up to the user to construct the agentic workflow they want. With R, we have a wonderful language to configure these workflows and tell the tools what to do.
+Unlike normal chats, agents can use tools to do tasks. Tools are pieces of software that can do anything, and it is up to the user to construct the agentic workflow they want. With R, we have a powerful language to configure these workflows and tell the tools what to do.
 
 A typical agentic workflow looks like this:
 
@@ -40,8 +40,7 @@ A typical agentic workflow looks like this:
 5. Let the LLM explain what it did
 
 ## R and Ollama
-
-For the following experiments with agents, I'm using plain R and ollama.
+For the following experiments with agents, I'm using plain R and Ollama (which you have to install first, but it's [straightforward.](https://blog.cynkra.com/posts/2024-07-27-llama3.1/))
 
 I know that there is the R package [ellmer](https://ellmer.tidyverse.org), and you can do many things that I am doing here with it.
 While [ellmer](https://ellmer.tidyverse.org) is a great package, I prefer to work directly with the ollama API. In my opinion, this gives us more transparency into the agent mechanics.
