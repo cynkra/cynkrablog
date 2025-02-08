@@ -214,14 +214,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 </header><section id="intro" class="level2"><h2 class="anchored" data-anchor-id="intro">Intro</h2>
-<p>What a ride since I’ve first started to <a href="https://blog.cynkra.com/posts/2024-07-27-llama3.1/">play with local LLMs</a>. With various new Llama models, we got awesome small and large models that run smoothly on consumer hardware. With deepseek R1, we got some ridiculously good MIT-licensed models that are competitive with the best models from OpenAI.</p>
-<p>And now, we also got a shiny fully-specced M4 Mac Mini for our office that runs all of this like a charm. It’s local LLM time! 🥳</p>
-<p>Let’s explore how we can use all of this to run agents in R. I created a simple toy package to demonstrate some key concepts of AI agents in R.</p>
+<p>It’s local LLM time! 🥳</p>
+<p>What an adventure it has been since I first started <a href="https://blog.cynkra.com/posts/2024-07-27-llama3.1/">exploring local LLMs</a>. With the introduction of various new Llama models, we now have impressive small and large models that run seamlessly on consumer hardware. With deepseek R1, we have access to remarkably good MIT-licensed reasoning models that rival the top models in the industry.</p>
+<p>And now, we’ve got a fully-specced M4 Mac Mini for our office, which runs all of this like a charm.</p>
+<p>Let’s explore how we can use all of this to run agent models in R.</p>
 </section><section id="what-is-an-agent" class="level2"><h2 class="anchored" data-anchor-id="what-is-an-agent">What is an agent?</h2>
-<p>Agents are chats that can use tools to do actual stuff. And R is a wonderful language to tell tools what to do.</p>
-<p>Think about it this way:</p>
+<p>Unlike normal chats, agents can use tools to do tasks. Tools are pieces of software that can do anything, and it is up to the user to construct the agentic workflow they want. With R, we have a wonderful language to configure these workflows and tell the tools what to do.</p>
+<p>A typical agentic workflow looks like this:</p>
 <ol type="1">
-<li>You tell an LLM what you want in plain English and the tools you have available</li>
+<li>You tell an LLM what you want in plain English and the tools it has available</li>
 <li>The LLM figures out what tools it needs to use</li>
 <li>The agent uses the tools to get the job done</li>
 <li>Iterate, improve or continue with other tasks</li>
