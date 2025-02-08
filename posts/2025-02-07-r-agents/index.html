@@ -228,14 +228,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Let the LLM explain what it did</li>
 </ol></section><section id="r-and-ollama" class="level2"><h2 class="anchored" data-anchor-id="r-and-ollama">R and Ollama</h2>
 <p>For the following experiments with agents, I’m using plain R and Ollama (which you have to install first, but it’s <a href="https://blog.cynkra.com/posts/2024-07-27-llama3.1/">straightforward.</a>)</p>
-<p>I know that there is the R package <a href="https://ellmer.tidyverse.org">ellmer</a>, and you can do many things that I am doing here with it. While <a href="https://ellmer.tidyverse.org">ellmer</a> is a great package, I prefer to work directly with the ollama API. In my opinion, this gives us more transparency into the agent mechanics.</p>
+<p>I know that there is the R package <a href="https://ellmer.tidyverse.org">ellmer</a>, and you can do many things that I am doing here with it. While <a href="https://ellmer.tidyverse.org">ellmer</a> is a great package, I prefer to work directly with the Ollama API. In my opinion, this gives us more transparency into the agent mechanics.</p>
 <p>My experiments with agents in R can be found in the <a href="https://github.com/cynkra/ragent">ragent</a> repository on GitHub. To install the package, use:</p>
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"cynkra/ragent"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>I will use diagrams to show the conversation flow and the tools that are used.</p>
 </section><section id="a-simple-chat" class="level2"><h2 class="anchored" data-anchor-id="a-simple-chat">A simple chat</h2>
-<p>Getting started is straightforward. In <a href="https://github.com/cynkra/ragent/blob/main/R/llm_chat.R">llm_chat()</a>, I’ve used the <code>http2</code> package to wrap the ollama API.</p>
+<p>Getting started is straightforward. In <a href="https://github.com/cynkra/ragent/blob/main/R/llm_chat.R">llm_chat()</a>, I’ve used the <code>httr2</code> package to wrap the Ollama API. You can use the function to perform normal chats:</p>
 <div class="cell">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">ragent</span><span class="op">)</span></span>
 <span><span class="fu">llm_chat</span><span class="op">(</span><span class="st">"What is the capital of France?"</span><span class="op">)</span></span>
@@ -260,7 +260,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>No surprise here. It’s just a chat: The user asks a question (1) and the LLM answers (2). By default, I am using the <a href="https://ollama.com/library/llama3.2"><code>llama3.2:3b</code></a> model, because it’s fast and good enough for this demo. But I can change it to any other model that ollama supports. E.g,:</p>
+<p>No surprise here: The user asks a question (1) and the LLM answers (2). By default, I am using the <a href="https://ollama.com/library/llama3.2"><code>llama3.2:3b</code></a> model, because it’s fast and good enough for this demo. But I can change it to any other, more powerful model that Ollama supports. E.g,:</p>
 <div class="cell">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">llm_chat</span><span class="op">(</span><span class="st">"What is the capital of France?"</span>, model <span class="op">=</span> <span class="st">"deepseek-r1:14b"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -324,8 +324,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Uses the calculator tool to calculate the result in R</li>
 <li>Returns the response to the user</li>
 </ol></section><section id="a-smarter-rag" class="level2"><h2 class="anchored" data-anchor-id="a-smarter-rag">A smarter RAG</h2>
-<p>A simple RAG (Retrieval Augmented Generation) enhances LLM responses by first searching a knowledge base for relevant information. But our smarter RAG goes a step further: after the initial search, the LLM formulates additional questions to gather more context, leading to more comprehensive answers.</p>
+<p>A simple RAG (Retrieval Augmented Generation) enhances LLM responses by first searching a knowledge base for relevant information. But our improved RAG goes a step further: after the initial search, the LLM formulates additional questions to gather more context, leading to more comprehensive answers.</p>
 <p>In <a href="https://github.com/cynkra/ragent/blob/main/R/agent_rag.R">our smarter RAG</a>, we build an agent that:</p>
+<ul>
+<li>Search the knowledge base for relevant passages (2)</li>
+<li>Ask the LLM to provide additional questions to search for (5)</li>
+<li>Search the knowledge base for the additional questions (7)</li>
+<li>Use the context to answer the question (10)</li>
+</ul>
 <div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
@@ -357,13 +363,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>In <a href="https://github.com/cynkra/ragent/blob/main/R/agent_rag.R">our smarter RAG</a>, we build an agent that</p>
-<ul>
-<li>Search the knowledge base for relevant passages (2)</li>
-<li>Ask the LLM to provide additional questions to search for (5)</li>
-<li>Search the knowledge base for the additional questions (7)</li>
-<li>Use the context to answer the question (10)</li>
-</ul>
 <div class="cell">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">agent_rag</span><span class="op">(</span><span class="st">"What is ggplot2 used for?"</span>, dir <span class="op">=</span> <span class="st">"docs/"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Based on the documentation:</span></span>
@@ -372,7 +371,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>This is just the beginning. We can build much more complex agents. For example, we could create a general agent that combines both the calculator and RAG capabilities. This agent would analyze each question and automatically choose the right approach - either searching the knowledge base or performing calculations.</p>
 </section><section id="conclusion" class="level2"><h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>R is a perfect language for building AI agents. Its functional nature makes tools feel like natural building blocks that we can freely combine. The way R handles lists and data frames fits seamlessly with JSON, and the rich ecosystem provides everything we need to build powerful agents. Best of all, R’s interactive workflow lets us watch our agents in action, making development feel like a conversation itself.</p>
+<p>R is a powerful language for building AI agents. Its functional nature makes tools feel like Lego bricks that we can combine. The way R handles lists and data frames fits nicely with the JSON returned from the API, and the rich R ecosystem provides everything we need to build powerful agents. But what I found most useful is R’s interactive workflow that allows me to watch and debug the workings of the LLMs and the tools step by step.</p>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
