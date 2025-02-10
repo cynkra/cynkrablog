@@ -7,7 +7,7 @@ author: Christoph Sax
 title: 'tempdisagg: converting quarterly time series to daily'
 categories:
 - R
-- time-series
+- Time series
 ---
 
 Not having a time series at the desired frequency is a common problem for researchers and analysts. For example, instead of quarterly sales, they only have annual sales. Instead of a daily stock market index, they only have a weekly index. While there is no way to fully make up for the missing data, there are useful workarounds: with the help of one or more high-frequency indicator series, the low-frequency series may be disaggregated into a high-frequency series.

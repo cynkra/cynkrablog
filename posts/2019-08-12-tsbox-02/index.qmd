@@ -6,7 +6,7 @@ author: Christoph Sax
 title: 'tsbox 0.2: supporting additional time series classes'
 categories:
 - R
-- time-series
+- Time series
 ---
 
 [The tsbox package](https://www.tsbox.help/) makes life with time series

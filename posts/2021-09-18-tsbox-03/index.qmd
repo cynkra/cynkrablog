@@ -7,7 +7,7 @@ author: Christoph Sax
 title: 'tsbox 0.3.1: extended functionality'
 categories:
 - R
-- time-series
+- Time series
 badges:
 - label: CRAN
   bg: bg-warning

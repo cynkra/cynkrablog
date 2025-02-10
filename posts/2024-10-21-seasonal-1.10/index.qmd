@@ -6,7 +6,7 @@ author: Christoph Sax
 title: 'seasonal 1.10: R-interface to X-13ARIMA-SEATS'
 categories:
 - R
-- time-series
+- Time series
 badges:
 - label: CRAN
   bg: bg-warning
@@ -35,13 +35,13 @@ By default, `seas` calls the automatic procedures of X-13ARIMA-SEATS to perform 
 To extract the final series, use the `final()` function:
 
 ```{r, eval = FALSE}
-final(m)  
+final(m)
 ```
 
 To plot the results, use the `plot()` function:
 
 ```{r}
-plot(m)  
+plot(m)
 ```
 
 ## Input and output
