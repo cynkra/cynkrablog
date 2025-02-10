@@ -7,8 +7,6 @@ author: Ben Ubah
 title: 'Google Season of Docs with R: useR! Information Board'
 categories:
 - R
-- gsod
-- dashboard
 badges:
 # - label: R
 #   bg: bg-primary

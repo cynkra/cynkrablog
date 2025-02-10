@@ -7,8 +7,7 @@ author: Balthasar Sager
 title: "Introducing dm: easy juggling of tables and relations"
 categories:
 - R
-- dm
-- databases
+- Database
 ---
 
 The [dm](https://krlmlr.github.io/dm/) package reduces your mental strain when working with many tables. It connects your data, while still keeping them in their original tables. You can easily perform operations on all tables, visualize how they're connected, and integrate databases.

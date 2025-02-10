@@ -5,14 +5,12 @@ date: '2021-07-09'
 layout: post
 image: banner.jpg
 categories:
-  - certified partner
   - Posit
-  - Docker
 ---
 
 cynkra celebrates its first anniversary as an [RStudio Full Service Certified Partner](https://rstudio.com/certified-partners/)!
 Every day, we help our clients set up professional IT infrastructures using RStudio products and license compositions suited to their individual needs.
-In the context of our anniversary, we would like to discuss the RStudio suite of products and our approach of combining RStudio’s products with our Managed Workbench Solution to make RStudio Professional products even more powerful.
+In the context of our anniversary, we would like to discuss the RStudio suite of products and our approach of combining RStudio's products with our Managed Workbench Solution to make RStudio Professional products even more powerful.
 
 <figure>
 <img alt="Illustration" src="banner.jpg" style=" width: 100%; height: auto">

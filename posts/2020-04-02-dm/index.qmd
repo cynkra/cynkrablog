@@ -7,8 +7,7 @@ author: Angel D'az, Kirill Müller
 title: 'Relational data models in R'
 categories:
 - R
-- dm
-- databases
+- Database
 ---
 
 Relational databases are powerful tools for analyzing and manipulating data.

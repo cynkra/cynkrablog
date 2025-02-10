@@ -7,7 +7,7 @@ og_image: devops-port.jpeg
 author: cynkra team
 title: 'DevOps Engineer (80-100%)'
 categories:
-- jobs
+- Jobs
 badges:
 - label: 'Open position'
   bg: bg-primary

@@ -7,7 +7,7 @@ author: Christoph Sax
 title: 'seasonal 1.9: Accessing composite output'
 categories:
 - R
-- time-series
+- Time series
 badges:
 - label: CRAN
   bg: bg-warning
@@ -80,6 +80,3 @@ We can also use `series()`, e.g., to access the final, indirectly adjusted serie
 ```{r}
 series(m1, "composite.indseasadj")
 ```
-
-
-

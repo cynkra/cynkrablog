@@ -5,9 +5,9 @@ image: logo.png
 author: David Granjon
 date: '2024-09-10'
 categories:
-  - sport
+  - Sport
   - R
-format: 
+format:
   html:
     code-fold: 'show'
 filters:
@@ -163,7 +163,7 @@ leaflet(zch_gpx$routes[[1]]) |>
         var lng = coord.lng;
         console.log('You clicked the map at latitude: ' + lat + ' and       longitude: ' + lng);
         });
-      }"  
+      }"
     )
 ```
 
@@ -228,7 +228,7 @@ We could cumulate both information about elevation and x and y coordinates to ge
 
 ```{r, 3d-profil}
 make_3d_plot <- function(dat, color_col, legend_title, scale = 150, show_legend = TRUE) {
-    tmp_3d_plot <- ggplot(dat) + 
+    tmp_3d_plot <- ggplot(dat) +
  geom_point(aes(x = Longitude, y = Latitude, color = .data[[color_col]])) +
  scale_color_continuous(type = "viridis", limits = c(0, max(dat[[color_col]])), name = legend_title) +
  theme(
@@ -251,7 +251,7 @@ Wouldn't it be nice to be able to move the plot around and have different angles
 
 ```{r, rgl-route, warning=FALSE}
 # https://simplemaps.com/data/ch-cities
-ch_cities <- readr::read_csv("ch.csv") 
+ch_cities <- readr::read_csv("ch.csv")
 zh_cities <- ch_cities |> filter(
     city %in% c("Zürich", "Winterthur", "Binz", "Uster", "Dübendorf", "Küsnacht")
 )
@@ -260,9 +260,9 @@ p <- ggplot(zch_gpx$routes[[1]]) +
     aes(Longitude, Latitude, z = Elevation),
         extrude = TRUE, extrude_edge_colour = 'grey20', extrude_face_fill = 'grey80',
     extrude_edge_alpha = 0.2) +
-  geom_text(data = zh_cities, aes(lng, lat, label = city)) + 
-  geom_point(data = zh_cities, aes(lng, lat), colour = 'red') + 
-  theme_ggrgl() +  
+  geom_text(data = zh_cities, aes(lng, lat, label = city)) +
+  geom_point(data = zh_cities, aes(lng, lat), colour = 'red') +
+  theme_ggrgl() +
   labs(
     title = "Elevation 3D profile",
     subtitle = "World UCI road men elite 2024, Zurich"
@@ -311,9 +311,9 @@ res <- res |>
 Below are some __continuous__ variable summary using `gtsummary`. Notice the maximum gradient which was __18.2%__! The overall ride has a 1.1% grade, which means there is more climbings than downhills.
 
 ```{r, ride-summary}
-res |> 
+res |>
   tbl_summary(include = c(speed, cadence, grade, power), type = all_continuous() ~ "continuous2",
-    statistic = all_continuous() ~ c("{mean}", "{min}", "{max}"), 
+    statistic = all_continuous() ~ c("{mean}", "{min}", "{max}"),
     missing = "no",
     label = c(speed ~ "Speed (km/h)", cadence ~ "Cadence (RPM)", grade ~ "Grade (%)", power ~ "Power (Watts)")
   ) |>

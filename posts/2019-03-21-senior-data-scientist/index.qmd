@@ -5,7 +5,7 @@ og_image: og_image.jpg
 author: cynkra team
 title: 'Data Scientist/Engineer (40-100%)'
 categories:
-- r
+- R
 - jobs
 draft: true
 ---

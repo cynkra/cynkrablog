@@ -7,7 +7,7 @@ author: Christoph Sax
 title: 'Seasonal Adjustment of Multiple Series'
 categories:
 - R
-- time-series
+- Time series
 ---
 
 seasonal is an easy-to-use and full-featured R-interface to X-13ARIMA-SEATS,

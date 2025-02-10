@@ -6,8 +6,8 @@ og_image: og_image.jpg
 author: cynkra team
 title: 'DevOps Expert (f/m/d, 60-100%)'
 categories:
-- jobs
-- DevOps
+- Jobs
+- Infra
 draft: true
 ---
 

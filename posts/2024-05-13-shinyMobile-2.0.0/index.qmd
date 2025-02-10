@@ -5,8 +5,8 @@ image: logo.png
 author: Veerle van Leemput and David Granjon
 date: '2024-05-13'
 categories:
-  - shiny
-format: 
+  - Shiny
+format:
   html:
     code-fold: true
 filters:
@@ -27,10 +27,10 @@ shinyMobile 1.0.0 and above have been running on an old version of Framework7 (v
 
 ### New multi pages experimental support
 
-We are very excited to bring this feature out for this new release. Under the hood, this is possible owing to the `{brochure}` [package](https://github.com/ColinFay/brochure) from 
+We are very excited to bring this feature out for this new release. Under the hood, this is possible owing to the `{brochure}` [package](https://github.com/ColinFay/brochure) from
 [Colin Fay](https://github.com/ColinFay) as well as the internal Framework7 [router](https://framework7.io/docs/view) component.
 
-#### What does this mean? 
+#### What does this mean?
 
 You can now develop __real multi pages__ Shiny applications and have different url endpoints and redirections. For instance, `https://my-app/home` can be the home page while `https://my-app/settings` brings to the settings page.
 
@@ -50,7 +50,7 @@ library(shiny)
 library(brochure)
 library(shinyMobile)
 
-# Allows to use the app on a server like 
+# Allows to use the app on a server like
 # shinyapps.io where basepath is /app_name
 # instead of "/" or "".
 make_link <- function(path = NULL, basepath = "") {
@@ -840,7 +840,7 @@ shinyApp(
 
 ### Refined inputs layout and style
 
-Whenever you have multiple inputs, we now recommend to wrap all of them within `f7List()` so as to benefit from new styling options such as outline, inset, strong. Internally, we use a function able to detect whether the input is inside a `f7List()`. If this is the case, you can style this list by passing parameters like `f7List(outline = TRUE, inset = TRUE, ...)`. If not, the input is internally wrapped in a list to have correct rendering, but no styling is possible. Besides, some inputs like `f7Text()` can have custom styling (add an icon, clear button, outline style), which is independent from the external list wrapper style. Hence, we don't recommend doing `f7List(outline = TRUE, f7Text(outline = TRUE))` since it won't render well and instead use `f7List(outline = TRUE, f7Text())`. 
+Whenever you have multiple inputs, we now recommend to wrap all of them within `f7List()` so as to benefit from new styling options such as outline, inset, strong. Internally, we use a function able to detect whether the input is inside a `f7List()`. If this is the case, you can style this list by passing parameters like `f7List(outline = TRUE, inset = TRUE, ...)`. If not, the input is internally wrapped in a list to have correct rendering, but no styling is possible. Besides, some inputs like `f7Text()` can have custom styling (add an icon, clear button, outline style), which is independent from the external list wrapper style. Hence, we don't recommend doing `f7List(outline = TRUE, f7Text(outline = TRUE))` since it won't render well and instead use `f7List(outline = TRUE, f7Text())`.
 
 Besides, independently from `f7List()`, some inputs having more specific styling options:
 
@@ -986,7 +986,7 @@ shinyApp(
   ),
   server = function(input, output) {
   }
-) 
+)
 ```
 :::
 
