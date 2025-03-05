@@ -57,8 +57,7 @@ So you do not need to worry about naming your test files correctly if you call t
 
 ## Cleanup of igraph test files
 
-One goal of our refactoring efforts in `igraph` was to achieve a one-to-one correspondence between R files and test files.  
-The way igraph grew over the years, there were many things to fix in the organization of the test files. Some files only tested singular functions, 
+One goal of our refactoring efforts in `igraph` was to achieve a one-to-one correspondence between R files and test files. The way igraph grew over the years, there were many things to fix in the organization of the test files. Some files only tested singular functions, 
 and some contained a mix of functions from different R scripts. The function below is used to check how off the mapping is by trying to
 match test files to R script files. You simply need to provide a CRAN (GitHub) archive link and the function computes the number of test files that do not have a corresponding R script. 
 ```{r}
@@ -91,14 +90,14 @@ check_test_mapping <- function(url) {
 }
 ```
 
-Version 1.6.0 of igraph roughly corresponds to when cynkra started to work on igraph [TODO: TRUE?]
+Version 1.6.0 of igraph roughly corresponds to when cynkra started to work on igraph. 
 ```{r}
 url <- "https://cran.r-project.org/src/contrib/Archive/igraph/igraph_1.6.0.tar.gz"
 check_test_mapping(url)
 ```
 
 This version contains 144 test files which do not have a corresponding Rscript!
-Now compare this with the current main branch of the igraph repo
+Now compare this with the current main branch of the igraph repo.
 
 ```{r}
 url <- "https://github.com/igraph/rigraph/archive/refs/heads/main.tar.gz"
