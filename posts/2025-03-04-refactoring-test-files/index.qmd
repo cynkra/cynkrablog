@@ -51,6 +51,7 @@ usethis::use_test()
 ```
 
 As the help states:
+
 > [...] makes it easy to create paired R and test files, using the convention that **the tests for R/foofy.R should live in tests/testthat/test-foofy.R**. 
 
 So you do not need to worry about naming your test files correctly if you call this function while you have the R file `R/foofy.R` open because it is automatically created for you.
