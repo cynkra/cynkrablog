@@ -43,14 +43,17 @@ In similar spirit we would organize our functions above in two files. `my_mult()
 
 ## Organizing test files
 
-Equally important, but probably less often considered, is the way test files should be organized, that is the files `test/testthat/test-*.R`. The simplest and best way is to simply follow the guidance from the section above and modularize the test. In the case of tests, you actually do not have to do anything new, simply use the same modularization as for the R script files. So if there is a file `R/my_operators.R`, there should be a `tests/testthat/test-my_operators.R`.
+Equally important, but probably less often considered, is the way test files should be organized (the files `test/testthat/test-*.R`). 
+The simplest and best way is to follow the guidance from the section above and modularize the tests. 
+In the case of tests, you actually do not have to do anything new, simply use the same modularization as for the R script files. 
+So if there is a file `R/my_operators.R`, there should be a `tests/testthat/test-my_operators.R`.
 
 In your own packages, you can easily achieve this type from the start by using
 ```r
 usethis::use_test()
 ```
 
-As the help states:
+As the help states:  
 
 > [...] makes it easy to create paired R and test files, using the convention that **the tests for R/foofy.R should live in tests/testthat/test-foofy.R**. 
 
@@ -111,4 +114,5 @@ check_test_mapping(url)
 
 Test file refactoring does not rank high on the list of exciting things to do while maintaining an R package.
 Most users will never see the result of this effort and it does not directly impact the usability of the package. 
-However, from a developers perspective, this was a very important step to ensure long-term maintainability of the package since it introduces a clear modular test structure for the package that is easier to comprehend.
+However, from a developers perspective, this was a very important step to ensure long-term maintainability of the package since it introduces 
+a clear modular test structure for the package that is easier to comprehend.
