@@ -6,7 +6,7 @@ author: David Schoch
 title: 'Organizing tests in R packages'
 categories:
 - R
-- LLM
+- test
 ---
 
 A small team at cynkra is working on the R package [igraph](https://github.com/igraph/rigraph), a popular package for simple graphs and network analysis. A big part of this work involves refactoring legacy code and enhancing the maintainability of the package for the future. One such task was to reorganize and refactor the tests of the package.
