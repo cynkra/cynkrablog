@@ -70,6 +70,8 @@ As the help states:
 > [...] makes it easy to create paired R and test files, using the convention that **the tests for R/foofy.R should live in tests/testthat/test-foofy.R**.
 
 So you do not need to worry about naming your test files correctly if you call this function while you have the R file `R/foofy.R` open because it is automatically created for you.
+Besides convenience, this also has very practical benefits, which are described in the book [R packages (2e)](https://r-pkgs.org/testing-basics.html#create-a-test). 
+For example, it is easier to jump from one file to the other using `use_test()` and `use_r()`.
 
 ## Cleanup of igraph test files
 
