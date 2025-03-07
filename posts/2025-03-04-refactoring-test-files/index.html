@@ -212,9 +212,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><p>A small team at cynkra is working on the R package <a href="https://github.com/igraph/rigraph">igraph</a>, a popular package for simple graphs and network analysis. A big part of this work involves refactoring legacy code and enhancing the maintainability of the package for the future. One such task was to reorganize and refactor the tests of the package.</p>
+</header><p>A small team at cynkra is working on the R package <a href="https://r.igraph.org/">igraph</a>, a popular package for simple graphs and network analysis. A big part of this work involves refactoring legacy code and enhancing the maintainability of the package for the future. One such task was to reorganize and refactor the tests of the package.</p>
 <section id="organizing-r-files" class="level2"><h2 class="anchored" data-anchor-id="organizing-r-files">Organizing R files</h2>
-<p>Before talking about the organization of test files, let us briefly talk about how to organize Rscripts that contain the functions within an R package under <code>R/</code>. Should each function be in its own file? So should</p>
+<p>Before talking about the organization of test files, let us briefly talk about how to organize R scripts that contain the functions within an R package under <code>R/</code>. Should each function be in its own file? So should</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_mult</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">a</span>,<span class="va">b</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="va">a</span> <span class="op">*</span> <span class="va">b</span></span>
 <span><span class="op">}</span></span>
@@ -230,9 +230,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">my_bye</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">name</span><span class="op">)</span><span class="op">{</span></span>
 <span>  <span class="fu">glue</span><span class="fu">::</span><span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html">glue</a></span><span class="op">(</span><span class="st">"Goodbye {name}!"</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>live in <code>R/my_mult.R</code>, <code>R/my_sum</code>, <code>R/my_hello.R</code>, and <code>R/my_bye.R</code>? Or should the all live together in one file <code>R/my-functions.R</code>? You might guess that neither approach is optimal, especially when a package contains many functions. Either you have dozens (or hundreds!) of files under <code>R/</code> our you have one large script with thousands of lines of codes. While there is no real best practice, both of these extremes should generally be avoided. The best approach usually is to try to organize your functions in <em>modules</em> of related functions.</p>
-<p>In <code>igraph</code>, files are organized according to graph theoretic tasks. So for example <code>R/centrality.R</code> contains all functions that compute importance of nodes in networks or <code>R/community.R</code> contains all functions to cluster a network.</p>
+<p>live in <code>R/my_mult.R</code>, <code>R/my_sum</code>, <code>R/my_hello.R</code>, and <code>R/my_bye.R</code>? Or should the all live together in one file <code>R/my-functions.R</code>? You might guess that neither approach is optimal, especially when a package contains many functions. Either you have dozens (or hundreds!)of files under<code>R/</code>our you have one large script with thousands of lines of codes. While there is no real best practice, both of these extremes should generally be avoided. The best approach usually is to try to organize your functions in<em>modules</em> of related functions.</p>
+<p>In <code>igraph</code>, files are organized according to graph theoretic tasks. So for example<code>R/centrality.R</code> contains all functions that compute importance of nodes in networks or <code>R/community.R</code> contains all functions to cluster a network.</p>
 <p>In similar spirit we would organize our functions above in two files. <code>my_mult()</code> and <code>my_sum()</code> would go into something like <code>R/my_operators.R</code> and <code>my_hello()</code> and <code>my_bye()</code> into <code>R/my_greetings.R</code>.</p>
+<p>For more details on organizing your files in an R package see the book <a href="https://r-pkgs.org/code.html#sec-code-organising">R Packages (2e)</a>. There is also a lot of useful tips for how to navigate your files and how to find specific functions more efficiently than scrolling around.</p>
 </section><section id="organizing-test-files" class="level2"><h2 class="anchored" data-anchor-id="organizing-test-files">Organizing test files</h2>
 <p>Equally important, but probably less often considered, is the way test files should be organized (the files <code>test/testthat/test-*.R</code>). The simplest and best way is to follow the guidance from the section above and modularize the tests. In the case of tests, you actually do not have to do anything new, simply use the same modularization as for the R script files. So if there is a file <code>R/my_operators.R</code>, there should be a <code>tests/testthat/test-my_operators.R</code>.</p>
 <p>In your own packages, you can easily achieve this type from the start by using</p>
@@ -241,9 +242,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <blockquote class="blockquote">
 <p>[…] makes it easy to create paired R and test files, using the convention that <strong>the tests for R/foofy.R should live in tests/testthat/test-foofy.R</strong>.</p>
 </blockquote>
-<p>So you do not need to worry about naming your test files correctly if you call this function while you have the R file <code>R/foofy.R</code> open because it is automatically created for you.</p>
+<p>So you do not need to worry about naming your test files correctly if you call this function while you have the R file <code>R/foofy.R</code> open because it is automatically created for you. Besides convenience, this also has very practical benefits, which are described in the book <a href="https://r-pkgs.org/testing-basics.html#create-a-test">R packages (2e)</a>. For example, it is easier to jump from one file to the other using <code>use_test()</code> and <code>use_r()</code>.</p>
 </section><section id="cleanup-of-igraph-test-files" class="level2"><h2 class="anchored" data-anchor-id="cleanup-of-igraph-test-files">Cleanup of igraph test files</h2>
-<p>One goal of our refactoring efforts in <code>igraph</code> was to achieve a one-to-one correspondence between R files and test files. The way igraph grew over the years, there were many things to fix in the organization of the test files. Some files only tested singular functions, and some contained a mix of functions from different R scripts. The function below is used to check how off the mapping is by trying to match test files to R script files. You simply need to provide a CRAN (GitHub) archive link and the function computes the number of test files that do not have a corresponding R script.</p>
+<p>One goal of our refactoring efforts in <code>igraph</code>was to achieve a one-to-one correspondence between R files (there exist around 90 R script files) and test files. The way igraph grew over the years, there were many things to fix in the organization of the test files. Some files only tested singular functions, and some contained a mix of functions from different R scripts. The function below is used to check how off the mapping is by trying to match test files to R script files. You simply need to provide a CRAN (GitHub) archive link and the function computes the number of test files that do not have a corresponding R script.</p>
 <div class="cell">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">check_test_mapping</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">url</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">temp_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".tar.gz"</span><span class="op">)</span></span>
@@ -281,17 +282,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>[1] 144</code></pre>
 </div>
 </div>
-<p>This version contains 144 test files which do not have a corresponding Rscript! Now compare this with the current main branch of the igraph repo.</p>
+<p>This version contains 144 test files which do not have a corresponding R script! Now compare this with the current main branch of the igraph repo.</p>
 <div class="cell">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">url</span> <span class="op">&lt;-</span> <span class="st">"https://github.com/igraph/rigraph/archive/refs/heads/main.tar.gz"</span></span>
 <span><span class="fu">check_test_mapping</span><span class="op">(</span><span class="va">url</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0</code></pre>
+<pre><code>[1] 1</code></pre>
 </div>
 </div>
-<p>🎉🎉🎉</p>
 </section><section id="conclusion" class="level2"><h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>Test file refactoring does not rank high on the list of exciting things to do while maintaining an R package. Most users will never see the result of this effort and it does not directly impact the usability of the package. However, from a developers perspective, this was a very important step to ensure long-term maintainability of the package since it introduces a clear modular test structure for the package that is easier to comprehend.</p>
+<p>Test file refactoring does not rank high on the list of exciting things to do while maintaining an R package. Most users will never see the result of this effort and it does not directly impact the usability of the package. However, from a developers perspective, this was a very important step to ensure long-term maintainability of the package since it introduces a clear modular test structure for the package that is easier to comprehend. This means less of a barrier to add and work on new tests; and importantly means less of a barrier for newcomers to contribute.</p>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">

@@ -267,7 +267,7 @@ Photo by <a href="https://unsplash.com/photos/iar-afB0QQw" target="_blank"> Mark
 </section>
 <section id="derive-and-verify-json" class="level2">
 <h2 class="anchored" data-anchor-id="derive-and-verify-json">Derive and verify JSON</h2>
-<p>Our goal is to create the <code>package:</code> section from the above matrix in JSON format. To derive the JSON format, I use the <a href="https://www.gnu.org/software/sed/manual/sed.html"><code>sed</code> stream editor</a>, my beloved hammer that I use whenever I see a text transformation task in the shell:</p>
+<p>Our goal is to create the <code>package:</code> section from the above matrix in JSON format. To derive the JSON format, I use the <a href="https://en.wikipedia.org/wiki/Sed"><code>sed</code> stream editor</a>, my beloved hammer that I use whenever I see a text transformation task in the shell:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">'{ "package" : ['</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">## { "package" : [</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sed</span> <span class="at">-n</span> <span class="st">"/^REVDEP *:= */ { s///; p }"</span> revdep-dev/Makefile <span class="kw">|</span> <span class="fu">sed</span> <span class="st">'s/ /, /g'</span> <span class="kw">|</span> <span class="fu">xargs</span> <span class="at">-n</span> 1 echo <span class="kw">|</span> <span class="fu">sed</span> <span class="at">-r</span> <span class="st">'s/^([^,]*)(,?)$/"\1"\2/'</span></span>
