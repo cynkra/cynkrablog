@@ -67,7 +67,7 @@ The techniques shown here are applicable to build matrices of any complexity and
 ## Derive and verify JSON
 
 Our goal is to create the `package:` section from the above matrix in JSON format.
-To derive the JSON format, I use the [`sed` stream editor](https://www.gnu.org/software/sed/manual/sed.html), my beloved hammer that I use whenever I see a text transformation task in the shell:
+To derive the JSON format, I use the [`sed` stream editor](https://en.wikipedia.org/wiki/Sed), my beloved hammer that I use whenever I see a text transformation task in the shell:
 
 ```bash
 echo '{ "package" : ['
