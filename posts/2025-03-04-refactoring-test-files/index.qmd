@@ -119,12 +119,14 @@ check_test_mapping(url)
 ```
 
 This version contains 144 test files which do not have a corresponding R script!
-Now compare this with the current main branch of the igraph repo.
+Now compare this with the main branch in late February 2025 of the GitHub repository.
 
 ```{r}
-url <- "https://github.com/igraph/rigraph/archive/refs/heads/main.tar.gz"
+url <- "https://github.com/igraph/rigraph/archive/0bac719e44c18024080163f52fbce373ebd2c26b.tar.gz"
 check_test_mapping(url)
 ```
+
+🥳
 
 ## Conclusion
 
