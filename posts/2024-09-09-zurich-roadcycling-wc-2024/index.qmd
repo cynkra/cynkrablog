@@ -318,12 +318,12 @@ p <- ggplot(zch_gpx$routes[[1]]) +
   geom_path_3d(
     aes(Longitude, Latitude, z = Elevation),
     extrude = TRUE,
-    extrude_edge_colour = 'grey20',
-    extrude_face_fill = 'grey80',
+    extrude_edge_colour = "grey20",
+    extrude_face_fill = "grey80",
     extrude_edge_alpha = 0.2
   ) +
   geom_text(data = zh_cities, aes(lng, lat, label = city)) +
-  geom_point(data = zh_cities, aes(lng, lat), colour = 'red') +
+  geom_point(data = zh_cities, aes(lng, lat), colour = "red") +
   theme_ggrgl() +
   labs(
     title = "Elevation 3D profile",
@@ -349,7 +349,7 @@ In the below section, we analyse few logs of my ride, which are extracted from t
 ```{r, fit-to-csv, message=FALSE, warning=FALSE}
 # I found this R package but could not make it work
 # Given that it is 5 years old.
-#remotes::install_github("muschellij2/fit2csv")
+# remotes::install_github("muschellij2/fit2csv")
 res <- readr::read_csv("2024-09-08-063850.csv")
 head(res)
 ```
@@ -446,12 +446,15 @@ make_time_plot <- function(
       color = "darkred"
     )
 
-  if (show_elevation)
+  if (show_elevation) {
     p +
       geom_area(
         aes(x = distance, y = altitude / elevation_scale),
         alpha = 0.15
-      ) else p
+      )
+  } else {
+    p
+  }
 }
 
 make_distrib_plot <- function(dat, col) {
