@@ -95,67 +95,91 @@ The above setting ensures that at any level of zoom, the icon stays on the trace
 
 ```{r, map}
 leaflet(zch_gpx$routes[[1]]) |>
-    addTiles(
-        urlTemplate = "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
-        attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-        options = tileOptions(
-            subdomains = "abcd",
-	        maxZoom = 20
-        )
-    ) |>
-    addPolylines(lat = ~Latitude, lng = ~Longitude, color = "#000000", opacity = 0.8, weight = 3) |>
-    addCircleMarkers(data = zch_gpx$waypoints[1, ], lat = ~Latitude, lng = ~Longitude, color = "#3eaf15", opacity = 0.8, weight = 5, radius = 10, label = "Start of race") |>
-    addCircleMarkers(data = zch_gpx$waypoints[2, ], lat = ~Latitude, lng = ~Longitude, color = "#e73939", opacity = 0.8, weight = 5, radius = 10, label = "End of race") |>
-    addMarkers(
-        lng = 8.64389380440116,
-        lat = 47.5413932128899,
-        icon = list(
-            iconUrl = "https://www.vanuatubeachbar.com/wp-content/uploads/leaflet-maps-marker-icons/mountains.png",
-            iconWidth = 32,
-            iconHeight = 37,
-            iconAnchorX = 0,
-            iconAnchorY = 0
-        ),
-        label = "Buch am Irchel: 4.83km at 4.2% **"
-    ) |>
-    addMarkers(
-        lng = 8.743660245090725,
-        lat = 47.45665840019784,
-        icon = list(
-            iconUrl = "https://www.vanuatubeachbar.com/wp-content/uploads/leaflet-maps-marker-icons/mountains.png",
-            iconWidth = 32,
-            iconHeight = 37,
-            iconAnchorX = 0,
-            iconAnchorY = 0
-        ),
-        label = "Kyburg: 1.28km at 10.3% ****"
-    ) |>
-    addMarkers(
-        lng = 8.624014738015832,
-        lat = 47.351512429613024,
-        icon = list(
-            iconUrl = "https://www.vanuatubeachbar.com/wp-content/uploads/leaflet-maps-marker-icons/mountains.png",
-            iconWidth = 32,
-            iconHeight = 37,
-            iconAnchorX = 0,
-            iconAnchorY = 0
-        ),
-        label = "Maur-Binz: 3.7km at 4.4% **"
-    ) |>
-    addMarkers(
-        lng = 8.607488349080088,
-        lat = 47.36219723777833,
-        icon = list(
-            iconUrl = "https://www.vanuatubeachbar.com/wp-content/uploads/leaflet-maps-marker-icons/mountains.png",
-            iconWidth = 32,
-            iconHeight = 37,
-            iconAnchorX = 0,
-            iconAnchorY = 0
-        ),
-        label = "ZurichbergStrasse/Witikon: 2.63km at 5.3% **"
-    ) |>
-    htmlwidgets::onRender(
-      "function(x, el, data) {
+  addTiles(
+    urlTemplate = "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+    attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    options = tileOptions(
+      subdomains = "abcd",
+      maxZoom = 20
+    )
+  ) |>
+  addPolylines(
+    lat = ~Latitude,
+    lng = ~Longitude,
+    color = "#000000",
+    opacity = 0.8,
+    weight = 3
+  ) |>
+  addCircleMarkers(
+    data = zch_gpx$waypoints[1, ],
+    lat = ~Latitude,
+    lng = ~Longitude,
+    color = "#3eaf15",
+    opacity = 0.8,
+    weight = 5,
+    radius = 10,
+    label = "Start of race"
+  ) |>
+  addCircleMarkers(
+    data = zch_gpx$waypoints[2, ],
+    lat = ~Latitude,
+    lng = ~Longitude,
+    color = "#e73939",
+    opacity = 0.8,
+    weight = 5,
+    radius = 10,
+    label = "End of race"
+  ) |>
+  addMarkers(
+    lng = 8.64389380440116,
+    lat = 47.5413932128899,
+    icon = list(
+      iconUrl = "https://www.vanuatubeachbar.com/wp-content/uploads/leaflet-maps-marker-icons/mountains.png",
+      iconWidth = 32,
+      iconHeight = 37,
+      iconAnchorX = 0,
+      iconAnchorY = 0
+    ),
+    label = "Buch am Irchel: 4.83km at 4.2% **"
+  ) |>
+  addMarkers(
+    lng = 8.743660245090725,
+    lat = 47.45665840019784,
+    icon = list(
+      iconUrl = "https://www.vanuatubeachbar.com/wp-content/uploads/leaflet-maps-marker-icons/mountains.png",
+      iconWidth = 32,
+      iconHeight = 37,
+      iconAnchorX = 0,
+      iconAnchorY = 0
+    ),
+    label = "Kyburg: 1.28km at 10.3% ****"
+  ) |>
+  addMarkers(
+    lng = 8.624014738015832,
+    lat = 47.351512429613024,
+    icon = list(
+      iconUrl = "https://www.vanuatubeachbar.com/wp-content/uploads/leaflet-maps-marker-icons/mountains.png",
+      iconWidth = 32,
+      iconHeight = 37,
+      iconAnchorX = 0,
+      iconAnchorY = 0
+    ),
+    label = "Maur-Binz: 3.7km at 4.4% **"
+  ) |>
+  addMarkers(
+    lng = 8.607488349080088,
+    lat = 47.36219723777833,
+    icon = list(
+      iconUrl = "https://www.vanuatubeachbar.com/wp-content/uploads/leaflet-maps-marker-icons/mountains.png",
+      iconWidth = 32,
+      iconHeight = 37,
+      iconAnchorX = 0,
+      iconAnchorY = 0
+    ),
+    label = "ZurichbergStrasse/Witikon: 2.63km at 5.3% **"
+  ) |>
+  htmlwidgets::onRender(
+    "function(x, el, data) {
         var map = this;
         map.on('click', function(e) {
         var coord = e.latlng;
@@ -163,8 +187,8 @@ leaflet(zch_gpx$routes[[1]]) |>
         var lng = coord.lng;
         console.log('You clicked the map at latitude: ' + lat + ' and       longitude: ' + lng);
         });
-      }"  
-    )
+      }"
+  )
 ```
 
 While the main climbs aren't particularly difficult, except Kyburg, repeating them 7 times after more than 200km will be certainly challenging. Besides, we can't only judge a climb by the average gradient as, sometimes a climb may be composed of a rather flat part, followed by very steep parts, making it more challenging than a regular gradient. That's the case of the Buch am Irchel climb.
@@ -187,37 +211,45 @@ gain <- 0
 i <- 1
 n_iter <- nrow(zch_gpx$routes[[1]]) - 1
 while (i <= n_iter) {
-    current_elevation <- zch_gpx$routes[[1]][i, "Elevation"]
-    new_elevation <- zch_gpx$routes[[1]][i + 1, "Elevation"]
-    diff <- new_elevation - current_elevation
-    if  (diff > 0) gain <- gain + diff
-    i <- i + 1
+  current_elevation <- zch_gpx$routes[[1]][i, "Elevation"]
+  new_elevation <- zch_gpx$routes[[1]][i + 1, "Elevation"]
+  diff <- new_elevation - current_elevation
+  if (diff > 0) gain <- gain + diff
+  i <- i + 1
 }
 ```
 
-Note that the website gain is officially 4470m whereas ours is `r round(gain)`m. This difference might be explained by the usage of different __smoothing algorithms__ for the [elevation](https://larahamilton.com/strava-elevation/). Funnily, we all had different bike computers and none of us had the same elevation result at the end of the ride.
+Note that the website gain is officially 4470m whereas ours is `r round(gain)`m. This difference might be explained by the usage of different __smoothing algorithms__ for the [elevation](https://support.strava.com/hc/en-us/articles/216919447-Elevation#how). Funnily, we all had different bike computers and none of us had the same elevation result at the end of the ride.
 
 We split the trace into 2 parts. The first loop takes place around Winterthur, north of Zurich. Then, a transition leads to the __city loop__, which is repeated 7 times.
 
 ```{r, map-elevation}
 race_route <- zch_gpx$routes[[1]] |>
-    filter(Time <= "2023-11-03 09:13:52")
+  filter(Time <= "2023-11-03 09:13:52")
 city_circuit <- zch_gpx$routes[[1]] |>
-    filter(Time > "2023-11-03 09:13:52")
+  filter(Time > "2023-11-03 09:13:52")
 ggplot() +
-    geom_area(data = race_route, aes(x = Time, y = Elevation), fill = "darkblue") +
-    geom_area(data = city_circuit, aes(x = Time, y = Elevation), fill = "darkred") +
-    labs(
-        title = "Zurich UCI 2024 Elevation profile",
-        subtitle = "men elite race",
-        caption = sprintf("Cumulated elevation: + %sm", round(gain))
-    ) +
-    ylab("Elevation (m)") +
-    theme(
-        axis.title.x = element_blank(),
-        axis.text.x = element_blank(),
-        axis.ticks.x = element_blank()
-    )
+  geom_area(
+    data = race_route,
+    aes(x = Time, y = Elevation),
+    fill = "darkblue"
+  ) +
+  geom_area(
+    data = city_circuit,
+    aes(x = Time, y = Elevation),
+    fill = "darkred"
+  ) +
+  labs(
+    title = "Zurich UCI 2024 Elevation profile",
+    subtitle = "men elite race",
+    caption = sprintf("Cumulated elevation: + %sm", round(gain))
+  ) +
+  ylab("Elevation (m)") +
+  theme(
+    axis.title.x = element_blank(),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank()
+  )
 ```
 
 As you can see, altough the race never goes above 700m, we manage to reach 4500m elevation gain.
@@ -227,42 +259,72 @@ As you can see, altough the race never goes above 700m, we manage to reach 4500m
 We could cumulate both information about elevation and x and y coordinates to get the __3D profile__ with [`rayshader`](https://www.rayshader.com/). The `make_3d_plot` function first creates a `ggplot` object using coordinates and `color_col` as color aesthetic. We set `color_col` to `Elevation` and hide the x and y axis information (as they won't be very useful). Could you guess where `(47.5, 8.4)` is? Probably not :). This plot object is passed to `plot_gg`, to proceed to the 3D conversion.
 
 ```{r, 3d-profil}
-make_3d_plot <- function(dat, color_col, legend_title, scale = 150, show_legend = TRUE) {
-    tmp_3d_plot <- ggplot(dat) + 
- geom_point(aes(x = Longitude, y = Latitude, color = .data[[color_col]])) +
- scale_color_continuous(type = "viridis", limits = c(0, max(dat[[color_col]])), name = legend_title) +
- theme(
-     axis.title.x = element_blank(),
-     axis.text.x = element_blank(),
-     axis.ticks.x = element_blank(),
-     axis.title.y = element_blank(),
-     axis.text.y = element_blank(),
-     axis.ticks.y = element_blank(),
-     legend.position = if (!show_legend) "none"
- )
- plot_gg(tmp_3d_plot, width = 3.5, multicore = TRUE, windowsize = c(1600, 1000), sunangle = 225, zoom = 0.40, phi = 15, theta = 80, scale = scale)
-render_snapshot()
+make_3d_plot <- function(
+  dat,
+  color_col,
+  legend_title,
+  scale = 150,
+  show_legend = TRUE
+) {
+  tmp_3d_plot <- ggplot(dat) +
+    geom_point(aes(x = Longitude, y = Latitude, color = .data[[color_col]])) +
+    scale_color_continuous(
+      type = "viridis",
+      limits = c(0, max(dat[[color_col]])),
+      name = legend_title
+    ) +
+    theme(
+      axis.title.x = element_blank(),
+      axis.text.x = element_blank(),
+      axis.ticks.x = element_blank(),
+      axis.title.y = element_blank(),
+      axis.text.y = element_blank(),
+      axis.ticks.y = element_blank(),
+      legend.position = if (!show_legend) "none"
+    )
+  plot_gg(
+    tmp_3d_plot,
+    width = 3.5,
+    multicore = TRUE,
+    windowsize = c(1600, 1000),
+    sunangle = 225,
+    zoom = 0.40,
+    phi = 15,
+    theta = 80,
+    scale = scale
+  )
+  render_snapshot()
 }
 
-make_3d_plot(zch_gpx$routes[[1]], "Elevation", "Elevation (m)", show_legend = FALSE)
+make_3d_plot(
+  zch_gpx$routes[[1]],
+  "Elevation",
+  "Elevation (m)",
+  show_legend = FALSE
+)
 ```
 
 Wouldn't it be nice to be able to move the plot around and have different angles? We can do this with the help of [`ggrgl`](https://coolbutuseless.github.io/package/ggrgl/articles/geom-path-3d.html), particularly the `geom_path_3d()`. We extract some Zurich's canton cities and project them on the map with `geom_point()` and `geom_text()` to add annotations. Since this plot does not render with quarto, we included an image after the code.
 
 ```{r, rgl-route, warning=FALSE}
 # https://simplemaps.com/data/ch-cities
-ch_cities <- readr::read_csv("ch.csv") 
-zh_cities <- ch_cities |> filter(
-    city %in% c("Zürich", "Winterthur", "Binz", "Uster", "Dübendorf", "Küsnacht")
-)
+ch_cities <- readr::read_csv("ch.csv")
+zh_cities <- ch_cities |>
+  filter(
+    city %in%
+      c("Zürich", "Winterthur", "Binz", "Uster", "Dübendorf", "Küsnacht")
+  )
 p <- ggplot(zch_gpx$routes[[1]]) +
   geom_path_3d(
     aes(Longitude, Latitude, z = Elevation),
-        extrude = TRUE, extrude_edge_colour = 'grey20', extrude_face_fill = 'grey80',
-    extrude_edge_alpha = 0.2) +
-  geom_text(data = zh_cities, aes(lng, lat, label = city)) + 
-  geom_point(data = zh_cities, aes(lng, lat), colour = 'red') + 
-  theme_ggrgl() +  
+    extrude = TRUE,
+    extrude_edge_colour = 'grey20',
+    extrude_face_fill = 'grey80',
+    extrude_edge_alpha = 0.2
+  ) +
+  geom_text(data = zh_cities, aes(lng, lat, label = city)) +
+  geom_point(data = zh_cities, aes(lng, lat), colour = 'red') +
+  theme_ggrgl() +
   labs(
     title = "Elevation 3D profile",
     subtitle = "World UCI road men elite 2024, Zurich"
@@ -296,14 +358,29 @@ We select only few interesting columns for the analysis and also remove the 43 m
 
 ```{r, col-select}
 res <- res |>
-    tibble::rowid_to_column() |>
-    mutate(
-        Latitude = position_lat,
-        Longitude = position_long,
-        distance = distance / 1000,
-        timestamp = case_when(rowid >= 9017 ~ timestamp - 43 * 60, .default = timestamp)
-    ) |>
-    select(timestamp, cadence, distance, speed, grade, power, temperature, calories, altitude, Latitude, Longitude)
+  tibble::rowid_to_column() |>
+  mutate(
+    Latitude = position_lat,
+    Longitude = position_long,
+    distance = distance / 1000,
+    timestamp = case_when(
+      rowid >= 9017 ~ timestamp - 43 * 60,
+      .default = timestamp
+    )
+  ) |>
+  select(
+    timestamp,
+    cadence,
+    distance,
+    speed,
+    grade,
+    power,
+    temperature,
+    calories,
+    altitude,
+    Latitude,
+    Longitude
+  )
 ```
 
 ### Data summary
@@ -311,15 +388,22 @@ res <- res |>
 Below are some __continuous__ variable summary using `gtsummary`. Notice the maximum gradient which was __18.2%__! The overall ride has a 1.1% grade, which means there is more climbings than downhills.
 
 ```{r, ride-summary}
-res |> 
-  tbl_summary(include = c(speed, cadence, grade, power), type = all_continuous() ~ "continuous2",
-    statistic = all_continuous() ~ c("{mean}", "{min}", "{max}"), 
+res |>
+  tbl_summary(
+    include = c(speed, cadence, grade, power),
+    type = all_continuous() ~ "continuous2",
+    statistic = all_continuous() ~ c("{mean}", "{min}", "{max}"),
     missing = "no",
-    label = c(speed ~ "Speed (km/h)", cadence ~ "Cadence (RPM)", grade ~ "Grade (%)", power ~ "Power (Watts)")
+    label = c(
+      speed ~ "Speed (km/h)",
+      cadence ~ "Cadence (RPM)",
+      grade ~ "Grade (%)",
+      power ~ "Power (Watts)"
+    )
   ) |>
-    modify_header(label ~ "**Variable**") |>
-    modify_caption("**Table 1. Ride summary**") |>
-    bold_labels()
+  modify_header(label ~ "**Variable**") |>
+  modify_caption("**Table 1. Ride summary**") |>
+  bold_labels()
 ```
 
 ### Power analysis
@@ -347,76 +431,96 @@ To proceed, we create a plot showing the __power__ as a function of the __distan
 The power chart shows that my power is decreasing over time, not a surprise. There is an effect of the __fatigue__ but also the __weather__ conditions, as the last part of the ride was in the city and under heavy rain and we had to adjust the speed not to take too much risks. Besides, when looking at the power distribution, we notice that the average power is significantly below my threshold power (FTP), which is my theoretical maximum power for 1h. For a 5h ride, this makes sense as one wants to save energy to last as long as possible.
 
 ```{r, power-time-serie, message=FALSE}
-make_time_plot <- function(dat, col, show_elevation = TRUE, elevation_scale = 1) {
-    p <- ggplot(dat, aes(x = distance, y = .data[[col]])) +
+make_time_plot <- function(
+  dat,
+  col,
+  show_elevation = TRUE,
+  elevation_scale = 1
+) {
+  p <- ggplot(dat, aes(x = distance, y = .data[[col]])) +
     geom_line() +
     geom_smooth(method = "lm") +
-    geom_hline(yintercept = mean(dat[[col]]), linetype = "dashed", color = "darkred")
+    geom_hline(
+      yintercept = mean(dat[[col]]),
+      linetype = "dashed",
+      color = "darkred"
+    )
 
-    if (show_elevation) p + geom_area(aes(x = distance, y = altitude / elevation_scale), alpha = 0.15) else p
+  if (show_elevation)
+    p +
+      geom_area(
+        aes(x = distance, y = altitude / elevation_scale),
+        alpha = 0.15
+      ) else p
 }
 
 make_distrib_plot <- function(dat, col) {
-    ggplot(dat, aes(x = .data[[col]])) +
+  ggplot(dat, aes(x = .data[[col]])) +
     geom_histogram() +
     geom_vline(xintercept = 250, linetype = "dashed", color = "darkgreen") +
-    geom_vline(xintercept = mean(dat[[col]]), linetype = "dashed", color = "darkred")
+    geom_vline(
+      xintercept = mean(dat[[col]]),
+      linetype = "dashed",
+      color = "darkred"
+    )
 }
 
 power_time <- make_time_plot(res, "power") +
-    annotate(
-        "text",
-        x = 10,
-        y = 400,
-        label = "Average power",
-        fontface = "bold",
-        color = "darkred",
-        size = 4.5
-    ) +
-    ggtitle("Power over time") +
-    xlab("Distance (km)") +
-    ylab("Power (Watts)")
+  annotate(
+    "text",
+    x = 10,
+    y = 400,
+    label = "Average power",
+    fontface = "bold",
+    color = "darkred",
+    size = 4.5
+  ) +
+  ggtitle("Power over time") +
+  xlab("Distance (km)") +
+  ylab("Power (Watts)")
 
 power_distrib <- make_distrib_plot(res, "power") +
-    annotate(
-        "text",
-        x = 310,
-        y = 2500,
-        label = "Threshold power (FTP)",
-        fontface = "bold",
-        color = "darkgreen",
-        size = 2.5
-    ) +
-    annotate(
-        "text",
-        x = mean(res$power) + 20 - 60,
-        y = 2500,
-        label = "Average power",
-        fontface = "bold",
-        color = "darkred",
-        size = 2.5
-    ) +
-    theme(
-     axis.title.y = element_blank(),
-     axis.text.y = element_blank(),
-     axis.ticks.y = element_blank()
-    ) +
-    ggtitle("Power distribution") +
-    xlab("Power (Watts)")
+  annotate(
+    "text",
+    x = 310,
+    y = 2500,
+    label = "Threshold power (FTP)",
+    fontface = "bold",
+    color = "darkgreen",
+    size = 2.5
+  ) +
+  annotate(
+    "text",
+    x = mean(res$power) + 20 - 60,
+    y = 2500,
+    label = "Average power",
+    fontface = "bold",
+    color = "darkred",
+    size = 2.5
+  ) +
+  theme(
+    axis.title.y = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank()
+  ) +
+  ggtitle("Power distribution") +
+  xlab("Power (Watts)")
 
-power_time / power_distrib + plot_annotation(
-  title = "Power data",
-  subtitle = "Elevation data shown in the background",
-  caption = "More about power: https://support.strava.com/hc/en-us/articles/216918457-Power"
-)
+power_time /
+  power_distrib +
+  plot_annotation(
+    title = "Power data",
+    subtitle = "Elevation data shown in the background",
+    caption = "More about power: https://support.strava.com/hc/en-us/articles/216918457-Power"
+  )
 ```
 
 ### Speed
 
 ```{r, speed-ts}
 make_time_plot(res, "speed", elevation_scale = 10) +
-    ylab("Speed (km/h)") +
-    xlab("Distance (km)")
+  ylab("Speed (km/h)") +
+  xlab("Distance (km)")
 ```
 
 The ride was covered at 27km/h average speed on an open road with wind and rain, definitely not the best conditions.
