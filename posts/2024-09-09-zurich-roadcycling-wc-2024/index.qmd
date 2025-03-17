@@ -10,8 +10,6 @@ categories:
 format: 
   html:
     code-fold: 'show'
-filters:
-  - shinylive
 ---
 
 ![](logo.png){width=25% fig-align="center"}
