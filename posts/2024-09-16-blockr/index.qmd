@@ -6,6 +6,7 @@ author: David Granjon
 date: '2024-09-16'
 categories:
   - R
+  - Shiny
 format: 
   html:
     code-fold: 'show'

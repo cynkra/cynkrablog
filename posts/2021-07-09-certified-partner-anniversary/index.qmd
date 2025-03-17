@@ -5,9 +5,8 @@ date: '2021-07-09'
 layout: post
 image: banner.jpg
 categories:
-  - certified partner
   - Posit
-  - Docker
+  - DevOps
 ---
 
 cynkra celebrates its first anniversary as an [RStudio Full Service Certified Partner](https://rstudio.com/certified-partners/)!

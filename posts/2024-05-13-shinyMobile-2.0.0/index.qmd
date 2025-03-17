@@ -5,7 +5,7 @@ image: logo.png
 author: Veerle van Leemput and David Granjon
 date: '2024-05-13'
 categories:
-  - shiny
+  - Shiny
 format: 
   html:
     code-fold: true

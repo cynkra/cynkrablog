@@ -5,7 +5,7 @@ image: logo.png
 author: David Granjon
 date: '2024-09-10'
 categories:
-  - sport
+  - Sport
   - R
 format: 
   html:
@@ -260,12 +260,11 @@ We could cumulate both information about elevation and x and y coordinates to ge
 
 ```{r, 3d-profil}
 make_3d_plot <- function(
-  dat,
-  color_col,
-  legend_title,
-  scale = 150,
-  show_legend = TRUE
-) {
+    dat,
+    color_col,
+    legend_title,
+    scale = 150,
+    show_legend = TRUE) {
   tmp_3d_plot <- ggplot(dat) +
     geom_point(aes(x = Longitude, y = Latitude, color = .data[[color_col]])) +
     scale_color_continuous(
@@ -432,11 +431,10 @@ The power chart shows that my power is decreasing over time, not a surprise. The
 
 ```{r, power-time-serie, message=FALSE}
 make_time_plot <- function(
-  dat,
-  col,
-  show_elevation = TRUE,
-  elevation_scale = 1
-) {
+    dat,
+    col,
+    show_elevation = TRUE,
+    elevation_scale = 1) {
   p <- ggplot(dat, aes(x = distance, y = .data[[col]])) +
     geom_line() +
     geom_smooth(method = "lm") +

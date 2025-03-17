@@ -7,7 +7,6 @@ author: Balthasar Sager
 title: "Introducing dm: easy juggling of tables and relations"
 categories:
 - R
-- dm
 - databases
 ---
 

@@ -7,7 +7,6 @@ author: Angel D'az, Kirill Müller
 title: 'Relational data models in R'
 categories:
 - R
-- dm
 - databases
 ---
 

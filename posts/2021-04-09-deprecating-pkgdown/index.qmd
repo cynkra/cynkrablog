@@ -7,7 +7,6 @@ author: Patrick Schratz, Kirill Müller
 title: 'Deprecating a pkgdown site served via GitHub Pages'
 categories:
 - R
-- GitHub
 ---
 
 Websites for R packages built with [{pkgdown}](https://pkgdown.r-lib.org/) have become a de-facto standard over the last few years.

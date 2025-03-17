@@ -10,7 +10,6 @@ slug: 'rstudio-efs-nfs'
 categories:
   - DevOps
   - Posit
-  - file system
   - performance
 badges:
 - label: DevOps

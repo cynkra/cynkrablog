@@ -6,7 +6,7 @@ author: David Schoch
 title: 'Organizing tests in R packages'
 categories:
 - R
-- test
+- Testing
 ---
 
 A small team at cynkra is working on the R package [igraph](https://r.igraph.org/), a popular package for simple graphs and network analysis.

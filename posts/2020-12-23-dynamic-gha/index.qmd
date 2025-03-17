@@ -7,7 +7,7 @@ author: Kirill Müller
 title: 'Dynamic build matrix in GitHub Actions'
 categories:
 - R
-- GitHub
+- DevOps
 ---
 
 I wanted to try out the new `fromJSON()` that allows dynamic build matrices in GitHub Actions for quite some time now.
