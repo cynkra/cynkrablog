@@ -61,6 +61,23 @@ Besides the documentation of lifecycle, we created and used a custom roxygen2 ta
 ## Fewer errors, better errors
 
 We have made a conscious effort to port errors from base R to cli, at the same time improving phrasing of errors.
+For instance,
+
+```r
+stop("invalid value supplied for `weighted' argument, please see docs.")
+```
+
+became
+
+```r
+cli::cli_abort(c(
+  "{.arg weighted} can't be {.obj_type_friendly {weighted}}.",
+  i = "See {.help graph_from_biadjacency_matrix}'s manual page."
+))
+```
+
+which is more informative about the invalid value supplied, and which directly links to the manual page.
+
 We have also fixed some bugs ( [example](https://github.com/igraph/rigraph/pull/1716)).
 
 ## Work on the internals
