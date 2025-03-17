@@ -91,13 +91,13 @@ We also worked in the `R/`folder, for instance we replaced the usage of an embed
 
 We shared our experience working on igraph in part of a talk and in various blog posts:
 
-- useR! 2024 keynote talk [How your code might get rusty, and what you can do about it](https://masalmon.eu/talks/2024-07-10-user-2024-rusty-code/)
-- Blog post [Automate code refactoring with {xmlparsedata} and {brio}](https://masalmon.eu/2024/05/15/refactoring-xml/)
-- Blog post [What I edit when refactoring a test file](https://masalmon.eu/2024/05/23/refactoring-tests/)
-- Blog post [Extracting names of functions defined in a script with treesitter](https://masalmon.eu/2024/07/18/extract-function-names-treesitter/)
-- Blog post [Create and use a custom roxygen2 tag](https://masalmon.eu/2024/09/03/roxygen2-custom-tag/)
-- Blog post [Cover and modify, some tips for R package development](https://masalmon.eu/2024/09/24/cover-modify-r-packages/)
-- Blog post [Organizing tests in R packages](https://blog.cynkra.com/posts/2025-03-04-refactoring-test-files/)
+- useR! 2024 keynote talk [How your code might get rusty, and what you can do about it](https://masalmon.eu/talks/2024-07-10-user-2024-rusty-code/) -- it presented our work on igraph.
+- Blog post [Automate code refactoring with {xmlparsedata} and {brio}](https://masalmon.eu/2024/05/15/refactoring-xml/) -- how we replaced some old testthat's expectations with new ones, using a script rather than manually.
+- Blog post [What I edit when refactoring a test file](https://masalmon.eu/2024/05/23/refactoring-tests/) -- some rules for more readable test files, like putting expectations closer to the values they tackle.
+- Blog post [Extracting names of functions defined in a script with treesitter](https://masalmon.eu/2024/07/18/extract-function-names-treesitter/) -- how we used a script to get a list of functions we needed to create.
+- Blog post [Create and use a custom roxygen2 tag](https://masalmon.eu/2024/09/03/roxygen2-custom-tag/) -- how we created a custom roxygen2 tag to link to C docs from manual pages.
+- Blog post [Cover and modify, some tips for R package development](https://masalmon.eu/2024/09/24/cover-modify-r-packages/) -- how we go about adding new tests.
+- Blog post [Organizing tests in R packages](https://blog.cynkra.com/posts/2025-03-04-refactoring-test-files/) -- why and how we improved test organization in igraph.
 
 ## Conclusion
 
