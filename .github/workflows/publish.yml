@@ -1,15 +1,19 @@
 on:
   workflow_dispatch:
   push:
-    branches: main
+    branches:
+      - main
   pull_request:
-    branches: main
+    branches:
+      - main
 
 name: Render and Publish
 
 jobs:
   build-deploy:
     runs-on: ubuntu-22.04
+    permissions:
+      id-token: write # This is required for requesting the JWT
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -85,13 +89,16 @@ jobs:
         env:
           QUARTO_PROFILE: preview
 
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: eu-central-2
+          role-to-assume: arn:aws:iam::222488041355:role/cynkrablog_github
+          role-session-name: cynkrablog_github
+
       - name: Update cynkrablog S3 bucket
         if: github.event_name == 'push'
         timeout-minutes: 7
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_CYNKRABLOG }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_CYNKRABLOG }}
-          AWS_REGION: eu-central-2
         run: |
           aws configure list
           # S3
