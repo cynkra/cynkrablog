@@ -26,21 +26,14 @@ about Shiny, the tidyverse, and Git. We offer work on interesting
 projects around the R ecosystem, with lots of freedom and flexibility
 and the option to work remotely.
 
-<figure>
-`<img alt="Illustration" src="banner.jpg" style=" width: 100%; height: auto">`{=html}
-<figcaption>
+![Illustration](banner.jpg)
 Photo by Scott Webb
-</figcaption>
-</figure>
 <!--
 convert scott-webb-208072-unsplash.jpg -resize 600x -gravity center -extent 300x300 -quality 80 senior-data-scientist.jpg
  -->
 <!-- <figure>
 <img alt="Illustration" src="../user/img/about/zurich.jpg" style=" width: 100%; height: auto">
-<figcaption>
   Photo by Samuel Zeller
-</figcaption>
-</figure>
 
  -->
 

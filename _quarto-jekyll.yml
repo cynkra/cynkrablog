@@ -2,7 +2,7 @@ project:
   type: website
   output-dir: jekyll/markdown_output/posts
  
- format:
+format:
   markdown:
     wrap: none
     html-math-method: plain
@@ -20,4 +20,14 @@ project:
       -fenced_divs
       -attributes
       -raw_html
+      -html_blocks
+      -markdown_in_html_blocks
     prefer-html: false
+    variant: gfm
+    fig-format: png
+    fig-cap-location: top
+    html-images: false
+    html-tables: false
+    # Use standard markdown instead of HTML
+    reference-location: document
+    link-citations: true

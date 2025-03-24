@@ -21,19 +21,6 @@ We are hiring a data scientist/engineer! You are enthusiastic about R and know a
 </figcaption>
 </figure>
 
-<!--
-convert scott-webb-208072-unsplash.jpg -resize 600x -gravity center -extent 300x300 -quality 80 senior-data-scientist.jpg
- -->
-
-<!-- <figure>
-<img alt="Illustration" src="../user/img/about/zurich.jpg" style=" width: 100%; height: auto">
-<figcaption>
-  Photo by Samuel Zeller
-</figcaption>
-</figure>
-
- -->
-
 
 #### What we look for
 

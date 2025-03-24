@@ -30,14 +30,9 @@ See
 [here](https://github.com/christophsax/seasonal/blob/main/NEWS.md#190)
 for a complete list of changes.
 
-<figure>
-`<img alt="Illustration" src="banner.jpg" style=" width: 100%; height: auto">`{=html}
-<figcaption>
+![Illustration](banner.jpg)
 Photo by Aaron Burden
-</figcaption>
-</figure>
 
-`<br>`{=html}
 
 `seas()` is the core function of the
 [seasonal](https://cran.r-project.org/package=seasonal) package. By
@@ -69,14 +64,12 @@ problem.
 Multiple adjustments can be performed by supplying multiple time series
 as an `"mts"` object:
 
-:::: cell
-``` {.r .cell-code}
+``` r
 library(seasonal)
 m0 <- seas(cbind(fdeaths, mdeaths), x11 = "")
 final(m0)
 ```
 
-::: {.cell-output .cell-output-stdout}
               fdeaths  mdeaths
     Jan 1974 614.1235 1598.740
     Feb 1974 542.3500 1492.127
@@ -150,8 +143,6 @@ final(m0)
     Oct 1979 533.9571 1337.640
     Nov 1979 557.9707 1414.101
     Dec 1979 475.5049 1038.506
-:::
-::::
 
 This performs two seasonal adjustments, one for `fdeaths` and one for
 `mdeaths`. The [vignette on multiple
@@ -163,15 +154,13 @@ describes how to specify options for individual series.
 The `composite` argument is a list with an X-13 specification applied to
 the aggregated series:
 
-::: cell
-``` {.r .cell-code}
+``` r
 m1 <- seas(
   cbind(mdeaths, fdeaths),
   composite = list(),
   series.comptype = "add"
 )
 ```
-:::
 
 With version 1.9 can now use `out()` to access the output of the
 composite spec:
@@ -184,18 +173,14 @@ We can also use `series()`, e.g., to access the final, indirectly
 adjusted series via the `composite` spec (see `?series` for all
 available series):
 
-::::: cell
-``` {.r .cell-code}
+``` r
 series(m1, "composite.indseasadj")
 ```
 
-::: {.cell-output .cell-output-stderr}
     To speed up, extend the `seas()` call (see ?series):
     seas(x = cbind(mdeaths, fdeaths), composite = list(), series.comptype = "add", To speed up, extend the `seas()` call (see ?series):
         composite.save = "isa")
-:::
 
-::: {.cell-output .cell-output-stdout}
               Jan      Feb      Mar      Apr      May      Jun      Jul      Aug
     1974 2172.614 2053.613 2057.679 2284.821 2260.974 2105.191 2240.895 2185.517
     1975 2098.251 2298.581 2213.878 2256.802 2111.628 2181.738 2098.883 2219.083
@@ -210,5 +195,3 @@ series(m1, "composite.indseasadj")
     1977 1946.642 1894.848 1807.119 1808.051
     1978 1959.824 1928.748 1724.336 1966.847
     1979 1925.618 1846.713 1991.679 1517.027
-:::
-:::::

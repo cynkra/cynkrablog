@@ -27,12 +27,8 @@ While you will be required to work on-site at times, remote work is also
 possible. If you are interested in data science and want to learn more
 about R, you will enjoy working in this position.
 
-<figure>
-`<img alt="Illustration" src="banner.jpg" style=" width: 100%; height: auto">`{=html}
-<figcaption>
+![Illustration](banner.jpg)
 Photo by James Pond
-</figcaption>
-</figure>
 
 #### Your role
 

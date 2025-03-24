@@ -30,9 +30,7 @@ The program makes it possible for technical writers to work closely with
 an open-source community they may or may not have been engaged with, to
 solve real problems with high-quality documentation.
 
-<figure>
-`<img alt="dashboard for exploring useR! conference" src="banner.png" style=" width: 100%; height: auto">`{=html}
-</figure>
+![dashboard for exploring useR! conference](banner.png)
 
 In the end, an awareness of open source, of documentation and technical
 writing is raised, while participating open source organizations benefit

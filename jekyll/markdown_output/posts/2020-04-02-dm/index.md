@@ -24,14 +24,9 @@ data. However, many modeling workflows require a great deal of time and
 effort to wrangle data from databases to place it into a flat data frame
 or table format. Only then the actual data analysis can start.
 
-<figure>
-`<img alt="Illustration" src="banner.jpg" style=" width: 100%; height: auto">`{=html}
-<figcaption>
+![Illustration](banner.jpg)
 Photo by Jordan McDonald
-</figcaption>
-</figure>
 
-`<br>`{=html}
 
 ## Why a relational model?
 
@@ -253,7 +248,7 @@ my_dm_keys %>%
   dm_draw()
 ```
 
-`<img alt="Data model" src="dm_draw.png" style="height: auto; width: 60%;">`{=html}
+![Data model](dm_draw.png)
 
 The discrepancies highlight the importance of being able to define
 primary and foreign keys. Most of the challenges in manipulating data

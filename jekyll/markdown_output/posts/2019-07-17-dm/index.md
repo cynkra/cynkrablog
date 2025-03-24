@@ -23,14 +23,9 @@ strain when working with many tables. It connects your data, while still
 keeping them in their original tables. You can easily perform operations
 on all tables, visualize how they're connected, and integrate databases.
 
-<figure>
-`<img alt="Illustration" src="banner.jpg" style=" width: 100%; height: auto">`{=html}
-<figcaption>
+![Illustration](banner.jpg)
 Photo by Tobias Fischer
-</figcaption>
-</figure>
 
-`<br>`{=html}
 
 Rather than writing out the relational structure in code while
 connecting the sources, [dm](https://krlmlr.github.io/dm/) packages them
@@ -170,7 +165,7 @@ cdm_nycflights13() %>%
   cdm_draw()
 ```
 
-`<img alt="Data model" src="datamodelr.png" style="height: auto; width: 50%;">`{=html}
+![Data model](datamodelr.png)
 
 ### Databases
 

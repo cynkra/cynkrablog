@@ -115,8 +115,7 @@ You simply need to provide a CRAN (GitHub) archive link and the function
 computes the number of test files that do not have a corresponding R
 script.
 
-::: cell
-``` {.r .cell-code}
+``` r
 check_test_mapping <- function(url) {
   temp_file <- tempfile(fileext = ".tar.gz")
   temp_dir <- tempfile()
@@ -145,36 +144,27 @@ check_test_mapping <- function(url) {
   length(test_files[!tested_r_files %in% r_files])
 }
 ```
-:::
 
 Version 1.6.0 of igraph roughly corresponds to when cynkra started to
 work on igraph.
 
-:::: cell
-``` {.r .cell-code}
+``` r
 url <- "https://cran.r-project.org/src/contrib/Archive/igraph/igraph_1.6.0.tar.gz"
 check_test_mapping(url)
 ```
 
-::: {.cell-output .cell-output-stdout}
     [1] 144
-:::
-::::
 
 This version contains 144 test files which do not have a corresponding R
 script! Now compare this with the main branch in late February 2025 of
 the GitHub repository.
 
-:::: cell
-``` {.r .cell-code}
+``` r
 url <- "https://github.com/igraph/rigraph/archive/0bac719e44c18024080163f52fbce373ebd2c26b.tar.gz"
 check_test_mapping(url)
 ```
 
-::: {.cell-output .cell-output-stdout}
     [1] 0
-:::
-::::
 
 🥳
 

@@ -65,11 +65,9 @@ My experiments with agents in R can be found in the
 [ragent](https://github.com/cynkra/ragent) repository on GitHub. To
 install the package, use:
 
-::: cell
-``` {.r .cell-code}
+``` r
 remotes::install_github("cynkra/ragent")
 ```
-:::
 
 I will use diagrams to show the conversation flow and the tools that are
 used.
@@ -81,32 +79,20 @@ Getting started is straightforward. In
 I've used the `httr2` package to wrap the Ollama API. You can use the
 function to perform normal chats:
 
-::: cell
-``` {.r .cell-code}
+``` r
 library(ragent)
 llm_chat("What is the capital of France?")
 #> Paris is the capital of France.
 ```
-:::
 
-:::::: {.cell layout-align="default"}
-::::: cell-output-display
-<div>
 
-`<figure class=''>`{=html}
 
-<div>
 
 ![](index_files/figure-markdown/mermaid-figure-1.png){width="4.69in"
 height="3.29in"}
 
-</div>
 
-`</figure>`{=html}
 
-</div>
-:::::
-::::::
 
 No surprise here: The user asks a question (1) and the LLM answers (2).
 By default, I am using the
@@ -114,19 +100,16 @@ By default, I am using the
 fast and good enough for this demo. But I can change it to any other,
 more powerful model that Ollama supports. E.g,:
 
-::: cell
-``` {.r .cell-code}
+``` r
 llm_chat("What is the capital of France?", model = "deepseek-r1:14b")
 ```
-:::
 
 ## Structured output
 
 The ollama API supports structured output. We can use this to tell the
 LLM to return a specific format. For example:
 
-::: cell
-``` {.r .cell-code}
+``` r
 llm_chat("What is the capital of France?", format = list(
   type = "object",
   properties = list(
@@ -141,7 +124,6 @@ llm_chat("What is the capital of France?", format = list(
 #> $capital
 #> [1] "Paris"
 ```
-:::
 
 This structured response makes it easy to process the output
 programmatically in R, as it will be automatically converted to a list
@@ -156,42 +138,28 @@ output to do more complex things.
 Note that LLMs are not really good at calculating. The small Llama model
 that I am using here messes this up:
 
-::: cell
-``` {.r .cell-code}
+``` r
 llm_chat("What is 2.111^2.111")
 #> [1] "To calculate this, we can use the formula for squaring a binomial:\n\n(a + b)^2 = a^2 + 2ab + b^2\n\nIn this case, a = 2 and b = 1.111.\n\nSo, \n\n(2 + 1.111)^2 = \n(3.111)^2 = 9.377226\n2*3.111 = 6.222442\n6.222442 + 9.377226 = 15.600668\n\nTherefore, 2.111^2.111 ≈ 15.60"
 ```
-:::
 
 But we can tell the LLM to use a calculator tool to do the calculation
 in R. The result [looks like
 this](https://github.com/cynkra/ragent/blob/main/R/agent_calculator.R):
 
-::: cell
-``` {.r .cell-code}
+``` r
 agent_calculator("What is 2.111^2.111")
 #> **Calculation Result:** 2.111^2.111 = 4.84166414903285
 ```
-:::
 
-:::::: {.cell layout-align="default"}
-::::: cell-output-display
-<div>
 
-`<figure class=''>`{=html}
 
-<div>
 
 ![](index_files/figure-markdown/mermaid-figure-3.png){width="7.5in"
 height="4.99in"}
 
-</div>
 
-`</figure>`{=html}
 
-</div>
-:::::
-::::::
 
 Much better! This is an agent that:
 
@@ -217,33 +185,21 @@ an agent that:
 -   Search the knowledge base for the additional questions (7)
 -   Use the context to answer the question (10)
 
-:::::: {.cell layout-align="default"}
-::::: cell-output-display
-<div>
 
-`<figure class=''>`{=html}
 
-<div>
 
 ![](index_files/figure-markdown/mermaid-figure-2.png){width="9.29in"
 height="8.89in"}
 
-</div>
 
-`</figure>`{=html}
 
-</div>
-:::::
-::::::
 
-::: cell
-``` {.r .cell-code}
+``` r
 agent_rag("What is ggplot2 used for?", dir = "docs/")
 #> Based on the documentation:
 #> ggplot2 is a core package of the tidyverse used for visualization.
 #> [Source: tidyverse.md]
 ```
-:::
 
 This is just the beginning. We can build much more complex agents. For
 example, we could create a general agent that combines both the

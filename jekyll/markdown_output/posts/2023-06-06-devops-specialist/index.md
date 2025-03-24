@@ -30,22 +30,15 @@ develop our containerized enterprise data science environment. You will
 work with our clients to set up and maintain our products in their
 environment -- on premise and in the cloud!
 
-<figure>
-`<img alt="Illustration" src="devops-port.jpeg" style=" width: 100%; height: auto">`{=html}
-<figcaption>
+![Illustration](devops-port.jpeg)
 Photo by CHUTTERSNAP
-</figcaption>
-</figure>
 <!-- https://unsplash.com/photos/Q4bmoSPJM18 -->
 <!--
 convert scott-webb-208072-unsplash.jpg -resize 600x -gravity center -extent 300x300 -quality 80 senior-data-scientist.jpg
  -->
 <!-- <figure>
 <img alt="Illustration" src="../user/img/about/zurich.jpg" style=" width: 100%; height: auto">
-<figcaption>
   Photo by Samuel Zeller
-</figcaption>
-</figure>
 
  -->
 

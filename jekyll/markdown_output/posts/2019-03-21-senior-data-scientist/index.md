@@ -23,23 +23,8 @@ and know a bit about Git -- everything else is negotiable. You will work
 on interesting projects around the R ecosystem, and you will have lots
 of freedom, with the option to work remotely.
 
-<figure>
-`<img alt="Illustration" src="2019-03-21-job.jpg" style=" width: 100%; height: auto">`{=html}
-<figcaption>
+![Illustration](2019-03-21-job.jpg)
 Photo by Scott Webb
-</figcaption>
-</figure>
-<!--
-convert scott-webb-208072-unsplash.jpg -resize 600x -gravity center -extent 300x300 -quality 80 senior-data-scientist.jpg
- -->
-<!-- <figure>
-<img alt="Illustration" src="../user/img/about/zurich.jpg" style=" width: 100%; height: auto">
-<figcaption>
-  Photo by Samuel Zeller
-</figcaption>
-</figure>
-
- -->
 
 #### What we look for
 

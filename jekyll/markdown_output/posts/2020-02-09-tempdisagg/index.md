@@ -26,14 +26,9 @@ missing data, there are useful workarounds: with the help of one or more
 high-frequency indicator series, the low-frequency series may be
 disaggregated into a high-frequency series.
 
-<figure>
-`<img alt="Illustration" src="banner.jpg" style=" width: 100%; height: auto">`{=html}
-<figcaption>
+![Illustration](banner.jpg)
 Photo by Jordan McDonald
-</figcaption>
-</figure>
 
-`<br>`{=html}
 
 The package tempdisagg implements the standard methods for temporal
 disaggregation: Denton, Denton-Cholette, Chow-Lin, Fernandez and
@@ -92,14 +87,9 @@ library(tsbox)
 ts_plot(gdp.q, title = "Swiss GDP", subtitle = "real, not seasonally adjusted")
 ```
 
-<figure>
-`<img alt="Graph: Swiss GDP, not seasonally adjusted" src="quarterly-1.png" style=" width: 100%; height: auto">`{=html}
-<figcaption>
+![Graph: Swiss GDP, not seasonally adjusted](quarterly-1.png)
 Series to disaggregate: quarterly gross domestic product of Switzerland
-</figcaption>
-</figure>
 
-`<br>`{=html}
 
 ## Disaggregation to daily frequency
 
@@ -113,14 +103,9 @@ allow the presence of missing values.
 ts_plot(spi.d, title = "Swiss Performance Index", subtitle = "daily values, interpolated")
 ```
 
-<figure>
-`<img alt="Graph: Swiss Performance Index, daily" src="indicator-1.png" style=" width: 100%; height: auto">`{=html}
-<figcaption>
+![Graph: Swiss Performance Index, daily](indicator-1.png)
 Daily indicator series: Swiss Performance Index
-</figcaption>
-</figure>
 
-`<br>`{=html}
 
 The following uses the Chow-Lin method to disaggregate the series. A
 high *rho* parameter takes into account that the two series are unlikely
@@ -162,14 +147,9 @@ ts_plot(
 )
 ```
 
-<figure>
-`<img alt="Graph: Daily disaggregated Swiss GDP" src="daily-1.png" style=" width: 100%; height: auto">`{=html}
-<figcaption>
+![Graph: Daily disaggregated Swiss GDP](daily-1.png)
 Swiss GDP, disaggregated to daily
-</figcaption>
-</figure>
 
-`<br>`{=html}
 
 Like with all disaggregation methods in tempdisagg, the resulting series
 fulfills the aggregation constraint (the resulting series is as long as

@@ -16,11 +16,9 @@ title: "shinyMobile 2.0.0: a preview"
 toc-title: Table of contents
 ---
 
-::: cell
-``` {.r .cell-code}
+``` r
 library(shiny)
 ```
-:::
 
 ![](logo.png){width="25%" fig-align="center"}
 
@@ -72,8 +70,7 @@ getting started
 [article](https://shinymobile.rinterface.com/articles/multipages) which
 provides more technical details.
 
-::: cell
-``` {.r .cell-code}
+``` r
 library(shiny)
 # Needs a specific version of brochure for now.
 # This allows to pass wrapper functions with options
@@ -301,36 +298,21 @@ brochureApp(
   )
 )
 ```
-:::
 
 ### Updated material design style
 
 By updating to the latest Framework7 version, we now benefit from a
 totally revamped Android (md) design, which looks more modern.
 
-::: cell
-``` {.r .cell-code}
+``` r
 library(shiny)
 library(shinyMobile)
 shinyAppDir(system.file("examples/gallery", package = "shinyMobile"))
 ```
-:::
 
-:::::::: columns
-::: {.column width="20%"}
-:::
 
-::::: {.column width="60%"}
-:::: cell
-::: cell-output-display
 <iframe class="border border-5 rounded shadow-lg" src="https://shinylive.io/r/app/#h=0&amp;code=NobwRAdghgtgpmAXGKAHVA6ASmANGAYwHsIAXOMpMAGwEsAjAJykYE8AKAZwAtaJWAlAB0IdJiw48+rALJF6tanGEQp-AILoAIrUZdWncjAwAzRXHZCwcAB6xUSzgHoA5lGpK2V3AAJUUAgBrKBc4HwBeHys1WXlzKwEBMABfAF0gA" style="zoom: 0.75;" width="100%" height="1100px"></iframe>
-:::
-::::
-:::::
 
-::: {.column width="20%"}
-:::
-::::::::
 
 ### Refined inputs layout and style
 
@@ -358,8 +340,7 @@ styling options:
 
 In practices, you can design a supercharged `f7Text()` like so:
 
-::: cell
-``` {.r .cell-code}
+``` r
 f7Text(
   inputId = "text",
   label = "Text input",
@@ -374,7 +355,6 @@ f7Text(
   )
 )
 ```
-:::
 
 This adds a description to the input (below its main content), as well
 as the outline style option and an icon on the left side. `clearable` is
@@ -385,8 +365,7 @@ when there is text, the label is pushed outside into its usual location.
 
 `f7Stepper()` and `f7Toggle()` label is now displayed on the left.
 
-::: cell
-``` {.r .cell-code}
+``` r
 library(shiny)
 library(shinyMobile)
 
@@ -499,26 +478,12 @@ shinyApp(
   }
 )
 ```
-:::
 
-:::::::: columns
-::: {.column width="25%"}
-:::
 
-::::: {.column width="50%"}
-:::: cell
-::: cell-output-display
 <iframe class="border border-5 rounded shadow-lg" src="https://shinylive.io/r/app/#h=0&amp;code=NobwRAdghgtgpmAXGKAHVA6ASmANGAYwHsIAXOMpMAGwEsAjAJykYE8AKAZwAtaJWAlAB0IdJiw48+rALJF6tanGEQRU-gEF07EQAJdAV1q6AvLoBmAdgAKUAOZwdEffqKpStEp1O66nUuwAJiwA1j4AYhoAMgDKAKK4uqTccPA+QmCenBkCuHouHqRK6WAAkhCoBqTeUVCsRFUZec4uVjF8dkq19VVOLi7QAG70LD5WAHJQwyx9-QW0RXAl5ZXVut0NpE35c7rcULSMdBBLZpGxcTsuuVf6VlG0-rO7fJxwpD4AKlgAqgm3LkCtEGtECcEY3jM3z+zV2+n8jBIdi+v3+LV2m2Op1053isLhVk+cAAHgEAf0+KtSoESuRSdt0XDqFB6HBqCUiaTdJTGnhyS5BlBqAZsRkYkQ0nStnzGbtUMyCHBuERqGDGCUAJoNdVSvbguAZfk3WWtSyc0gaRhwKDPOE80jU2kk0gsa0MuEuZms9lmDLm3SuqDciq8-EewXC0VgcWS53uj26eVQRXK1XgzXapLOvVWw0m-TGj1tNlwAhk-Mue2O31gN5KMvxj1etklGRQEJLIMEZW0RWNuHdoi9uCQ3QARkQAGYw3C66XyDSzGOjTP+lYNFUiABhCXy96Ofn6KuL3QZGCsKCb4gwPfkftyhVKlVqkoxpa6lJWgCE97mbgo5QlIEiKoIERAAO6qDKCa+CyLY1p8rCoJ2FiMEYHzQPAv79IOw6jgQtoehkWh7thczEagjC9kQ0qrnCxGDEQBBQGBZH9BkABCUDQNAbEuBkMhsiQfH6BkADyzAQA4ImnmA1jWt2MkZPJLBKXJfDWugSh5jBKgeoWBKWDE5DoOChFzMeJT+HApmMHxzY+rJMisLo1m2XxMB8D4AAMdE4SqRDqjWYLmJe1C0YeugwFAxI+GOvmRRGIo+AALCu-KEkQdidAeFZHiGDonhkpBZTl9lwY5fqlcUWFgOlFZWNYvYdow5kUgV1ayagzXgnxSYps+6Y1m+WZcp+cA-tBCYOSUTUEC1ugrKGkW4Yq+E6CgTSyfQW0ZAQOR+S4bgeF4Ph+AEPBwO81gGDwKJ-HpcIGbsVgACJQOQc0tW1lYdUVYDBHeU1NhVs3NQGuiAwawNwkl2IxKwnAYO95DsI9uzPXMVg7tQgVfWZkWWTW57ELjjDdfNvUww+yZPmmQWySNH76pNh36DNw0lmWEOk4FOlPQCmN3JYW4pPN9BEMSADiiIGKgP1E7J3aliEEvEmRHOyaLKtq7odiy6gZGrSOPgERkUC7WAO14ErB38nOZZwP9FvUy4-isMUZjnT9+VvB8UKomzkPAqC4KjtCaIwQiSL3ZHCaYhpETRPERqC3RVhYCxngK39JTMECRAa6DNaZwXesG0bPZrabG0u4kGTW-XhB2xWDsLiUdf26QHvYt7hMQH7sdB0CIJquHgeRdHUlD5FCcnEnFypya6O6I9BlvIwgxDRYBgQGWngQOw9qJJsqwCLoID5AAviIAhgFfAC6QA" style="zoom: 0.75;" width="100%" height="1100px"></iframe>
-:::
-::::
-:::::
 
-::: {.column width="25%"}
-:::
-::::::::
 
-::: cell
-``` {.r .cell-code}
+``` r
 library(shiny)
 library(shinyMobile)
 
@@ -631,7 +596,6 @@ shinyApp(
   }
 )
 ```
-:::
 
 Moreover, we added a new way to pass options to `f7Radio()` and
 `f7CheckboxGroup()`, namely `f7CheckboxChoice()` and `f7RadioChoice()`
@@ -639,8 +603,7 @@ Moreover, we added a new way to pass options to `f7Radio()` and
 pass more metadata and a description to each option (instead of just the
 choice name in basic shiny inputs):
 
-::: cell
-``` {.r .cell-code}
+``` r
 library(shiny)
 library(shinyMobile)
 
@@ -688,26 +651,12 @@ shinyApp(
   }
 )
 ```
-:::
 
-:::::::: columns
-::: {.column width="20%"}
-:::
 
-::::: {.column width="60%"}
-:::: cell
-::: cell-output-display
 <iframe class="border border-5 rounded shadow-lg" src="https://shinylive.io/r/app/#h=0&amp;code=NobwRAdghgtgpmAXGKAHVA6ASmANGAYwHsIAXOMpMAGwEsAjAJykYE8AKAZwAtaJWAlAB0IdJiw48+rALJF6tanGEQRU-gEF07EQAJdAV1q6AvLoBmAdgAKUAOZwdEfftK1SS07qFgAqqgATKHJdZgDaIh9cPRcrAGU+OyUAGShWIgNSJxcXaAA3ehYvKwA5KAKWdjcPOC8ffyCQqywocMiwAWjnHItLACFqIgIAa2ye-WbWiLHx-T5UTIBJALqwMIiomNndaih6OGpVgGEDTlIiGF0CbiJaAjhOTe7t69v7zi86M5nt3pa2o43O6OLa-fQ+ZJERhwS60VCcAyXAJEQaMXScdy6WBwUi4K4kThwAjkUgGNFTVC0TgERK6A7uDCg7YlAzUXbo+zuNwfchs06GUi6UmMSkfYgQcLwMiIrpg-SZXThOwQKkYy67Aj8twQGkBAxkJ5ylzVTxmHyAt61ACMhqN6IM9BNtTNYAAIuVaAFbUaoOZyGiXTIWNddFaAGx4gBMAAZIwAWHxM2adJPjSYAoH3H5g83MD7I1G6eCkzh41mkRjAsUkSUUUmXThEIJKD4Y0ipnrY3G6VDcFg45joptQFt0xhETgYXTWPuEvkfPIHCz0nkHainRnPX5BslU0KZRiIna0OysqC6CBExVoBj88xwAx2WjBb1yp3HTO1SOvsEIx3uU1vDAAA1OA4EYJQf1+X1-VWINGBDK1LCjWMEzADschUMEUy3cY5yJcgVjMSNZV+M5WEAr4sgwlwMg8PhnV0AAVLBfAAUVI38KxIOwvBY9jON+PhCUFMx+I4mj9HCPJPXAj4xNYtiaKw5NBJycgAA9SAAeUyBZqLWB4fBUzDQRUnD9EJRhFwDCx9WJCIIHYeZMjxOj9LxQlOAxEgBF0EBQXczIABJoQ+AAeABaUIKACcCmLgLTnIgfTQqmIgVIAXxEAQwEygBdIA" style="zoom: 0.75;" width="100%" height="1100px"></iframe>
-:::
-::::
-:::::
 
-::: {.column width="20%"}
-:::
-::::::::
 
-::: cell
-``` {.r .cell-code}
+``` r
 library(shiny)
 library(shinyMobile)
 
@@ -755,7 +704,6 @@ shinyApp(
   }
 )
 ```
-:::
 
 ### New `f7Treeview()` component
 
@@ -764,8 +712,7 @@ The new release welcomes a brand new input widget. As its name suggests,
 nested list of items. This is ideal, for instance, to select files
 within multiple folders, as an alternative to the classic `fileInput()`.
 
-::: cell
-``` {.r .cell-code}
+``` r
 library(shiny)
 library(shinyMobile)
 
@@ -829,26 +776,12 @@ shinyApp(
   }
 )
 ```
-:::
 
-:::::::: columns
-::: {.column width="20%"}
-:::
 
-::::: {.column width="60%"}
-:::: cell
-::: cell-output-display
 <iframe class="border border-5 rounded shadow-lg" src="https://shinylive.io/r/app/#h=0&amp;code=NobwRAdghgtgpmAXGKAHVA6ASmANGAYwHsIAXOMpMAGwEsAjAJykYE8AKAZwAtaJWAlAB0IdJiw48+rALJF6tanGEQRU-gEF07EQAJdAV1q6AvLoBmAdgAKUAOZwdEfftK1SS07qFgZrXWioPrh6LlYAynx2SgAyUKxEBqROLi7QAG70LF5WAHJQmSzsbh5wXj5WACqMcHDptHAA7j4CIc6pugDEunaMiai6pDV1DY26je7cupxwSgSkUPSe7nAwnKGpVgBC1EQEANaV7ko6YOGzcPOLy+RrLW0dFpY7e-spj0-VtfVN7x+6tAAJuUwENvqMAIzBDYfGZzBZLMpmSpYACqAFEHv9PsMfo0AOJ9AyoP7YkqeMw+c7wuDA2gwexwdZ4GH-WjEZxmKwASQ5p3MRGogLgjAA+uZFNR7qyPisYJUiHZokjdCiMVjsbpqIFqBwZf8IYgAMwazUWAwQea0EjsWgCXQgfXYqq40bc26ks0ubX0WZeVBQTjkAAMp3pjOCANw3jAGFQEDs0vaXtS7JIOUsvJtPlQ3CIpCI4slLSd-xUKd0AF9Sy5y9i649Wk7yAAPUgAeSSqCSpzhl3IgJLydrbRl3V6-UGrqa40mugI3Eu+3oRBbANu62H+m2uwOR1KpwAwouDiuW0nHjvXp6wpYviNfjWgSCwQ-GgAmaFbjoTUjcY9LmeXhqpiNYuuCTSEv0N6POSKpUhc8y0gCDIOMyppshyGZZhA-KCsKYoStQUpgE236PHKCpKhSqpoqB5EdNq6C6jBHyGiaNabBaVo2naDqcR04Fvu6qysZqPp+mYAZBnAoY+OGDiRrQ0Y+HGCYXhWLhppyTw4acub5oWREkQ2KamZq1YMak5kdDZ+hkf8rYdl2PY+H2SGAp+pEyqZdYOdMIrpCKOTcW4vEQN2pDRokpCRfajrDjFkUACTuQOugADwALS6DUEAEZUcBtraEVJMlr54hCplJWVaW0u+mU5XlBVFckfApRVozvnWlkCGAlYALpAA" style="zoom: 0.75;" width="100%" height="1100px"></iframe>
-:::
-::::
-:::::
 
-::: {.column width="20%"}
-:::
-::::::::
 
-::: cell
-``` {.r .cell-code}
+``` r
 library(shiny)
 library(shinyMobile)
 
@@ -912,7 +845,6 @@ shinyApp(
   }
 )
 ```
-:::
 
 ### New `f7Form()`
 
@@ -930,8 +862,7 @@ note, the current list of supported inputs is:
 -   `f7Password()`
 -   `f7Select()`
 
-::: cell
-``` {.r .cell-code}
+``` r
 library(shiny)
 library(shinyMobile)
 
@@ -1009,26 +940,12 @@ shinyApp(
   }
 )
 ```
-:::
 
-:::::::: columns
-::: {.column width="20%"}
-:::
 
-::::: {.column width="60%"}
-:::: cell
-::: cell-output-display
 <iframe class="border border-5 rounded shadow-lg" src="https://shinylive.io/r/app/#h=0&amp;code=NobwRAdghgtgpmAXGKAHVA6ASmANGAYwHsIAXOMpMAGwEsAjAJykYE8AKAZwAtaJWAlAB0IdJiw48+rALJF6tanGEQRU-gEF07EQAJdAV1q6AvLoBmAdgAKUAOZwdEffqsBlPnaUAZKKyIGpE4uLtAAbvQsphaWAHJQESzspLSkStFCYACSEKiBnBZEjDCZArh6ITEAQtREBADW7FZVgaQkOmAGqAAmUOSZuLqZAMJ0DbrwpWUVIc21DQAqqUodGrp0nKS6ROa6fHmkBXy6UIXFpeXOlVbetJvBlfp8nHBbZgtYAKoAopeP+t1aGFaN04IwCmYAGIabxuX4zSqbRgkOzRD4-P7-KyQoowB7-PbdDJgGCscy4gYIx5WBZwAAeQSp-32gSyRLMmXIDMpVwJ+moUHocGoxNpDL2uUCPL5LjCUGoBjgxLcRHgui5pGlMt0qAFBDg3CI1FBjGJAE0AqaNbpuGC4FqZZtWOkzBtGbztaDOARGLRUCkSMS1sQjer6VsWZq8EyCQE0nwle8vvCPTL4IDTmYrFliBAOoaDC8LjH-gQlCxBS7dOiU9qXOZan1PGjkyWQioZdNU9dLGLSBpGHAoPi+ZG2cSNSwhw6+QKhSKOWA+7oB9Po93HnKFYmhmBvEU4DA9qhOAYj90jUVdJxUid4KRBrmXgRyKQDIw25UoIDUHcCM3hVSQYXiJC9dDgWhCxgIgiXIGBUCvPh-0BboDDIQxNQ3f45wPcCtgvWpBwmexoBOOgAEcDCgGcCV1KB9UNY0wXNS0w3FW1Bxo-5BxvAAvHca0xR1SGdHc3RHGUvR9P0A2cRdgyIUNrUjLjY0COgIAE5MhO1dNaEzGIc3aTICyLMAuzrfQyyHZh6CrQTP1mRsUggVEkx+RzdA7PkLL5KxbE4TgAHcim6CTmUlUhx0XVAoECkLGG6VTKjnYViQC4LQsQZKQjohijRNFj3x1OLMsSm07RylwnSrcTPIBOBvV9f1aEDeTdBDEVlMiqqQjjDStIxeqJjgDNomzXN8wCMzfLrayKzswba0shsiCbVyWw8rD20-bzHj2lxZtlMFIhSGA+wAeUCA4OnJc5zIRbzfJeRgwmYrM0JfVq80jQY4wOYDGpvEgBF0EAEX+wIABI7qPAAeABaXRBwgE1rF9Mh2EjKHSVhlQIfoF63u+N7MexrpenIQZwe7Cm+jgSFLBxYpwv0TJcYpdcCUpgy6u23cNUyYlYjgIK2KjHTHk5cMp2osBhdF8WTkHOXJcqTJYvi0KhcXEWxc1sqkrAEsDv0A6AF9vPNkQBDAc2AF0gA" style="zoom: 0.75;" width="100%" height="1100px"></iframe>
-:::
-::::
-:::::
 
-::: {.column width="20%"}
-:::
-::::::::
 
-::: cell
-``` {.r .cell-code}
+``` r
 library(shiny)
 library(shinyMobile)
 
@@ -1106,7 +1023,6 @@ shinyApp(
   }
 )
 ```
-:::
 
 ## Breaking changes
 

@@ -26,12 +26,8 @@ requires a working LaTeX installation, such as
 break with the newest version of LaTeX. This post describes how to run
 an older LaTeX version for just a little while.
 
-<figure>
-`<img alt="Old typewriter has typed the word 'Update' on paper" src="banner.jpg" style=" width: 100%; height: auto">`{=html}
-<figcaption>
+![Old typewriter has typed the word 'Update' on paper](banner.jpg)
 Photo by Markus Winkler
-</figcaption>
-</figure>
 
 Rendering PDFs with [rmarkdown](https://pkgs.rstudio.com/rmarkdown/)
 requires a working LaTeX installation. The excellent

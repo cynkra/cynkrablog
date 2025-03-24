@@ -25,14 +25,9 @@ Continuous Integration (CI) runs, pushing the assets to the special
 `gh-pages` branch (even though now [any branch can be used to deploy a
 website](https://github.blog/changelog/2020-09-03-build-and-deploy-github-pages-from-any-branch/)).
 
-<figure>
-`<img alt="Illustration" src="banner.jpg" style=" width: 100%; height: auto">`{=html}
-<figcaption>
+![Illustration](banner.jpg)
 Photo by Paweł Czerwiński
-</figcaption>
-</figure>
 
-`<br>`{=html}
 
 Sometimes, repositories are transferred to a new user/organization or
 the package is renamed. While GitHub takes care of redirecting
@@ -123,14 +118,9 @@ pkgdown site.
 }
 ```
 
-<figure>
-`<img alt="Screenshot: Deprecation via CSS" src="css.png" style=" width: 100%; height: auto">`{=html}
-<figcaption>
+![Screenshot: Deprecation via CSS](css.png)
 Deprecation information in the header via CSS
-</figcaption>
-</figure>
 
-`<br>`{=html}
 
 Place this code in the `pkgdown/` directory of your package and it will
 be automatically picked up when the site is built next time:
@@ -165,14 +155,9 @@ find -name "*.html" |
 This assumes GNU `sed`. MacOS users will need to use `gsed`, or `-i.bak`
 instead of `-i` and deal with the leftover `*.bak` files.
 
-<figure>
-`<img alt="Screenshot: Deprecation via editing HTML" src="bootstrap.png" style=" width: 100%; height: auto">`{=html}
-<figcaption>
+![Screenshot: Deprecation via editing HTML](bootstrap.png)
 Deprecation information in the header via editing HTML
-</figcaption>
-</figure>
 
-`<br>`{=html}
 
 Always advertising the new root works well enough because it is very
 likely that the structure of the site will eventually change after the

@@ -21,12 +21,8 @@ conferencing solution. During the recent COVID-19 pandemic, the project
 became quite popular, and many companies decided to host their own Jitsi
 instance.
 
-<figure>
-`<img alt="Illustration" src="banner.jpg" style=" width: 100%; height: auto">`{=html}
-<figcaption>
+![Illustration](banner.jpg)
 Photo by Chuttersnap
-</figcaption>
-</figure>
 
 There are many [different
 ways](https://jitsi.github.io/handbook/docs/devops-guide) to install and

@@ -25,18 +25,10 @@ make it easy to switch between these classes. It also allows the user to
 treat time series as plain data frames, facilitating the use with tools
 that assume rectangular data.
 
-`<br>`{=html}
 
-::: {style="padding-left: 15%; width: 80%"}
-<figure>
-`<img alt="xkcd comic: Standards" src="https://imgs.xkcd.com/comics/standards.png" style="width: 100%; height: auto;">`{=html}
-<figcaption>
+![xkcd comic: Standards](https://imgs.xkcd.com/comics/standards.png)
 comic by `<a href = "https://xkcd.com/927/">`{=html}xkcd`</a>`{=html}
-</figcaption>
-</figure>
-:::
 
-`<br>`{=html}
 
 [The tsbox package](https://www.tsbox.help/) is built around a set of
 functions that convert time series of different classes to each other.
@@ -139,8 +131,4 @@ ts_summary(austres)$start
 Finally, we fabricated a tsbox cheat sheet that summarizes most
 functionality. Print and enjoy working with time series.
 
-::: {style="padding: 10%"}
-`<a href="tsbox-cheatsheet.pdf">`{=html}
-`<img alt="tsbox cheat sheet" src="tsbox-cheatsheet-small.jpg" style="width: 100%; height: auto;">`{=html}
-`</a>`{=html}
-:::
+![tsbox cheat sheet](tsbox-cheatsheet-small.jpg)

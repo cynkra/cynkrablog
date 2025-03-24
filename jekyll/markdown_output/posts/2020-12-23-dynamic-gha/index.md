@@ -31,14 +31,9 @@ the `.yaml` files together with the workflows. This blog post shows how
 to define these build matrices dynamically so that the "source of truth"
 for the matrix definition is outside the `.yaml` file.
 
-<figure>
-`<img alt="Illustration" src="banner.jpg" style=" width: 100%; height: auto">`{=html}
-<figcaption>
+![Illustration](banner.jpg)
 Photo by
-`<a href="https://unsplash.com/photos/iar-afB0QQw" target="_blank">`{=html}
 Markus Spiske`</a>`{=html}
-</figcaption>
-</figure>
 
 The configuration for a workflow is a YAML file that has a context and
 expression syntax with very few [basic
@@ -250,12 +245,8 @@ jobs:
 
 This gives a workflow as shown in the image below.
 
-<figure>
-`<img alt="GitHub Actions workflow with dependencies" src="workflow.png" style=" width: 100%; height: auto">`{=html}
-<figcaption>
+![GitHub Actions workflow with dependencies](workflow.png)
 Final workflow with dynamic build matrix
-</figcaption>
-</figure>
 
 ## Next steps
 

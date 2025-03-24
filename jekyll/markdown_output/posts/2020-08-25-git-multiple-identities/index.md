@@ -25,14 +25,9 @@ like krlmlr+r@mailbox.org . (For example, Travis CI sends notification
 e-mails to the committer's e-mail address, and I have set up filtering
 for that other address.)
 
-<figure>
-`<img alt="Illustration" src="banner.jpg" style=" width: 100%; height: auto">`{=html}
-<figcaption>
+![Illustration](banner.jpg)
 Photo by Carson Arias
-</figcaption>
-</figure>
 
-`<br>`{=html}
 
 Having to configure the e-mail address for each repository separately
 eventually gets annoying. Instead, I'd rather have all repos within a

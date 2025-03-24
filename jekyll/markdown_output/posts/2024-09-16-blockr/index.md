@@ -29,27 +29,21 @@ Since 2023, [BristolMyersSquibb](https://www.bms.com/), the Y
 [company](https://the-y-company.com/) and [cynkra](https://cynkra.com)
 have teamed up to develop a novel **no-code** solution for R.
 
-::::: {.cell warnings="false" messages="false"}
-``` {.r .cell-code}
+``` r
 library(blockr)
 ```
 
-::: {.cell-output .cell-output-stderr}
 
     Attaching package: 'blockr'
-:::
 
-::: {.cell-output .cell-output-stderr}
     The following object is masked from 'package:graphics':
 
         layout
-:::
 
-``` {.r .cell-code}
+``` r
 library(pracma)
 library(shiny)
 ```
-:::::
 
 ## Introduction
 
@@ -101,8 +95,7 @@ Then, after clicking on the block, the suggestion list changes so you
 can, for instance, filter data or select only a subset of columns, and
 much more.
 
-::: cell
-``` {.r .cell-code}
+``` r
 library(blockr)
 library(palmerpenguins)
 library(ggplot2)
@@ -146,15 +139,8 @@ stack <- new_stack(
 )
 serve_stack(stack)
 ```
-:::
 
-::::: column-page
-:::: cell
-::: cell-output-display
 <iframe class="border border-5 rounded shadow-lg" src="https://shinylive.io/r/app/#h=0&amp;code=NobwRAdghgtgpmAXGKAHVA6ASmANGAYwHsIAXOMpMAdzgCMAnRRASwgGdSoAbbgCgA6YOtyIEA1gyG4ABAzioi7GQF4ZBQWAAWpUqnaIA9IcYtORbjACecBu3YBHAK4s6dDAHMWpLU-csiQ1pGAFp5RXZpGSEdPQNjcKIMBhDqKHYYDCIGDyEASjyBCG5XBigGKz4RMUlC4tLyytQeeAZUCg8XDjqSxka+Dw9UUVIAJjqiiDhqAH1B4aJSGeqJGQAeEJkAMycIAlIAiD5ibhmAD1V1LXKofds+PNkTmatLgmuyu4YH2Qw-vJkICKMhkABMoFwZidlBttrt9oc+OCuACTtB4OwkRCoBMICCprMVuJBHiQdsWHBuKDlGoSpwSWSyRc1ASZuxKXB9jMthSqccLOdZMioFCLOxZKQrO1LkJ0XB8rhgYyZK8WdM2RyuTzKaD+acrELsaLuOKZJLpWpZbB5WA6ozHkqQXAzqgGJdnIs4AzlfMRnwYGhUGwPJcoHBMcyZBg+GdHirLtGrAU7WSHaSQQRuOkaepNL7FstRBIokIFksiQrHVG-kq6gBfIqTdUeOBEGCKNjlovidabHZ7A4kPXZN4fW7kb5x9jXC1XG5fH7VjAAoGk4XGmF9+GDo7C1EWOWY4UAEj3jdJrKJ3pB2qpObppGvZJOI7Vs3Z3E5S1vupfDENkLQhKUpwDKkDWpW6ZktOaCgW+GqflqvK6jB7QASKQFmiBYFyvkVZpoyzquu6Tiek+IItm2MwdmQfBhpif4JsODBTjOcFRnwqFwAUsjsCwABe7HjPhipQZm2ZvHmrbtkQnaFjUJZgGWMxZjYDDycWeDREpIwaeIkGMn8GC1kUDYQEUnC3D2sKspZEjeuuRKXKywrsl2NSaO0ECdGwkRaaWLS2F5PkcAZMjKU58H5u59lCFsJToLYKkdD4MwwDAil0EQoJWGl2ZzGFqlJZFMispRMlyVeQjsO0BAUn5sjVbV9V4RAdTsgwABucBslw9l2eIeRgHWAC6QA" width="100%" height="800px"></iframe>
-:::
-::::
-:::::
 
 #### Toward more complex analysis
 
@@ -233,8 +219,7 @@ Athletics and Bobsleigh. It's actually quite amazing to see people
 competing in two quite unrelated sports like swimming and handbain the
 case of Roswitha Krause.
 
-::: cell
-``` {.r .cell-code}
+``` r
 library(blockr)
 library(blockr.ggplot2)
 
@@ -242,15 +227,8 @@ options(shiny.maxRequestSize = 100 * 1024^2)
 do.call(set_workspace, args = list(title = "My workspace"))
 serve_workspace(clear = FALSE)
 ```
-:::
 
-::::: column-screen-inset
-:::: cell
-::: cell-output-display
 <iframe class="border border-5 rounded shadow-lg" src="https://shinylive.io/r/app/#h=0&amp;code=NobwRAdghgtgpmAXGKAHVA6ASmANGAYwHsIAXOMpMAdzgCMAnRRASwgGdSoAbbgCgA6YOtyIEA1gyG4ABAzioi7GQF4ZBQWAAWpUqnaIA9IcYtORbjACecBu3YBHAK4s6dDAHMWpLU-csiQ1pGAFp5RXZpGSEdPQNjcKIMBhDqKHYYDCIGDyEASjyBCGCmVg4uXk0RMUlPD1RRUgAmKMTlNRjdfSMTBjNSC2tbe2dXdy8fPwwAoPoUtvyi7lcGKAYrPg8uEThCiGXGNY32Ah44dj2D1fW+aokGS5Wj29F7uoaiZr2iolRSAI4fHYWjYVgwMCgAA8sHBnOdSABlFgALzgqhkAEYAAxYmQAKkxWKaABYAHpNPYAEySp0q7DgpAA+tRsuJ2KgoAQ4LI1h52jJlpw+P9SNw0R0wABZKwyFkMNkcrn5Pb0hgANzgzNZ7M5cD4BDFa3RADEAIIAGQRAFE8mAAL4AXSAA" width="100%" height="800px"></iframe>
-:::
-::::
-:::::
 
 As an end-user, you are not supposed to write code. As such, if you
 think anything is missing, you can open an issue
@@ -374,8 +352,7 @@ new_block(
 
 We give our block 2 classes, namely `ode_block` and `data_block`:
 
-::: cell
-``` {.r .cell-code}
+``` r
 new_ode_block <- function(...) {
   fields <- list(
     a = new_numeric_field(-8 / 3, -10, 20),
@@ -402,7 +379,6 @@ new_ode_block <- function(...) {
   )
 }
 ```
-:::
 
 As explained earlier, they are required to control the block behavior,
 as blockr is build with [S3](https://adv-r.hadley.nz/s3.html). For
@@ -439,8 +415,7 @@ can read this
 
 ### Demo
 
-::: cell
-``` {.r .cell-code}
+``` r
 library(blockr)
 library(pracma)
 library(blockr.ggplot2)
@@ -489,15 +464,8 @@ stack <- new_stack(
 )
 serve_stack(stack)
 ```
-:::
 
-::::: column-screen-inset
-:::: cell
-::: cell-output-display
 <iframe class="border border-5 rounded shadow-lg" src="https://shinylive.io/r/editor/#code=NobwRAdghgtgpmAXGKAHVA6ASmANGAYwHsIAXOMpMAdzgCMAnRRASwgGdSoAbbgCgA6YOtyIEA1gyG4ABAzioi7GQF4ZBQWAAWpUqnaIA9IcYtORbjACecBu3YBHAK4s6dDAHMWpLU-csiQ1pGAFp5RXZpGSEdPQNjcKIMBhDqKHYYDCIGDyEASjyBCGCmVg4uXk0RMUlPD1RRUgAmKMTlNRjdfSMTBjNSC2tbe2dXdy8fPwwAoPoUtvyi7lcGKAYrPg8uEThCiGXGNY32Ah44dj2D1fW+aokGS5WjvlRVghgoR8Obu9qPesaTT2S2yFAAXjIADwhGQAMycEAIpACED4pFkVlkqDWMAuMhARRk6kEECJRIAGqoZNiGLjgABGAC6MgAVDIrAzmQBqdnAJrMtkcgDMjNwhLJAE0qTS6fzWTI+By5TDhYy8mLSWSAFpUkIcpnypXc6k49jAEWGvnMlXmxnivYAXyKRQgcGoAH0iAATODu35QmHwxHIkh8DDhvL48Wwlhwbhe5TQmTLTgkskyKBU10eiBOeB9AjumNxr18EIADhkhhkQtkIXpAAZZE0G+rxUS6Fm3e7c-mWIXi-Gy426wBWJsyRutjXpghdnN52z9ouxodNcuyembhut+3OzXZv2iCRpsmDhNU8-sGdkuAAD1eVPYfk43ic5FP6fSGC9UC4GFhVZ4E-dMZG9OAABZRxA0C4QRG9YKJKwGypDRKTULcZClDDZB1DC201RCZFIFC1CbdtENIGNoG4KkpwQxCZXaYkMD4T5ZFYuh1RkViCAKCj0z2WCCNglNSD4IMqVEeQIDBISyREslwwwBiCG4dJmI0IRwKPGooiEX8uF0iRFk1R1904KAJADGRD0sk9xUPHTfhvQ9-gaIhSGM8QQKDOc1C0sA730sArHyBifVhKAnG4LziG4PMOFQzQrAwekQtSlowHkxS3LgIgYEUNgvN+Io9nYWwADdfXsnzaryMAHUZIA" width="100%" height="800px"></iframe>
-:::
-::::
-:::::
 
 ### Packaging new blocks: the registry
 
@@ -507,186 +475,98 @@ a blocks **supermarket**. From the R side, the registry is an
 **environment** that can be extended by developers who bring their own
 blocks packages:
 
-::::::::::::::::::::: {.cell mermaid-theme="default" layout-align="default"}
-:::::::::::::::::::: cell-output-display
-<div>
 
-`<figure class=''>`{=html}
 
-<div>
 
 <svg aria-roledescription="flowchart-v2" role="graphics-document document" viewbox="0 0 1105.03125 922" class="flowchart" xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" width="672" id="mermaid-figure-1" height="480">
 <style>#mermaid-figure-1{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;fill:#333;}#mermaid-figure-1 .error-icon{fill:#552222;}#mermaid-figure-1 .error-text{fill:#552222;stroke:#552222;}#mermaid-figure-1 .edge-thickness-normal{stroke-width:1px;}#mermaid-figure-1 .edge-thickness-thick{stroke-width:3.5px;}#mermaid-figure-1 .edge-pattern-solid{stroke-dasharray:0;}#mermaid-figure-1 .edge-thickness-invisible{stroke-width:0;fill:none;}#mermaid-figure-1 .edge-pattern-dashed{stroke-dasharray:3;}#mermaid-figure-1 .edge-pattern-dotted{stroke-dasharray:2;}#mermaid-figure-1 .marker{fill:#333333;stroke:#333333;}#mermaid-figure-1 .marker.cross{stroke:#333333;}#mermaid-figure-1 svg{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;}#mermaid-figure-1 p{margin:0;}#mermaid-figure-1 .label{font-family:"trebuchet ms",verdana,arial,sans-serif;color:#333;}#mermaid-figure-1 .cluster-label text{fill:#333;}#mermaid-figure-1 .cluster-label span{color:#333;}#mermaid-figure-1 .cluster-label span p{background-color:transparent;}#mermaid-figure-1 .label text,#mermaid-figure-1 span{fill:#333;color:#333;}#mermaid-figure-1 .node rect,#mermaid-figure-1 .node circle,#mermaid-figure-1 .node ellipse,#mermaid-figure-1 .node polygon,#mermaid-figure-1 .node path{fill:#ECECFF;stroke:#9370DB;stroke-width:1px;}#mermaid-figure-1 .rough-node .label text,#mermaid-figure-1 .node .label text{text-anchor:middle;}#mermaid-figure-1 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#mermaid-figure-1 .node .label{text-align:center;}#mermaid-figure-1 .node.clickable{cursor:pointer;}#mermaid-figure-1 .arrowheadPath{fill:#333333;}#mermaid-figure-1 .edgePath .path{stroke:#333333;stroke-width:2.0px;}#mermaid-figure-1 .flowchart-link{stroke:#333333;fill:none;}#mermaid-figure-1 .edgeLabel{background-color:rgba(232,232,232, 0.8);text-align:center;}#mermaid-figure-1 .edgeLabel p{background-color:rgba(232,232,232, 0.8);}#mermaid-figure-1 .edgeLabel rect{opacity:0.5;background-color:rgba(232,232,232, 0.8);fill:rgba(232,232,232, 0.8);}#mermaid-figure-1 .labelBkg{background-color:rgba(232, 232, 232, 0.5);}#mermaid-figure-1 .cluster rect{fill:#ffffde;stroke:#aaaa33;stroke-width:1px;}#mermaid-figure-1 .cluster text{fill:#333;}#mermaid-figure-1 .cluster span{color:#333;}#mermaid-figure-1 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:12px;background:hsl(80, 100%, 96.2745098039%);border:1px solid #aaaa33;border-radius:2px;pointer-events:none;z-index:100;}#mermaid-figure-1 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#333;}#mermaid-figure-1 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}</style>
-`<g><marker orient="auto" markerheight="8" markerwidth="8" markerunits="userSpaceOnUse" refy="5" refx="5" viewbox="0 0 10 10" class="marker flowchart-v2" id="mermaid-1742854838244_flowchart-v2-pointEnd"><path style="stroke-width: 1; stroke-dasharray: 1, 0;" class="arrowMarkerPath" d="M 0 0 L 10 5 L 0 10 z"></path></marker><marker orient="auto" markerheight="8" markerwidth="8" markerunits="userSpaceOnUse" refy="5" refx="4.5" viewbox="0 0 10 10" class="marker flowchart-v2" id="mermaid-1742854838244_flowchart-v2-pointStart"><path style="stroke-width: 1; stroke-dasharray: 1, 0;" class="arrowMarkerPath" d="M 0 5 L 10 10 L 10 0 z"></path></marker><marker orient="auto" markerheight="11" markerwidth="11" markerunits="userSpaceOnUse" refy="5" refx="11" viewbox="0 0 10 10" class="marker flowchart-v2" id="mermaid-1742854838244_flowchart-v2-circleEnd"><circle style="stroke-width: 1; stroke-dasharray: 1, 0;" class="arrowMarkerPath" r="5" cy="5" cx="5"></circle></marker><marker orient="auto" markerheight="11" markerwidth="11" markerunits="userSpaceOnUse" refy="5" refx="-1" viewbox="0 0 10 10" class="marker flowchart-v2" id="mermaid-1742854838244_flowchart-v2-circleStart"><circle style="stroke-width: 1; stroke-dasharray: 1, 0;" class="arrowMarkerPath" r="5" cy="5" cx="5"></circle></marker><marker orient="auto" markerheight="11" markerwidth="11" markerunits="userSpaceOnUse" refy="5.2" refx="12" viewbox="0 0 11 11" class="marker cross flowchart-v2" id="mermaid-1742854838244_flowchart-v2-crossEnd"><path style="stroke-width: 2; stroke-dasharray: 1, 0;" class="arrowMarkerPath" d="M 1,1 l 9,9 M 10,1 l -9,9"></path></marker><marker orient="auto" markerheight="11" markerwidth="11" markerunits="userSpaceOnUse" refy="5.2" refx="-1" viewbox="0 0 11 11" class="marker cross flowchart-v2" id="mermaid-1742854838244_flowchart-v2-crossStart"><path style="stroke-width: 2; stroke-dasharray: 1, 0;" class="arrowMarkerPath" d="M 1,1 l 9,9 M 10,1 l -9,9"></path></marker><g class="root"><g class="clusters"></g><g class="edgePaths"><path marker-end="url(#mermaid-1742854838244_flowchart-v2-pointEnd)" style="" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" id="L_blockr_custom_registry_0" d="M422.172,461L430.947,461C439.723,461,457.273,461,470.437,461C483.6,461,492.375,461,500.484,461C508.592,461,516.035,461,519.756,461L523.477,461"></path></g><g class="edgeLabels"><g transform="translate(474.82421875, 461)" class="edgeLabel"><g transform="translate(-27.65234375, -12)" class="label"><foreignobject height="24" width="55.3046875">`{=html}
 
-::: {.labelBkg style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;" xmlns="http://www.w3.org/1999/xhtml"}
-`<span class="edgeLabel">`{=html}
 <p>
 register
 </p>
-`</span>`{=html}
-:::
 
-`</foreignobject></g></g></g><g class="nodes"><g transform="translate(519.4765625, 0)" class="root"><g class="clusters"><g data-look="classic" id="registry" class="cluster"><rect height="906" width="569.5546875" y="8" x="8" style=""></rect><g transform="translate(264.3203125, 8)" class="cluster-label"><foreignobject height="24" width="56.9140625">`{=html}
 
-::: {style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;" xmlns="http://www.w3.org/1999/xhtml"}
-`<span class="nodeLabel">`{=html}
 <p>
 Registry
 </p>
-`</span>`{=html}
-:::
 
-`</foreignobject></g></g></g><g class="edgePaths"><path marker-end="url(#mermaid-1742854838244_flowchart-v2-crossEnd)" style="" class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" id="L_filter_reg_trash_1" d="M100,85.5L100,93.75C100,102,100,118.5,100,157.458C100,196.417,100,257.833,100,319.25C100,380.667,100,442.083,100,472.792L100,503.5"></path></g><g class="edgeLabels"><g transform="translate(100, 135)" class="edgeLabel"><g transform="translate(-36.39453125, -12)" class="label"><foreignobject height="24" width="72.7890625">`{=html}
 
-::: {.labelBkg style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;" xmlns="http://www.w3.org/1999/xhtml"}
-`<span class="edgeLabel">`{=html}
 <p>
 unregister
 </p>
-`</span>`{=html}
-:::
 
-`</foreignobject></g></g></g><g class="nodes"><g transform="translate(100, 65.5)" id="filter_reg" class="node"><rect height="40" width="114" y="-20" x="-57" data-et="node" data-id="abc" style="" class="basic label-container"></rect><g transform="translate(-41, -12)" style="" class="label"><rect></rect><foreignobject height="24" width="82">`{=html}
 
-::: {style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;" xmlns="http://www.w3.org/1999/xhtml"}
-`<span class="nodeLabel">`{=html}
 <p>
 Filter block
 </p>
-`</span>`{=html}
-:::
 
-`</foreignobject></g></g><g transform="translate(100, 530.5)" id="flowchart-trash-11" class="node default"><rect height="54" width="65.109375" y="-27" x="-32.5546875" data-et="node" data-id="abc" style="" class="basic label-container"></rect><g transform="translate(-2.5546875, -12)" style="" class="label"><rect></rect><foreignobject height="24" width="5.109375">`{=html}
 
-::: {style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;" xmlns="http://www.w3.org/1999/xhtml"}
-`<span class="nodeLabel">`{=html}
 <p>
 '`<i class="fa fa-trash"></i>`{=html}'
 </p>
-`</span>`{=html}
-:::
 
-`</foreignobject></g></g><g transform="translate(174.5546875, 176.5)" class="root"><g class="clusters"><g data-look="classic" id="select_reg" class="cluster"><rect height="692" width="360" y="8" x="8" style=""></rect><g transform="translate(144.41796875, 8)" class="cluster-label"><foreignobject height="24" width="87.1640625">`{=html}
 
-::: {style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;" xmlns="http://www.w3.org/1999/xhtml"}
-`<span class="nodeLabel">`{=html}
 <p>
 Select block
 </p>
-`</span>`{=html}
-:::
 
-`</foreignobject></g></g></g><g class="edgePaths"></g><g class="edgeLabels"></g><g class="nodes"><g transform="translate(188, 70)" id="flowchart-reg_name-4" class="node default"><rect height="54" width="197.265625" y="-27" x="-98.6328125" data-et="node" data-id="abc" style="" class="basic label-container"></rect><g transform="translate(-68.6328125, -12)" style="" class="label"><rect></rect><foreignobject height="24" width="137.265625">`{=html}
 
-::: {style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;" xmlns="http://www.w3.org/1999/xhtml"}
-`<span class="nodeLabel">`{=html}
 <p>
 Name: select block
 </p>
-`</span>`{=html}
-:::
 
-`</foreignobject></g></g><g transform="translate(188, 186)" id="flowchart-reg_descr-5" class="node default"><rect height="78" width="260" y="-39" x="-130" data-et="node" data-id="abc" style="" class="basic label-container"></rect><g transform="translate(-100, -24)" style="" class="label"><rect></rect><foreignobject height="48" width="200">`{=html}
 
-::: {style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;" xmlns="http://www.w3.org/1999/xhtml"}
-`<span class="nodeLabel">`{=html}
 <p>
 Description: select columns in a table
 </p>
-`</span>`{=html}
-:::
 
-`</foreignobject></g></g><g transform="translate(188, 314)" id="flowchart-reg_classes-6" class="node default"><rect height="78" width="260" y="-39" x="-130" data-et="node" data-id="abc" style="" class="basic label-container"></rect><g transform="translate(-100, -24)" style="" class="label"><rect></rect><foreignobject height="48" width="200">`{=html}
 
-::: {style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;" xmlns="http://www.w3.org/1999/xhtml"}
-`<span class="nodeLabel">`{=html}
 <p>
 Classes: select_block, tranform_block
 </p>
-`</span>`{=html}
-:::
 
-`</foreignobject></g></g><g transform="translate(188, 430)" id="flowchart-reg_input-7" class="node default"><rect height="54" width="188.3828125" y="-27" x="-94.19140625" data-et="node" data-id="abc" style="" class="basic label-container"></rect><g transform="translate(-64.19140625, -12)" style="" class="label"><rect></rect><foreignobject height="24" width="128.3828125">`{=html}
 
-::: {style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;" xmlns="http://www.w3.org/1999/xhtml"}
-`<span class="nodeLabel">`{=html}
 <p>
 Input: data.frame
 </p>
-`</span>`{=html}
-:::
 
-`</foreignobject></g></g><g transform="translate(188, 534)" id="flowchart-reg_output-8" class="node default"><rect height="54" width="201.0546875" y="-27" x="-100.52734375" data-et="node" data-id="abc" style="" class="basic label-container"></rect><g transform="translate(-70.52734375, -12)" style="" class="label"><rect></rect><foreignobject height="24" width="141.0546875">`{=html}
 
-::: {style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;" xmlns="http://www.w3.org/1999/xhtml"}
-`<span class="nodeLabel">`{=html}
 <p>
 Output: data.frame
 </p>
-`</span>`{=html}
-:::
 
-`</foreignobject></g></g><g transform="translate(188, 638)" id="flowchart-reg_package-9" class="node default"><rect height="54" width="172.859375" y="-27" x="-86.4296875" data-et="node" data-id="abc" style="" class="basic label-container"></rect><g transform="translate(-56.4296875, -12)" style="" class="label"><rect></rect><foreignobject height="24" width="112.859375">`{=html}
 
-::: {style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;" xmlns="http://www.w3.org/1999/xhtml"}
-`<span class="nodeLabel">`{=html}
 <p>
 Package: blockr
 </p>
-`</span>`{=html}
-:::
 
-`</foreignobject></g></g></g></g></g></g><g transform="translate(0, 388.5)" class="root"><g class="clusters"><g data-look="classic" id="blockr_custom" class="cluster"><rect height="129" width="414.171875" y="8" x="8" style=""></rect><g transform="translate(142.6328125, 8)" class="cluster-label"><foreignobject height="24" width="144.90625">`{=html}
 
-::: {style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;" xmlns="http://www.w3.org/1999/xhtml"}
-`<span class="nodeLabel">`{=html}
 <p>
 your_block_package
 </p>
-`</span>`{=html}
-:::
 
-`</foreignobject></g></g></g><g class="edgePaths"></g><g class="edgeLabels"></g><g class="nodes"><g transform="translate(116.54296875, 72.5)" id="flowchart-new_block1-0" class="node default"><rect height="54" width="147.0859375" y="-27" x="-73.54296875" data-et="node" data-id="abc" style="" class="basic label-container"></rect><g transform="translate(-43.54296875, -12)" style="" class="label"><rect></rect><foreignobject height="24" width="87.0859375">`{=html}
 
-::: {style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;" xmlns="http://www.w3.org/1999/xhtml"}
-`<span class="nodeLabel">`{=html}
 <p>
 New block 1
 </p>
-`</span>`{=html}
-:::
 
-`</foreignobject></g></g><g transform="translate(313.62890625, 72.5)" id="flowchart-new_block2-1" class="node default"><rect height="54" width="147.0859375" y="-27" x="-73.54296875" data-et="node" data-id="abc" style="" class="basic label-container"></rect><g transform="translate(-43.54296875, -12)" style="" class="label"><rect></rect><foreignobject height="24" width="87.0859375">`{=html}
 
-::: {style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;" xmlns="http://www.w3.org/1999/xhtml"}
-`<span class="nodeLabel">`{=html}
 <p>
 New block 2
 </p>
-`</span>`{=html}
-:::
 
-`</foreignobject></g></g></g></g></g></g></g>`{=html}
 </svg>
 
-</div>
 
-`</figure>`{=html}
 
-</div>
-::::::::::::::::::::
-:::::::::::::::::::::
 
 To get an overview of all available blocks within the blockr core
 package, we call `get_registry`:
 
-:::: cell
-``` {.r .cell-code}
+``` r
 get_registry()
 ```
 
-::: {.cell-output .cell-output-stdout}
                      ctor                                  description  category
     1       arrange_block                              Arrange columns transform
     2           csv_block                           Read a csv dataset    parser
@@ -738,8 +618,6 @@ get_registry()
     14  blockr
     15  blockr
     16  blockr
-:::
-::::
 
 This function returns a dataframe containing information about blocks
 such as their constructors, like `new_ode_block`, the description, the
@@ -749,8 +627,7 @@ accepted input, returned output and package.
 To register a block we call `register_block` (or `register_blocks` for
 multiple blocks):
 
-::: cell
-``` {.r .cell-code}
+``` r
 register_my_blocks <- function() {
   register_block(
     constructor = new_ode_block,
@@ -765,7 +642,6 @@ register_my_blocks <- function() {
   # You can register any other blocks here ...
 }
 ```
-:::
 
 where `<YOUR_PACKAGE>` must be replaced by your real package name.
 
@@ -782,17 +658,13 @@ package loads with a **hook**:
 After the registration, you can check whether the registry is updated,
 by looking at the ode block:
 
-:::: cell
-``` {.r .cell-code}
+``` r
 register_my_blocks()
 reg <- get_registry()
 reg[reg$package == "<YOUR_PACKAGE>", ]
 ```
 
-::: {.cell-output .cell-output-stdout}
             ctor                             description category
     11 ode_block Computed the Lorent attractor solutions     data
                             classes input     output        package
     11 ode_block, data_block, block  <NA> data.frame <YOUR_PACKAGE>
-:::
-::::

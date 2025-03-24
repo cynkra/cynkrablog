@@ -26,12 +26,8 @@ that are agnostic towards existing time series classes. The tools also
 allow you to handle time series as plain data frames, thus making it
 easy to deal with time series in a dplyr or data.table workflow.
 
-<figure>
-`<img alt="Illustration" src="banner.jpg" style=" width: 100%; height: auto">`{=html}
-<figcaption>
+![Illustration](banner.jpg)
 Photo by James Sutton
-</figcaption>
-</figure>
 
 Version 0.3.1 is now on CRAN and provides several bugfixes and
 extensions (see

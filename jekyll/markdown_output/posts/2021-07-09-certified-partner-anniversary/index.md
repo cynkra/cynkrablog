@@ -27,12 +27,8 @@ suite of products and our approach of combining RStudio's products with
 our Managed Workbench Solution to make RStudio Professional products
 even more powerful.
 
-<figure>
-`<img alt="Illustration" src="banner.jpg" style=" width: 100%; height: auto">`{=html}
-<figcaption>
+![Illustration](banner.jpg)
 Photo by Adi Goldstein
-</figcaption>
-</figure>
 
 ### Philosophy and lineup
 

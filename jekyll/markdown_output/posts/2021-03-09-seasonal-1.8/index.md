@@ -23,14 +23,9 @@ X-13ARIMA-SEATS, the seasonal adjustment software developed by the
 United States Census Bureau. The latest CRAN version of seasonal makes
 it much easier to adjust multiple time series.
 
-<figure>
-`<img alt="Illustration" src="banner.jpg" style=" width: 100%; height: auto">`{=html}
-<figcaption>
+![Illustration](banner.jpg)
 Photo by Meriç Dağlı
-</figcaption>
-</figure>
 
-`<br>`{=html}
 
 [seasonal](http://www.seasonal.website) depends on the
 [x13binary](https://CRAN.R-project.org/package=x13binary) package to
@@ -65,14 +60,12 @@ of X-13 to seasonal -- the *composite* spec.
 Multiple adjustments can be performed by supplying multiple time series
 as an `"mts"` object:
 
-:::: cell
-``` {.r .cell-code}
+``` r
 library(seasonal)
 m <- seas(cbind(fdeaths, mdeaths), x11 = "")
 final(m)
 ```
 
-::: {.cell-output .cell-output-stdout}
               fdeaths  mdeaths
     Jan 1974 614.1235 1598.740
     Feb 1974 542.3500 1492.127
@@ -146,8 +139,6 @@ final(m)
     Oct 1979 533.9571 1337.640
     Nov 1979 557.9707 1414.101
     Dec 1979 475.5049 1038.506
-:::
-::::
 
 This will perform two seasonal adjustments, one for `fdeaths` and one
 for `mdeaths`. X-13 spec-argument combinations can be applied in the
@@ -164,12 +155,10 @@ single call to X-13. This is now the default in seasonal
 (`multimode = "R"`). The results should be usually the same, but
 switching to `multimode = "R"` may be useful for debugging:
 
-::::: cell
-``` {.r .cell-code}
+``` r
 seas(cbind(fdeaths, mdeaths), multimode = "x13")
 ```
 
-::: {.cell-output .cell-output-stdout}
     $fdeaths
 
     Call:
@@ -197,13 +186,11 @@ seas(cbind(fdeaths, mdeaths), multimode = "x13")
 
     attr(,"class")
     [1] "seas_multi" "list"      
-:::
 
-``` {.r .cell-code}
+``` r
 seas(cbind(fdeaths, mdeaths), multimode = "R")
 ```
 
-::: {.cell-output .cell-output-stdout}
     $fdeaths
 
     Call:
@@ -231,8 +218,6 @@ seas(cbind(fdeaths, mdeaths), multimode = "R")
 
     attr(,"class")
     [1] "seas_multi" "list"      
-:::
-:::::
 
 In general, `multimode = "x13"` is faster. The following comparison on a
 MacBook Pro shows a modest speed gain, but bigger differences have been
@@ -263,8 +248,7 @@ other series in `seas()`, including the application of the defaults. If
 you provide an empty list, the usual defaults of `seas()` are used. A
 minimal composite call looks like this:
 
-:::: cell
-``` {.r .cell-code}
+``` r
 seas(
   cbind(mdeaths, fdeaths),
   composite = list(),
@@ -272,7 +256,6 @@ seas(
 )
 ```
 
-::: {.cell-output .cell-output-stdout}
     $mdeaths
 
     Call:
@@ -310,18 +293,14 @@ seas(
 
     attr(,"class")
     [1] "seas_multi" "list"      
-:::
-::::
 
 You can verify that the composite refers to the total of `mdeaths` and
 `fdeaths` by running:
 
-:::: cell
-``` {.r .cell-code}
+``` r
 seas(ldeaths)
 ```
 
-::: {.cell-output .cell-output-stdout}
 
     Call:
     seas(x = ldeaths)
@@ -329,8 +308,6 @@ seas(ldeaths)
     Coefficients:
              Constant         AO1976.Feb  MA-Nonseasonal-01     MA-Seasonal-12  
              -0.03133            0.31247           -0.43509            0.99937  
-:::
-::::
 
 where `ldeaths` is the sum of `mdeaths` and `fdeaths`.
 
