@@ -4,6 +4,7 @@ layout: post
 og_image: og_image.jpg
 author: Christoph Sax
 title: 'tsbox 0.1: class-agnostic time series'
+excerpt: "The R ecosystem knows a vast number of time series classes: ts, xts, zoo, tsibble, tibbletime or timeSeries. The plethora of standards causes confusion. tsbox provides a set of tools that make it easy to switch between these classes."
 categories:
 - R
 - time-series

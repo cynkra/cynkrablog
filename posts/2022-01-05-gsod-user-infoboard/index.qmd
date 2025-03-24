@@ -5,6 +5,7 @@ og_image: banner.png
 image: banner.png
 author: Ben Ubah
 title: 'Google Season of Docs with R: useR! Information Board'
+excerpt: "Google Season of Docs provides support for open source projects to improve their documentation and gives professional technical writers an opportunity to gain experience in open source. The R Project participated in GSoD as an open-source organization for the first time this year."
 categories:
 - R
 badges:

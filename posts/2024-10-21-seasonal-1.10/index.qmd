@@ -4,6 +4,7 @@ layout: post
 image: seasonalview.png
 author: Christoph Sax
 title: 'seasonal 1.10: R-interface to X-13ARIMA-SEATS'
+excerpt: "Time series data often display recurring seasonal patterns throughout the year. The R package seasonal provides a powerful and user-friendly way to perform seasonal adjustment in R, leveraging the X-13ARIMA-SEATS procedure developed by the U.S. Census Bureau."
 categories:
 - R
 - time-series

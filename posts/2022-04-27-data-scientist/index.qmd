@@ -5,6 +5,7 @@ image: banner.jpg
 og_image: og_image.jpg
 author: cynkra team
 title: 'Data Scientist (80-100%)'
+excerpt: "We are hiring a data scientist! You enjoy working with R and know a bit about Shiny, the tidyverse, and Git. We offer work on interesting projects around the R ecosystem, with lots of freedom and flexibility and the option to work remotely."
 categories:
 - jobs
 draft: true

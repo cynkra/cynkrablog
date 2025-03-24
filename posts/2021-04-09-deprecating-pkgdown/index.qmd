@@ -5,6 +5,7 @@ image: banner.jpg
 og_image: og_image.jpg
 author: Patrick Schratz, Kirill Müller
 title: 'Deprecating a pkgdown site served via GitHub Pages'
+excerpt: "Websites for R packages built with pkgdown have become a de-facto standard over the last few years. Sometimes, repositories are transferred to a new user/organization or the package is renamed. This post proposes several ways to handle pkgdown URL redirection gracefully."
 categories:
 - R
 ---

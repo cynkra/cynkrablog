@@ -5,6 +5,7 @@ image: banner.jpg
 og_image: og_image.jpg
 author: Christoph Sax
 title: 'seasonal 1.9: Accessing composite output'
+excerpt: "seasonal is an easy-to-use and full-featured R interface to X-13ARIMA-SEATS, the seasonal adjustment software developed by the United States Census Bureau. The latest CRAN version of seasonal fixes several bugs and makes it easier to access output from multiple objects."
 categories:
 - R
 - time-series

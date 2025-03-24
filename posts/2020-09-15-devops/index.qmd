@@ -5,6 +5,7 @@ image: banner.jpg
 og_image: og_image.jpg
 author: cynkra team
 title: 'DevOps Expert (f/m/d, 60-100%)'
+excerpt: "We are on the lookout for a DevOps System Engineer. You are familiar with Linux, Docker, Git, CI/CD, and Ansible. You will work on interesting projects around the R ecosystem and have a lot of freedom. While you will be required to work on-site at times, remote work is also possible."
 categories:
 - jobs
 - DevOps

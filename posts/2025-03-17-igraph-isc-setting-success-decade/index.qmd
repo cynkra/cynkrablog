@@ -7,6 +7,7 @@ author:
 - David Schoch
 - Kirill Müller
 title: 'Setting up igraph for success in the next decade'
+excerpt: "One year ago, a small group of us at cynkra submitted a project proposal to the R Consortium's ISC, which got approved. We are very grateful for this support. In this post we shall explain what the motivation for our project was, what we accomplished… and what we hope to work on next!"
 categories:
 - R
 - igraph

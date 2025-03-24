@@ -3,6 +3,7 @@ title: "Playing with Llama 3.1 in R"
 author: "Christoph Sax"
 date: "2024-07-27"
 image: llama.png
+excerpt: "Meta recently announced Llama 3.1, and there's a lot of excitement. I finally had some time to experiment with locally run open-source models. The small 8B model, in particular, produces surprisingly useful output, with reasonable speed."
 format:
   html:
     code-fold: false

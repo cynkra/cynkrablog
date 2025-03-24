@@ -5,6 +5,7 @@ og_image: banner.jpg
 image: banner.jpg
 author: Kirill Müller
 title: 'Running old versions of TeXlive with tinytex'
+excerpt: "Rendering PDFs with rmarkdown requires a working LaTeX installation, such as tinytex. Occasionally, existing workflows break with the newest version of LaTeX. This post describes how to run an older LaTeX version for just a little while."
 categories:
 - R
 badges:

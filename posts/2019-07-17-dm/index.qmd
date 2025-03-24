@@ -5,6 +5,7 @@ image: banner.jpg
 og_image: og_image.jpg
 author: Balthasar Sager
 title: "Introducing dm: easy juggling of tables and relations"
+excerpt: "The dm package reduces your mental strain when working with many tables. It connects your data, while still keeping them in their original tables. You can easily perform operations on all tables, visualize how they're connected, and integrate databases."
 categories:
 - R
 - databases

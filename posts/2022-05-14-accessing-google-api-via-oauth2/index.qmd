@@ -6,6 +6,7 @@ title: Accessing Google's API via OAuth2
 author: Patrick Schratz
 avatar: /user/img/about/patrick2.jpg
 date: '2022-05-14'
+excerpt: "At cynkra we recently aimed to automate more parts of our internal toolstack. Google Workspace offers a comprehensive REST API which can be used for automation purposes. When interacting with an API, authentication is usually required."
 slug: 'accessing-google-api-via-oauth2'
 categories:
   - DevOps

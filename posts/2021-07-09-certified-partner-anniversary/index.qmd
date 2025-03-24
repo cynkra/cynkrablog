@@ -4,6 +4,7 @@ author: Cosima Meyer, Patrick Schratz
 date: '2021-07-09'
 layout: post
 image: banner.jpg
+excerpt: "cynkra celebrates its first anniversary as an RStudio Full Service Certified Partner! Every day, we help our clients set up professional IT infrastructures using RStudio products and license compositions suited to their individual needs."
 categories:
   - Posit
   - DevOps

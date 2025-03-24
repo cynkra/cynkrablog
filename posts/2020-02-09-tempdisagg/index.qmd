@@ -5,6 +5,7 @@ image: banner.jpg
 og_image: og_image.jpg
 author: Christoph Sax
 title: 'tempdisagg: converting quarterly time series to daily'
+excerpt: "Not having a time series at the desired frequency is a common problem for researchers and analysts. With the help of one or more high-frequency indicator series, the low-frequency series may be disaggregated into a high-frequency series."
 categories:
 - R
 - time-series

@@ -3,6 +3,7 @@ date: 2018-05-01
 layout: post
 author: Kirill Müller
 title: 'Done “Establishing DBI”!?'
+excerpt: "The \"Establishing DBI\" project, funded by the R consortium, started about a year ago. It includes the completion of two new backends, RPostgres and RMariaDB, and quite a few interface extensions and specifications."
 categories:
 - R
 - databases

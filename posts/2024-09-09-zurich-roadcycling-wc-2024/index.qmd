@@ -4,6 +4,7 @@ title: "2024 road and para-cycling road world championships: preliminaRy analysi
 image: logo.png
 author: David Granjon
 date: '2024-09-10'
+excerpt: "Analyzing the routes and elevation profiles of the 2024 road and para-cycling world championships in Zurich. This analysis uses R packages like gpx, leaflet, and rayshader to visualize and understand the challenges cyclists will face during the competition."
 categories:
   - Sport
   - R
