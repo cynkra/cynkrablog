@@ -2,3 +2,22 @@ project:
   type: website
   output-dir: jekyll/markdown_output/posts
  
+ format:
+  markdown:
+    wrap: none
+    html-math-method: plain
+    df-print: kable
+    output-file: index.md
+    code-fold: false
+    toc: false
+    execute:
+      echo: true
+      eval: true
+      warning: true
+      error: true
+    # Specifically disable fenced divs and other special Markdown extensions
+    md-extensions:
+      -fenced_divs
+      -attributes
+      -raw_html
+    prefer-html: false
