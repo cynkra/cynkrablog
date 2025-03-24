@@ -1,0 +1,189 @@
+---
+author:
+- Patrick Schratz, Kirill Müller
+authors:
+- Patrick Schratz, Kirill Müller
+categories:
+- R
+date: 2021-04-09
+image: banner.jpg
+layout: post
+og_image: og_image.jpg
+title: Deprecating a pkgdown site served via GitHub Pages
+toc-title: Table of contents
+---
+
+Websites for R packages built with
+[{pkgdown}](https://pkgdown.r-lib.org/) have become a de-facto standard
+over the last few years. Many R packages build their site during
+Continuous Integration (CI) runs, pushing the assets to the special
+`gh-pages` branch (even though now [any branch can be used to deploy a
+website](https://github.blog/changelog/2020-09-03-build-and-deploy-github-pages-from-any-branch/)).
+
+<figure>
+`<img alt="Illustration" src="banner.jpg" style=" width: 100%; height: auto">`{=html}
+<figcaption>
+Photo by Paweł Czerwiński
+</figcaption>
+</figure>
+
+`<br>`{=html}
+
+Sometimes, repositories are transferred to a new user/organization or
+the package is renamed. While GitHub takes care of redirecting
+repository URLs, the pkgdown URLs
+(`https://<username>.github.io/<rpackage>`) are not redirected. Since
+some users might have bookmarked specific URLs or the URLs appear in
+their browsing history, it would be great if these links do not return a
+404.
+
+This blog post proposes several ways to handle this gracefully:
+
+-   Redirection
+-   Deprecation with CSS
+-   Deprecation via bulk edit
+
+All options hinge on the observation that users and organizations can
+create a [user or organization
+site](https://docs.github.com/en/github/working-with-github-pages/about-github-pages#types-of-github-pages-sites)
+that will be the source for `https://<username>.github.io/<package>`
+after the renaming. The user site will also serve `robots.txt` that
+advises crawlers to avoid deprecated contents.
+
+## User or organization site
+
+In GitHub, users can create a *user repository*
+`<username>/<username>.github.io`. This repo will be served
+automatically as a web page on `https://<username>.github.io/` . In this
+repo, a directory can be created which corresponds to the respective
+GitHub Pages site of the original repo. Example: The `rpackage/`
+directory in the `<username>/<username>.github.io` repository
+corresponds to `https://<username>.github.io/rpackage`. If both
+`<username>/<rpackage>` and `<username>/<username>.github.io/<rpackage>`
+exist, the former takes precedence. This means that you can prepare
+everything in your user repository `<username>/<username>.github.io` and
+it will work immediately after you rename your package repository. The
+following has worked for <https://krlmlr.github.io/fledge/>, which has
+moved to <https://cynkra.github.io/fledge/>:
+
+-   Create repository `<username>/<username>.github.io`
+-   In `<username>/<username>.github.io` create directory `<rpackage>`
+-   Populate the `<rpackage>` directory using one of the methods
+    described below
+-   Push to GitHub
+-   Rename repository
+
+All of this works the same way for organizations. The [munch
+package](https://cynkra.github.io/munch/) was previously located at
+<https://cynkra.github.io/SwissCommunes/> The original pages, with a
+warning, are defined at
+[cynkra/cynkra.github.io](https://github.com/cynkra/cynkra.github.io/).
+
+## Redirection
+
+Basic idea: set up an HTML redirect from
+`https://<username-old>.github.io/<package>` to
+`https://<username-new>.github.io/<package>`.
+
+To achieve this, create an `index.html` in
+`<username>/<username>.github.io/rpackage` with the following contents:
+
+``` html
+<meta http-equiv="refresh" content="0; url=<url to redirect to>" />
+```
+
+However, some redirection practices like this one are considered bad
+practice ("Use of meta refresh is discouraged by the World Wide Web
+Consortium (W3C).")\[\^1\]. Also, users might find it sketchy to see
+some redirection happening shortly after they visited a site. Last, the
+redirection shown above only works for the top-level domain. Level 2 or
+level 3 links like `<url>/level1/level2` will not work and return a 404.
+
+## Deprecation via CSS
+
+A better way to deprecate a pkgdown/GitHub Pages site is to serve a
+static version of the last state before the package was moved, and add
+information to the user that the site has moved.
+
+An easy way to achieve this is to include a little CSS snippet. The
+following will add a colored line before the `page-header` div in the
+pkgdown site.
+
+``` css
+.page-header:after {
+  content: "You are viewing an outdated page which is not going to be updated anymore. Please go to <https:/new-url.com> for the latest version.";
+  font-size: 12px;
+  font-style: italic;
+  color: #f03333;
+}
+```
+
+<figure>
+`<img alt="Screenshot: Deprecation via CSS" src="css.png" style=" width: 100%; height: auto">`{=html}
+<figcaption>
+Deprecation information in the header via CSS
+</figcaption>
+</figure>
+
+`<br>`{=html}
+
+Place this code in the `pkgdown/` directory of your package and it will
+be automatically picked up when the site is built next time:
+
+-   In your package, add the CSS snippet from above to
+    `pkgdown/extra.css` (CSS name can be different) in the repository/R
+    package which should be deprecated
+-   Call `pkgdown::build_site()` one last time
+-   Copy the contents of `docs/` to
+    `<username>/<username>.github.io/<packagename>`
+
+Unfortunately, the `:after` operator does not allow hyperlinks, so the
+new URL will not be clickable.
+
+## Deprecation via bulk edit
+
+For the URL to be clickable, the HTML files must be edited. The `find`,
+`xargs` and `sed` utilities help to automate this.
+
+pkgdown uses the Bootstrap framework, which has
+[alerts](https://getbootstrap.com/docs/3.3/components/#alerts) that
+serve the purpose. They look best just before the closing `</header>`
+element. The following command line adds an alert to each HTML page,
+advertising <https://cynkra.github.io/munch> as the target URL. It must
+be run in the `rpackage` directory of `<username>/<username>.github.io`:
+
+``` sh
+find -name "*.html" |
+  xargs sed -i -r 's#(^.*[<]/header[>])#<div class="alert alert-warning" role="alert"><strong>Warning!</strong> This content has moved to <a href="https://cynkra.github.io/munch">https://cynkra.github.io/munch</a>.</div>\n\1#'
+```
+
+This assumes GNU `sed`. MacOS users will need to use `gsed`, or `-i.bak`
+instead of `-i` and deal with the leftover `*.bak` files.
+
+<figure>
+`<img alt="Screenshot: Deprecation via editing HTML" src="bootstrap.png" style=" width: 100%; height: auto">`{=html}
+<figcaption>
+Deprecation information in the header via editing HTML
+</figcaption>
+</figure>
+
+`<br>`{=html}
+
+Always advertising the new root works well enough because it is very
+likely that the structure of the site will eventually change after the
+repository rename.
+
+## Web crawlers
+
+It is a good idea to make the deprecated contents invisible to web
+crawlers. Add a file
+[`robots.txt`](https://developers.google.com/search/docs/advanced/robots/create-robots-txt)
+to the root of `<username>/<username>.github.io`. The following contents
+forbids crawling the [`/SwissCommunes/`
+directory](https://cynkra.github.io/SwissCommunes/) which contains the
+old snapshot with pointers to the new location:
+
+``` txt
+User-agent: *
+Disallow: /SwissCommunes/
+```

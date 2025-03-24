@@ -1,0 +1,293 @@
+---
+author:
+- Patrick Schratz
+authors:
+- Patrick Schratz
+avatar: /user/img/about/patrick2.jpg
+badges:
+- bg: bg-info
+  label: DevOps
+categories:
+- DevOps
+date: 2022-05-14
+image: banner.jpg
+layout: post
+og_image: banner.jpg
+slug: accessing-google-api-via-oauth2
+title: Accessing Google's API via OAuth2
+toc-title: Table of contents
+---
+
+At cynkra we recently aimed to automate more parts of our internal
+toolstack. One tool is Google Workspace. Google Workspace offers a
+[comprehensive REST API](https://developers.google.com/workspace) which
+can be used for automation purposes.
+
+When interacting with an API, authentication is usually required. This
+is commonly done by adding a header to the request which includes an
+access token along with the actual API request. For many APIs these
+headers can be simple single access token of type
+["Bearer"](https://swagger.io/docs/specification/authentication/bearer-authentication/).
+These tokens often have no expiration date and infinite scopes, meaning
+they can be used for any kind of request against the respective API
+endpoints. The risk with these tokens is that they are quite powerful
+and an attacker can somewhat easily get infinite access to your account,
+both in terms of scopes and time.
+
+Therefore, many services recently started to favor the use of
+[OAuth2](https://swagger.io/docs/specification/authentication/oauth2/)
+in a multi-stage authentication concept. The process can be broken down
+as follows:
+
+1.  An admin creates an OAuth2 app in the respective service
+    (e.g. Google Cloud or Zoom) with limited scopes (i.e. only to
+    certain parts of the API)
+2.  First an encoded "JSON Web Token" (JWT) must be created. In the
+    specific case of the Google API, an access key and its secret from a
+    Google "Service Account" (which needs to be created in the
+    "Credentials" menu of Google Cloud) are required for signing the JWT
+    during creation.
+3.  Next an API call makes a request against the OAuth2 app using the
+    just created JWT token and gets a short-lived *Bearer* access token
+    returned.
+4.  A third API call issues the actual API request.
+
+This multi-stage process can be automated by using automation tools like
+*Ansible* or similar. Yet the tricky part is usually the authentication
+against the OAuth2 app. Traditionally OAuth2 apps aim for GUI-based
+interaction, i.e., someone clicking a button to authorize the request.
+However, when aiming for automation via an API, this is not feasible.
+Instead the OAuth2 app should return the access token as code to further
+continue the automated workflow. There are plenty of Stackoverflow
+questions about this topic with many upvotes:
+
+-   <https://stackoverflow.com/questions/10835365/authenticate-programmatically-to-google-with-oauth2>
+-   <https://stackoverflow.com/questions/19766912/how-do-i-authorise-an-app-web-or-installed-without-user-intervention?noredirect=1&lq=1>
+-   <https://stackoverflow.com/questions/71364188/how-to-authorize-a-curl-script-to-google-oauth-after-oauth-out-of-band-oob-flo/71374746#71374746>
+-   <https://stackoverflow.com/questions/12710262/google-drive-redirect-uri-mismatch>
+
+## The "OOB" deprecation
+
+For many years there was a workaround by using
+`redirect_uri=urn:ietf:wg:oauth:2.0:oob` combined with
+`response_type=code` which was [widely shared across the
+web](https://stackoverflow.com/questions/12710262/google-drive-redirect-uri-mismatch)
+and Youtube. Yet in Feburary 2022 Google finally [blocked this
+approach](https://developers.googleblog.com/2022/02/making-oauth-flows-safer.html#instructions-oob)
+as it is considered unsafe and more secure methods should be used.
+
+## The "JWT" authentication approach
+
+Hence a new approach is needed to authenticate against Google OAuth2
+apps programmatically. One of these is the use of [JSON Web
+Tokens](https://jwt.io/) (JWT). These are different to *Bearer* tokens
+in the way that they must be signed and encrypted using a domain-wide
+access token and am specific algorithm which the OAuth2 apps expects
+(for future decoding purposes). The mentioned encryption is also not
+straightforward and usually requires [the use of an additional
+language](https://developers.google.com/identity/protocols/oauth2/service-account#authorizingrequests)
+(e.g. Python, Ruby, Java) and a respective module which does the
+encryption. The key and its secret (in the Google case) which should be
+encrypted must be generated within a *service account* that was granted
+[*domain-wide
+delegation*](https://developers.google.com/admin-sdk/directory/v1/guides/delegation).
+If such an encrypted JWT is sent to the OAuth2 app, it can verify the
+owner and issue a short-lived token with the respective scopes of the
+OAuth2 app.
+
+## Ansible workflow example
+
+All of the above made the process of issueing a "simple" API call
+against the Google API quite cumbersome. This is why in the following a
+fully-working ansible approach is provided which uses a Ruby script for
+the initial JWT encryption.
+
+This assumes
+
+-   a working Ruby installation at `/usr/bin/ruby`
+-   an existing Google service account with *domain wide delegation*
+-   an OAuth2 app to which the service account has acccess to with
+    matching scopes required for the final API call
+
+*Disclaimer: The `jwt.rb` script below and parts of the ansible logic
+are taken/adapted from another blog post which I am unable to find
+again.* *Memo to myself: always instantly store the link somewhere if
+you find some helpful content on a website...*
+
+``` yml
+- name: "Google Workspace: Create JWT for Google OAuth2"
+  command: >
+    env ruby <path/to/>/jwt.rb --iss "google-workspace@<some service account name>.iam.gserviceaccount.com"
+    --sub "<issuer email>" --scope "{{ google_workspace_oauth2_api_scopes | join(' ') }}"
+    --kid "{{ google_workspace_oauth2_key_id.value }}"
+    --pkey "{{ google_workspace_oauth2_private_key.value }}"
+  args: { chdir: "/usr/bin/" }
+  register: jwt
+```
+
+Here `google_workspace_oauth2_api_scopes` is a list of Google API scopes
+
+``` yml
+google_workspace_oauth2_api_scopes:
+  - 'https://www.googleapis.com/auth/admin.directory.user'
+  - 'https://www.googleapis.com/auth/admin.directory.group'
+  - 'https://www.googleapis.com/auth/admin.directory.domain'
+  - 'https://www.googleapis.com/auth/admin.directory.userschema'
+  - 'https://www.googleapis.com/auth/apps.licensing'
+```
+
+and `google_workspace_oauth2_key_id` and
+`google_workspace_oauth2_private_key` are the credentials from the
+respective service account used.
+
+The `jwt.rb` file referenced in the call above looks as follows:
+
+``` ruby
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'jwt'
+require 'optparse'
+require 'openssl'
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = 'Usage: jwt.rb [options]'
+
+  opts.on('--iss ISS', 'Issuer') do |iss|
+    options[:iss] = iss
+  end
+  opts.on('--sub SUB', 'Subject') do |sub|
+    options[:sub] = sub
+  end
+  opts.on('--scope SCOPE', 'API Scopes') do |scope|
+    options[:scope] = scope
+  end
+  opts.on('--kid KID', 'Key id') do |kid|
+    options[:kid] = kid
+  end
+  opts.on('--pkey PKEY', 'Key') do |pkey|
+    options[:pkey] = pkey
+  end
+end.parse!
+
+iat = Time.now.to_i
+exp = iat + 900 # token is 900s valid
+
+payload = { iss: options[:iss].to_s,
+            sub: options[:sub].to_s,
+            scope: options[:scope].to_s,
+            aud: 'https://oauth2.googleapis.com/token',
+            kid: options[:kid].to_s,
+            exp: exp,
+            iat: iat }
+
+pkey = options[:pkey].to_s.gsub('\n', "\n")
+priv_key = OpenSSL::PKey::RSA.new(pkey)
+
+token = JWT.encode(payload, priv_key, 'RS256')
+
+puts token
+```
+
+The important part is happening at the bottom: `JWT.encode` encodes the
+payload of the POST request, which consists of the API key from the
+service account. Specifically, the secret of the respective key pair
+(named `priv_key` here) is used to encrypt the payload.
+
+Next, this JWT needs to be passed to the
+`https://oauth2.googleapis.com/token` endpoint to ask for a *Bearer*
+access token by using the following payload in the body:
+
+``` yml
+- name: "Google Workspace: Get access token from Google oauth2"
+  uri:
+    url: "https://oauth2.googleapis.com/token"
+    method: POST
+    body: "grant_type={{ google_workspace_oauth2_grant_type }}&assertion={{ jwt.stdout }}"
+    return_content: true
+  register: token
+```
+
+Here, `google_workspace_oauth2_grant_type` needs to be
+`"urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer"`. This tells
+the endpoint that we are handing over a JWT token and want to get a
+*Bearer* token back.
+
+Finally, this (short-lived) *Bearer* token can be used to issue the
+desired API call, e.g. creating a new user:
+
+``` yml
+- name: "Google Workspace: Create user"
+  uri:
+    method: POST
+    url: https://admin.googleapis.com/admin/directory/v1/users
+    headers:
+      authorization: "Bearer {{ token.json.access_token }}"
+    body_format: json
+    body: '{
+           "primaryEmail": "{{ username }}@email.com",
+           "password": "{{ user_password }}",
+           "name": {
+             "givenName": "{{ first_name }}",
+             "familyName": "{{ last_name }}"
+           },
+           "isAdmin": "{{ admin }}"
+         }'
+```
+
+## Summary
+
+The OAuth2-API-Auth process to authenticate against the Google API is
+quite cumbersome and quite a few little things can go wrong. As for all
+other methods, it is not possible to say how long this method will stay
+functional. JWTs are a quite promising concept and it is likely that
+they will be around for quite some time as they are considered pretty
+save. The biggest challenge is usually to puzzle all bits together and
+find the correct documentation resource for the respective provider.
+Once it works, there's almost no overhead when using tools like Ansible
+to automate the process.
+
+It should be noted that the approach is quite generic: for some
+providers you might need to change the encoding algorithm when creating
+the JWT (e.g. for Zoom it needs to be `HS256`) but other than that you
+should be able to reuse the `jwt.rb` script.
+
+## Full Ansible script
+
+``` yml
+
+- name: "Google Workspace: Create JWT for Google OAuth2"
+  command: >
+    env ruby <path/to/>/jwt.rb --iss "google-workspace@<some service account name>.iam.gserviceaccount.com"
+    --sub "<issuer email>" --scope "{{ google_workspace_oauth2_api_scopes | join(' ') }}"
+    --kid "{{ google_workspace_oauth2_key_id.value }}"
+    --pkey "{{ google_workspace_oauth2_private_key.value }}"
+  args: { chdir: "/usr/bin/" }
+  register: jwt
+
+- name: "Google Workspace: Get access token from Google oauth2"
+  uri:
+    url: "https://oauth2.googleapis.com/token"
+    method: POST
+    body: "grant_type={{ google_workspace_oauth2_grant_type }}&assertion={{ jwt.stdout }}"
+    return_content: true
+  register: token
+
+- name: "Google Workspace: Create user"
+  uri:
+    method: POST
+    url: https://admin.googleapis.com/admin/directory/v1/users
+    headers:
+      authorization: "Bearer {{ token.json.access_token }}"
+    body_format: json
+    body: '{
+           "primaryEmail": "{{ username }}@email.com",
+           "password": "{{ user_password }}",
+           "name": {
+             "givenName": "{{ first_name }}",
+             "familyName": "{{ last_name }}"
+           },
+           "isAdmin": "{{ admin }}"
+         }'
+```

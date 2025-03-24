@@ -1,0 +1,142 @@
+---
+author:
+- Patrick Schratz
+authors:
+- Patrick Schratz
+categories:
+- R
+- DevOps
+date: 2021-03-16
+layout: post
+title: gfortran support for R on macOS
+toc-title: Table of contents
+---
+
+For a long time, `gfortran` support on macOS could be achieved by
+installing the homebrew cask `gfortran` via
+`brew cask install gfortran`.
+
+As of 2021, both the `brew cask` command and the cask `gfortran` are
+deprecated. Users who have installed this cask already, will not notice
+since things will continue to work as normal. Only new users who want to
+install `gfortran` this way, will get the message that the cask is "not
+available". The cask [was removed in December
+2020](https://github.com/Homebrew/homebrew-cask/pull/96504) and merged
+into the `gcc` formula (which can be installed via `brew install gcc`).
+Now, one could go to
+<https://github.com/fxcoudert/gfortran-for-macOS/releases> and manually
+install the respective `.dmg` file. However, this is not a long-term
+approach, and usually, one would like to do this via `brew`, the most
+popular package manager for macOS.
+
+Unfortunately, this change did not result in a smooth experience for R
+users who want to compile packages from source that require a functional
+`gfortran` compiler. This requirement does not occur very often, as most
+users install R package binaries on macOS. These do not require a
+working `gfortran` installation.
+
+However, in some cases, when calling `install.packages()`, a working
+`gfortran` installation is needed. And if `type = "source"` is used, it
+needs to be there.
+
+The issue after the integration of `gfortran` into the `gcc` formula is
+that the official R binary installer for macOS expects the `gfortran`
+installation at `/usr/local/gfortran`. This was fulfilled by the old
+`gfortran` cask but is not by the new `gcc` integration. Hence, trying
+to install the "cluster" package via
+`install.packages("cluster", type = "source")` will fail and `gfortran`
+will not be found:
+
+``` r
+* installing *source* package ‘cluster’ ...
+** package ‘cluster’ successfully unpacked and MD5 sums checked
+** using staged installation
+** libs
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC  -Wall -g -O2  -c clara.c -o clara.o
+gfortran -mmacosx-version-min=10.13 -fno-optimize-sibling-calls  -fPIC  -Wall -g -O2  -c daisy.f -o daisy.o
+make: gfortran: No such file or directory
+make: *** [/Library/Frameworks/R.framework/Resources/etc/Makeconf:196: daisy.o] Error 127
+ERROR: compilation failed for package ‘cluster’
+```
+
+There was a
+[discussion](https://github.com/Homebrew/homebrew-cask/issues/96135)
+about these changes in the homebrew PR, but the comments that
+highlighted potential issues seem to have gone unnoticed. Also, some
+workarounds posted in the thread do not work.
+
+## So how does one now install `gfortran` on macOS these days?
+
+It is likely that one will not need the workaround presented below in
+the future since it will probably be fixed in the R installer at some
+point (hopefully). In the meantime, the following helps:
+
+1.  Create a file `~/.R/Makevars` (if it does not exist yet)
+
+2.  Add the following to `~/.R/Makevars`
+
+    ``` sh
+    FC      = usr/local/opt/gcc/bin/gfortran
+    F77     = /usr/local/opt/gcc/bin/gfortran
+    FLIBS   = -L/usr/local/opt/gcc/lib
+    ```
+
+3.  Restart R
+
+4.  Test the changes by calling
+    `install.packages("cluster", type = "source")`
+
+The output should look like this
+
+``` r
+* installing *source* package ‘cluster’ ...
+** package ‘cluster’ successfully unpacked and MD5 sums checked
+** using staged installation
+** libs
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC  -Wall -g -O2  -c clara.c -o clara.o
+/usr/local/opt/gcc/bin/gfortran -fno-optimize-sibling-calls  -fPIC  -Wall -g -O2  -c daisy.f -o daisy.o
+/usr/local/opt/gcc/bin/gfortran -fno-optimize-sibling-calls  -fPIC  -Wall -g -O2  -c dysta.f -o dysta.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC  -Wall -g -O2  -c fanny.c -o fanny.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC  -Wall -g -O2  -c init.c -o init.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC  -Wall -g -O2  -c mona.c -o mona.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC  -Wall -g -O2  -c pam.c -o pam.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC  -Wall -g -O2  -c sildist.c -o sildist.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC  -Wall -g -O2  -c spannel.c -o spannel.o
+clang -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I/usr/local/include   -fPIC  -Wall -g -O2  -c twins.c -o twins.o
+clang -dynamiclib -Wl,-headerpad_max_install_names -undefined dynamic_lookup -single_module -multiply_defined suppress -L/Library/Frameworks/R.framework/Resources/lib -L/usr/local/lib -o cluster.so clara.o daisy.o dysta.o fanny.o init.o mona.o pam.o sildist.o spannel.o twins.o -L/usr/local/opt/gcc/lib -F/Library/Frameworks/R.framework/.. -framework R -Wl,-framework -Wl,CoreFoundation
+ld: warning: object file (daisy.o) was built for newer macOS version (11.2) than being linked (11.0)
+ld: warning: object file (dysta.o) was built for newer macOS version (11.2) than being linked (11.0)
+installing to /Users/pjs/Library/R/4.0/library/00LOCK-cluster/00new/cluster/libs
+** R
+** data
+*** moving datasets to lazyload DB
+** inst
+** byte-compile and prepare package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded from temporary location
+** checking absolute paths in shared objects and dynamic libraries
+** testing if installed package can be loaded from final location
+** testing if installed package keeps a record of temporary installation path
+* DONE (cluster)
+```
+
+**Caution**: After using this approach for a few days, I have seen
+issues with certain packages (e.g. `hsdar`). It is unclear if the issues
+trace back to the packages or the new way of using `gfortran`. You might
+want to re-think using this proposed approach and eventually manually
+install the linked standalone `gfortran` binary shown earlier in this
+post.
+
+## Notes
+
+-   I am not sure about the
+    `ld: warning: object file (dysta.o) was built for newer macOS version (11.2) than being linked (11.0)`
+    warning, but it does not seem to have a practical impact.
+-   This approach was tested with R 4.0.4, macOS 11.2.3 in March 2021.
+-   If you still have the old `gfortran` cask installed, you may want to
+    switch to the new approach as the cask is no longer being updated.
+    Hence, you will run a very outdated `gfortran` at some point without
+    noticing. You can remove the old cask with
+    `brew remove – cask gfortran`.

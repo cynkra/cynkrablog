@@ -1,0 +1,305 @@
+---
+author:
+- Cosima Meyer, Patrick Schratz
+authors:
+- Cosima Meyer, Patrick Schratz
+categories:
+- Posit
+- DevOps
+date: 2021-07-09
+image: banner.jpg
+layout: post
+title: Celebrating one-year anniversary as RStudio Full Service
+  Certified Partner
+toc-title: Table of contents
+---
+
+cynkra celebrates its first anniversary as an [RStudio Full Service
+Certified Partner](https://rstudio.com/certified-partners/)! Every day,
+we help our clients set up professional IT infrastructures using RStudio
+products and license compositions suited to their individual needs. In
+the context of our anniversary, we would like to discuss the RStudio
+suite of products and our approach of combining RStudio's products with
+our Managed Workbench Solution to make RStudio Professional products
+even more powerful.
+
+<figure>
+`<img alt="Illustration" src="banner.jpg" style=" width: 100%; height: auto">`{=html}
+<figcaption>
+Photo by Adi Goldstein
+</figcaption>
+</figure>
+
+### Philosophy and lineup
+
+We believe that good tools combined with smart settings can make data
+science teams enjoy their work more, resulting in higher productivity
+levels. We, therefore, work to provide our clients with customized
+RStudio product solutions to create a data science environment that
+would support their daily work most efficiently and effectively.
+
+Our [team members](https://cynkra.com/about), who have all been using
+practically all RStudio products daily, are testimony to our claims.
+
+### Finding the right setup
+
+Besides finding the optimal combination of different software provided
+by RStudio, we customize the RStudio products to include smart defaults
+and individualized configurations such as local package repositories or
+preconfigured database setups. We use a full-fledged configured and
+centralized managed RStudio Workbench installation that simplifies
+administrative tasks for system admins and users. In addition, we ensure
+constant product and security updates, taking away all the maintenance
+burden and leaving users with a happy place for their data science
+tasks. We also train the team on how to work with RStudio Products.
+
+The transition from the local RStudio Desktop usage is seamless since
+RStudio Workbench and friends provide all features of the free version.
+
+There is no lock-in; everything that works on the free RStudio Desktop
+version will also work on RStudio Workbench and the other way round --
+even if you decide to go back to the free version at some point. Of
+course, once clients have experienced the added benefits of RStudio
+Workbench, they rarely want to go back.
+
+Our lineup consists of the following RStudio products: [RStudio
+Workbench (previously RStudio Server
+Pro)](https://www.rstudio.com/products/workbench/), [RStudio
+Connect](https://rstudio.com/products/connect/), [RStudio Package
+Manager](https://www.rstudio.com/products/package-manager/), [Shiny
+Server](https://www.rstudio.com/products/shiny/shiny-server/), and
+[RStudio Team](https://rstudio.com/products/team/).
+
+### Smart defaults and optimized configurations
+
+RStudio Workbench, RStudio Connect, and RStudio Package Manager can work
+together very well if configured correctly. We configure the settings as
+needed to enable users to experience the full power of the RStudio
+product suite. Our product saves you from having to go through the
+entire [admin
+guide](https://docs.rstudio.com/ide/server-pro/latest/index.html) where
+there is always the potential to miss something important. The power
+(and complexity) of RStudio products resides in their configuration. We
+have experience with almost all possible configuration scenarios,
+including configuring RStudio products in highly secured enterprise
+environments.
+
+### Dockerized environment
+
+Our products come in a *containerized environment*, making them agnostic
+to any underlying operating system. Your users will have access to an
+Ubuntu LTS system (20.04 at the time of writing) which provides stable
+support for linking R packages against required system libraries.
+
+Using a containerized environment also simplifies update tasks (for the
+client and us) due to the independence of the underlying operating
+system. All of this also holds if the underlying operating system of
+your company is subject to change in the future -- and if this happens,
+the RStudio environment will stay the same.
+
+Another common pain point for local RStudio users is the use of LaTeX
+and pandoc when compiling PDF reports. By relying on the stable Ubuntu
+LTS environment as the base layer we can provide a stable LaTeX/pandoc
+environment that takes away almost all troubles for users in this area.
+
+### Performance
+
+Centralized, server-based installations can be very efficient both in
+speed and battery consumption. It applies to all RStudio products but in
+particular to RStudio Workbench and RStudio Package Manager.
+
+The following GIF might give you an idea of speed improvement (we did
+the test using a relatively new MacBook Pro 2020). When we deployed the
+cloud-based RStudio Workbench on the MacBook, the machine performed much
+faster. The difference in speed will be even more noticeable in an older
+machine.
+
+![RStudio Desktop vs. RStudio Workbench speed
+comparison](rstudio-desktop-vs-rsw.gif)
+
+Battery usage becomes critical when working from home or on the go.
+Using RStudio Workbench instead of RStudio Desktop will save battery
+life because all computation is done on a remote machine. RStudio
+Desktop, in particular, is quite energy-hungry; we have experienced
+battery life improvements of 30% and more in our daily work when using
+the cloud-based RStudio Workbench instead of RStudio Desktop.
+
+### Custom real-world examples
+
+One of the key strengths of our offering is individualization. To
+provide more details on this, we put together some configurations we
+implemented recently to give an idea of what individualized setups can
+look like in practice.
+
+<table class="table">
+<thead>
+<tr>
+<th scope="col">
+</th>
+<th scope="col" style="text-align: center;">
+Setup 1
+</th>
+<th scope="col" style="text-align: center;">
+Setup 2
+</th>
+<th scope="col" style="text-align: center;">
+Setup 3
+</th>
+<th scope="col" style="text-align: center;">
+Setup 4
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th scope="row" style="text-align: left; vertical-align: middle;">
+RStudio Workbench
+</th>
+<td style="text-align: center; vertical-align: middle;">
+✓
+</td>
+<td style="text-align: center; vertical-align: middle;">
+✓
+</td>
+<td style="text-align: center; vertical-align: middle;">
+</td>
+<td style="text-align: center; vertical-align: middle;">
+✓
+</td>
+</tr>
+<tr>
+<th scope="row" style="text-align: left; vertical-align: middle;">
+RStudio Connect
+</th>
+<td style="text-align: center; vertical-align: middle;">
+✓
+</td>
+<td style="text-align: center; vertical-align: middle;">
+✓
+</td>
+<td style="text-align: center; vertical-align: middle;">
+✓
+</td>
+<td style="text-align: center; vertical-align: middle;">
+✓
+</td>
+</tr>
+<tr>
+<th scope="row" style="text-align: left; vertical-align: middle;">
+RStudio Package Manager
+</th>
+<td style="text-align: center; vertical-align: middle;">
+✓
+</td>
+<td style="text-align: center; vertical-align: middle;">
+✓
+</td>
+<td style="text-align: center; vertical-align: middle;">
+</td>
+<td style="text-align: center; vertical-align: middle;">
+</td>
+</tr>
+<tr>
+<th scope="row" style="text-align: left; vertical-align: middle;">
+RStudio Server Open Source
+</th>
+<td style="text-align: center; vertical-align: middle;">
+✓
+</td>
+<td style="text-align: center; vertical-align: middle;">
+</td>
+<td style="text-align: center; vertical-align: middle;">
+✓
+</td>
+<td style="text-align: center; vertical-align: middle;">
+</td>
+</tr>
+<tr>
+<th scope="row" style="text-align: left; vertical-align: middle;">
+Shiny Server
+</th>
+<td style="text-align: center; vertical-align: middle;">
+</td>
+<td style="text-align: center; vertical-align: middle;">
+</td>
+<td style="text-align: center; vertical-align: middle;">
+</td>
+<td style="text-align: center; vertical-align: middle;">
+✓
+</td>
+</tr>
+<tr>
+<th scope="row" style="text-align: left; vertical-align: middle;">
+User Provisioning
+</th>
+<td style="text-align: center; vertical-align: middle;">
+Active Directory
+</td>
+<td style="text-align: center; vertical-align: middle;">
+LDAP
+</td>
+<td style="text-align: center; vertical-align: middle;">
+Local Users
+</td>
+<td style="text-align: center; vertical-align: middle;">
+Active Directory
+</td>
+</tr>
+<tr>
+<th scope="row" style="text-align: left; vertical-align: middle;">
+SSO Type
+</th>
+<td style="text-align: center; vertical-align: middle;">
+PAM
+</td>
+<td style="text-align: center; vertical-align: middle;">
+OIDC
+</td>
+<td style="text-align: center; vertical-align: middle;">
+</td>
+<td style="text-align: center; vertical-align: middle;">
+SAML
+</td>
+</tr>
+<tr>
+<th scope="row" style="text-align: left; vertical-align: middle;">
+DB Drivers
+</th>
+<td style="text-align: center; vertical-align: middle;">
+RStudio Professional Drivers
+</td>
+<td style="text-align: center; vertical-align: middle;">
+MS SQL
+</td>
+<td style="text-align: center; vertical-align: middle;">
+Oracle
+</td>
+<td style="text-align: center; vertical-align: middle;">
+IBM DB2
+</td>
+</tr>
+</tbody>
+</table>
+
+Acronym dictionary for Table:
+
+-   SSO: Single-Sign-On
+-   OIDC: OpenID Connect
+-   PAM: Pluggable Authentication Modules
+
+Often, in larger organizations, the system that is already in use
+determines the authentication settings. We have experience configuring
+RStudio Products with various authentication solutions.
+
+### Standalone licenses and R training
+
+Besides the complete package that comes with our Managed Workbench
+offering, we are happy to provide our customers with standalone RStudio
+licenses. The advantage for Swiss-based customers is that they get a
+bill in Swiss Francs including VAT, and avoid currency conversion issues
+with USD when ordering from RStudio directly.
+
+In addition to setting up R-related infrastructure, we also provide R
+training of any kind so that your team can make full use of the
+available software stack. You can visit our [consulting offering on our
+website](https://cynkra.com/consulting) for more information.

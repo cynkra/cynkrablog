@@ -1,0 +1,299 @@
+---
+author:
+- Kirill Müller
+authors:
+- Kirill Müller
+categories:
+- R
+- DevOps
+date: 2020-12-23
+image: banner.jpg
+layout: post
+og_image: og_image.jpg
+title: Dynamic build matrix in GitHub Actions
+toc-title: Table of contents
+---
+
+I wanted to try out the new `fromJSON()` that allows dynamic build
+matrices in GitHub Actions for quite some time now. Today was the day.
+
+[GitHub Actions](https://github.com/features/actions) allows automating
+build and deployment processes (CI/CD), tightly integrated with GitHub.
+A [build
+matrix](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategymatrix)
+is a way to define very similar workflows that differ only by
+configuration parameters. Usually, a build matrix is defined directly in
+the `.yaml` files together with the workflows. This blog post shows how
+to define these build matrices dynamically so that the "source of truth"
+for the matrix definition is outside the `.yaml` file.
+
+<figure>
+`<img alt="Illustration" src="banner.jpg" style=" width: 100%; height: auto">`{=html}
+<figcaption>
+Photo by
+`<a href="https://unsplash.com/photos/iar-afB0QQw" target="_blank">`{=html}
+Markus Spiske`</a>`{=html}
+</figcaption>
+</figure>
+
+The configuration for a workflow is a YAML file that has a context and
+expression syntax with very few [basic
+functions](https://docs.github.com/en/free-pro-team@latest/actions/reference/context-and-expression-syntax-for-github-actions).
+Two very powerful functions are `toJSON()` and `fromJSON()`:
+
+-   `toJSON()` can capture pieces of the workflow configuration as JSON
+    and pass it to your workflow code
+-   `fromJSON()` allows injecting arbitrary configuration pieces created
+    from JSON code
+
+The basic setup comprises of two jobs: one that creates the workflow
+definition as JSON and stores it as
+[output](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idoutputs),
+and another dependent job that injects this output via `fromJSON()` into
+its matrix definition. A third job is defined for testing if outputs are
+passed correctly between jobs.
+
+The [original blog
+post](https://github.blog/changelog/2020-04-15-github-actions-new-workflow-features/)
+contains a somewhat brief description. This blog post gives a
+walkthrough of how I converted a static to a dynamic build matrix in the
+[DBItest](https://github.com/r-dbi/DBItest) project.
+
+## Original matrix
+
+In DBItest, we test the compatibility of new or updated tests with
+backend packages. Each backend is run in a build matrix, which is
+defined [as
+follows](https://github.com/r-dbi/DBItest/blob/ccd0fb3ed5ceacd1d3347ef1cade4e450d071832/.github/workflows/backends.yaml#L30-L35):
+
+``` yaml
+jobs:
+  backend:
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - duckdb
+          - RSQLite
+          - RMariaDB
+          - RPostgres
+          - RKazam
+```
+
+The relevant backends are defined in the
+[`Makefile`](https://github.com/r-dbi/DBItest/blob/ccd0fb3ed5ceacd1d3347ef1cade4e450d071832/revdep-dev/Makefile#L5),
+we want to get the list from there so that we can use a single source of
+truth.
+
+This is a very simple build matrix, ideally suited for first
+experiments. The techniques shown here are applicable to build matrices
+of any complexity and size.
+
+## Derive and verify JSON
+
+Our goal is to create the `package:` section from the above matrix in
+JSON format. To derive the JSON format, I use the [`sed` stream
+editor](https://en.wikipedia.org/wiki/Sed), my beloved hammer that I use
+whenever I see a text transformation task in the shell:
+
+``` bash
+echo '{ "package" : ['
+## { "package" : [
+sed -n "/^REVDEP *:= */ { s///; p }" revdep-dev/Makefile | sed 's/ /, /g' | xargs -n 1 echo | sed -r 's/^([^,]*)(,?)$/"\1"\2/'
+## "RMariaDB",
+## "RSQLite",
+## "RPostgres",
+## "RKazam",
+## "duckdb"
+echo "]}"
+## ]}
+```
+
+This is not pretty, but still valid JSON when put together. We can
+prettify with [`jq .`](https://stedolan.github.io/jq/), later we will
+use `jq -c .` to condense to a single line.
+
+``` bash
+(
+  echo '{ "package" : ['
+  sed -n "/^REVDEP *:= */ { s///; p }" revdep-dev/Makefile | sed 's/ /, /g' | xargs -n 1 echo | sed -r 's/^([^,]*)(,?)$/"\1"\2/'
+  echo "]}"
+) | jq .
+```
+
+``` json
+{
+  "package": [
+    "RMariaDB",
+    "RSQLite",
+    "RPostgres",
+    "RKazam",
+    "duckdb"
+  ]
+}
+```
+
+We verify the YAML version by piping to `json2yaml` which can be
+installed with `npm install json2yaml`:
+
+``` yaml
+---
+  package:
+    - "RMariaDB"
+    - "RSQLite"
+    - "RPostgres"
+    - "RKazam"
+    - "duckdb"
+```
+
+These tools are preinstalled on the workers. This avoids time-consuming
+installation procedures in this first job that needs to be run before
+the main jobs can even start.[^1]
+
+## Define job
+
+Once we have derived the JSON, we're ready to define a job that creates
+the matrix. This must be done in the same workflow file where the matrix
+is defined, ideally before the main job. The job runs on
+`ubuntu-latest`, and also must clone the repository. In the `bash`
+snippet, the `$matrix` variable contains the JSON. It is shown and
+pretty-printed before it is provided as output via
+`echo ::set-output ...`.
+
+``` yaml
+jobs:
+  matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - id: set-matrix
+        run: |
+          matrix=$((
+            echo '{ "package" : ['
+            sed -n "/^REVDEP *:= */ { s///; p }" revdep-dev/Makefile | sed 's/ /, /g' | xargs -n 1 echo | sed -r 's/^([^,]*)(,?)$/"\1"\2/'
+            echo " ]}"
+          ) | jq -c .)
+          echo $matrix
+          echo $matrix | jq .
+          echo "::set-output name=matrix::$matrix"
+
+  backend:
+    # Original workflow
+    # ...
+```
+
+## Verify output
+
+Before plugging in the generated JSON into our build job, we add another
+check job to verify if the generated JSON is transported correctly
+across job boundaries. The `needs: matrix` declares that the job must
+wait before the first `matrix` job succeeds. The job's output is queried
+via `${{ needs.matrix.outputs.matrix }}`, the quotes ensure that `bash`
+processes this correctly. We install and use `json2yaml` to double-check
+what the YAML snippet looks like.
+
+``` yaml
+jobs:
+  matrix:
+    # job defined above
+
+  check-matrix:
+    runs-on: ubuntu-latest
+    needs: matrix
+    steps:
+      - name: Install json2yaml
+        run: |
+          sudo npm install -g json2yaml
+
+      - name: Check matrix definition
+        run: |
+          matrix='${{ needs.matrix.outputs.matrix }}'
+          echo $matrix
+          echo $matrix | jq .
+          echo $matrix | json2yaml
+
+  backend:
+    # Original workflow
+    # ...
+```
+
+## Use output
+
+Finally, we're ready to use the generated JSON as a build matrix. The
+workflow now uses `matrix: ${{fromJson(needs.matrix.outputs.matrix)}}`
+instead of the hard-coded matrix:
+
+``` yaml
+jobs:
+  matrix:
+    # see above
+
+  check-matrix:
+    # see above
+
+  backend:
+    needs: matrix
+
+    strategy:
+      fail-fast: false
+      matrix: ${{fromJson(needs.matrix.outputs.matrix)}}
+
+    # rest unchanged
+```
+
+This gives a workflow as shown in the image below.
+
+<figure>
+`<img alt="GitHub Actions workflow with dependencies" src="workflow.png" style=" width: 100%; height: auto">`{=html}
+<figcaption>
+Final workflow with dynamic build matrix
+</figcaption>
+</figure>
+
+## Next steps
+
+For R packages, I see two use case where dynamic matrices can be useful:
+
+-   Testing if package checks pass if one suggested package is not
+    installed. Ideally, we remove suggested packages one by one and run
+    in parallel.
+-   Testing reverse dependencies. For some packages we may hit the limit
+    of 256 jobs per workflow run. Allocating downstream packages to
+    workers, minimizing the number of packages to be installed on each
+    worker, sounds like an interesting optimization problem.
+
+What are your use cases for dynamic build matrices? Drop us a line at
+<mail@cynkra.com>!
+
+## Caveats
+
+Even with this simple build matrix, it took more time than I would have
+hoped to get the bits and pieces right. Quoting is hard. Setting up the
+`check-matrix` job really saves time, I wish I had done this from the
+start.
+
+Both `fromJson()` and `fromJSON()` appear to work. The internal
+functions from the expression syntax seem to be case-insensitive
+throughout.
+
+For older versions, `jq` needs to be called as `jq .` to act as a
+pretty-printer. For newer versions this can be omitted.
+
+Today I also learned that workflows can be [temporarily
+disabled](https://docs.github.com/en/free-pro-team@latest/actions/managing-workflow-runs/disabling-and-enabling-a-workflow).
+This is useful in situations where you experiment with a workflow and
+want to avoid running other workflows for every test.
+
+------------------------------------------------------------------------
+
+[^1]: You can use any tool or ecosystem you are familiar with to come up
+    with the JSON definition. To avoid long installation times, use a
+    specific image for your step via
+    [`uses: docker://...`](https://www.petefreitag.com/item/903.cfm) or
+    implement a [container
+    action](https://docs.github.com/en/free-pro-team@latest/actions/creating-actions/creating-a-docker-container-action),
+    also possible [in the same
+    repository](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstepsuses).

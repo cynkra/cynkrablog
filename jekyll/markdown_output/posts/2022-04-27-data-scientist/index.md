@@ -1,0 +1,105 @@
+---
+author:
+- cynkra team
+authors:
+- cynkra team
+badges:
+- bg: bg-primary
+  label: Open position
+categories:
+- jobs
+date: 2022-04-27
+draft: true
+image: banner.jpg
+layout: post
+og_image: og_image.jpg
+title: Data Scientist (80-100%)
+toc-title: Table of contents
+---
+
+We are hiring a data scientist! You enjoy working with R and know a bit
+about Shiny, the tidyverse, and Git. We offer work on interesting
+projects around the R ecosystem, with lots of freedom and flexibility
+and the option to work remotely.
+
+<figure>
+`<img alt="Illustration" src="banner.jpg" style=" width: 100%; height: auto">`{=html}
+<figcaption>
+Photo by Scott Webb
+</figcaption>
+</figure>
+<!--
+convert scott-webb-208072-unsplash.jpg -resize 600x -gravity center -extent 300x300 -quality 80 senior-data-scientist.jpg
+ -->
+<!-- <figure>
+<img alt="Illustration" src="../user/img/about/zurich.jpg" style=" width: 100%; height: auto">
+<figcaption>
+  Photo by Samuel Zeller
+</figcaption>
+</figure>
+
+ -->
+
+#### What we look for
+
+-   Very good knowledge of R, in particular Shiny and the tidyverse
+
+-   Basic knowledge of Git
+
+-   Experience with databases is a plus
+
+-   80%-100% commitment, can be adapted throughout the year
+
+-   Ability and desire to learn and improve on the job
+
+-   Good working knowledge of written English
+
+-   Very good command of spoken English or German
+
+#### What we offer
+
+-   Interesting projects around consulting and open-source software
+    development
+
+-   Remote first: work wherever (and whenever) you want, some on-site
+    presence might be required
+
+-   Focused work and asynchronous communication, keeping meetings to a
+    minimum
+
+-   Compassionate learning-oriented work environment: we help each other
+    grow and get better at what we do
+
+-   Full flexibility: we adjust to your needs, especially if you have
+    family commitments
+
+-   Nice offices in Zurich: Stauffacher (downtown), Zürich Affoltern
+    (near ETH Hönggerberg)
+
+-   Attractive compensation
+
+#### How to apply
+
+Please submit your application via <mail@cynkra.com>, or share a private
+GitHub repository with us. Get in touch with us if you have further
+questions.
+
+#### Who we are
+
+cynkra is a Zurich-based data consulting company with a strong focus on
+R. We use R and the tidyverse in the vast majority of our projects. We
+support businesses and organizations by helping them pick the right
+tools, implementing solutions, training, and code review. We are
+enthusiastic about open-source software and contribute to it, too. Learn
+more at [www.cynkra.com](http://www.cynkra.com).
+
+#### You are welcome!
+
+We are an equal opportunity employer who recruits, employs, trains,
+compensates and promotes regardless of age, color, disability,
+ethnicity, family or marital status, gender identity or expression,
+language, national origin, physical and mental ability, political
+affiliation, race, religion, sexual orientation, socio-economic status,
+and other characteristics that make our employees unique. We are
+committed to fostering, cultivating and preserving a culture of
+diversity, equity and inclusion.

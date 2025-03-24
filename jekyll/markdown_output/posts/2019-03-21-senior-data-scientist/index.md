@@ -1,0 +1,84 @@
+---
+author:
+- cynkra team
+authors:
+- cynkra team
+categories:
+- R
+- jobs
+date: 2019-03-21
+draft: true
+layout: post
+og_image: og_image.jpg
+title: Data Scientist/Engineer (40-100%)
+toc-title: Table of contents
+---
+
+We are hiring a data scientist/engineer! You are enthusiastic about R
+and know a bit about Git -- everything else is negotiable. You will work
+on interesting projects around the R ecosystem, and you will have lots
+of freedom, with the option to work remotely.
+
+<figure>
+`<img alt="Illustration" src="2019-03-21-job.jpg" style=" width: 100%; height: auto">`{=html}
+<figcaption>
+Photo by Scott Webb
+</figcaption>
+</figure>
+<!--
+convert scott-webb-208072-unsplash.jpg -resize 600x -gravity center -extent 300x300 -quality 80 senior-data-scientist.jpg
+ -->
+<!-- <figure>
+<img alt="Illustration" src="../user/img/about/zurich.jpg" style=" width: 100%; height: auto">
+<figcaption>
+  Photo by Samuel Zeller
+</figcaption>
+</figure>
+
+ -->
+
+#### What we look for
+
+-   Very good knowledge of R
+
+-   Basic knowledge of Git
+
+-   Experience in Machine Learning, Statistics, Programming
+
+-   Experience with Databases, Teaching, shiny, tidyverse, etc., is a
+    plus
+
+-   40%-100% commitment, can be adapted throughout the year
+
+-   Ability and desire to learn and improve on the job
+
+-   Good working knowledge of written English
+
+-   Very good command of spoken English or German
+
+#### What we offer
+
+-   Interesting projects around consulting and open-source software
+    development
+
+-   Nice private office in Zurich close to ETH Hönggerberg, with free
+    coffee during office hours
+
+-   Remote work possible
+
+-   Competitive compensation
+
+#### How to apply
+
+Please submit your application via <mail@cynkra.com>, or share a private
+GitHub repository with us. Get in touch with us if you have further
+questions.
+
+#### Who we are
+
+cynkra is a Zurich-based data consulting company with a strong focus on
+R. We use R and the tidyverse in the vast majority of our projects. We
+support businesses and organizations by helping them pick the right
+tools, implementing solutions, training, and code review. We are
+enthusiastic about open-source software and contribute to it, too. Learn
+more at [www.cynkra.com](http://www.cynkra.com).
