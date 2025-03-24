@@ -1,0 +1,164 @@
+---
+date: 2021-10-07T00:00:00.000Z
+layout: post
+og_image: banner.jpg
+image: banner.jpg
+author: Kirill Müller
+title: Running old versions of TeXlive with tinytex
+categories:
+  - R
+badges:
+  - label: Tips
+    bg: bg-primary
+---
+
+
+# Running old versions of TeXlive with tinytex
+Kirill Müller
+2021-10-07
+
+Rendering PDFs with [rmarkdown](https://pkgs.rstudio.com/rmarkdown/) requires a working LaTeX installation, such as [tinytex](https://yihui.org/tinytex/). Occasionally, existing workflows break with the newest version of LaTeX. This post describes how to run an older LaTeX version for just a little while.
+
+<figure>
+
+<img alt="Old typewriter has typed the word 'Update' on paper" src="banner.jpg" style=" width: 100%; height: auto">
+<figcaption>
+
+Photo by Markus Winkler
+</figcaption>
+
+</figure>
+
+Rendering PDFs with [rmarkdown](https://pkgs.rstudio.com/rmarkdown/) requires a working LaTeX installation. The excellent [tinytex](https://yihui.org/tinytex/) package helps installing a portable variant of the TeXlive distribution with minimal fuss, on any major operating system. It is really as simple as:
+
+``` r
+tinytex::install_tinytex()
+```
+
+``` txt
+trying URL 'https://yihui.org/tinytex/TinyTeX-1.tgz'
+Content type 'application/octet-stream' length 87001665 bytes (83.0 MB)
+```
+
+## Breaking changes in LaTeX?
+
+Despite its age, LaTeX is still a lively maintained and evolving system, with the consequence that some documents that worked on an older version of LaTeX may no longer work with the most recent stack. One such example is the [tabu package](https://ctan.org/pkg/tabu?lang=en) that [breaks for some use cases](https://github.com/haozhu233/kableExtra/issues/625) with TeXlive 2021.
+
+On a clean tinytex installation, rendering an `.rmd` document with the following code starts with installing missing packages:
+
+``` r
+knitr::kable(mtcars, booktabs = TRUE, longtable = TRUE) |>
+  kableExtra::kable_styling(full_width = TRUE)
+```
+
+``` txt
+tlmgr: package repository https://mirror.foobar.to/CTAN/systems/texlive/tlnet (not verified: gpg unavailable)
+[1/1, ??:??/??:??] install: multirow [3k]
+running mktexlsr ...
+done running mktexlsr.
+tlmgr: package log updated: ~/Library/TinyTeX/texmf-var/web2c/tlmgr.log
+tlmgr: command log updated: ~/Library/TinyTeX/texmf-var/web2c/tlmgr-commands.log
+tlmgr: package repository https://mirror.foobar.to/CTAN/systems/texlive/tlnet (not verified: gpg unavailable)
+[1/1, ??:??/??:??] install: wrapfig [10k]
+running mktexlsr ...
+...
+```
+
+Yes, missing packages are installed on the fly! A full LaTeX distribution has several GB in size. The lazy package installation is a cool feature of the tinytex distribution that allows starting quickly with a minimal installation, without downloading and unpacking the whole thing.
+
+However, compilation gives the following error message:
+
+``` txt
+tlmgr: package log updated: ~/Library/TinyTeX/texmf-var/web2c/tlmgr.log
+tlmgr: command log updated: ~/Library/TinyTeX/texmf-var/web2c/tlmgr-commands.log
+! Dimension too large.
+\LT@max@sel #1#2->{\ifdim #2=\wd \tw@
+                                      #1\else \number \c@LT@chunks \fi }{\th...
+l.317 \end{longtabu}
+
+Error: LaTeX failed to compile test.tex. See https://yihui.org/tinytex/r/#debugging for debugging tips. See test.log for more info.
+```
+
+## What if we switch to the previous version?
+
+“But it used to work yesterday!” Fine, let’s install the last version that is still based on TeXlive 2020:
+
+``` r
+tinytex::install_tinytex(version = "2021.03")
+```
+
+Unfortunately, this breaks the package downloader:
+
+``` txt
+A new version of TeX Live has been released. If you need to install or update any LaTeX packages, you have to upgrade TinyTeX with tinytex::reinstall_tinytex(). If it fails to upgrade, you might be using a default random CTAN mirror that has not been fully synced to the main CTAN repository, and you need to wait for a few more days or use a CTAN mirror that is known to be up-to-date (see the "repository" argument on the help page ?tinytex::install_tinytex).
+
+tlmgr: Local TeX Live (2020) is older than remote repository (2021).
+Cross release updates are only supported with
+  update-tlmgr-latest(.sh/.exe) --update
+See https://tug.org/texlive/upgrade.html for details.
+! LaTeX Error: File `multirow.sty' not found.
+...
+```
+
+And we’re told to upgrade TeXlive, which isn’t helpful in our particular use case.
+
+## Can we make the previous version work?
+
+Yes. The solution is to teach tinytex to make do with a historic snapshot of the TeXlive distribution:
+
+``` r
+tinytex::tlmgr("option repository https://ftp.tu-chemnitz.de/pub/tug/historic/systems/texlive/2020/tlnet-final")
+```
+
+``` txt
+tlmgr: setting default package repository to https://ftp.tu-chemnitz.de/pub/tug/historic/systems/texlive/2020/tlnet-final
+tlmgr: updating ~/Library/TinyTeX/tlpkg/texlive.tlpdb
+```
+
+After that, automatic package downloads work again, with a prominent message reminding you that you’re running on a frozen snapshot:
+
+``` r
+knitr::kable(mtcars, booktabs = TRUE, longtable = TRUE) |>
+  kableExtra::kable_styling(full_width = TRUE)
+```
+
+``` txt
+TeX Live 2020 is frozen and will no longer
+be routinely updated. This happens in preparation for a new release.
+
+If you're willing to help with pretesting the new release, and we hope
+you are, (when pretests are available), please read
+https://tug.org/texlive/pretest.html.
+
+Otherwise, just wait, and the new release will be ready in due time.
+TeX Live 2020 is frozen and will no longer
+be routinely updated. This happens in preparation for a new release.
+
+If you're willing to help with pretesting the new release, and we hope
+you are, (when pretests are available), please read
+https://tug.org/texlive/pretest.html.
+
+Otherwise, just wait, and the new release will be ready in due time.
+tlmgr: package repository https://ftp.tu-chemnitz.de/pub/tug/historic/systems/texlive/2020/tlnet-final (not verified: gpg unavailable)
+[1/1, ??:??/??:??] install: multirow [3k]
+running mktexlsr ...
+done running mktexlsr.
+tlmgr: package log updated: /Users/kirill/Library/TinyTeX/texmf-var/web2c/tlmgr.log
+TeX Live 2020 is frozen and will no longer
+be routinely updated. This happens in preparation for a new release.
+...
+```
+
+The document is now rendered without errors.
+
+The tinytex maintainers [have confirmed](https://github.com/yihui/tinytex-releases/issues/19) that old bundles remain available for download. Of course the correct solution is to avoid weakly maintained dependencies in your code, and to replace them by better solutions. In reality, this is not always feasible, and breakages may occur without notice.
+
+Happy freezing!
+
+## Details
+
+On the [TeXlive homepage](https://tug.org/texlive/), the [“How to acquire TeX Live: other methods”](https://tug.org/texlive/acquire.html) link has a section “Past releases”. The `tlmgr` command is shown right there. The [“Historic archive”](https://tug.org/historic/) page contains a list of historic mirrors, use a mirror close to you.
+
+I originally started my search at the “Historic archive” page. It took some time to find the correct command, it is also documented in the [`tlmgr` manual](https://www.tug.org/texlive/doc/tlmgr.html#option).
+
+The tinytex package provides the `tlmgr_repo()` function as a shortcut to set the repository, but it seems to fail currently for this use case. Thanks Christophe Dervieux and Florian Kohrt for the hints!

@@ -1,0 +1,73 @@
+---
+date: 2019-08-02T00:00:00.000Z
+layout: post
+image: banner.jpg
+og_image: og_image.jpg
+author: cynkra team
+title: DevOps System Engineer (40-60%)
+categories:
+  - jobs
+  - DevOps
+draft: true
+---
+
+
+# DevOps System Engineer (40-60%)
+cynkra team
+2019-08-02
+
+We are hiring a system engineer! You are familiar with Ansible, Terraform, Docker, Git, CI/CD. You will work on interesting projects around the R ecosystem and have a lot of freedom. While you will be required to work on-site at times, remote work is also possible. If you are interested in data science and want to learn more about R, you will enjoy working in this position.
+
+<figure>
+
+<img alt="Illustration" src="banner.jpg" style=" width: 100%; height: auto">
+<figcaption>
+
+Photo by Samuel Zeller
+</figcaption>
+
+</figure>
+
+#### Your role
+
+- Responsibility for enhancing and maintaining our hosted service project and our internal infrastructure
+
+- Communicating with IT departments of our clients
+
+- Setting up infrastructure as code
+
+- Hiring and supervising nearshore development, with own budget
+
+#### What we look for
+
+- Very good knowledge of Ansible, Terraform, Docker, Git, CI/CD.
+
+- An interest in R and data science, in general, is a plus
+
+- 40%-60% commitment
+
+- Ability and desire to learn and improve on the job
+
+- Good working knowledge of written and spoken English
+
+- Very good command of spoken German
+
+#### What we offer
+
+- Interesting projects around consulting and open-source software development
+
+- Office in Zurich close to ETH Hönggerberg
+
+- Flexible working hours
+
+- Remote work possible
+
+- Competitive compensation
+
+#### How to apply
+
+Please submit your application via <mail@cynkra.com>. Get in touch with us if you have further questions.
+
+#### Who we are
+
+cynkra is a Zurich-based data consulting company with a strong focus on R. We use R and the tidyverse in the vast majority of our projects. We support businesses and organizations by helping them pick the right tools, implementing solutions, training, and code review. We are enthusiastic about open-source software and contribute to it, too. Learn more at [www.cynkra.com](http://www.cynkra.com).

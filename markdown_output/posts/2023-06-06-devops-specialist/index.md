@@ -1,0 +1,91 @@
+---
+date: 2023-06-06T00:00:00.000Z
+published: false
+layout: post
+image: devops-port-c.jpeg
+og_image: devops-port.jpeg
+author: cynkra team
+title: DevOps Engineer (80-100%)
+categories:
+  - jobs
+badges:
+  - label: Open position
+    bg: bg-primary
+draft: true
+---
+
+
+# DevOps Engineer (80-100%)
+cynkra team
+2023-06-06
+
+We are looking for a DevOps Engineer to support our rapidly growing team. We are looking for a motivated, team oriented engineer with experience on the job to help us strengthen and grow our infrastructure department. In your job, you will work with our DevOps team to further develop our containerized enterprise data science environment. You will work with our clients to set up and maintain our products in their environment – on premise and in the cloud!
+
+<figure>
+
+<img alt="Illustration" src="devops-port.jpeg" style=" width: 100%; height: auto">
+<figcaption>
+
+Photo by CHUTTERSNAP
+</figcaption>
+
+</figure>
+
+<!-- https://unsplash.com/photos/Q4bmoSPJM18 -->
+
+<!--
+convert scott-webb-208072-unsplash.jpg -resize 600x -gravity center -extent 300x300 -quality 80 senior-data-scientist.jpg
+ -->
+
+<!-- <figure>
+<img alt="Illustration" src="../user/img/about/zurich.jpg" style=" width: 100%; height: auto">
+<figcaption>
+  Photo by Samuel Zeller
+</figcaption>
+</figure>
+&#10; -->
+
+#### We are looking for the following skill set in our next candidate:
+
+cynkra is looking for a skilled DevOps Engineer who cherishes a young, dynamic team and a flexible, open source minded working environment. We are looking for a new team member:
+
+- With experience in IT automation and infrastructure-as-code (Ansible, Terraform, Helm)
+
+- Who has a thorough understanding and hands-on experience in containerization (Docker, Kubernetes)
+
+- Who is at home in Linux environments (RedHat, Debian, OpenSuse)
+
+- Who has experience with either R or Python and has work experience in a data science or analytics environment, e.g., academia, statistical office, analytics department
+
+- Who is fluent in English and speaks German
+
+- Who is a Swiss resident (i.e., Swiss citizen or working permit B, C, or willing to relocate) to comply with domestic access security policies
+
+- Excellent communication skills
+
+- Time management and organizational skills
+
+- A strong work ethic and ownership of tasks
+
+#### What we offer
+
+- fair compensation
+
+- work from anywhere (at our Zurich office, at one of our partner co-working locations, at home, …)
+
+- flexible working hours
+
+- open source driven culture:
+
+  - time to work on your own open source projects
+  - chance to contribute to existing, impactful open source packages
+
+- fringe benefits (public transport 1/2 fare, hardware compensation, phone compensation)
+
+#### Why join our team?
+
+Working with us comes with a number of growing benefits. You get the chance to work with some of the brightest minds, learn new skills and connect with passionate individuals. We provide constant internal employee growth opportunities and training to support further skills development. At cynkra, you have the opportunity to work with us remotely and be able to freely manage your workload, within our time zone. We are an equal opportunity employer, all applicants will be considered for employment without attention to race, color, religion, sex, sexual orientation, gender identity, national origin, veteran or disability status.
+
+#### How to apply
+
+Please submit your application (including CV and cover letter) via hr@cynkra.com. Please make sure to get in touch with us if you have further questions.

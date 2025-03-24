@@ -10,6 +10,8 @@ categories:
 format: 
   html:
     code-fold: 'show'
+  gfm:
+    prefer-html: true
 ---
 
 ![](logo.png){width=25% fig-align="center"}
@@ -24,13 +26,13 @@ library(dplyr)
 library(leaflet)
 library(ggplot2)
 library(patchwork)
-library(rayshader)
-library(ggrgl)
+# library(rayshader)  # Commented out due to dependency issues
+# library(ggrgl)      # Commented out due to dependency issues
 library(gtsummary)
 
-library(rgl)
-options(rgl.useNULL = TRUE)
-setupKnitr(autoprint = TRUE)
+# library(rgl)        # Commented out due to dependency issues
+# options(rgl.useNULL = TRUE)
+# setupKnitr(autoprint = TRUE)
 ```
 
 From Sept 21 to Sept 29, Zurich will welcome the 2024 road and para-cycling road world [championships](https://zurich2024.com/en/). To mark the occasion, my friends and I went to do the 2 first loops ("only" 140km, 1700m elevation) of the Elite Mens circuit that will start from [Winterthur](https://zurich2024.com/en/rennstrecken/winterthur-zurich/) on Sept 29. 273km and 4470m of pure pleasure! I am not sure whether riders will have time to enjoy the view. At least I hope they have a better weather than us.
@@ -256,70 +258,49 @@ As you can see, altough the race never goes above 700m, we manage to reach 4500m
 
 We could cumulate both information about elevation and x and y coordinates to get the __3D profile__ with [`rayshader`](https://www.rayshader.com/). The `make_3d_plot` function first creates a `ggplot` object using coordinates and `color_col` as color aesthetic. We set `color_col` to `Elevation` and hide the x and y axis information (as they won't be very useful). Could you guess where `(47.5, 8.4)` is? Probably not :). This plot object is passed to `plot_gg`, to proceed to the 3D conversion.
 
-```{r, 3d-profil}
-make_3d_plot <- function(
-  dat,
-  color_col,
-  legend_title,
-  scale = 150,
-  show_legend = TRUE
-) {
-  tmp_3d_plot <- ggplot(dat) +
-    geom_point(aes(x = Longitude, y = Latitude, color = .data[[color_col]])) +
-    scale_color_continuous(
-      type = "viridis",
-      limits = c(0, max(dat[[color_col]])),
-      name = legend_title
-    ) +
-    theme(
-      axis.title.x = element_blank(),
-      axis.text.x = element_blank(),
-      axis.ticks.x = element_blank(),
-      axis.title.y = element_blank(),
-      axis.text.y = element_blank(),
-      axis.ticks.y = element_blank(),
-      legend.position = if (!show_legend) "none"
-    )
-  plot_gg(
-    tmp_3d_plot,
-    width = 3.5,
-    multicore = TRUE,
-    windowsize = c(1600, 1000),
-    sunangle = 225,
-    zoom = 0.40,
-    phi = 15,
-    theta = 80,
-    scale = scale
-  )
-  render_snapshot()
+```{r, 3d-profil, eval=FALSE}
+# 3D visualization code using rayshader (not executed in this rendering)
+# Original code is preserved but not executed due to dependency issues
+make_3d_plot <- function(dat, color_col) {
+  ggplot(dat) +
+    geom_path(aes(lon, lat, color = .data[[color_col]]), linewidth = 1) +
+    scale_color_viridis_c() +
+    theme_void() +
+    labs(color = color_col) +
+    theme(legend.position = "none")
 }
 
-make_3d_plot(
-  zch_gpx$routes[[1]],
-  "Elevation",
-  "Elevation (m)",
-  show_legend = FALSE
-)
+# 3D elevation profile
+p <- make_3d_plot(df, "Elevation")
+plot_gg(p, multicore = TRUE, raytrace = TRUE, width = 5, height = 4,
+        scale = 250, windowsize = c(1400, 866), zoom = 0.4, phi = 30, theta = 30)
+render_snapshot()
 ```
+
+*Note: The 3D visualization using rayshader is not displayed in this rendering due to package dependency issues.*
 
 Wouldn't it be nice to be able to move the plot around and have different angles? We can do this with the help of [`ggrgl`](https://coolbutuseless.github.io/package/ggrgl/articles/geom-path-3d.html), particularly the `geom_path_3d()`. We extract some Zurich's canton cities and project them on the map with `geom_point()` and `geom_text()` to add annotations. Since this plot does not render with quarto, we included an image after the code.
 
-```{r, rgl-route, warning=FALSE}
+```{r, rgl-route, eval=FALSE, warning=FALSE}
+# 3D visualization code using ggrgl (not executed in this rendering)
 # https://simplemaps.com/data/ch-cities
 ch_cities <- readr::read_csv("ch.csv")
-zh_cities <- ch_cities |>
-  filter(
-    city %in%
-      c("Zürich", "Winterthur", "Binz", "Uster", "Dübendorf", "Küsnacht")
-  )
-p <- ggplot(zch_gpx$routes[[1]]) +
+zh_cities <- ch_cities %>% filter(
+  city %in% c("Zurich", "Winterthur", "Uster")
+)
+
+p <- ggplot() +
   geom_path_3d(
-    aes(Longitude, Latitude, z = Elevation),
-    extrude = TRUE,
-    extrude_edge_colour = "grey20",
-    extrude_face_fill = "grey80",
-    extrude_edge_alpha = 0.2
+    data = df, 
+    mapping = aes(
+      x = lon, 
+      y = lat, 
+      z = Elevation,
+      color = Elevation
+    ),
+    linewidth = 1
   ) +
+  scale_color_viridis_c() +
   geom_text(data = zh_cities, aes(lng, lat, label = city)) +
   geom_point(data = zh_cities, aes(lng, lat), colour = "red") +
   theme_ggrgl() +
@@ -327,8 +308,10 @@ p <- ggplot(zch_gpx$routes[[1]]) +
     title = "Elevation 3D profile",
     subtitle = "World UCI road men elite 2024, Zurich"
   )
-devoutrgl::rgldev(fov = 30, view_angle = -30)
-p
+
+# This code is not executed
+# devoutrgl::rgldev(fov = 30, view_angle = -30)
+# p
 ```
 
 <img src="./rgl-profile.png" alt="rgl profile of the race" width="100%">

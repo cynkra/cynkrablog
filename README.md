@@ -5,6 +5,17 @@
 - install [Quarto](https://quarto.org/docs/get-started/);
 - run `quarto preview`.
 
+### Markdown Rendering for Jekyll (New Workflow)
+
+If you want to generate markdown files (with code execution) for use in a Jekyll website:
+
+1. Install [Quarto](https://quarto.org/docs/get-started/)
+2. Install required R packages with `Rscript install_dependencies.R`
+3. Run `./render_to_markdown.sh`
+4. The generated markdown files will be available in the `markdown_output/` directory
+
+For more details about this workflow, see [MARKDOWN_WORKFLOW.md](MARKDOWN_WORKFLOW.md).
+
 ### Preview Pull Requests
 
 https://cynkra.github.io/cynkrablog

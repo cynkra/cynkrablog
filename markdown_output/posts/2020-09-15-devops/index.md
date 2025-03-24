@@ -1,0 +1,71 @@
+---
+date: 2020-09-15T00:00:00.000Z
+layout: post
+image: banner.jpg
+og_image: og_image.jpg
+author: cynkra team
+title: DevOps Expert (f/m/d, 60-100%)
+categories:
+  - jobs
+  - DevOps
+draft: true
+---
+
+
+# DevOps Expert (f/m/d, 60-100%)
+cynkra team
+2020-09-15
+
+We are on the lookout for a DevOps System Engineer. You are familiar with Linux, Docker, Git, CI/CD, and Ansible. You will work on interesting projects around the R ecosystem and have a lot of freedom. While you will be required to work on-site at times, remote work is also possible. If you are interested in data science and want to learn more about R, you will enjoy working in this position.
+
+<figure>
+
+<img alt="Illustration" src="banner.jpg" style=" width: 100%; height: auto">
+<figcaption>
+
+Photo by James Pond
+</figcaption>
+
+</figure>
+
+#### Your role
+
+- Responsibility for enhancing and maintaining our hosted RStudio service products and our internal infrastructure
+
+- Communicating with IT departments of our clients
+
+- Setting up and maintaining infrastructure as code
+
+#### What we look for
+
+- Very good knowledge of Linux, Docker, Git, CI/CD, and Ansible.
+
+- 60%-100% commitment
+
+- Ability and desire to learn and improve on the job
+
+- Very good command of written and spoken German
+
+- Good working knowledge of written and spoken English
+
+- An interest in R and data science, in general, is a plus.
+
+#### What we offer
+
+- An open-source, friendly environment that encouranges community contribution
+
+- Interesting projects around consulting and open-source software development
+
+- Offices in Zurich: at Stauffacher and near ETH Hönggerberg
+
+- Flexible working hours with the possibility to work from home
+
+#### How to apply
+
+Please submit your application via <mail@cynkra.com>. Get in touch with us if you have further questions.
+
+#### Who we are
+
+cynkra is a Zurich-based data consulting company with a strong focus on R. We use R and the tidyverse in the vast majority of our projects. We are an RStudio Full Certified Partner.
+
+We support businesses and organizations by helping them pick the right tools, implementing solutions, training, and code review. We are enthusiastic about open-source software and contribute to a large number of R packages. Learn more at [www.cynkra.com](http://www.cynkra.com).

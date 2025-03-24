@@ -1,0 +1,52 @@
+---
+date: 2020-08-25T00:00:00.000Z
+layout: post
+image: banner.jpg
+og_image: og_image.jpg
+author: Kirill Müller
+title: Maintaining multiple identities with Git
+categories:
+  - DevOps
+---
+
+
+# Maintaining multiple identities with Git
+Kirill Müller
+2020-08-25
+
+When committing to a Git repository related to my consulting work, I must use my company e-mail address, kirill@cynkra.com. Not so much for my open-source work – for this, I prefer to use other e-mail addresses, like krlmlr+r@mailbox.org . (For example, Travis CI sends notification e-mails to the committer’s e-mail address, and I have set up filtering for that other address.)
+
+<figure>
+
+<img alt="Illustration" src="banner.jpg" style=" width: 100%; height: auto">
+<figcaption>
+
+Photo by Carson Arias
+</figcaption>
+
+</figure>
+
+<br>
+
+Having to configure the e-mail address for each repository separately eventually gets annoying. Instead, I’d rather have all repos within a specific subdirectory use particular e-mail address.
+
+All my Git repos live in `~/git`. Subdirectories `R` and `cynkra`, contain R packages and repos related to consulting, respectively. To achieve the desired setup, I edit my `~/.gitconfig` with the following entry:
+
+    [includeIf "gitdir:git/**"]
+        path = git/.gitconfig
+
+This ensures that all repos in the `git` directory use the `git/.gitconfig` file in addition to the main configuration. That file contains the following:
+
+    [includeIf "gitdir:R/**"]
+        path = R/.gitconfig
+    [includeIf "gitdir:cynkra/**"]
+        path = cynkra/.gitconfig
+
+Finally, in `~/git/R/.gitconfig` and `~/git/cynkra/.gitconfig`, I configure the e-mail addresses I want to use for all repos pertaining to `R` and `cynkra`, respectively.
+
+    [user]
+        email = ...
+
+I verify the setup with `git config -l | grep user`. Indeed, cynkra repos use the cynkra e-mail address. Voilà!
+
+The above approach requires a recent-ish version of `git`- version 2.14 or later should suffice. Read more about [conditional includes](https://git-scm.com/docs/git-config#_conditional_includes).

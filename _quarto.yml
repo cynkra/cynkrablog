@@ -1,10 +1,10 @@
 project:
-  type: website
-  output-dir: docs
+  type: default
+  output-dir: markdown_output
   # For some reasons the logo light isn't properly copied
   # so we have to do it post-render.
   post-render: 
-    - "cp logo_dark.svg docs/"
+    - "cp logo_dark.svg markdown_output/"
 
 resources:
   - "mountain.jpg"
@@ -12,53 +12,53 @@ resources:
 execute:
   freeze: true
 
-website:
-  favicon: favicon-32x32.png
-  site-url: https://blog.cynkra.com/
-  title: "cynkra blog"
-  description: "By the cynkra team"
-  page-footer:
-    left: "Except where otherwise noted, content on this blog is licensed under the [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) licence."
-    right: Blog created with [Quarto](https://quarto.org/).
-  navbar:
-    logo: logo_light.svg #https://cynkra.com/assets/img/logo_small.svg
-    logo-href: https://cynkra.com/
-    title: false
-    right:
-      - text: Consulting
-        menu:
-          - text: R Consulting
-            url:  https://cynkra.com/consulting/
-          - text: Workshops
-            url:  https://cynkra.com/workshops/
-          - text: R Markdown templates
-            url:  https://cynkra.com/rmarkdown/
-      - text: Solutions
-        menu:
-          - text: Enterprise Data Science Environments
-            url:  https://cynkra.com/posit-based-enterprise-data-science-environments/
-          - text: Container Images
-            url:  https://cynkra.com/cicd-images/
-          - text: Posit Licences
-            url: https://cynkra.com/posit/
-      - text: open source
-        href: https://cynkra.com/opensource
-      - text: about
-        href: https://cynkra.com/about
-      - text: blog
-        href: https://cynkra.com/blog
-      - icon: rss
-        href: index.xml
 format:
-  html:
-    # Include JS code for logo toggle
-    include-after-body:
-      file: toggle-theme-image.html
-    code-link: true
-    highlight-style: github
-    theme:
-      light: [cosmo, light.scss, custom.scss]
-      dark: [cosmo, dark.scss, custom.scss]
+  gfm:
+    wrap: none
+    # Preserve figure paths for later Jekyll use
+    preserve-yaml: true
+    # Keep math as is 
+    html-math-method: plain
+    # You can add more gfm options as needed
+
+# The website config below is kept for reference but won't be used with gfm format
+# website:
+#   favicon: favicon-32x32.png
+#   site-url: https://blog.cynkra.com/
+#   title: "cynkra blog"
+#   description: "By the cynkra team"
+#   page-footer:
+#     left: "Except where otherwise noted, content on this blog is licensed under the [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) licence."
+#     right: Blog created with [Quarto](https://quarto.org/).
+#   navbar:
+#     logo: logo_light.svg #https://cynkra.com/assets/img/logo_small.svg
+#     logo-href: https://cynkra.com/
+#     title: false
+#     right:
+#       - text: Consulting
+#         menu:
+#           - text: R Consulting
+#             url:  https://cynkra.com/consulting/
+#           - text: Workshops
+#             url:  https://cynkra.com/workshops/
+#           - text: R Markdown templates
+#             url:  https://cynkra.com/rmarkdown/
+#       - text: Solutions
+#         menu:
+#           - text: Enterprise Data Science Environments
+#             url:  https://cynkra.com/posit-based-enterprise-data-science-environments/
+#           - text: Container Images
+#             url:  https://cynkra.com/cicd-images/
+#           - text: Posit Licences
+#             url: https://cynkra.com/posit/
+#       - text: open source
+#         href: https://cynkra.com/opensource
+#       - text: about
+#         href: https://cynkra.com/about
+#       - text: blog
+#         href: https://cynkra.com/blog
+#       - icon: rss
+#         href: index.xml
 
 
 
