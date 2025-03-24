@@ -6,6 +6,11 @@ authors:
 categories:
 - R
 date: 2021-04-09
+excerpt: Websites for R packages built with pkgdown have become a
+  de-facto standard over the last few years. Sometimes, repositories are
+  transferred to a new user/organization or the package is renamed. This
+  post proposes several ways to handle pkgdown URL redirection
+  gracefully.
 image: banner.jpg
 layout: post
 og_image: og_image.jpg

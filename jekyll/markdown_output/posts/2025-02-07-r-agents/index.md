@@ -7,6 +7,10 @@ categories:
 - R
 - LLM
 date: 2025-02-07
+excerpt: It's local LLM time! What an adventure it has been since I
+  first started exploring local LLMs. With the introduction of various
+  new Llama models, we now have impressive small and large models that
+  run seamlessly on consumer hardware.
 image: michael-dziedzic-aQYgUYwnCsM-unsplash.jpg
 layout: post
 title: Playing with AI Agents in R

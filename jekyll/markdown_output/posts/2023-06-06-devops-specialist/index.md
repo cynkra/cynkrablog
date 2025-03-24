@@ -10,6 +10,10 @@ categories:
 - jobs
 date: 2023-06-06
 draft: true
+excerpt: We are looking for a DevOps Engineer to support our rapidly
+  growing team. We are looking for a motivated, team oriented engineer
+  with experience on the job to help us strengthen and grow our
+  infrastructure department.
 image: devops-port-c.jpeg
 layout: post
 og_image: devops-port.jpeg

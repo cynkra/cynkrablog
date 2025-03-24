@@ -7,6 +7,10 @@ categories:
 - R
 - databases
 date: 2019-07-17
+excerpt: The dm package reduces your mental strain when working with
+  many tables. It connects your data, while still keeping them in their
+  original tables. You can easily perform operations on all tables,
+  visualize how they're connected, and integrate databases.
 image: banner.jpg
 layout: post
 og_image: og_image.jpg

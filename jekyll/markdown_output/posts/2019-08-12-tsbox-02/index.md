@@ -7,6 +7,11 @@ categories:
 - R
 - time-series
 date: 2019-08-12
+excerpt: The tsbox package makes life with time series in R easier. It
+  is built around a set of functions that convert time series of
+  different classes to each other. They are frequency-agnostic and allow
+  the user to combine time series of multiple non-standard and irregular
+  frequencies.
 layout: post
 og_image: og_image.jpg
 title: "tsbox 0.2: supporting additional time series classes"

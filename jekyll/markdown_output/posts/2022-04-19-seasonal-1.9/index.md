@@ -10,6 +10,11 @@ categories:
 - R
 - time-series
 date: 2022-04-19
+excerpt: seasonal is an easy-to-use and full-featured R interface to
+  X-13ARIMA-SEATS, the seasonal adjustment software developed by the
+  United States Census Bureau. The latest CRAN version of seasonal fixes
+  several bugs and makes it easier to access output from multiple
+  objects.
 image: banner.jpg
 layout: post
 og_image: og_image.jpg

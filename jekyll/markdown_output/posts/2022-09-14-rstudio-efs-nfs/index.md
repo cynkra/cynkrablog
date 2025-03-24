@@ -12,6 +12,12 @@ categories:
 - Posit
 - performance
 date: 2022-09-14
+excerpt: As a consulting company with a strong focus on R and Posit
+  (formerly RStudio) products, we have gathered quite a bit of
+  experience in configuration and deployment of Workbench and Connect
+  products in the cloud. We would like to share some of these insights
+  and shine some light on the file system debate around these
+  applications.
 image: banner.png
 layout: post
 og_image: banner.png

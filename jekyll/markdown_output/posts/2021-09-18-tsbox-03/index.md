@@ -10,6 +10,10 @@ categories:
 - R
 - time-series
 date: 2021-09-18
+excerpt: The tsbox package provides a set of tools that are agnostic
+  towards existing time series classes. The tools also allow you to
+  handle time series as plain data frames, thus making it easy to deal
+  with time series in a dplyr or data.table workflow.
 image: banner.jpg
 layout: post
 og_image: og_image.jpg

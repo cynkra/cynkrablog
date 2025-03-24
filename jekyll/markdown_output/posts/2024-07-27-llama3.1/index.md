@@ -6,6 +6,10 @@ authors:
 categories:
 - LLM
 date: 2024-07-27
+excerpt: Meta recently announced Llama 3.1, and there's a lot of
+  excitement. I finally had some time to experiment with locally run
+  open-source models. The small 8B model, in particular, produces
+  surprisingly useful output, with reasonable speed.
 image: llama.png
 title: Playing with Llama 3.1 in R
 toc-title: Table of contents

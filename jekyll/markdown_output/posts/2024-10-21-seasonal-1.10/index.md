@@ -10,6 +10,10 @@ categories:
 - R
 - time-series
 date: 2024-10-21
+excerpt: Time series data often display recurring seasonal patterns
+  throughout the year. The R package seasonal provides a powerful and
+  user-friendly way to perform seasonal adjustment in R, leveraging the
+  X-13ARIMA-SEATS procedure developed by the U.S. Census Bureau.
 image: seasonalview.png
 layout: post
 title: "seasonal 1.10: R-interface to X-13ARIMA-SEATS"

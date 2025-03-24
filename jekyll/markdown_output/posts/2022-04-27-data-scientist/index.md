@@ -10,6 +10,10 @@ categories:
 - jobs
 date: 2022-04-27
 draft: true
+excerpt: We are hiring a data scientist! You enjoy working with R and
+  know a bit about Shiny, the tidyverse, and Git. We offer work on
+  interesting projects around the R ecosystem, with lots of freedom and
+  flexibility and the option to work remotely.
 image: banner.jpg
 layout: post
 og_image: og_image.jpg

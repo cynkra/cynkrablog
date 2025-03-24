@@ -7,6 +7,10 @@ categories:
 - R
 - time-series
 date: 2020-02-09
+excerpt: Not having a time series at the desired frequency is a common
+  problem for researchers and analysts. With the help of one or more
+  high-frequency indicator series, the low-frequency series may be
+  disaggregated into a high-frequency series.
 image: banner.jpg
 layout: post
 og_image: og_image.jpg

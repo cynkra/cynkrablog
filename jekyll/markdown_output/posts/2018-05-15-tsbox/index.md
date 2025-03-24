@@ -7,6 +7,10 @@ categories:
 - R
 - time-series
 date: 2018-05-15
+excerpt: The R ecosystem knows a ridiculous number of time series
+  classes. tsbox provides a set of tools that are agnostic towards
+  existing time series classes, built around converters that transform
+  between different time series formats.
 layout: post
 og_image: og_image.jpg
 title: Time series of the world, unite!

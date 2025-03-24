@@ -7,6 +7,10 @@ categories:
 - R
 - DevOps
 date: 2021-03-16
+excerpt: For a long time, gfortran support on macOS could be achieved by
+  installing the homebrew cask gfortran. As of 2021, both the brew cask
+  command and the cask gfortran are deprecated. This article explains
+  how to set up gfortran for R package development on macOS.
 layout: post
 title: gfortran support for R on macOS
 toc-title: Table of contents

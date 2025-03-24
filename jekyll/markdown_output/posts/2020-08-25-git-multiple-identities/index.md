@@ -6,6 +6,11 @@ authors:
 categories:
 - DevOps
 date: 2020-08-25
+excerpt: When committing to a Git repository related to my consulting
+  work, I must use my company e-mail address. Not so much for my
+  open-source work where I prefer to use other e-mail addresses. Having
+  to configure the e-mail address for each repository separately
+  eventually gets annoying.
 image: banner.jpg
 layout: post
 og_image: og_image.jpg

@@ -7,6 +7,10 @@ categories:
 - R
 - DevOps
 date: 2020-12-23
+excerpt: GitHub Actions allows automating build and deployment processes
+  (CI/CD), tightly integrated with GitHub. A build matrix is a way to
+  define similar workflows that differ only by configuration parameters.
+  This post shows how to define these build matrices dynamically.
 image: banner.jpg
 layout: post
 og_image: og_image.jpg

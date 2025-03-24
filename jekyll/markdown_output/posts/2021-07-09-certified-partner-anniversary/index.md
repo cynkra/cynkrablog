@@ -7,6 +7,10 @@ categories:
 - Posit
 - DevOps
 date: 2021-07-09
+excerpt: cynkra celebrates its first anniversary as an RStudio Full
+  Service Certified Partner! Every day, we help our clients set up
+  professional IT infrastructures using RStudio products and license
+  compositions suited to their individual needs.
 image: banner.jpg
 layout: post
 title: Celebrating one-year anniversary as RStudio Full Service

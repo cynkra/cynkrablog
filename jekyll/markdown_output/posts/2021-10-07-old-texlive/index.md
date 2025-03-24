@@ -9,6 +9,10 @@ badges:
 categories:
 - R
 date: 2021-10-07
+excerpt: Rendering PDFs with rmarkdown requires a working LaTeX
+  installation, such as tinytex. Occasionally, existing workflows break
+  with the newest version of LaTeX. This post describes how to run an
+  older LaTeX version for just a little while.
 image: banner.jpg
 layout: post
 og_image: banner.jpg

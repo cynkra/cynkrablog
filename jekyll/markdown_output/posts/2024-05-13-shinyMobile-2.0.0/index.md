@@ -6,6 +6,10 @@ authors:
 categories:
 - Shiny
 date: 2024-05-13
+excerpt: shinyMobile has been enabling the creation of exceptional R
+  Shiny apps for both iOS and Android for nearly five years. This year
+  shinyMobile gets a major update to v2.2.0, bringing multi-page
+  support, new components, and an upgrade to Framework7 v8.
 image: logo.png
 layout: post
 title: "shinyMobile 2.0.0: a preview"

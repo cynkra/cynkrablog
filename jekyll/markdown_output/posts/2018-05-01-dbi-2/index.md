@@ -7,6 +7,10 @@ categories:
 - R
 - databases
 date: 2018-05-01
+excerpt: The "Establishing DBI" project, funded by the R consortium,
+  started about a year ago. It includes the completion of two new
+  backends, RPostgres and RMariaDB, and quite a few interface extensions
+  and specifications.
 layout: post
 title: Done "Establishing DBI"!?
 toc-title: Table of contents

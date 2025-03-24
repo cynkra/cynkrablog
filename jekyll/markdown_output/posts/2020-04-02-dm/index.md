@@ -7,6 +7,11 @@ categories:
 - R
 - databases
 date: 2020-04-02
+excerpt: Relational databases are powerful tools for analyzing and
+  manipulating data. However, many modeling workflows require a great
+  deal of time and effort to wrangle data from databases to place it
+  into a flat data frame or table format. The dm package takes the
+  advantage of relational modeling and brings it to R.
 image: banner.jpg
 layout: post
 og_image: og_image.jpg

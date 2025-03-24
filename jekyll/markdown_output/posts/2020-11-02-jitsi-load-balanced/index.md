@@ -6,6 +6,10 @@ authors:
 categories:
 - DevOps
 date: 2020-11-02
+excerpt: Jitsi Meet is a self-hosted Free and Open-Source Software
+  (FOSS) video conferencing solution. During the recent COVID-19
+  pandemic, the project became quite popular, and many companies decided
+  to host their own Jitsi instance.
 layout: post
 og_image: og_image.jpg
 title: Setting up a load-balanced Jitsi Meet instance

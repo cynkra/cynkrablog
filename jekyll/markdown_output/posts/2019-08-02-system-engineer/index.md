@@ -8,6 +8,10 @@ categories:
 - DevOps
 date: 2019-08-02
 draft: true
+excerpt: We are hiring a system engineer! You are familiar with Ansible,
+  Terraform, Docker, Git, CI/CD. You will work on interesting projects
+  around the R ecosystem and have a lot of freedom. While you will be
+  required to work on-site at times, remote work is also possible.
 image: banner.jpg
 layout: post
 og_image: og_image.jpg

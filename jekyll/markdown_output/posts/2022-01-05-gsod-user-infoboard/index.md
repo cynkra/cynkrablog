@@ -9,6 +9,11 @@ badges:
 categories:
 - R
 date: 2022-01-05
+excerpt: Google Season of Docs provides support for open source projects
+  to improve their documentation and gives professional technical
+  writers an opportunity to gain experience in open source. The R
+  Project participated in GSoD as an open-source organization for the
+  first time this year.
 image: banner.png
 layout: post
 og_image: banner.png

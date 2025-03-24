@@ -7,6 +7,10 @@ categories:
 - R
 - Testing
 date: 2025-03-04
+excerpt: A small team at cynkra is working on the R package igraph, a
+  popular package for simple graphs and network analysis. A big part of
+  this work involves refactoring legacy code and enhancing the
+  maintainability of the package for the future.
 image: pexels-pixabay-163064.jpg
 layout: post
 title: Organizing tests in R packages

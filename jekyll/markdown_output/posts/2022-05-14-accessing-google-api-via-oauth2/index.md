@@ -10,6 +10,10 @@ badges:
 categories:
 - DevOps
 date: 2022-05-14
+excerpt: At cynkra we recently aimed to automate more parts of our
+  internal toolstack. Google Workspace offers a comprehensive REST API
+  which can be used for automation purposes. When interacting with an
+  API, authentication is usually required.
 image: banner.jpg
 layout: post
 og_image: banner.jpg

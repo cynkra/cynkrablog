@@ -11,6 +11,11 @@ categories:
 - R
 - igraph
 date: 2025-03-17
+excerpt: One year ago, a small group of us at cynkra submitted a project
+  proposal to the R Consortium's ISC, which got approved. We are very
+  grateful for this support. In this post we shall explain what the
+  motivation for our project was, what we accomplished... and what we
+  hope to work on next!
 image: pexels-pixabay-39669.jpg
 layout: post
 title: Setting up igraph for success in the next decade

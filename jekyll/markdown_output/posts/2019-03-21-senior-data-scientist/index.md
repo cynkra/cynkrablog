@@ -8,6 +8,10 @@ categories:
 - jobs
 date: 2019-03-21
 draft: true
+excerpt: We are hiring a data scientist/engineer! You are enthusiastic
+  about R and know a bit about Git -- everything else is negotiable. You
+  will work on interesting projects around the R ecosystem, and you will
+  have lots of freedom, with the option to work remotely.
 layout: post
 og_image: og_image.jpg
 title: Data Scientist/Engineer (40-100%)
