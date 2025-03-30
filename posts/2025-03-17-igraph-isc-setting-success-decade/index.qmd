@@ -2,7 +2,7 @@
 date: 2025-03-17
 layout: post
 image: pexels-pixabay-39669.jpg
-author: 
+author:
 - Maëlle Salmon
 - David Schoch
 - Kirill Müller
@@ -32,14 +32,6 @@ On manual pages, deprecation badges indicate the maintenance status of functions
 
 ```r
 library("igraph")
-#> 
-#> Attaching package: 'igraph'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     decompose, spectrum
-#> The following object is masked from 'package:base':
-#> 
-#>     union
 g <- sample_gnp(10, 0.5)
 graph.density(g)
 #> Warning: `graph.density()` was deprecated in igraph 2.0.0.
@@ -103,5 +95,3 @@ We shared our experience working on igraph in part of a talk and in various blog
 
 We are proud of the progress made in the igraph codebase but we don't want to stop here!
 In particular, we'd really like to do more work on open issues to improve the state of the issue tracker and to ensure easier future triage ; to better describe and execute the scope differences between the C and R libraries ; and to make the documentation more complete and clearer.
-
-
